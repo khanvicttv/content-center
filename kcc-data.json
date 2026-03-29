@@ -1,0 +1,605 @@
+{
+  "clips": [
+    {
+      "id": 1774754430030,
+      "name": "Love being called a hacker",
+      "filename": "love_being_called_a_hacker.mp4",
+      "duration": "0:54",
+      "size_mb": 187.6,
+      "desc": "got this guy so many times he called me a hacker",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-28T22:20:30",
+      "fromScan": true
+    },
+    {
+      "id": 1774753397377,
+      "name": "Sent him back to the lobby",
+      "filename": "Sent_him_back_to_the_lobby.mp4",
+      "duration": "0:32",
+      "size_mb": 111.8,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-28T22:03:17",
+      "fromScan": true
+    },
+    {
+      "id": 1774752970629,
+      "name": "All of them pushed together",
+      "filename": "all_of_them_pushed_together.mp4",
+      "duration": "0:28",
+      "size_mb": 104.7,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-28T21:56:10",
+      "fromScan": true
+    },
+    {
+      "id": 1774590114440,
+      "name": "He aint know what to do",
+      "filename": "he aint know what to do.mp4",
+      "duration": "0:18",
+      "size_mb": 79.9,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-27T00:41:54",
+      "fromScan": true
+    },
+    {
+      "id": 1774589820490,
+      "name": "Running circles",
+      "filename": "running circles.mp4",
+      "duration": "0:41",
+      "size_mb": 158.8,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-27T00:37:00",
+      "fromScan": true
+    },
+    {
+      "id": 1774589022121,
+      "name": "Coulda been great",
+      "filename": "coulda been great.mp4",
+      "duration": "0:16",
+      "size_mb": 48.6,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-27T00:23:42",
+      "fromScan": true
+    },
+    {
+      "id": 1774588704858,
+      "name": "Audio cues",
+      "filename": "audio cues.mp4",
+      "duration": "0:35",
+      "size_mb": 171.4,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-27T00:18:24",
+      "fromScan": true
+    },
+    {
+      "id": 1774535554978,
+      "name": "20s to 4",
+      "filename": "20s to 4.mp4",
+      "duration": "0:41",
+      "size_mb": 178.5,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-26T09:32:34",
+      "fromScan": true
+    },
+    {
+      "id": 1774534970652,
+      "name": "Look like a rat",
+      "filename": "look like a rat.mp4",
+      "duration": "0:32",
+      "size_mb": 74.2,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-26T09:22:50",
+      "fromScan": true
+    },
+    {
+      "id": 1774536021388,
+      "name": "Hows it goin",
+      "filename": "hows it goin.mp4",
+      "duration": "0:57",
+      "size_mb": 193.9,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-03-26T09:40:21",
+      "fromScan": true
+    }
+  ],
+  "posts": [
+    {
+      "id": 1774803906855,
+      "clipId": 1774589022121,
+      "clipName": "Coulda been great",
+      "platform": "tt",
+      "date": "2026-03-29",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1774803913927,
+      "clipId": 1774588704858,
+      "clipName": "Audio cues",
+      "platform": "tt",
+      "date": "2026-03-29",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1774803919864,
+      "clipId": 1774754430030,
+      "clipName": "Love being called a hacker",
+      "platform": "tt",
+      "date": "2026-03-30",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1774803970198,
+      "clipId": 1774753397377,
+      "clipName": "Sent him back to the lobby",
+      "platform": "tt",
+      "date": "2026-03-30",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1774803977182,
+      "clipId": 1774752970629,
+      "clipName": "All of them pushed together",
+      "platform": "tt",
+      "date": "2026-03-30",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1774803992264,
+      "clipId": 1774590114440,
+      "clipName": "He aint know what to do",
+      "platform": "tt",
+      "date": "2026-03-31",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1774804004066,
+      "clipId": 1774535554978,
+      "clipName": "20s to 4",
+      "platform": "tt",
+      "date": "2026-03-31",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1774804010482,
+      "clipId": 1774534970652,
+      "clipName": "Look like a rat",
+      "platform": "tt",
+      "date": "2026-04-01",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1774809838540.4282,
+      "clipId": 1774754430030,
+      "clipName": "Love being called a hacker",
+      "platform": "tt",
+      "date": "2026-04-02",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1774809838540.8413,
+      "clipId": 1774754430030,
+      "clipName": "Love being called a hacker",
+      "platform": "ig",
+      "date": "2026-04-02",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1774809884081.1145,
+      "clipId": 1774534970652,
+      "clipName": "Look like a rat",
+      "platform": "tt",
+      "date": "2026-04-01",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1774809884081.7156,
+      "clipId": 1774534970652,
+      "clipName": "Look like a rat",
+      "platform": "ig",
+      "date": "2026-04-01",
+      "time": "13:00",
+      "posted": false
+    }
+  ],
+  "checklist": {
+    "1774754430030": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774753397377": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774752970629": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774590114440": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774589820490": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774589022121": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774588704858": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774535554978": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774534970652": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1774536021388": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "slots": [
+    {
+      "time": "09:00",
+      "label": "Morning",
+      "reach": "HIGH"
+    },
+    {
+      "time": "13:00",
+      "label": "Lunch",
+      "reach": "MEDIUM"
+    },
+    {
+      "time": "19:00",
+      "label": "Evening",
+      "reach": "PEAK"
+    }
+  ],
+  "weekOffset": 0,
+  "engagements": []
+}
