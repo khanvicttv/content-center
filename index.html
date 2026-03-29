@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Content Command Center</title>
+<title>Khanvict Command Center</title>
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KCC">
+<meta name="theme-color" content="#0a0a0f">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -333,8 +339,8 @@
 
   <!-- TOPBAR -->
   <header class="topbar">
-    <div class="logo">CC<span>/</span>CTR</div>
-    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">Content Command Center</div>
+    <div class="logo">KCC</div>
+    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">Khanvict Command Center</div>
     <div class="topbar-right">
       <div class="status-pill"><div class="status-dot"></div>ACTIVE</div>
       <div class="api-pill disconnected" id="api-pill" onclick="nav('settings')" title="Click to set API key">
@@ -1606,6 +1612,10 @@ renderDaysBanner();
 updateApiPill();
 checkUpcomingPosts();
 setInterval(checkUpcomingPosts, 60000);
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/content-center/sw.js').catch(() => {});
+}
 </script>
 </body>
 </html>
