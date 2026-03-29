@@ -296,6 +296,31 @@
   .bnav-item.active::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--accent); border-radius: 0 0 2px 2px; }
   .bnav-icon { font-size: 16px; line-height: 1; }
   .bnav-badge { position: absolute; top: 4px; right: 18%; background: var(--accent); color: white; font-size: 8px; font-family: var(--mono); padding: 0 4px; border-radius: 8px; min-width: 14px; text-align: center; line-height: 14px; height: 14px; }
+
+  /* UPCOMING ALERT BANNER */
+  .post-alert {
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    animation: slideIn 0.3s ease;
+    flex-wrap: wrap;
+  }
+  @keyframes slideIn { from { opacity:0; transform: translateY(-8px); } to { opacity:1; transform: translateY(0); } }
+  .post-alert.urgent { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); }
+  .post-alert.soon   { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); }
+  .alert-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+  .alert-pulse { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; animation: pulse 1.5s ease-in-out infinite; }
+  .post-alert.urgent .alert-pulse { background: var(--red); }
+  .post-alert.soon   .alert-pulse { background: var(--amber); }
+  .alert-text { min-width: 0; }
+  .alert-headline { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .alert-sub { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+  .post-alert.urgent .alert-sub { color: var(--red); }
+  .post-alert.soon   .alert-sub { color: var(--amber); }
   ::-webkit-scrollbar-track { background: var(--bg2); }
   ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
 
@@ -353,6 +378,7 @@
       </div>
 
       <div id="days-banner"></div>
+      <div id="post-alerts"></div>
 
       <div class="stats-row">
         <div class="stat-card sc-purple"><div class="stat-num" id="s-today">0</div><div class="stat-label">posts today</div></div>
@@ -1009,6 +1035,7 @@ function renderToday() {
   document.getElementById('s-posted').textContent  = posted;
   document.getElementById('s-pending').textContent = pending;
   document.getElementById('s-clips').textContent   = state.clips.length;
+  checkUpcomingPosts();
 
   const container = document.getElementById('today-slots');
 
@@ -1526,6 +1553,48 @@ function clearAll() {
   renderDaysBanner();
 }
 
+// ── UPCOMING POST ALERTS ─────────────────────────────────────────────────
+function checkUpcomingPosts() {
+  const container = document.getElementById('post-alerts');
+  if (!container) return;
+
+  const now = new Date();
+  const todayStr = now.toISOString().split('T')[0];
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+
+  const todayPosts = state.posts.filter(p => p.date === todayStr && !p.posted);
+
+  const alerts = [];
+  todayPosts.forEach(p => {
+    const [h, m] = p.time.split(':').map(Number);
+    const postMins = h * 60 + m;
+    const diff = postMins - nowMins;
+    if (diff > 0 && diff <= 30) {
+      alerts.push({ post: p, diff, type: diff <= 10 ? 'urgent' : 'soon' });
+    }
+  });
+
+  if (!alerts.length) { container.innerHTML = ''; return; }
+
+  const PL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
+  const PC = { tt: 'var(--tiktok)', ig: 'var(--ig)', yt: 'var(--yt)' };
+
+  container.innerHTML = alerts.map(({ post, diff, type }) => {
+    const timeStr = diff <= 1 ? 'RIGHT NOW' : `in ${diff} min`;
+    return `
+    <div class="post-alert ${type}">
+      <div class="alert-left">
+        <div class="alert-pulse"></div>
+        <div class="alert-text">
+          <div class="alert-headline">Post to <span style="color:${PC[post.platform]};font-weight:600;">${PL[post.platform]}</span> — ${post.clipName}</div>
+          <div class="alert-sub">Due ${timeStr} · ${fmtTime(post.time)} slot</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="markPosted(${post.id});checkUpcomingPosts();">Mark posted</button>
+    </div>`;
+  }).join('');
+}
+
 // ── INIT ─────────────────────────────────────────────────────────────────
 load();
 renderClipList();
@@ -1535,6 +1604,8 @@ updateSidebar();
 renderToday();
 renderDaysBanner();
 updateApiPill();
+checkUpcomingPosts();
+setInterval(checkUpcomingPosts, 60000);
 </script>
 </body>
 </html>
