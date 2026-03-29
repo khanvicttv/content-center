@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #18181f;
+    --bg4: #1f1f28;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --accent: #7c5cfc;
+    --accent2: #a78bfa;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --tiktok: #ff2d55;
+    --ig: #e1306c;
+    --yt: #ff6060;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 14px; line-height: 1.5; }
+
+  .shell { display: grid; grid-template-columns: 220px 1fr; grid-template-rows: 48px 1fr; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar { grid-column: 1/-1; background: var(--bg2); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 16px; }
+  .logo { font-family: var(--mono); font-weight: 700; font-size: 13px; letter-spacing: 2px; color: var(--accent2); }
+  .logo span { color: var(--muted); }
+  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+  .status-pill { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .clock { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .api-pill { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; cursor: pointer; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border2); transition: all 0.15s; }
+  .api-pill:hover { border-color: var(--accent); }
+  .api-pill.connected { color: var(--green); border-color: rgba(34,197,94,0.25); }
+  .api-pill.disconnected { color: var(--amber); border-color: rgba(245,158,11,0.25); }
+  .api-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .api-pill.connected .api-dot { background: var(--green); }
+  .api-pill.disconnected .api-dot { background: var(--amber); animation: pulse 2s ease-in-out infinite; }
+
+  /* SIDEBAR */
+  .sidebar { background: var(--bg2); border-right: 1px solid var(--border); padding: 16px 0; display: flex; flex-direction: column; }
+  .sidebar-section { padding: 0 12px; margin-bottom: 24px; }
+  .sidebar-label { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; padding: 0 8px; margin-bottom: 6px; display: block; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 500; transition: all 0.15s; border: none; background: none; width: 100%; text-align: left; font-family: var(--sans); }
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active { background: var(--bg4); color: var(--text); border-left: 2px solid var(--accent); margin-left: -2px; padding-left: 12px; }
+  .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+  .nav-badge { margin-left: auto; background: var(--accent); color: white; font-size: 10px; font-family: var(--mono); padding: 1px 6px; border-radius: 10px; min-width: 20px; text-align: center; }
+  .sidebar-bottom { margin-top: auto; padding: 12px; border-top: 1px solid var(--border); }
+  .stat-mini { display: flex; justify-content: space-between; align-items: center; padding: 5px 8px; }
+  .stat-mini-label { font-size: 11px; color: var(--muted); }
+  .stat-mini-val { font-family: var(--mono); font-size: 12px; color: var(--text); }
+  .progress-track { background: var(--bg3); border-radius: 4px; height: 4px; overflow: hidden; margin-top: 8px; }
+  .progress-fill { background: var(--accent); height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+
+  /* MAIN */
+  .main { overflow-y: auto; }
+  .panel { display: none; padding: 24px; }
+  .panel.active { display: block; }
+  .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 10px; }
+  .panel-title { font-family: var(--mono); font-size: 15px; font-weight: 700; letter-spacing: 1px; }
+  .panel-title span { color: var(--accent2); }
+
+  /* BUTTONS */
+  .btn { padding: 8px 16px; border-radius: 6px; border: none; font-family: var(--sans); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
+  .btn-ghost:hover { color: var(--text); background: var(--bg3); }
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+  .btn-danger { background: transparent; color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .btn-danger:hover { background: rgba(239,68,68,0.08); }
+  .flex { display: flex; align-items: center; gap: 8px; }
+  .flex-end { justify-content: flex-end; }
+
+  /* CARDS */
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .card-title { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 14px; }
+
+  /* STAT CARDS */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; position: relative; overflow: hidden; }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .sc-purple::before { background: var(--accent); }
+  .sc-green::before { background: var(--green); }
+  .sc-amber::before { background: var(--amber); }
+  .sc-red::before { background: var(--red); }
+  .sc-teal::before { background: #2dd4bf; }
+  .stat-num { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 4px; }
+  .stat-label { font-size: 11px; color: var(--muted); }
+  .stat-sublabel { font-size: 10px; color: var(--accent2); font-family: var(--mono); margin-top: 2px; }
+
+  /* FORMS */
+  input[type=text], input[type=date], input[type=time], textarea, select {
+    background: var(--bg3); border: 1px solid var(--border2); border-radius: 6px; color: var(--text);
+    font-family: var(--sans); font-size: 13px; padding: 8px 10px; width: 100%; outline: none; transition: border-color 0.15s;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  input::placeholder, textarea::placeholder { color: var(--muted); }
+  textarea { resize: vertical; }
+  label { display: block; font-size: 10px; font-family: var(--mono); color: var(--muted); letter-spacing: 0.8px; margin-bottom: 5px; text-transform: uppercase; }
+  .field { margin-bottom: 14px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+
+  /* TODAY PANEL */
+  .today-slot-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: grid; grid-template-columns: 70px 1fr auto; align-items: center; gap: 14px; transition: border-color 0.15s; margin-bottom: 10px; }
+  .today-slot-card:hover { border-color: var(--border2); }
+  .today-slot-card.done { opacity: 0.45; }
+  .slot-time { font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--text); line-height: 1; }
+  .slot-time .ampm { font-size: 10px; color: var(--muted); font-weight: 400; }
+  .posted-badge { display: inline-block; background: rgba(34,197,94,0.12); color: var(--green); font-family: var(--mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.5px; }
+  .pending-badge { display: inline-block; background: rgba(245,158,11,0.12); color: var(--amber); font-family: var(--mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.5px; }
+
+  /* WEEK GRID */
+  .week-grid { display: grid; grid-template-columns: 72px repeat(7,1fr); gap: 1px; background: var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 24px; }
+  .week-cell { background: var(--bg2); padding: 6px; min-height: 40px; }
+  .week-header { background: var(--bg3); padding: 8px 6px; text-align: center; }
+  .week-header .day-name { font-family: var(--mono); font-size: 9px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+  .week-header .day-num { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--text); }
+  .week-header.today { background: rgba(124,92,252,0.1); }
+  .week-header.today .day-num { color: var(--accent2); }
+  .time-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-align: right; padding: 9px 6px; background: var(--bg3); }
+  .slot-empty { border: 1px dashed rgba(255,255,255,0.06); border-radius: 4px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: transparent; font-size: 18px; transition: all 0.15s; margin-bottom: 3px; }
+  .slot-empty:hover { border-color: var(--accent); color: var(--accent); }
+  .post-slot { border-radius: 4px; padding: 5px 7px; margin-bottom: 3px; cursor: pointer; font-size: 11px; line-height: 1.3; transition: opacity 0.15s; min-height: 50px; }
+  .post-slot:hover { opacity: 0.8; }
+  .post-slot.tt { background: rgba(255,45,85,0.12); border-left: 2px solid var(--tiktok); }
+  .post-slot.ig { background: rgba(225,48,108,0.12); border-left: 2px solid var(--ig); }
+  .post-slot.yt { background: rgba(255,96,96,0.12); border-left: 2px solid var(--yt); }
+  .slot-plat { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+  .post-slot.tt .slot-plat { color: var(--tiktok); }
+  .post-slot.ig .slot-plat { color: var(--ig); }
+  .post-slot.yt .slot-plat { color: var(--yt); }
+  .slot-clip-name { color: var(--text); font-size: 10px; font-weight: 500; }
+
+  /* CLIP LIST */
+  .clip-row { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; transition: border-color 0.15s; margin-bottom: 8px; }
+  .clip-row:hover { border-color: var(--border2); }
+  .clip-name { font-weight: 500; font-size: 13px; }
+  .clip-meta { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+  .pdots { display: flex; gap: 5px; align-items: center; }
+  .pdot { width: 8px; height: 8px; border-radius: 50%; opacity: 0.2; }
+  .pdot.on { opacity: 1; }
+  .pdot.tt { background: var(--tiktok); }
+  .pdot.ig { background: var(--ig); }
+  .pdot.yt { background: var(--yt); }
+
+  /* CAPTIONS */
+  .cap-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .cap-tab { padding: 10px 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: var(--muted); border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+  .cap-tab:hover { color: var(--text); }
+  .cap-tab.tt.active { color: var(--tiktok); border-color: var(--tiktok); }
+  .cap-tab.ig.active { color: var(--ig); border-color: var(--ig); }
+  .cap-tab.yt.active { color: var(--yt); border-color: var(--yt); }
+  .caption-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; min-height: 90px; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { background: rgba(124,92,252,0.1); color: var(--accent2); border: 1px solid rgba(124,92,252,0.2); border-radius: 4px; padding: 3px 8px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s; }
+  .tag:hover { background: rgba(124,92,252,0.22); }
+  .copy-btn { font-family: var(--mono); font-size: 10px; padding: 4px 8px; background: var(--bg4); border: 1px solid var(--border2); color: var(--muted); border-radius: 4px; cursor: pointer; transition: all 0.15s; letter-spacing: 0.5px; }
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+  .tip-box { background: rgba(124,92,252,0.07); border: 1px solid rgba(124,92,252,0.15); border-radius: 6px; padding: 10px 12px; margin-top: 10px; font-size: 12px; color: var(--accent2); }
+  .tip-label { font-family: var(--mono); font-size: 9px; letter-spacing: 1px; display: block; margin-bottom: 3px; color: var(--accent); }
+
+  /* CHECKLIST */
+  .chk-section { margin-bottom: 18px; }
+  .chk-plat-header { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; padding: 8px 0; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  .plat-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .chk-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.03); cursor: pointer; }
+  .chk-item:hover .chk-label { color: var(--text); }
+  .chk-box { width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--border2); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 10px; transition: all 0.15s; }
+  .chk-box.checked { background: var(--accent); border-color: var(--accent); color: white; }
+  .chk-label { font-size: 13px; color: var(--muted); transition: all 0.15s; }
+  .chk-label.done { text-decoration: line-through; opacity: 0.4; }
+
+  /* SETTINGS */
+  .settings-row { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .settings-row-title { font-family: var(--mono); font-size: 11px; letter-spacing: 1px; color: var(--text); margin-bottom: 12px; }
+  .time-slot-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .time-slot-row:last-child { border-bottom: none; }
+  .time-slot-label { font-size: 13px; color: var(--text); flex: 1; }
+  .time-slot-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  /* DAYS REMAINING BANNER */
+  .days-banner { border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .days-banner.healthy { background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.15); }
+  .days-banner.low { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.2); }
+  .days-banner.critical { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); }
+  .days-num { font-family: var(--mono); font-size: 36px; font-weight: 700; line-height: 1; }
+  .days-banner.healthy .days-num { color: var(--green); }
+  .days-banner.low .days-num { color: var(--amber); }
+  .days-banner.critical .days-num { color: var(--red); }
+  .days-label { font-size: 13px; color: var(--text); font-weight: 500; }
+  .days-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .days-breakdown { display: flex; gap: 20px; }
+  .days-plat { text-align: center; }
+  .days-plat-num { font-family: var(--mono); font-size: 18px; font-weight: 700; }
+  .days-plat-lbl { font-size: 10px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+
+  /* MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 24px; width: 500px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+  .modal-title { font-family: var(--mono); font-size: 13px; letter-spacing: 1px; margin-bottom: 20px; color: var(--text); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .alert-info { background: rgba(124,92,252,0.08); border: 1px solid rgba(124,92,252,0.18); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--accent2); margin-bottom: 16px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="logo">CC<span>/</span>CTR</div>
+    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">Content Command Center</div>
+    <div class="topbar-right">
+      <div class="status-pill"><div class="status-dot"></div>ACTIVE</div>
+      <div class="api-pill disconnected" id="api-pill" onclick="nav('settings')" title="Click to set API key">
+        <div class="api-dot"></div><span id="api-pill-label">AI: NO KEY</span>
+      </div>
+      <div class="clock" id="clock"></div>
+    </div>
+  </header>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <span class="sidebar-label">Menu</span>
+      <button class="nav-item active" onclick="nav('today')" id="nav-today"><span class="nav-icon">◉</span>Today</button>
+      <button class="nav-item" onclick="nav('schedule')" id="nav-schedule"><span class="nav-icon">▦</span>Schedule</button>
+      <button class="nav-item" onclick="nav('clips')" id="nav-clips"><span class="nav-icon">◈</span>Clips <span class="nav-badge" id="clip-badge">0</span></button>
+      <button class="nav-item" onclick="nav('captions')" id="nav-captions"><span class="nav-icon">✦</span>Captions</button>
+      <button class="nav-item" onclick="nav('checklist')" id="nav-checklist"><span class="nav-icon">◻</span>Checklist</button>
+      <button class="nav-item" onclick="nav('settings')" id="nav-settings"><span class="nav-icon">⚙</span>Settings</button>
+    </div>
+    <div class="sidebar-bottom">
+      <span class="sidebar-label">This week</span>
+      <div class="stat-mini"><span class="stat-mini-label">Scheduled</span><span class="stat-mini-val" id="sb-sched">0</span></div>
+      <div class="stat-mini"><span class="stat-mini-label">Posted</span><span class="stat-mini-val" id="sb-posted">0</span></div>
+      <div class="stat-mini"><span class="stat-mini-label">Clips ready</span><span class="stat-mini-val" id="sb-clips">0</span></div>
+      <div class="progress-track" style="margin-top:10px;"><div class="progress-fill" id="sb-bar" style="width:0%"></div></div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TODAY -->
+    <div class="panel active" id="panel-today">
+      <div class="panel-header">
+        <div class="panel-title">TODAY <span id="today-date"></span></div>
+        <div class="flex">
+          <button class="btn btn-ghost btn-sm" onclick="nav('schedule')">Full schedule</button>
+          <button class="btn btn-primary btn-sm" onclick="openPostModal()">+ Schedule post</button>
+        </div>
+      </div>
+
+      <div id="days-banner"></div>
+
+      <div class="stats-row">
+        <div class="stat-card sc-purple"><div class="stat-num" id="s-today">0</div><div class="stat-label">posts today</div></div>
+        <div class="stat-card sc-green"><div class="stat-num" id="s-posted">0</div><div class="stat-label">posted ✓</div></div>
+        <div class="stat-card sc-amber"><div class="stat-num" id="s-pending">0</div><div class="stat-label">pending</div></div>
+        <div class="stat-card sc-red"><div class="stat-num" id="s-clips">0</div><div class="stat-label">clips in library</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Today's posting slots</div>
+        <div id="today-slots"></div>
+      </div>
+    </div>
+
+    <!-- SCHEDULE -->
+    <div class="panel" id="panel-schedule">
+      <div class="panel-header">
+        <div class="panel-title">WEEKLY <span>SCHEDULE</span></div>
+        <div class="flex">
+          <button class="btn btn-ghost btn-sm" onclick="prevWeek()">← Prev</button>
+          <span id="week-label" style="font-family:var(--mono);font-size:11px;color:var(--muted);min-width:160px;text-align:center;"></span>
+          <button class="btn btn-ghost btn-sm" onclick="nextWeek()">Next →</button>
+          <button class="btn btn-primary btn-sm" onclick="openPostModal()">+ Post</button>
+        </div>
+      </div>
+      <div class="week-grid" id="week-grid"></div>
+      <div class="alert-info">💡 Click any empty slot to schedule a post there. Click a scheduled post to mark it posted.</div>
+    </div>
+
+    <!-- CLIPS -->
+    <div class="panel" id="panel-clips">
+      <div class="panel-header">
+        <div class="panel-title">CLIP <span>LIBRARY</span></div>
+        <div class="flex">
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('scan-import-input').click()">⬆ Import from folder scan</button>
+          <input type="file" id="scan-import-input" accept=".json" style="display:none;" onchange="importFromScan(event)">
+          <button class="btn btn-primary btn-sm" onclick="openClipModal()">+ Add manually</button>
+        </div>
+      </div>
+      <div id="scan-banner" style="display:none;margin-bottom:16px;"></div>
+      <div id="clips-empty" style="text-align:center;padding:48px 0;color:var(--muted);">
+        <div style="font-size:32px;margin-bottom:12px;">◈</div>
+        <div style="font-size:14px;margin-bottom:8px;">No clips yet</div>
+        <div style="font-size:12px;line-height:1.8;">Run <strong style="color:var(--text);">scan_clips.py</strong> on your PC after editing,<br>then click <strong style="color:var(--text);">"Import from folder scan"</strong> above.<br><span style="color:var(--muted);">Or add clips manually one at a time.</span></div>
+      </div>
+      <div id="clip-list"></div>
+    </div>
+
+    <!-- CAPTIONS -->
+    <div class="panel" id="panel-captions">
+      <div class="panel-header">
+        <div class="panel-title">CAPTION <span>GENERATOR</span></div>
+      </div>
+
+      <div class="alert-info">
+        <strong>How this works:</strong> Select a clip, choose the tone, then hit Generate. Captions are built from the description you wrote when you added the clip — no video upload needed. The more detail you put in the description, the better the captions.
+      </div>
+
+      <div class="grid2" style="margin-bottom:14px;">
+        <div class="field">
+          <label>Select clip</label>
+          <select id="cap-clip" onchange="onCapClipChange()">
+            <option value="">— choose a clip —</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tone / vibe</label>
+          <select id="cap-tone">
+            <option value="hype">🔥 Hype & energetic</option>
+            <option value="chill">😎 Chill & relaxed</option>
+            <option value="funny">😂 Funny & relatable</option>
+            <option value="clutch">🎯 Clutch / competitive</option>
+            <option value="educational">💡 Tips & educational</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Clip description <span style="color:var(--accent2);font-size:9px;">(auto-filled from library — edit if needed)</span></label>
+        <textarea id="cap-desc" rows="3" placeholder="Describe what happens in the clip — the more detail, the better the captions..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Game</label>
+        <input type="text" id="cap-game" placeholder="e.g. Warzone, Fortnite, Apex...">
+      </div>
+
+      <button class="btn btn-primary" onclick="generateCaptions()" style="margin-bottom:24px;">✦ Generate captions for all platforms</button>
+
+      <div class="cap-tabs">
+        <button class="cap-tab tt active" onclick="switchCapTab(this,'tt')">TikTok</button>
+        <button class="cap-tab ig" onclick="switchCapTab(this,'ig')">Instagram</button>
+        <button class="cap-tab yt" onclick="switchCapTab(this,'yt')">YouTube</button>
+      </div>
+
+      <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
+      <div id="cap-ig" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
+      <div id="cap-yt" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="panel" id="panel-checklist">
+      <div class="panel-header">
+        <div class="panel-title">UPLOAD <span>CHECKLIST</span></div>
+        <span id="chk-label" style="font-family:var(--mono);font-size:11px;color:var(--muted);">0 / 0 done</span>
+      </div>
+      <div class="progress-track" style="margin-bottom:20px;"><div class="progress-fill" id="chk-bar" style="width:0%"></div></div>
+      <div class="field">
+        <label>Filter by clip</label>
+        <select id="chk-clip" onchange="renderChecklist()"><option value="">— all clips —</option></select>
+      </div>
+      <div id="checklist-body"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="panel" id="panel-settings">
+      <div class="panel-header">
+        <div class="panel-title">SETTINGS</div>
+      </div>
+
+      <div class="settings-row">
+        <div class="settings-row-title">ANTHROPIC API KEY — AI CAPTION GENERATION</div>
+        <div class="alert-info" style="margin-bottom:14px;">
+          Your key is stored only in your browser (localStorage) and never sent anywhere except directly to Anthropic's API when you generate captions.<br><br>
+          <strong>Get a free key:</strong> Go to <strong>console.anthropic.com</strong> → API Keys → Create Key. You get $5 free credit — enough for thousands of caption generations.
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-end;">
+          <div class="field" style="flex:1;margin:0;">
+            <label>API Key (starts with sk-ant-...)</label>
+            <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off">
+          </div>
+          <button class="btn btn-primary" onclick="saveApiKey()" style="flex-shrink:0;">Save key</button>
+          <button class="btn btn-danger btn-sm" onclick="clearApiKey()" style="flex-shrink:0;">Clear</button>
+        </div>
+        <div id="api-key-status" style="margin-top:10px;font-size:12px;font-family:var(--mono);"></div>
+      </div>
+
+      <div class="settings-row">
+        <div class="settings-row-title">POSTING TIME SLOTS</div>
+        <div class="alert-info" style="margin-bottom:14px;">These are the three daily posting slots shown throughout the tool. Edit them to match your schedule and timezone.</div>
+        <div id="slot-editor"></div>
+        <button class="btn btn-primary btn-sm" onclick="saveSlots()" style="margin-top:12px;">Save times</button>
+      </div>
+
+      <div class="settings-row" style="margin-top:12px;">
+        <div class="settings-row-title">DATA</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="exportData()">Export data (JSON)</button>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('import-file').click()">Import data (JSON)</button>
+          <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
+          <button class="btn btn-danger btn-sm" onclick="clearAll()">Clear all data</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ADD CLIP MODAL -->
+<div class="modal-overlay" id="modal-clip">
+  <div class="modal">
+    <div class="modal-title">ADD CLIP TO LIBRARY</div>
+    <div class="alert-info" style="margin-bottom:16px;">
+      Watch your clip in DaVinci Resolve, then fill this in. The description is what powers caption generation — be specific about what happens.
+    </div>
+    <div class="field"><label>Clip title / name</label><input type="text" id="nc-name" placeholder="e.g. Insane 1v3 clutch — Nov 12"></div>
+    <div class="field">
+      <label>What happens in this clip? <span style="color:var(--accent2);font-size:9px;">(the more detail, the better)</span></label>
+      <textarea id="nc-desc" rows="3" placeholder="e.g. Won a 1v3 clutch in final circle on Warzone. Two sniper kills and finished the squad with a pistol. Teammates were dead, full HP enemies."></textarea>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Game</label><input type="text" id="nc-game" placeholder="e.g. Warzone, Fortnite..."></div>
+      <div class="field"><label>Duration</label><input type="text" id="nc-dur" placeholder="e.g. 0:45"></div>
+    </div>
+    <div class="field">
+      <label>Post to</label>
+      <div class="flex" style="gap:16px;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--tiktok);">
+          <input type="checkbox" id="nc-tt" checked style="width:auto;"> TikTok
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--ig);">
+          <input type="checkbox" id="nc-ig" checked style="width:auto;"> Instagram
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--yt);">
+          <input type="checkbox" id="nc-yt" style="width:auto;"> YouTube
+        </label>
+      </div>
+    </div>
+    <div class="flex flex-end" style="gap:10px;margin-top:6px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-clip')">Cancel</button>
+      <button class="btn btn-primary" onclick="addClip()">Add clip</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE POST MODAL -->
+<div class="modal-overlay" id="modal-post">
+  <div class="modal">
+    <div class="modal-title">SCHEDULE POST</div>
+    <div class="field"><label>Clip</label>
+      <select id="mp-clip"><option value="">— select a clip —</option></select>
+    </div>
+    <div class="field">
+      <label>Platforms <span style="color:var(--accent2);font-size:9px;">(select all that apply)</span></label>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;padding:8px 0;">
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--tiktok);">
+          <input type="checkbox" id="mp-tt" checked style="width:auto;accent-color:var(--tiktok);"> TikTok
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--ig);">
+          <input type="checkbox" id="mp-ig" checked style="width:auto;accent-color:var(--ig);"> Instagram
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--yt);">
+          <input type="checkbox" id="mp-yt" style="width:auto;accent-color:var(--yt);"> YouTube
+        </label>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Date</label><input type="date" id="mp-date"></div>
+      <div class="field"><label>Time slot</label>
+        <select id="mp-time"></select>
+      </div>
+    </div>
+    <div class="flex flex-end" style="gap:10px;margin-top:6px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-post')">Cancel</button>
+      <button class="btn btn-primary" onclick="schedulePost()">Schedule</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ────────────────────────────────────────────────────────────────
+const DEFAULT_SLOTS = [
+  { time: '09:00', label: 'Morning', reach: 'HIGH' },
+  { time: '13:00', label: 'Lunch',   reach: 'MEDIUM' },
+  { time: '19:00', label: 'Evening', reach: 'PEAK' }
+];
+
+let state = {
+  clips: [],
+  posts: [],
+  checklist: {},
+  slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)),
+  weekOffset: 0
+};
+
+const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
+const PLAT_COLOR = { tt: '#ff2d55', ig: '#e1306c', yt: '#ff6060' };
+
+const CHECKLIST_ITEMS = {
+  tt: [
+    'Clip is vertical 9:16 format',
+    'Duration is 15–60 seconds',
+    'Has strong hook in first 2 seconds',
+    'Captions / subtitles added in app',
+    'Trending sound or original audio selected',
+    'Caption copied in from Caption Generator',
+    'Hashtags added (5–8 tags)',
+    'Cover thumbnail frame selected',
+    'Posted at scheduled time slot'
+  ],
+  ig: [
+    'Clip is 1080×1920 vertical',
+    'Duration under 90 seconds',
+    'Caption under 2,200 characters',
+    'Hashtags added (3–5 quality tags)',
+    'Share to Feed + Reels both enabled',
+    'Tagged any relevant accounts',
+    'Posted at scheduled time slot',
+    'Replied to early comments within 1hr'
+  ],
+  yt: [
+    'Title under 60 characters with keyword',
+    'Description written with timestamps',
+    'Custom thumbnail created',
+    'Added to gaming playlist',
+    'Scheduled publish time set in Studio',
+    'End screen elements added',
+    'Pinned a comment after going live'
+  ]
+};
+
+// Caption templates by platform and tone
+const CAPTION_TEMPLATES = {
+  tt: {
+    hype: (d,g) => `bro this ${g} clip broke me 💀🔥\n\n${d.hook}\n\n${d.result} NO WAY THAT JUST HAPPENED`,
+    chill: (d,g) => `just another day in ${g} 😮‍💨\n\n${d.hook}\n\n${d.result} follow for more streams`,
+    funny: (d,g) => `i cannot believe this actually worked 😭\n\n${d.hook}\n\n${d.result} pov: your enemies watching the replay`,
+    clutch: (d,g) => `CLUTCH OR KICK 🎯\n\n${d.hook}\n\n${d.result} this is why I grind ${g} daily`,
+    educational: (d,g) => `${g} tip that changed everything ⬇️\n\n${d.hook}\n\n${d.result} save this for your next game`
+  },
+  ig: {
+    hype: (d,g) => `When everything lines up perfectly 🔥\n\n${d.hook} — ${d.result}\n\nThis is what ${g} is all about. Follow for daily stream highlights and clips from Twitch, Kick & TikTok Live 🎮`,
+    chill: (d,g) => `Just vibing in ${g} 😮‍💨\n\n${d.hook} — ${d.result}\n\nCatch me live on Twitch, Kick & TikTok daily. Follow for more clips like this 👾`,
+    funny: (d,g) => `I don't even know how this happened 😭\n\n${d.hook} — ${d.result}\n\nIf you play ${g} you KNOW this feeling. Follow for the best moments from the stream 🎮`,
+    clutch: (d,g) => `The clutch that had the whole chat going crazy 🎯\n\n${d.hook} — ${d.result}\n\nStreaming live on Twitch, Kick & TikTok — come watch the next one happen live 🔴`,
+    educational: (d,g) => `${g} tip I wish I knew earlier 💡\n\n${d.hook} — ${d.result}\n\nFollow for daily gameplay tips and stream highlights 🎮`
+  },
+  yt: {
+    hype: (d,g) => `${g.toUpperCase()} - ${d.shortDesc} (INSANE CLIP)`,
+    chill: (d,g) => `${g} - ${d.shortDesc} | Stream Highlights`,
+    funny: (d,g) => `${g} - ${d.shortDesc} (You Won't Believe This)`,
+    clutch: (d,g) => `${g.toUpperCase()} CLUTCH - ${d.shortDesc}`,
+    educational: (d,g) => `${g} Tips - ${d.shortDesc} | How To Win`
+  }
+};
+
+const HASHTAGS = {
+  tt: {
+    hype:        ['#gaming', '#fyp', '#clutch', '#highlight', '#streamer', '#viral', '#foryou'],
+    chill:       ['#gaming', '#fyp', '#streamer', '#gaminglife', '#chill', '#foryoupage', '#gamer'],
+    funny:       ['#gaming', '#fyp', '#funny', '#gamingfails', '#streamer', '#comedy', '#foryou'],
+    clutch:      ['#gaming', '#clutch', '#fyp', '#competitive', '#streamer', '#highlights', '#foryou'],
+    educational: ['#gaming', '#gamertips', '#fyp', '#howto', '#streamer', '#levelup', '#tutorial']
+  },
+  ig: {
+    hype:        ['#gaming', '#gamer', '#clutch', '#streamer', '#highlights', '#twitch'],
+    chill:       ['#gaming', '#gamer', '#streamer', '#gaminglife', '#twitch', '#kick'],
+    funny:       ['#gaming', '#gamer', '#funny', '#streamer', '#twitch', '#gamingmemes'],
+    clutch:      ['#gaming', '#clutch', '#gamer', '#competitive', '#streamer', '#esports'],
+    educational: ['#gaming', '#gamertips', '#gamer', '#howto', '#streamer', '#levelup']
+  },
+  yt: {
+    hype:        ['#gaming', '#shorts', '#clutch', '#highlights', '#fyp', '#gamingshorts'],
+    chill:       ['#gaming', '#shorts', '#streamer', '#gamingshorts', '#fyp', '#highlights'],
+    funny:       ['#gaming', '#shorts', '#funny', '#gamingshorts', '#fyp', '#highlights'],
+    clutch:      ['#gaming', '#shorts', '#clutch', '#competitive', '#fyp', '#gamingshorts'],
+    educational: ['#gaming', '#shorts', '#gamertips', '#howto', '#fyp', '#gamingshorts']
+  }
+};
+
+const PLATFORM_TIPS = {
+  tt: 'Post at your peak time slot. Reply to comments in the first 30 min — TikTok rewards engagement velocity.',
+  ig: 'Share to both Feed AND Reels. Stories shoutout after posting drives the first wave of views.',
+  yt: 'Upload via YouTube Studio desktop and set a scheduled publish time — don\'t upload all clips at once.'
+};
+
+// ── CLOCK ────────────────────────────────────────────────────────────────
+function updateClock() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+const today = new Date();
+document.getElementById('today-date').textContent =
+  today.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }).toUpperCase();
+
+// ── NAV ──────────────────────────────────────────────────────────────────
+function nav(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  if (id === 'today')     { renderToday(); renderDaysBanner(); }
+  if (id === 'schedule')  renderWeek();
+  if (id === 'checklist') renderChecklist();
+  if (id === 'settings')  renderSlotEditor();
+}
+
+// ── MODAL ────────────────────────────────────────────────────────────────
+function openClipModal() {
+  document.getElementById('nc-name').value = '';
+  document.getElementById('nc-desc').value = '';
+  document.getElementById('nc-game').value = '';
+  document.getElementById('nc-dur').value = '';
+  document.getElementById('nc-tt').checked = true;
+  document.getElementById('nc-ig').checked = true;
+  document.getElementById('nc-yt').checked = false;
+  document.getElementById('modal-clip').classList.add('open');
+}
+
+function openPostModal(date, time) {
+  refreshPostClipSelect();
+  const d = date || new Date().toISOString().split('T')[0];
+  document.getElementById('mp-date').value = d;
+  document.getElementById('mp-tt').checked = true;
+  document.getElementById('mp-ig').checked = true;
+  document.getElementById('mp-yt').checked = false;
+  refreshPostTimeSelect(time);
+  document.getElementById('modal-post').classList.add('open');
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function refreshPostTimeSelect(preselect) {
+  const sel = document.getElementById('mp-time');
+  sel.innerHTML = state.slots.map(s =>
+    `<option value="${s.time}" ${preselect===s.time?'selected':''}>${fmtTime(s.time)} — ${s.label} (${s.reach} reach)</option>`
+  ).join('') + `<option value="custom">Custom time...</option>`;
+}
+
+// ── CLIPS ────────────────────────────────────────────────────────────────
+function addClip() {
+  const name = document.getElementById('nc-name').value.trim();
+  if (!name) { alert('Please enter a clip name.'); return; }
+  const platforms = [];
+  if (document.getElementById('nc-tt').checked) platforms.push('tt');
+  if (document.getElementById('nc-ig').checked) platforms.push('ig');
+  if (document.getElementById('nc-yt').checked) platforms.push('yt');
+  if (!platforms.length) { alert('Select at least one platform.'); return; }
+
+  const clip = {
+    id: Date.now(),
+    name,
+    desc: document.getElementById('nc-desc').value.trim(),
+    game: document.getElementById('nc-game').value.trim() || 'Gaming',
+    duration: document.getElementById('nc-dur').value.trim(),
+    platforms,
+    addedAt: new Date().toISOString()
+  };
+
+  state.clips.push(clip);
+  state.checklist[clip.id] = {};
+  ['tt','ig','yt'].forEach(p => {
+    state.checklist[clip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
+  });
+
+  closeModal('modal-clip');
+  save();
+  renderClipList();
+  refreshAllSelects();
+  updateSidebar();
+  renderDaysBanner();
+}
+
+function deleteClip(id) {
+  if (!confirm('Delete this clip and all its scheduled posts?')) return;
+  state.clips = state.clips.filter(c => c.id !== id);
+  state.posts = state.posts.filter(p => p.clipId !== id);
+  delete state.checklist[id];
+  save();
+  renderClipList();
+  refreshAllSelects();
+  updateSidebar();
+  renderDaysBanner();
+  renderToday();
+}
+
+function renderClipList() {
+  const list = document.getElementById('clip-list');
+  const empty = document.getElementById('clips-empty');
+  document.getElementById('clip-badge').textContent = state.clips.length;
+
+  if (!state.clips.length) { empty.style.display = 'block'; list.innerHTML = ''; return; }
+  empty.style.display = 'none';
+
+  list.innerHTML = state.clips.map(clip => {
+    const postedCount = state.posts.filter(p => p.clipId === clip.id && p.posted).length;
+    const totalSched  = state.posts.filter(p => p.clipId === clip.id).length;
+    const game = clip.game || 'Gaming';
+    const dur  = clip.duration ? ' · ' + clip.duration : '';
+    const noDesc = !clip.desc;
+    const descWarning = noDesc && clip.fromScan
+      ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+           <input type="text" placeholder="Add a quick description for captions..." 
+             style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.3);"
+             onchange="updateClipDesc(${clip.id}, this.value)" value="${clip.desc||''}">
+         </div>`
+      : clip.desc ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${clip.desc.substring(0,80)}${clip.desc.length>80?'…':''}</div>` : '';
+    return `
+    <div class="clip-row" id="cliprow-${clip.id}">
+      <div style="min-width:0;">
+        <div class="clip-name">${clip.name}</div>
+        <div class="clip-meta">${game}${dur} · ${new Date(clip.addedAt).toLocaleDateString()} · ${postedCount}/${totalSched} posted${noDesc && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
+        ${descWarning}
+      </div>
+      <div class="pdots">
+        <div class="pdot tt ${clip.platforms.includes('tt')?'on':''}"></div>
+        <div class="pdot ig ${clip.platforms.includes('ig')?'on':''}"></div>
+        <div class="pdot yt ${clip.platforms.includes('yt')?'on':''}"></div>
+      </div>
+      <div class="flex">
+        <button class="btn btn-ghost btn-sm" onclick="scheduleFromClip(${clip.id})">Schedule</button>
+        <button class="btn btn-ghost btn-sm" onclick="captionFromClip(${clip.id})">Captions</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteClip(${clip.id})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateClipDesc(id, desc) {
+  const clip = state.clips.find(c => c.id === id);
+  if (clip) { clip.desc = desc.trim(); save(); renderClipList(); }
+}
+
+function scheduleFromClip(id) {
+  refreshPostClipSelect();
+  document.getElementById('mp-clip').value = id;
+  document.getElementById('mp-date').value = new Date().toISOString().split('T')[0];
+  refreshPostTimeSelect();
+  document.getElementById('modal-post').classList.add('open');
+}
+
+function importFromScan(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.clips || !Array.isArray(data.clips)) throw new Error('Invalid format');
+
+      const incoming = data.clips;
+      let added = 0, skipped = 0;
+
+      incoming.forEach(clip => {
+        // Skip if a clip with same filename already exists
+        const alreadyExists = state.clips.some(c => c.filename && c.filename === clip.filename);
+        if (alreadyExists) { skipped++; return; }
+
+        // Ensure required fields
+        const newClip = {
+          id: clip.id || Date.now() + Math.random(),
+          name: clip.name || clip.filename || 'Untitled clip',
+          filename: clip.filename || '',
+          duration: clip.duration || '',
+          size_mb: clip.size_mb || '',
+          desc: clip.desc || '',
+          game: clip.game || '',
+          platforms: clip.platforms || ['tt', 'ig'],
+          addedAt: clip.addedAt || new Date().toISOString(),
+          fromScan: true
+        };
+
+        state.clips.push(newClip);
+        state.checklist[newClip.id] = {};
+        ['tt','ig','yt'].forEach(p => {
+          state.checklist[newClip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
+        });
+        added++;
+      });
+
+      save();
+      renderClipList();
+      refreshAllSelects();
+      updateSidebar();
+      renderDaysBanner();
+
+      // Show result banner
+      const banner = document.getElementById('scan-banner');
+      const scannedAt = data.scannedAt ? new Date(data.scannedAt).toLocaleString() : 'unknown time';
+      banner.style.display = 'block';
+      banner.className = 'alert-info';
+      banner.innerHTML = `
+        <strong style="color:var(--green);">✓ Import complete</strong> — 
+        ${added} clip${added!==1?'s':''} added${skipped ? `, ${skipped} skipped (already in library)` : ''}.
+        Scanned at ${scannedAt}.<br>
+        <span style="color:var(--muted);font-size:12px;">Now add a one-line description to each clip, then generate captions.</span>`;
+
+      // Reset the file input so the same file can be re-imported if needed
+      e.target.value = '';
+
+    } catch(err) {
+      alert('Could not read the scan file. Make sure you selected the clips_scan.json file generated by scan_clips.py.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+
+function captionFromClip(id) {
+  nav('captions');
+  setTimeout(() => {
+    document.getElementById('cap-clip').value = id;
+    onCapClipChange();
+  }, 30);
+}
+
+// ── SCHEDULE POST ────────────────────────────────────────────────────────
+function schedulePost() {
+  const clipId = parseInt(document.getElementById('mp-clip').value);
+  const date   = document.getElementById('mp-date').value;
+  let time     = document.getElementById('mp-time').value;
+
+  if (!clipId || !date) { alert('Please select a clip and date.'); return; }
+
+  const platforms = [];
+  if (document.getElementById('mp-tt').checked) platforms.push('tt');
+  if (document.getElementById('mp-ig').checked) platforms.push('ig');
+  if (document.getElementById('mp-yt').checked) platforms.push('yt');
+  if (!platforms.length) { alert('Please select at least one platform.'); return; }
+
+  if (time === 'custom') {
+    time = prompt('Enter time (HH:MM, 24hr format):', '18:00') || '18:00';
+  }
+
+  const clip = state.clips.find(c => c.id === clipId);
+  platforms.forEach(plat => {
+    state.posts.push({ id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false });
+  });
+
+  closeModal('modal-post');
+  save();
+  renderToday();
+  updateSidebar();
+  renderDaysBanner();
+  if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
+}
+
+function markPosted(postId) {
+  const post = state.posts.find(p => p.id === postId);
+  if (post) { post.posted = !post.posted; save(); renderToday(); updateSidebar(); }
+}
+
+function removePost(postId) {
+  state.posts = state.posts.filter(p => p.id !== postId);
+  save();
+  renderToday();
+  updateSidebar();
+  renderDaysBanner();
+  if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
+}
+
+// ── TODAY ────────────────────────────────────────────────────────────────
+function renderToday() {
+  const todayStr = new Date().toISOString().split('T')[0];
+  const todayPosts = state.posts.filter(p => p.date === todayStr).sort((a,b) => a.time.localeCompare(b.time));
+  const posted  = todayPosts.filter(p => p.posted).length;
+  const pending = todayPosts.filter(p => !p.posted).length;
+
+  document.getElementById('s-today').textContent   = todayPosts.length;
+  document.getElementById('s-posted').textContent  = posted;
+  document.getElementById('s-pending').textContent = pending;
+  document.getElementById('s-clips').textContent   = state.clips.length;
+
+  const container = document.getElementById('today-slots');
+
+  // Show all 3 slots always
+  const slotRows = state.slots.map(slot => {
+    const slotPosts = todayPosts.filter(p => p.time === slot.time);
+    const timeDisp = fmtTime(slot.time);
+    const reach = slot.reach === 'PEAK' ? 'var(--accent2)' : slot.reach === 'HIGH' ? 'var(--green)' : 'var(--amber)';
+
+    if (!slotPosts.length) {
+      return `<div class="today-slot-card" style="opacity:0.5;cursor:pointer;" onclick="openPostModal('${todayStr}','${slot.time}')">
+        <div><div class="slot-time">${timeDisp.split(' ')[0]}<span class="ampm"> ${timeDisp.split(' ')[1]||''}</span></div></div>
+        <div>
+          <div style="font-size:10px;font-family:var(--mono);color:${reach};letter-spacing:1px;margin-bottom:4px;">${slot.reach} REACH · ${slot.label.toUpperCase()}</div>
+          <div style="font-size:13px;color:var(--muted);">No post scheduled — click to add one</div>
+        </div>
+        <div></div>
+      </div>`;
+    }
+
+    return slotPosts.map(p => {
+      const color = PLAT_COLOR[p.platform];
+      const h = p.time.split(':');
+      const hr = parseInt(h[0]); const mn = h[1];
+      const ap = hr>=12?'PM':'AM'; const h12 = hr%12||12;
+      return `
+      <div class="today-slot-card ${p.posted?'done':''}" style="border-left:3px solid ${color};">
+        <div>
+          <div class="slot-time">${h12}:${mn}<span class="ampm"> ${ap}</span></div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:3px;">${PLAT_LABEL[p.platform].toUpperCase()}</div>
+          <div style="font-size:13px;font-weight:500;">${p.clipName}</div>
+          <div style="margin-top:5px;">${p.posted ? '<span class="posted-badge">✓ POSTED</span>' : '<span class="pending-badge">PENDING</span>'}</div>
+        </div>
+        <div class="flex" style="flex-direction:column;align-items:flex-end;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="markPosted(${p.id})">${p.posted?'Undo':'Mark posted'}</button>
+          <button class="btn btn-danger btn-sm" onclick="removePost(${p.id})">Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+  });
+
+  container.innerHTML = slotRows.join('');
+}
+
+// ── DAYS REMAINING BANNER ────────────────────────────────────────────────
+function renderDaysBanner() {
+  const banner = document.getElementById('days-banner');
+  if (!state.clips.length) { banner.innerHTML = ''; return; }
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const unscheduledClips = state.clips.filter(clip => {
+    // Clip is "available" if it has fewer posts scheduled than its platform count
+    const scheduledPlats = [...new Set(state.posts.filter(p => p.clipId === clip.id && p.date >= todayStr).map(p => p.platform))];
+    return clip.platforms.some(p => !scheduledPlats.includes(p));
+  });
+
+  // Count unscheduled platform slots per clip
+  let ttAvail = 0, igAvail = 0, ytAvail = 0;
+  state.clips.forEach(clip => {
+    const futurePosts = state.posts.filter(p => p.clipId === clip.id && p.date >= todayStr);
+    const schedPlats = [...new Set(futurePosts.map(p => p.platform))];
+    if (clip.platforms.includes('tt') && !schedPlats.includes('tt')) ttAvail++;
+    if (clip.platforms.includes('ig') && !schedPlats.includes('ig')) igAvail++;
+    if (clip.platforms.includes('yt') && !schedPlats.includes('yt')) ytAvail++;
+  });
+
+  // Days = how many more days we can post at 3x/day (TikTok is the limiting platform)
+  // TikTok posts 3x/day so each clip = 1/3 of a day
+  const ttDays = Math.floor(ttAvail / 3);
+  const igDays = igAvail; // 1x/day
+  const ytDays = ytAvail; // 1x/day
+  const limitingDays = Math.min(ttDays || 999, igDays || 999, ytDays || 999);
+  const displayDays = limitingDays === 999 ? 0 : limitingDays;
+
+  const cls = displayDays >= 7 ? 'healthy' : displayDays >= 3 ? 'low' : 'critical';
+  const msg = displayDays >= 7
+    ? "You're well stocked. Keep streaming and editing."
+    : displayDays >= 3
+    ? 'Running a bit low. Time to edit more clips soon.'
+    : 'Almost out of content! Edit more clips after your next stream.';
+
+  banner.innerHTML = `
+  <div class="days-banner ${cls}">
+    <div>
+      <div class="days-num">${displayDays}</div>
+      <div class="days-label">days of content remaining</div>
+      <div class="days-sub">${msg}</div>
+    </div>
+    <div class="days-breakdown">
+      <div class="days-plat">
+        <div class="days-plat-num" style="color:var(--tiktok);">${ttAvail}</div>
+        <div class="days-plat-lbl">TikTok clips</div>
+      </div>
+      <div class="days-plat">
+        <div class="days-plat-num" style="color:var(--ig);">${igAvail}</div>
+        <div class="days-plat-lbl">IG clips</div>
+      </div>
+      <div class="days-plat">
+        <div class="days-plat-num" style="color:var(--yt);">${ytAvail}</div>
+        <div class="days-plat-lbl">YT clips</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── WEEK GRID ────────────────────────────────────────────────────────────
+function getWeekDates(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() - d.getDay() + offset * 7);
+  return Array.from({length:7}, (_,i) => { const x = new Date(d); x.setDate(d.getDate()+i); return x; });
+}
+
+function prevWeek() { state.weekOffset--; renderWeek(); }
+function nextWeek() { state.weekOffset++; renderWeek(); }
+
+function renderWeek() {
+  const days = getWeekDates(state.weekOffset);
+  const todayStr = new Date().toISOString().split('T')[0];
+  const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+
+  document.getElementById('week-label').textContent =
+    days[0].toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' – ' +
+    days[6].toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
+  const grid = document.getElementById('week-grid');
+  let html = '';
+
+  // Header
+  html += '<div class="week-cell week-header" style="background:var(--bg4);"><span style="font-family:var(--mono);font-size:9px;color:var(--muted);">SLOT</span></div>';
+  days.forEach((d,i) => {
+    const dStr = d.toISOString().split('T')[0];
+    const isToday = dStr === todayStr;
+    html += `<div class="week-cell week-header ${isToday?'today':''}"><div class="day-name">${DAYS[i]}</div><div class="day-num">${d.getDate()}</div></div>`;
+  });
+
+  // Slot rows
+  state.slots.forEach(slot => {
+    html += `<div class="time-label">${fmtTime(slot.time)}</div>`;
+    days.forEach(d => {
+      const dStr = d.toISOString().split('T')[0];
+      const posts = state.posts.filter(p => p.date === dStr && p.time === slot.time);
+      html += '<div class="week-cell">';
+      if (posts.length) {
+        posts.forEach(p => {
+          const short = p.clipName.length > 14 ? p.clipName.substring(0,12)+'…' : p.clipName;
+          html += `<div class="post-slot ${p.platform}" onclick="markPosted(${p.id})" title="${p.clipName} — click to toggle posted">
+            <div class="slot-plat">${PLAT_LABEL[p.platform]}</div>
+            <div class="slot-clip-name">${short}</div>
+            <div style="margin-top:2px;">${p.posted?'<span class="posted-badge">✓</span>':'<span class="pending-badge">•</span>'}</div>
+          </div>`;
+        });
+      } else {
+        html += `<div class="slot-empty" onclick="openPostModal('${dStr}','${slot.time}')" title="Add post at ${fmtTime(slot.time)}">+</div>`;
+      }
+      html += '</div>';
+    });
+  });
+
+  grid.innerHTML = html;
+}
+
+// ── CAPTIONS ─────────────────────────────────────────────────────────────
+let currentCapTab = 'tt';
+
+function onCapClipChange() {
+  const clipId = parseInt(document.getElementById('cap-clip').value);
+  const clip = state.clips.find(c => c.id === clipId);
+  if (clip) {
+    document.getElementById('cap-desc').value = clip.desc || '';
+    document.getElementById('cap-game').value = clip.game || '';
+  }
+}
+
+function switchCapTab(el, tab) {
+  document.querySelectorAll('.cap-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.cap-pane').forEach(p => p.style.display = 'none');
+  document.getElementById('cap-' + tab).style.display = 'block';
+  currentCapTab = tab;
+}
+
+async function generateCaptions() {
+  const desc = document.getElementById('cap-desc').value.trim();
+  const game = document.getElementById('cap-game').value.trim() || 'the game';
+  const tone = document.getElementById('cap-tone').value;
+
+  if (!desc) {
+    alert('Please add a description of what happens in the clip first.');
+    return;
+  }
+
+  const apiKey = loadApiKey();
+
+  if (apiKey) {
+    // ── REAL AI GENERATION ──────────────────────────────────────
+    const PLATS = [
+      { key: 'tt', name: 'TikTok',           rules: 'Max 150 chars. Punchy hook first line. Gamer/streamer language. 1 CTA. Conversational, raw energy. Can use all caps for impact moments.' },
+      { key: 'ig', name: 'Instagram Reels',  rules: 'Max 220 chars. Storytelling hook. Line breaks encouraged. Emojis welcome. Mention live streaming on TikTok/Twitch/Kick.' },
+      { key: 'yt', name: 'YouTube Shorts',   rules: 'Title style, max 80 chars. Keyword-rich for SEO. No hashtags inline. Think "what would someone search for to find this."' }
+    ];
+
+    const toneMap = {
+      hype:        'hype, high energy, exclamation points, all-caps moments, feels unreal',
+      chill:       'chill and relaxed, casual and conversational, low-key cool',
+      funny:       'funny and relatable, self-aware, meme-aware, light comedy',
+      clutch:      'intense and competitive, clutch moment energy, dramatic stakes',
+      educational: 'educational and tip-focused, share value, teach the viewer something'
+    };
+
+    ['tt','ig','yt'].forEach(p => {
+      document.getElementById('cap-' + p).innerHTML =
+        '<div style="display:flex;align-items:center;gap:10px;padding:16px 0;color:var(--muted);font-family:var(--mono);font-size:12px;"><div style="width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Generating with AI...</div>';
+    });
+
+    for (const plat of PLATS) {
+      const prompt = `You write social media captions for a gaming streamer who streams on TikTok Live, Twitch, and Kick simultaneously.
+
+Clip: ${desc}
+Game: ${game}
+Tone: ${toneMap[tone]}
+Platform: ${plat.name}
+Rules: ${plat.rules}
+
+Return ONLY a raw JSON object (no markdown, no code fences, no explanation) with:
+- "caption": the caption string
+- "hashtags": array of 6 strings each starting with #, first one should be #${game.toLowerCase().replace(/\s+/g,'')}
+- "tip": one platform-specific posting tip under 70 chars`;
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+          body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+        });
+        if (!res.ok) throw new Error('API error ' + res.status);
+        const data = await res.json();
+        const raw = data.content.map(b => b.text || '').join('');
+        const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
+        renderCapResult(plat.key, parsed.caption, parsed.hashtags, parsed.tip);
+      } catch(e) {
+        if (e.message.includes('401')) {
+          document.getElementById('cap-' + plat.key).innerHTML =
+            '<div style="color:var(--red);font-size:13px;padding:12px 0;">Invalid API key. Check Settings and re-enter your key.</div>';
+        } else {
+          // Fallback to template on error
+          renderCapFromTemplate(plat.key, desc, game, tone);
+        }
+      }
+    }
+
+  } else {
+    // ── TEMPLATE FALLBACK (no key) ───────────────────────────────
+    ['tt','ig','yt'].forEach(p => renderCapFromTemplate(p, desc, game, tone));
+    const notice = document.getElementById('cap-no-key-notice');
+    if (notice) notice.style.display = 'block';
+  }
+}
+
+function renderCapFromTemplate(plat, desc, game, tone) {
+  const words = desc.split(' ');
+  const hookEnd = Math.min(12, Math.ceil(words.length * 0.4));
+  const d = {
+    hook: words.slice(0,hookEnd).join(' '),
+    result: words.slice(hookEnd).join(' ') || desc,
+    shortDesc: words.slice(0,6).join(' ')
+  };
+  const fn = CAPTION_TEMPLATES[plat][tone];
+  const caption = fn(d, game);
+  const gameTag = '#' + game.toLowerCase().replace(/\s+/g,'');
+  const allTags = [gameTag, ...HASHTAGS[plat][tone].filter(t=>t!==gameTag)];
+  renderCapResult(plat, caption, allTags, PLATFORM_TIPS[plat]);
+}
+
+function renderCapResult(plat, caption, hashtags, tip) {
+  const full = caption + '\n\n' + hashtags.join(' ');
+  const encoded = encodeURIComponent(full);
+  document.getElementById('cap-' + plat).innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <span style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;">${PLAT_LABEL[plat].toUpperCase()} CAPTION</span>
+      <button class="copy-btn" onclick="copyText('${encoded}',this)">COPY ALL</button>
+    </div>
+    <div class="caption-box">${caption}</div>
+    <div class="tag-row">
+      ${hashtags.map(h=>`<div class="tag" onclick="copyText('${encodeURIComponent(h)}',this)">${h}</div>`).join('')}
+    </div>
+    <div class="tip-box"><span class="tip-label">PLATFORM TIP</span>${tip}</div>`;
+}
+
+function copyText(encoded, btn) {
+  navigator.clipboard.writeText(decodeURIComponent(encoded)).catch(()=>{});
+  const orig = btn.textContent;
+  btn.textContent = '✓ COPIED';
+  setTimeout(()=>btn.textContent=orig, 1600);
+}
+
+// ── API KEY MANAGEMENT ───────────────────────────────────────────────────
+function loadApiKey() {
+  try { return localStorage.getItem('ccc_api_key') || ''; } catch(e) { return ''; }
+}
+
+function saveApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  if (!key) { alert('Please paste your API key first.'); return; }
+  if (!key.startsWith('sk-ant-')) {
+    alert('That doesn\'t look right — Anthropic API keys start with "sk-ant-". Double-check you copied the full key.');
+    return;
+  }
+  try { localStorage.setItem('ccc_api_key', key); } catch(e) {}
+  document.getElementById('api-key-input').value = '';
+  updateApiPill();
+  document.getElementById('api-key-status').innerHTML =
+    '<span style="color:var(--green);">✓ Key saved. AI captions are now active.</span>';
+}
+
+function clearApiKey() {
+  if (!confirm('Remove the saved API key?')) return;
+  try { localStorage.removeItem('ccc_api_key'); } catch(e) {}
+  document.getElementById('api-key-input').value = '';
+  updateApiPill();
+  document.getElementById('api-key-status').innerHTML =
+    '<span style="color:var(--muted);">Key cleared. Captions will use templates.</span>';
+}
+
+function updateApiPill() {
+  const pill = document.getElementById('api-pill');
+  const label = document.getElementById('api-pill-label');
+  const hasKey = !!loadApiKey();
+  pill.className = 'api-pill ' + (hasKey ? 'connected' : 'disconnected');
+  label.textContent = hasKey ? 'AI: CONNECTED' : 'AI: NO KEY';
+}
+
+function renderSlotEditor() {
+  // Show current key status
+  const hasKey = !!loadApiKey();
+  document.getElementById('api-key-status').innerHTML = hasKey
+    ? '<span style="color:var(--green);">✓ API key is saved and active.</span>'
+    : '<span style="color:var(--amber);">No key saved — captions use templates.</span>';
+  document.getElementById('api-key-input').value = '';
+
+  // Render time slot editor
+  document.getElementById('slot-editor').innerHTML = state.slots.map((s,i) => `
+    <div class="time-slot-row">
+      <div class="flex" style="flex:1;gap:12px;">
+        <input type="time" value="${s.time}" id="slot-time-${i}" style="width:130px;">
+        <input type="text" value="${s.label}" id="slot-label-${i}" placeholder="Label" style="width:120px;">
+        <select id="slot-reach-${i}" style="width:130px;">
+          <option value="HIGH" ${s.reach==='HIGH'?'selected':''}>High reach</option>
+          <option value="MEDIUM" ${s.reach==='MEDIUM'?'selected':''}>Medium reach</option>
+          <option value="PEAK" ${s.reach==='PEAK'?'selected':''}>Peak reach</option>
+        </select>
+      </div>
+    </div>`).join('');
+}
+
+// ── CHECKLIST ────────────────────────────────────────────────────────────
+function renderChecklist() {
+  const body = document.getElementById('checklist-body');
+  const filterClipId = parseInt(document.getElementById('chk-clip').value) || null;
+  const clips = filterClipId ? state.clips.filter(c => c.id === filterClipId) : state.clips;
+
+  if (!clips.length) {
+    body.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:32px 0;">Add clips first to see your upload checklist.</div>';
+    updateChecklistProgress();
+    return;
+  }
+
+  body.innerHTML = clips.map(clip => {
+    const rows = clip.platforms.map(p => {
+      const cdata = state.checklist[clip.id]?.[p] || [];
+      return `<div class="chk-section">
+        <div class="chk-plat-header">
+          <div class="plat-dot" style="background:${PLAT_COLOR[p]}"></div>${PLAT_LABEL[p]}
+        </div>
+        ${CHECKLIST_ITEMS[p].map((item,i) => {
+          const checked = cdata[i] || false;
+          return `<div class="chk-item" onclick="toggleCheck(${clip.id},'${p}',${i})">
+            <div class="chk-box ${checked?'checked':''}">${checked?'✓':''}</div>
+            <div class="chk-label ${checked?'done':''}">${item}</div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }).join('');
+    return `<div style="margin-bottom:24px;">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text);margin-bottom:12px;letter-spacing:0.5px;">▸ ${clip.name}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+
+  updateChecklistProgress();
+}
+
+function toggleCheck(clipId, plat, idx) {
+  if (!state.checklist[clipId]) return;
+  state.checklist[clipId][plat][idx] = !state.checklist[clipId][plat][idx];
+  save();
+  renderChecklist();
+}
+
+function updateChecklistProgress() {
+  let total = 0, done = 0;
+  state.clips.forEach(clip => {
+    const cdata = state.checklist[clip.id];
+    if (!cdata) return;
+    clip.platforms.forEach(p => {
+      (cdata[p] || []).forEach(v => { total++; if (v) done++; });
+    });
+  });
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('chk-bar').style.width = pct + '%';
+  document.getElementById('chk-label').textContent = `${done} / ${total} done`;
+}
+
+// ── SETTINGS ─────────────────────────────────────────────────────────────
+
+function saveSlots() {
+  state.slots = state.slots.map((_,i) => ({
+    time:  document.getElementById('slot-time-'+i).value || state.slots[i].time,
+    label: document.getElementById('slot-label-'+i).value || state.slots[i].label,
+    reach: document.getElementById('slot-reach-'+i).value
+  }));
+  save();
+  alert('Posting times saved!');
+}
+
+// ── SIDEBAR STATS ────────────────────────────────────────────────────────
+function updateSidebar() {
+  const now = new Date();
+  const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay());
+  const weekEnd   = new Date(weekStart); weekEnd.setDate(weekStart.getDate()+6);
+  const ws = weekStart.toISOString().split('T')[0];
+  const we = weekEnd.toISOString().split('T')[0];
+  const weekPosts = state.posts.filter(p => p.date >= ws && p.date <= we);
+  const postedWk  = weekPosts.filter(p => p.posted).length;
+
+  document.getElementById('sb-sched').textContent  = weekPosts.length;
+  document.getElementById('sb-posted').textContent = postedWk;
+  document.getElementById('sb-clips').textContent  = state.clips.length;
+  const pct = weekPosts.length ? Math.round(postedWk/weekPosts.length*100) : 0;
+  document.getElementById('sb-bar').style.width = pct + '%';
+}
+
+// ── SELECTS ──────────────────────────────────────────────────────────────
+function refreshAllSelects() {
+  const opts = state.clips.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  document.getElementById('cap-clip').innerHTML = '<option value="">— choose a clip —</option>' + opts;
+  document.getElementById('chk-clip').innerHTML = '<option value="">— all clips —</option>' + opts;
+}
+
+function refreshPostClipSelect() {
+  const opts = state.clips.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  document.getElementById('mp-clip').innerHTML = '<option value="">— select a clip —</option>' + opts;
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────
+function fmtTime(t) {
+  const [h,m] = t.split(':');
+  const hr = parseInt(h);
+  return `${hr%12||12}:${m} ${hr>=12?'PM':'AM'}`;
+}
+
+// ── PERSIST ──────────────────────────────────────────────────────────────
+function save() {
+  try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem('ccc_state');
+    if (raw) {
+      const saved = JSON.parse(raw);
+      state = { ...state, ...saved };
+      if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
+    }
+  } catch(e) {}
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ccc-backup-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      state = JSON.parse(ev.target.result);
+      if (!state.slots) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
+      save();
+      renderClipList();
+      refreshAllSelects();
+      updateSidebar();
+      renderToday();
+      renderDaysBanner();
+      alert('Data imported successfully!');
+    } catch(err) { alert('Invalid file.'); }
+  };
+  reader.readAsText(file);
+}
+
+function clearAll() {
+  if (!confirm('Clear ALL data? This cannot be undone.')) return;
+  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0 };
+  save();
+  renderClipList();
+  refreshAllSelects();
+  updateSidebar();
+  renderToday();
+  renderDaysBanner();
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+load();
+renderClipList();
+refreshAllSelects();
+refreshPostTimeSelect();
+updateSidebar();
+renderToday();
+renderDaysBanner();
+updateApiPill();
+</script>
+</body>
+</html>
