@@ -356,6 +356,9 @@
     </div>
     <div class="topbar-right">
       <div class="status-pill"><div class="status-dot"></div>ACTIVE</div>
+      <div class="api-pill disconnected" id="sync-pill" onclick="nav('settings')" title="GitHub sync status">
+        <div class="api-dot"></div><span id="sync-pill-label">SYNC: OFF</span>
+      </div>
       <div class="api-pill disconnected" id="api-pill" onclick="nav('settings')" title="Click to set API key">
         <div class="api-dot"></div><span id="api-pill-label">AI: NO KEY</span>
       </div>
@@ -589,6 +592,35 @@
     <div class="panel" id="panel-settings">
       <div class="panel-header">
         <div class="panel-title">SETTINGS</div>
+      </div>
+
+      <!-- GITHUB SYNC -->
+      <div class="settings-row" style="margin-bottom:12px;">
+        <div class="settings-row-title">GITHUB SYNC — AUTO SYNC ACROSS ALL DEVICES</div>
+        <div class="alert-info" style="margin-bottom:14px;">
+          Your data syncs automatically to a private file in your GitHub repo every time you make a change. Open the app on any device and it loads the latest data instantly — no manual export/import needed.<br><br>
+          <strong>Setup:</strong> github.com → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token → check <strong>repo</strong> scope → copy it.
+        </div>
+        <div class="grid2" style="margin-bottom:10px;">
+          <div class="field">
+            <label>GitHub username</label>
+            <input type="text" id="gh-user" placeholder="e.g. khanvicttv" autocomplete="off">
+          </div>
+          <div class="field">
+            <label>Repository name</label>
+            <input type="text" id="gh-repo" placeholder="e.g. content-center" autocomplete="off">
+          </div>
+        </div>
+        <div class="field">
+          <label>Personal Access Token (starts with ghp_...)</label>
+          <input type="password" id="gh-token" placeholder="ghp_..." autocomplete="off">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <button class="btn btn-primary" onclick="saveGithubConfig()">Save &amp; connect</button>
+          <button class="btn btn-ghost btn-sm" onclick="syncNow()">↻ Sync now</button>
+          <button class="btn btn-danger btn-sm" onclick="clearGithubConfig()">Disconnect</button>
+        </div>
+        <div id="sync-status" style="margin-top:10px;font-size:12px;font-family:var(--mono);"></div>
       </div>
 
       <div class="settings-row">
@@ -1655,12 +1687,22 @@ function updateApiPill() {
 }
 
 function renderSlotEditor() {
-  // Show current key status
   const hasKey = !!loadApiKey();
   document.getElementById('api-key-status').innerHTML = hasKey
     ? '<span style="color:var(--green);">✓ API key is saved and active.</span>'
     : '<span style="color:var(--amber);">No key saved — captions use templates.</span>';
   document.getElementById('api-key-input').value = '';
+
+  // Pre-fill GitHub fields (not the token for security)
+  const cfg = loadGithubConfig();
+  document.getElementById('gh-user').value = cfg.user;
+  document.getElementById('gh-repo').value = cfg.repo;
+  document.getElementById('gh-token').value = '';
+  if (cfg.user && cfg.repo && cfg.token) {
+    setSyncStatus('✓ GitHub sync is active — ' + cfg.user + '/' + cfg.repo, 'green');
+  } else {
+    setSyncStatus('Not connected. Enter your details above to enable sync.', 'muted');
+  }
 
   // Render time slot editor
   document.getElementById('slot-editor').innerHTML = state.slots.map((s,i) => `
@@ -1785,9 +1827,173 @@ function fmtTime(t) {
   return `${hr%12||12}:${m} ${hr>=12?'PM':'AM'}`;
 }
 
+// ── GITHUB SYNC ENGINE ───────────────────────────────────────────────────
+const GH_DATA_PATH = 'kcc-data.json';
+let syncDebounceTimer = null;
+let isSyncing = false;
+
+function loadGithubConfig() {
+  try {
+    return {
+      user:  localStorage.getItem('gh_user')  || '',
+      repo:  localStorage.getItem('gh_repo')  || '',
+      token: localStorage.getItem('gh_token') || ''
+    };
+  } catch(e) { return { user:'', repo:'', token:'' }; }
+}
+
+function saveGithubConfig() {
+  const user  = document.getElementById('gh-user').value.trim();
+  const repo  = document.getElementById('gh-repo').value.trim();
+  const token = document.getElementById('gh-token').value.trim();
+  if (!user || !repo || !token) { alert('Please fill in all three fields.'); return; }
+  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+    alert('That doesn\'t look like a valid token — it should start with ghp_ or github_pat_'); return;
+  }
+  try {
+    localStorage.setItem('gh_user', user);
+    localStorage.setItem('gh_repo', repo);
+    localStorage.setItem('gh_token', token);
+  } catch(e) {}
+  document.getElementById('gh-token').value = '';
+  updateSyncPill();
+  setSyncStatus('Connecting...', 'muted');
+  syncNow();
+}
+
+function clearGithubConfig() {
+  if (!confirm('Disconnect GitHub sync?')) return;
+  ['gh_user','gh_repo','gh_token'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
+  document.getElementById('gh-user').value = '';
+  document.getElementById('gh-repo').value = '';
+  document.getElementById('gh-token').value = '';
+  updateSyncPill();
+  setSyncStatus('Sync disconnected.', 'muted');
+}
+
+function updateSyncPill() {
+  const cfg = loadGithubConfig();
+  const pill  = document.getElementById('sync-pill');
+  const label = document.getElementById('sync-pill-label');
+  if (!pill) return;
+  const connected = cfg.user && cfg.repo && cfg.token;
+  pill.className = 'api-pill ' + (connected ? 'connected' : 'disconnected');
+  label.textContent = connected ? 'SYNC: ON' : 'SYNC: OFF';
+}
+
+function setSyncStatus(msg, type) {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  const color = type === 'green' ? 'var(--green)' : type === 'red' ? 'var(--red)' : type === 'amber' ? 'var(--amber)' : 'var(--muted)';
+  el.innerHTML = `<span style="color:${color};">${msg}</span>`;
+}
+
+async function ghRequest(method, path, body) {
+  const cfg = loadGithubConfig();
+  if (!cfg.token) return null;
+  const url = `https://api.github.com/repos/${cfg.user}/${cfg.repo}/contents/${path}`;
+  const opts = {
+    method,
+    headers: {
+      'Authorization': `token ${cfg.token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(url, opts);
+  if (res.status === 404 && method === 'GET') return null;
+  if (!res.ok) throw new Error(`GitHub API ${res.status}: ${res.statusText}`);
+  return res.json();
+}
+
+async function pushToGithub() {
+  const cfg = loadGithubConfig();
+  if (!cfg.user || !cfg.repo || !cfg.token) return;
+  if (isSyncing) return;
+  isSyncing = true;
+  try {
+    // Get current file SHA (needed for updates)
+    let sha = null;
+    const existing = await ghRequest('GET', GH_DATA_PATH);
+    if (existing) sha = existing.sha;
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(state, null, 2))));
+    const body = {
+      message: `KCC sync ${new Date().toISOString()}`,
+      content,
+      ...(sha ? { sha } : {})
+    };
+    await ghRequest('PUT', GH_DATA_PATH, body);
+    setSyncStatus('✓ Synced ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), 'green');
+  } catch(e) {
+    setSyncStatus('Sync failed — check your token and repo name.', 'red');
+    console.error('GitHub sync error:', e);
+  } finally {
+    isSyncing = false;
+  }
+}
+
+async function pullFromGithub() {
+  const cfg = loadGithubConfig();
+  if (!cfg.user || !cfg.repo || !cfg.token) return false;
+  try {
+    const file = await ghRequest('GET', GH_DATA_PATH);
+    if (!file || !file.content) return false;
+    const decoded = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
+    const remote = JSON.parse(decoded);
+    state = { ...state, ...remote };
+    if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
+    if (!state.engagements) state.engagements = [];
+    // Also save locally
+    try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
+    return true;
+  } catch(e) {
+    console.error('GitHub pull error:', e);
+    return false;
+  }
+}
+
+async function syncNow() {
+  const cfg = loadGithubConfig();
+  if (!cfg.user || !cfg.repo || !cfg.token) {
+    setSyncStatus('Configure GitHub sync in Settings first.', 'amber');
+    return;
+  }
+  setSyncStatus('Syncing...', 'muted');
+  updateSyncPill();
+  // Pull latest first, then push
+  const pulled = await pullFromGithub();
+  if (pulled) {
+    refreshAll();
+    await pushToGithub();
+  } else {
+    // No remote file yet — push local data up
+    await pushToGithub();
+  }
+}
+
+function refreshAll() {
+  renderClipList();
+  refreshAllSelects();
+  refreshPostClipSelect();
+  updateSidebar();
+  renderToday();
+  renderDaysBanner();
+  if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
+  if (document.getElementById('panel-analytics').classList.contains('active')) renderAnalytics();
+}
+
 // ── PERSIST ──────────────────────────────────────────────────────────────
 function save() {
+  // Always save locally first (instant)
   try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
+  // Debounce GitHub push — wait 1.5s after last change before pushing
+  const cfg = loadGithubConfig();
+  if (cfg.user && cfg.repo && cfg.token) {
+    clearTimeout(syncDebounceTimer);
+    syncDebounceTimer = setTimeout(() => { pushToGithub(); }, 1500);
+  }
 }
 
 function load() {
@@ -2145,13 +2351,30 @@ function checkUpcomingPosts() {
 load();
 renderClipList();
 refreshAllSelects();
+refreshPostClipSelect();
 refreshPostTimeSelect();
 updateSidebar();
 renderToday();
 renderDaysBanner();
 updateApiPill();
+updateSyncPill();
 checkUpcomingPosts();
 setInterval(checkUpcomingPosts, 60000);
+
+// Pull from GitHub on startup if configured
+(async () => {
+  const cfg = loadGithubConfig();
+  if (cfg.user && cfg.repo && cfg.token) {
+    setSyncStatus('Loading latest data...', 'muted');
+    const pulled = await pullFromGithub();
+    if (pulled) {
+      refreshAll();
+      setSyncStatus('✓ Loaded ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), 'green');
+    } else {
+      setSyncStatus('No cloud data yet — will push on next change.', 'amber');
+    }
+  }
+})();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/content-center/sw.js').catch(() => {});
