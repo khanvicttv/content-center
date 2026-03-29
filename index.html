@@ -225,7 +225,7 @@
   @media (max-width: 768px) {
     .shell { grid-template-columns: 1fr; grid-template-rows: 48px 1fr 60px; }
     .sidebar { display: none; }
-    .main { overflow-y: auto; padding-bottom: 60px; }
+    .main { overflow-y: auto; }
     .panel { padding: 14px; }
     .stats-row { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
     .stat-num { font-size: 20px; }
@@ -268,20 +268,28 @@
     display: none;
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    height: 60px;
+    height: 62px;
     background: var(--bg2);
     border-top: 1px solid var(--border);
     z-index: 50;
-    grid-template-columns: repeat(6, 1fr);
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-direction: row;
     align-items: stretch;
+    white-space: nowrap;
   }
 
+  .bottom-nav::-webkit-scrollbar { display: none; }
+
   @media (max-width: 768px) {
-    .bottom-nav { display: grid; }
+    .bottom-nav { display: flex; }
+    .main { padding-bottom: 70px; }
   }
 
   .bnav-item {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -293,15 +301,17 @@
     font-family: var(--sans);
     font-size: 9px;
     font-weight: 500;
-    padding: 6px 2px;
+    padding: 6px 18px;
     transition: color 0.15s;
     position: relative;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   .bnav-item.active { color: var(--accent2); }
-  .bnav-item.active::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: var(--accent); border-radius: 0 0 2px 2px; }
+  .bnav-item.active::before { content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 2px; background: var(--accent); border-radius: 0 0 2px 2px; }
   .bnav-icon { font-size: 16px; line-height: 1; }
-  .bnav-badge { position: absolute; top: 4px; right: 18%; background: var(--accent); color: white; font-size: 8px; font-family: var(--mono); padding: 0 4px; border-radius: 8px; min-width: 14px; text-align: center; line-height: 14px; height: 14px; }
+  .bnav-badge { position: absolute; top: 4px; right: 12px; background: var(--accent); color: white; font-size: 8px; font-family: var(--mono); padding: 0 4px; border-radius: 8px; min-width: 14px; text-align: center; line-height: 14px; height: 14px; }
 
   /* UPCOMING ALERT BANNER */
   .post-alert {
@@ -860,7 +870,10 @@ function nav(id) {
   document.getElementById('panel-' + id).classList.add('active');
   document.getElementById('nav-' + id).classList.add('active');
   const bnav = document.getElementById('bnav-' + id);
-  if (bnav) bnav.classList.add('active');
+  if (bnav) {
+    bnav.classList.add('active');
+    bnav.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
   if (id === 'today')     { renderToday(); renderDaysBanner(); }
   if (id === 'schedule')  renderWeek();
   if (id === 'checklist') renderChecklist();
