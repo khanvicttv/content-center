@@ -362,6 +362,7 @@
       <button class="nav-item" onclick="nav('clips')" id="nav-clips"><span class="nav-icon">◈</span>Clips <span class="nav-badge" id="clip-badge">0</span></button>
       <button class="nav-item" onclick="nav('captions')" id="nav-captions"><span class="nav-icon">✦</span>Captions</button>
       <button class="nav-item" onclick="nav('checklist')" id="nav-checklist"><span class="nav-icon">◻</span>Checklist</button>
+      <button class="nav-item" onclick="nav('analytics')" id="nav-analytics"><span class="nav-icon">◈</span>Analytics</button>
       <button class="nav-item" onclick="nav('settings')" id="nav-settings"><span class="nav-icon">⚙</span>Settings</button>
     </div>
     <div class="sidebar-bottom">
@@ -398,7 +399,7 @@
         <div class="stat-card sc-purple"><div class="stat-num" id="s-today">0</div><div class="stat-label">posts today</div></div>
         <div class="stat-card sc-green"><div class="stat-num" id="s-posted">0</div><div class="stat-label">posted ✓</div></div>
         <div class="stat-card sc-amber"><div class="stat-num" id="s-pending">0</div><div class="stat-label">pending</div></div>
-        <div class="stat-card sc-red"><div class="stat-num" id="s-clips">0</div><div class="stat-label">clips in library</div></div>
+        <div class="stat-card sc-red" style="cursor:pointer;" onclick="nav('analytics')"><div class="stat-num" id="s-streak">0</div><div class="stat-label">day streak 🔥</div></div>
       </div>
 
       <div class="card">
@@ -507,6 +508,57 @@
       <div id="checklist-body"></div>
     </div>
 
+    <!-- ANALYTICS -->
+    <div class="panel" id="panel-analytics">
+      <div class="panel-header">
+        <div class="panel-title">ANALYTICS <span>&amp; INSIGHTS</span></div>
+      </div>
+
+      <!-- Streak -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Posting streak</div>
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+          <div style="text-align:center;">
+            <div style="font-family:var(--mono);font-size:48px;font-weight:700;line-height:1;" id="streak-num">0</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">day streak</div>
+          </div>
+          <div style="flex:1;min-width:180px;">
+            <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;">
+              <div style="font-size:13px;color:var(--text);">Best streak: <span id="streak-best" style="font-family:var(--mono);color:var(--accent2);">0</span> days</div>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:10px;" id="streak-msg">Start posting to build your streak.</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;" id="streak-heatmap"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Best times -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Best time to post — based on your data</div>
+        <div class="grid3" id="best-times-grid" style="gap:10px;"></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:10px;">Log engagement on your posts to personalise these recommendations.</div>
+      </div>
+
+      <!-- Hashtag performance -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Hashtag performance</div>
+        <div id="hashtag-perf-list">
+          <div style="color:var(--muted);font-size:13px;padding:12px 0;">No hashtag data yet. Log engagement on posts that used specific hashtags to see which ones perform best.</div>
+        </div>
+      </div>
+
+      <!-- Engagement log -->
+      <div class="card">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>Engagement log</span>
+          <button class="btn btn-primary btn-sm" onclick="openEngageModal()">+ Log engagement</button>
+        </div>
+        <div id="engage-log-list">
+          <div style="color:var(--muted);font-size:13px;padding:12px 0;">No engagement logged yet. After posting, tap "+ Log engagement" to record your stats.</div>
+        </div>
+      </div>
+    </div>
+
     <!-- SETTINGS -->
     <div class="panel" id="panel-settings">
       <div class="panel-header">
@@ -569,10 +621,45 @@
   <button class="bnav-item" onclick="nav('checklist')" id="bnav-checklist">
     <span class="bnav-icon">◻</span>Tasks
   </button>
+  <button class="bnav-item" onclick="nav('analytics')" id="bnav-analytics">
+    <span class="bnav-icon">◈</span>Stats
+  </button>
   <button class="bnav-item" onclick="nav('settings')" id="bnav-settings">
     <span class="bnav-icon">⚙</span>Settings
   </button>
 </nav>
+
+<!-- ENGAGEMENT LOG MODAL -->
+<div class="modal-overlay" id="modal-engage">
+  <div class="modal">
+    <div class="modal-title">LOG ENGAGEMENT</div>
+    <div class="alert-info" style="margin-bottom:14px;">Log stats from your post after 24–48 hours for the most accurate data.</div>
+    <div class="field">
+      <label>Post / clip</label>
+      <select id="eng-post-sel"></select>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Views</label><input type="number" id="eng-views" placeholder="e.g. 4500" min="0"></div>
+      <div class="field"><label>Likes</label><input type="number" id="eng-likes" placeholder="e.g. 320" min="0"></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Comments</label><input type="number" id="eng-comments" placeholder="e.g. 28" min="0"></div>
+      <div class="field"><label>New followers</label><input type="number" id="eng-followers" placeholder="e.g. 12" min="0"></div>
+    </div>
+    <div class="field">
+      <label>Hashtags used <span style="color:var(--accent2);font-size:9px;">(comma separated)</span></label>
+      <input type="text" id="eng-hashtags" placeholder="e.g. #gaming, #warzone, #clutch">
+    </div>
+    <div class="field">
+      <label>Notes (optional)</label>
+      <textarea id="eng-notes" rows="2" placeholder="e.g. Posted at 7pm, first 30 min replies boosted reach..."></textarea>
+    </div>
+    <div class="flex flex-end" style="gap:10px;margin-top:6px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-engage')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEngagement()">Save</button>
+    </div>
+  </div>
+</div>
 
 <!-- ADD CLIP MODAL -->
 <div class="modal-overlay" id="modal-clip">
@@ -658,7 +745,8 @@ let state = {
   posts: [],
   checklist: {},
   slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)),
-  weekOffset: 0
+  weekOffset: 0,
+  engagements: []
 };
 
 const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
@@ -776,6 +864,7 @@ function nav(id) {
   if (id === 'today')     { renderToday(); renderDaysBanner(); }
   if (id === 'schedule')  renderWeek();
   if (id === 'checklist') renderChecklist();
+  if (id === 'analytics') renderAnalytics();
   if (id === 'settings')  renderSlotEditor();
 }
 
@@ -1048,7 +1137,20 @@ function renderToday() {
   document.getElementById('s-today').textContent   = todayPosts.length;
   document.getElementById('s-posted').textContent  = posted;
   document.getElementById('s-pending').textContent = pending;
-  document.getElementById('s-clips').textContent   = state.clips.length;
+
+  // Calculate streak for today card
+  const goal = 3;
+  const byDate = {};
+  state.posts.filter(p => p.posted).forEach(p => { byDate[p.date] = (byDate[p.date] || 0) + 1; });
+  let streak = 0;
+  const dd = new Date();
+  for (let i = 0; i < 90; i++) {
+    const ds = dd.toISOString().split('T')[0];
+    if ((byDate[ds] || 0) >= goal) { if (i === 0 || streak > 0) streak++; }
+    else if (i > 0 && streak > 0) break;
+    dd.setDate(dd.getDate() - 1);
+  }
+  document.getElementById('s-streak').textContent = streak;
   checkUpcomingPosts();
 
   const container = document.getElementById('today-slots');
@@ -1524,6 +1626,7 @@ function load() {
       const saved = JSON.parse(raw);
       state = { ...state, ...saved };
       if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
+      if (!state.engagements) state.engagements = [];
     }
   } catch(e) {}
 }
@@ -1565,6 +1668,247 @@ function clearAll() {
   updateSidebar();
   renderToday();
   renderDaysBanner();
+}
+
+// ── ANALYTICS ────────────────────────────────────────────────────────────
+
+function renderAnalytics() {
+  renderStreak();
+  renderBestTimes();
+  renderHashtagPerf();
+  renderEngageLog();
+}
+
+// ── STREAK ───────────────────────────────────────────────────────────────
+function renderStreak() {
+  const goal = 3; // posts per day
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+
+  // Build map of date → posted count
+  const byDate = {};
+  state.posts.filter(p => p.posted).forEach(p => {
+    byDate[p.date] = (byDate[p.date] || 0) + 1;
+  });
+
+  // Calculate current streak (consecutive days hitting goal, going back from today)
+  let streak = 0;
+  let best = 0;
+  let tempStreak = 0;
+  const d = new Date(today);
+
+  // Check last 90 days for streak
+  for (let i = 0; i < 90; i++) {
+    const ds = d.toISOString().split('T')[0];
+    const count = byDate[ds] || 0;
+    if (count >= goal) {
+      if (i === 0 || streak > 0) streak++;
+      tempStreak++;
+      best = Math.max(best, tempStreak);
+    } else {
+      if (i === 0) streak = 0; // today not hit yet — streak not broken
+      else { tempStreak = 0; if (streak > 0) break; }
+    }
+    d.setDate(d.getDate() - 1);
+  }
+
+  document.getElementById('streak-num').textContent = streak;
+  document.getElementById('streak-best').textContent = best;
+
+  const msgs = [
+    [0,  "Post 3 clips today to start your streak! 🔥"],
+    [1,  "Day 1 — you've started. Don't stop now."],
+    [3,  "3 days in — momentum is building."],
+    [7,  "One week streak! You're in the habit now."],
+    [14, "Two week streak — this is becoming automatic."],
+    [30, "30 days! You're a content machine."]
+  ];
+  const msg = [...msgs].reverse().find(([n]) => streak >= n)?.[1] || msgs[0][1];
+  document.getElementById('streak-msg').textContent = msg;
+
+  // Heatmap — last 28 days
+  const hmap = document.getElementById('streak-heatmap');
+  hmap.innerHTML = '';
+  for (let i = 27; i >= 0; i--) {
+    const dd = new Date(today);
+    dd.setDate(today.getDate() - i);
+    const ds = dd.toISOString().split('T')[0];
+    const cnt = byDate[ds] || 0;
+    const pct = Math.min(1, cnt / goal);
+    const alpha = pct === 0 ? 0.08 : 0.3 + pct * 0.7;
+    const el = document.createElement('div');
+    el.title = `${ds}: ${cnt} posts`;
+    el.style.cssText = `width:16px;height:16px;border-radius:3px;background:rgba(204,20,20,${alpha.toFixed(2)});flex-shrink:0;`;
+    hmap.appendChild(el);
+  }
+}
+
+// ── BEST TIMES ───────────────────────────────────────────────────────────
+function renderBestTimes() {
+  const grid = document.getElementById('best-times-grid');
+  const PLATS = ['tt','ig','yt'];
+  const PL = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
+  const PC = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
+
+  // Aggregate: for each platform+time slot, average views
+  const perf = {}; // key: plat_time → {totalViews, count}
+  state.engagements.forEach(e => {
+    const key = `${e.platform}_${e.time}`;
+    if (!perf[key]) perf[key] = { views: 0, count: 0 };
+    perf[key].views += e.views || 0;
+    perf[key].count++;
+  });
+
+  grid.innerHTML = PLATS.map(plat => {
+    // Find best slot for this platform
+    let bestSlot = null, bestAvg = 0;
+    state.slots.forEach(s => {
+      const key = `${plat}_${s.time}`;
+      if (perf[key] && perf[key].count > 0) {
+        const avg = perf[key].views / perf[key].count;
+        if (avg > bestAvg) { bestAvg = avg; bestSlot = s; }
+      }
+    });
+
+    const hasData = state.engagements.filter(e => e.platform === plat).length >= 3;
+    const slotDisplay = bestSlot ? fmtTime(bestSlot.time) : '—';
+    const subtext = !hasData
+      ? 'Need 3+ posts logged'
+      : bestSlot ? `Avg ${Math.round(bestAvg).toLocaleString()} views` : 'No clear winner yet';
+
+    return `<div style="background:var(--bg3);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border);">
+      <div style="font-size:10px;font-family:var(--mono);color:${PC[plat]};letter-spacing:1px;margin-bottom:6px;">${PL[plat].toUpperCase()}</div>
+      <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);">${slotDisplay}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px;">${subtext}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── HASHTAG PERFORMANCE ──────────────────────────────────────────────────
+function renderHashtagPerf() {
+  const container = document.getElementById('hashtag-perf-list');
+  if (!state.engagements.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No hashtag data yet. Log engagement on posts that used specific hashtags to see which ones perform best.</div>';
+    return;
+  }
+
+  // Aggregate hashtag → avg views, count
+  const tagData = {};
+  state.engagements.forEach(e => {
+    if (!e.hashtags || !e.hashtags.length) return;
+    e.hashtags.forEach(tag => {
+      if (!tagData[tag]) tagData[tag] = { views: 0, count: 0, likes: 0 };
+      tagData[tag].views += e.views || 0;
+      tagData[tag].likes += e.likes || 0;
+      tagData[tag].count++;
+    });
+  });
+
+  const tags = Object.entries(tagData)
+    .map(([tag, d]) => ({ tag, avgViews: Math.round(d.views / d.count), avgLikes: Math.round(d.likes / d.count), count: d.count }))
+    .sort((a, b) => b.avgViews - a.avgViews);
+
+  if (!tags.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">Log some posts with hashtags to see performance data.</div>';
+    return;
+  }
+
+  const maxViews = tags[0].avgViews || 1;
+
+  container.innerHTML = tags.map((t, i) => {
+    const pct = Math.round((t.avgViews / maxViews) * 100);
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+    const barColor = pct > 66 ? 'var(--green)' : pct > 33 ? 'var(--amber)' : 'var(--muted)';
+    return `<div style="padding:10px 0;border-bottom:0.5px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+        <div style="font-family:var(--mono);font-size:12px;color:var(--accent2);">${t.tag} <span style="font-size:10px;color:var(--muted);">(${t.count} post${t.count!==1?'s':''})</span></div>
+        <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">${t.avgViews.toLocaleString()} avg views</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:3px;height:5px;overflow:hidden;">
+        <div style="background:${barColor};height:100%;width:${pct}%;border-radius:3px;transition:width 0.4s;"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── ENGAGEMENT LOG ───────────────────────────────────────────────────────
+function renderEngageLog() {
+  const container = document.getElementById('engage-log-list');
+  if (!state.engagements.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No engagement logged yet. After posting, tap "+ Log engagement" to record your stats.</div>';
+    return;
+  }
+
+  const PL = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
+  const PC = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
+
+  const sorted = [...state.engagements].sort((a,b) => b.loggedAt.localeCompare(a.loggedAt));
+
+  container.innerHTML = sorted.map(e => `
+    <div style="padding:10px 0;border-bottom:0.5px solid var(--border);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;gap:8px;flex-wrap:wrap;">
+        <div>
+          <span style="font-size:10px;font-family:var(--mono);color:${PC[e.platform]};letter-spacing:1px;">${PL[e.platform]}</span>
+          <span style="font-size:13px;font-weight:500;color:var(--text);margin-left:8px;">${e.clipName}</span>
+        </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.views||0).toLocaleString()} <span style="color:var(--muted);">views</span></span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.likes||0).toLocaleString()} <span style="color:var(--muted);">likes</span></span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--green);">+${(e.followers||0)} <span style="color:var(--muted);">followers</span></span>
+        </div>
+      </div>
+      ${e.hashtags && e.hashtags.length ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">${e.hashtags.map(h=>`<span style="background:rgba(124,92,252,0.1);color:var(--accent2);border:1px solid rgba(124,92,252,0.2);border-radius:4px;padding:2px 6px;font-family:var(--mono);font-size:10px;">${h}</span>`).join('')}</div>` : ''}
+      ${e.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:5px;">${e.notes}</div>` : ''}
+      <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono);">${e.date} · ${fmtTime(e.time)}</div>
+    </div>`).join('');
+}
+
+function openEngageModal() {
+  // Populate with posted posts
+  const posted = state.posts.filter(p => p.posted);
+  const sel = document.getElementById('eng-post-sel');
+  sel.innerHTML = posted.length
+    ? posted.map(p => `<option value="${p.id}">${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('')
+    : '<option value="">No posted clips yet</option>';
+  document.getElementById('eng-views').value = '';
+  document.getElementById('eng-likes').value = '';
+  document.getElementById('eng-comments').value = '';
+  document.getElementById('eng-followers').value = '';
+  document.getElementById('eng-hashtags').value = '';
+  document.getElementById('eng-notes').value = '';
+  document.getElementById('modal-engage').classList.add('open');
+}
+
+function saveEngagement() {
+  const postId = parseInt(document.getElementById('eng-post-sel').value);
+  const post = state.posts.find(p => p.id === postId);
+  if (!post) { alert('Please select a post.'); return; }
+
+  const rawTags = document.getElementById('eng-hashtags').value;
+  const hashtags = rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0)
+    .map(t => t.startsWith('#') ? t : '#' + t);
+
+  state.engagements.push({
+    id:        Date.now(),
+    postId,
+    clipId:    post.clipId,
+    clipName:  post.clipName,
+    platform:  post.platform,
+    date:      post.date,
+    time:      post.time,
+    views:     parseInt(document.getElementById('eng-views').value) || 0,
+    likes:     parseInt(document.getElementById('eng-likes').value) || 0,
+    comments:  parseInt(document.getElementById('eng-comments').value) || 0,
+    followers: parseInt(document.getElementById('eng-followers').value) || 0,
+    hashtags,
+    notes:     document.getElementById('eng-notes').value.trim(),
+    loggedAt:  new Date().toISOString()
+  });
+
+  save();
+  closeModal('modal-engage');
+  renderAnalytics();
+  renderStreak();
 }
 
 // ── UPCOMING POST ALERTS ─────────────────────────────────────────────────
