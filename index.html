@@ -437,19 +437,35 @@
     <div class="panel" id="panel-clips">
       <div class="panel-header">
         <div class="panel-title">CLIP <span>LIBRARY</span></div>
-        <div class="flex">
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('scan-import-input').click()">⬆ Import from folder scan</button>
+        <div class="flex" style="flex-wrap:wrap;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('scan-import-input').click()">⬆ Import scan</button>
           <input type="file" id="scan-import-input" accept=".json" style="display:none;" onchange="importFromScan(event)">
-          <button class="btn btn-primary btn-sm" onclick="openClipModal()">+ Add manually</button>
+          <button class="btn btn-primary btn-sm" onclick="openClipModal()">+ Add clip</button>
         </div>
       </div>
+
       <div id="scan-banner" style="display:none;margin-bottom:16px;"></div>
-      <div id="clips-empty" style="text-align:center;padding:48px 0;color:var(--muted);">
+
+      <!-- Tab switcher -->
+      <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;">
+        <button class="clip-tab active" id="ctab-active" onclick="switchClipTab('active')"
+          style="padding:8px 16px;font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--text);border-bottom:2px solid var(--accent);margin-bottom:-1px;transition:all 0.15s;">
+          Active <span id="ctab-active-count" style="font-size:10px;background:var(--accent);color:white;padding:1px 6px;border-radius:10px;margin-left:5px;">0</span>
+        </button>
+        <button class="clip-tab" id="ctab-archive" onclick="switchClipTab('archive')"
+          style="padding:8px 16px;font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;">
+          Archive <span id="ctab-archive-count" style="font-size:10px;background:var(--bg4);color:var(--muted);padding:1px 6px;border-radius:10px;margin-left:5px;">0</span>
+        </button>
+      </div>
+
+      <div id="clip-list-active"></div>
+      <div id="clip-list-archive" style="display:none;"></div>
+
+      <div id="clips-empty" style="display:none;text-align:center;padding:48px 0;color:var(--muted);">
         <div style="font-size:32px;margin-bottom:12px;">◈</div>
         <div style="font-size:14px;margin-bottom:8px;">No clips yet</div>
-        <div style="font-size:12px;line-height:1.8;">Run <strong style="color:var(--text);">scan_clips.py</strong> on your PC after editing,<br>then click <strong style="color:var(--text);">"Import from folder scan"</strong> above.<br><span style="color:var(--muted);">Or add clips manually one at a time.</span></div>
+        <div style="font-size:12px;line-height:1.8;">Run <strong style="color:var(--text);">scan_clips.py</strong> on your PC after editing,<br>then click <strong style="color:var(--text);">"Import scan"</strong> above.<br><span style="color:var(--muted);">Or add clips manually.</span></div>
       </div>
-      <div id="clip-list"></div>
     </div>
 
     <!-- CAPTIONS -->
@@ -960,51 +976,147 @@ function deleteClip(id) {
   renderToday();
 }
 
+let currentClipTab = 'active';
+
+function switchClipTab(tab) {
+  currentClipTab = tab;
+  document.getElementById('clip-list-active').style.display  = tab === 'active'  ? 'block' : 'none';
+  document.getElementById('clip-list-archive').style.display = tab === 'archive' ? 'block' : 'none';
+  document.getElementById('ctab-active').style.color         = tab === 'active'  ? 'var(--text)' : 'var(--muted)';
+  document.getElementById('ctab-archive').style.color        = tab === 'archive' ? 'var(--text)' : 'var(--muted)';
+  document.getElementById('ctab-active').style.borderBottomColor  = tab === 'active'  ? 'var(--accent)' : 'transparent';
+  document.getElementById('ctab-archive').style.borderBottomColor = tab === 'archive' ? 'var(--accent)' : 'transparent';
+}
+
+function isClipFullyPosted(clip) {
+  // A clip is fully posted when all its selected platforms have at least one posted entry
+  return clip.platforms.every(plat =>
+    state.posts.some(p => p.clipId === clip.id && p.platform === plat && p.posted)
+  );
+}
+
+function autoArchiveClips() {
+  let changed = false;
+  state.clips.forEach(clip => {
+    if (!clip.archived && isClipFullyPosted(clip)) {
+      clip.archived = true;
+      clip.archivedAt = new Date().toISOString();
+      changed = true;
+    }
+  });
+  if (changed) save();
+}
+
 function renderClipList() {
-  const list = document.getElementById('clip-list');
-  const empty = document.getElementById('clips-empty');
-  document.getElementById('clip-badge').textContent = state.clips.length;
+  autoArchiveClips();
+
+  const empty   = document.getElementById('clips-empty');
+  const badge   = document.getElementById('clip-badge');
   const bnavBadge = document.getElementById('bnav-clip-badge');
+
+  const activeClips  = state.clips.filter(c => !c.archived);
+  const archiveClips = state.clips.filter(c => c.archived);
+
+  document.getElementById('ctab-active-count').textContent  = activeClips.length;
+  document.getElementById('ctab-archive-count').textContent = archiveClips.length;
+
+  badge.textContent = activeClips.length;
   if (bnavBadge) {
-    bnavBadge.textContent = state.clips.length;
-    bnavBadge.style.display = state.clips.length ? 'block' : 'none';
+    bnavBadge.textContent = activeClips.length;
+    bnavBadge.style.display = activeClips.length ? 'block' : 'none';
   }
 
-  if (!state.clips.length) { empty.style.display = 'block'; list.innerHTML = ''; return; }
+  // Show empty state only when both are empty
+  if (!state.clips.length) {
+    empty.style.display = 'block';
+    document.getElementById('clip-list-active').innerHTML = '';
+    document.getElementById('clip-list-archive').innerHTML = '';
+    return;
+  }
   empty.style.display = 'none';
 
-  list.innerHTML = state.clips.map(clip => {
-    const postedCount = state.posts.filter(p => p.clipId === clip.id && p.posted).length;
-    const totalSched  = state.posts.filter(p => p.clipId === clip.id).length;
-    const game = clip.game || 'Gaming';
-    const dur  = clip.duration ? ' · ' + clip.duration : '';
-    const noDesc = !clip.desc;
-    const descWarning = noDesc && clip.fromScan
-      ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
-           <input type="text" placeholder="Add a quick description for captions..." 
-             style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.3);"
-             onchange="updateClipDesc(${clip.id}, this.value)" value="${clip.desc||''}">
-         </div>`
-      : clip.desc ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${clip.desc.substring(0,80)}${clip.desc.length>80?'…':''}</div>` : '';
-    return `
-    <div class="clip-row" id="cliprow-${clip.id}">
-      <div style="min-width:0;">
-        <div class="clip-name">${clip.name}</div>
-        <div class="clip-meta">${game}${dur} · ${new Date(clip.addedAt).toLocaleDateString()} · ${postedCount}/${totalSched} posted${noDesc && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
-        ${descWarning}
-      </div>
-      <div class="pdots">
-        <div class="pdot tt ${clip.platforms.includes('tt')?'on':''}"></div>
-        <div class="pdot ig ${clip.platforms.includes('ig')?'on':''}"></div>
-        <div class="pdot yt ${clip.platforms.includes('yt')?'on':''}"></div>
-      </div>
-      <div class="flex">
+  // ── ACTIVE ────────────────────────────────────────────────────
+  if (!activeClips.length) {
+    document.getElementById('clip-list-active').innerHTML =
+      `<div style="text-align:center;padding:32px 0;color:var(--muted);">
+        <div style="font-size:13px;margin-bottom:6px;">All clips posted and archived</div>
+        <div style="font-size:12px;">Import your next batch after your next stream.</div>
+      </div>`;
+  } else {
+    document.getElementById('clip-list-active').innerHTML = activeClips.map(clip => buildClipRow(clip, false)).join('');
+  }
+
+  // ── ARCHIVE ───────────────────────────────────────────────────
+  if (!archiveClips.length) {
+    document.getElementById('clip-list-archive').innerHTML =
+      `<div style="text-align:center;padding:32px 0;color:var(--muted);">
+        <div style="font-size:13px;">No archived clips yet.</div>
+        <div style="font-size:12px;margin-top:4px;">Clips move here automatically once posted on all platforms.</div>
+      </div>`;
+  } else {
+    document.getElementById('clip-list-archive').innerHTML = archiveClips.map(clip => buildClipRow(clip, true)).join('');
+  }
+}
+
+function buildClipRow(clip, isArchived) {
+  const postedCount = state.posts.filter(p => p.clipId === clip.id && p.posted).length;
+  const totalSched  = state.posts.filter(p => p.clipId === clip.id).length;
+  const game = clip.game || 'Gaming';
+  const dur  = clip.duration ? ' · ' + clip.duration : '';
+  const noDesc = !clip.desc;
+
+  const descWarning = noDesc && clip.fromScan && !isArchived
+    ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+         <input type="text" placeholder="Add a description for captions..."
+           style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.3);"
+           onchange="updateClipDesc(${clip.id}, this.value)" value="${clip.desc||''}">
+       </div>`
+    : clip.desc
+      ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${clip.desc.substring(0,80)}${clip.desc.length>80?'…':''}</div>`
+      : '';
+
+  const archivedMeta = isArchived && clip.archivedAt
+    ? ` · archived ${new Date(clip.archivedAt).toLocaleDateString()}`
+    : '';
+
+  const actionBtns = isArchived
+    ? `<div class="flex">
+        <button class="btn btn-ghost btn-sm" onclick="restoreClip(${clip.id})" title="Restore to active">Restore</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteClip(${clip.id})">✕</button>
+       </div>`
+    : `<div class="flex">
         <button class="btn btn-ghost btn-sm" onclick="scheduleFromClip(${clip.id})">Schedule</button>
         <button class="btn btn-ghost btn-sm" onclick="captionFromClip(${clip.id})">Captions</button>
+        <button class="btn btn-ghost btn-sm" onclick="archiveClip(${clip.id})" title="Archive manually">Archive</button>
         <button class="btn btn-danger btn-sm" onclick="deleteClip(${clip.id})">✕</button>
-      </div>
-    </div>`;
-  }).join('');
+       </div>`;
+
+  const rowStyle = isArchived ? 'opacity:0.6;' : '';
+
+  return `
+  <div class="clip-row" id="cliprow-${clip.id}" style="${rowStyle}">
+    <div style="min-width:0;">
+      <div class="clip-name">${clip.name}${isArchived ? ' <span style="font-size:10px;font-family:var(--mono);color:var(--green);background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">DONE</span>' : ''}</div>
+      <div class="clip-meta">${game}${dur} · ${new Date(clip.addedAt).toLocaleDateString()} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
+      ${descWarning}
+    </div>
+    <div class="pdots">
+      <div class="pdot tt ${clip.platforms.includes('tt')?'on':''}"></div>
+      <div class="pdot ig ${clip.platforms.includes('ig')?'on':''}"></div>
+      <div class="pdot yt ${clip.platforms.includes('yt')?'on':''}"></div>
+    </div>
+    ${actionBtns}
+  </div>`;
+}
+
+function archiveClip(id) {
+  const clip = state.clips.find(c => c.id === id);
+  if (clip) { clip.archived = true; clip.archivedAt = new Date().toISOString(); save(); renderClipList(); updateSidebar(); renderDaysBanner(); }
+}
+
+function restoreClip(id) {
+  const clip = state.clips.find(c => c.id === id);
+  if (clip) { clip.archived = false; delete clip.archivedAt; save(); renderClipList(); updateSidebar(); renderDaysBanner(); }
 }
 
 function updateClipDesc(id, desc) {
@@ -1128,7 +1240,14 @@ function schedulePost() {
 
 function markPosted(postId) {
   const post = state.posts.find(p => p.id === postId);
-  if (post) { post.posted = !post.posted; save(); renderToday(); updateSidebar(); }
+  if (post) {
+    post.posted = !post.posted;
+    save();
+    autoArchiveClips();
+    renderToday();
+    updateSidebar();
+    if (document.getElementById('panel-clips').classList.contains('active')) renderClipList();
+  }
 }
 
 function removePost(postId) {
@@ -1218,6 +1337,7 @@ function renderDaysBanner() {
 
   const todayStr = new Date().toISOString().split('T')[0];
   const unscheduledClips = state.clips.filter(clip => {
+    if (clip.archived) return false;
     // Clip is "available" if it has fewer posts scheduled than its platform count
     const scheduledPlats = [...new Set(state.posts.filter(p => p.clipId === clip.id && p.date >= todayStr).map(p => p.platform))];
     return clip.platforms.some(p => !scheduledPlats.includes(p));
@@ -1225,7 +1345,7 @@ function renderDaysBanner() {
 
   // Count unscheduled platform slots per clip
   let ttAvail = 0, igAvail = 0, ytAvail = 0;
-  state.clips.forEach(clip => {
+  state.clips.filter(c => !c.archived).forEach(clip => {
     const futurePosts = state.posts.filter(p => p.clipId === clip.id && p.date >= todayStr);
     const schedPlats = [...new Set(futurePosts.map(p => p.platform))];
     if (clip.platforms.includes('tt') && !schedPlats.includes('tt')) ttAvail++;
@@ -1646,9 +1766,11 @@ function updateSidebar() {
 
 // ── SELECTS ──────────────────────────────────────────────────────────────
 function refreshAllSelects() {
-  const opts = state.clips.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  const activeClips = state.clips.filter(c => !c.archived);
+  const opts = activeClips.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
   document.getElementById('cap-clip').innerHTML = '<option value="">— choose a clip —</option>' + opts;
-  document.getElementById('chk-clip').innerHTML = '<option value="">— all clips —</option>' + opts;
+  document.getElementById('chk-clip').innerHTML = '<option value="">— all clips —</option>' +
+    state.clips.map(c => `<option value="${c.id}">${c.name}${c.archived?' (archived)':''}</option>`).join('');
 }
 
 function refreshPostClipSelect() {
