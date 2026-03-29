@@ -795,52 +795,52 @@ const CHECKLIST_ITEMS = {
   ]
 };
 
-// Caption templates by platform and tone
+// Caption templates by platform and tone — tuned for FPS/shooter, kills/clutches, Khanvict style
 const CAPTION_TEMPLATES = {
   tt: {
-    hype: (d,g) => `bro this ${g} clip broke me 💀🔥\n\n${d.hook}\n\n${d.result} NO WAY THAT JUST HAPPENED`,
-    chill: (d,g) => `just another day in ${g} 😮‍💨\n\n${d.hook}\n\n${d.result} follow for more streams`,
-    funny: (d,g) => `i cannot believe this actually worked 😭\n\n${d.hook}\n\n${d.result} pov: your enemies watching the replay`,
-    clutch: (d,g) => `CLUTCH OR KICK 🎯\n\n${d.hook}\n\n${d.result} this is why I grind ${g} daily`,
-    educational: (d,g) => `${g} tip that changed everything ⬇️\n\n${d.hook}\n\n${d.result} save this for your next game`
+    hype:        (d,g) => `NOT A SINGLE CHANCE 😤🔥\n\n${d.hook}\n\n${d.result}\n\nthey never stood a chance`,
+    chill:       (d,g) => `${d.hook}\n\n${d.result}\n\njust a regular day in ${g}. nothing to see here 😮‍💨`,
+    funny:       (d,g) => `bro really thought he had me 💀\n\n${d.hook}\n\n${d.result}\n\npov: being me in ${g}`,
+    clutch:      (d,g) => `1 vs everything. still walked out. 🎯\n\n${d.hook}\n\n${d.result}`,
+    educational: (d,g) => `how I actually win in ${g} ⬇️\n\n${d.hook}\n\n${d.result}\n\nsave this`
   },
   ig: {
-    hype: (d,g) => `When everything lines up perfectly 🔥\n\n${d.hook} — ${d.result}\n\nThis is what ${g} is all about. Follow for daily stream highlights and clips from Twitch, Kick & TikTok Live 🎮`,
-    chill: (d,g) => `Just vibing in ${g} 😮‍💨\n\n${d.hook} — ${d.result}\n\nCatch me live on Twitch, Kick & TikTok daily. Follow for more clips like this 👾`,
-    funny: (d,g) => `I don't even know how this happened 😭\n\n${d.hook} — ${d.result}\n\nIf you play ${g} you KNOW this feeling. Follow for the best moments from the stream 🎮`,
-    clutch: (d,g) => `The clutch that had the whole chat going crazy 🎯\n\n${d.hook} — ${d.result}\n\nStreaming live on Twitch, Kick & TikTok — come watch the next one happen live 🔴`,
-    educational: (d,g) => `${g} tip I wish I knew earlier 💡\n\n${d.hook} — ${d.result}\n\nFollow for daily gameplay tips and stream highlights 🎮`
+    hype:        (d,g) => `Some clips you just have to post.\n\n${d.hook} — ${d.result}\n\nLive on Twitch, Kick & TikTok every stream. Follow to catch the next one happen in real time 🔴`,
+    chill:       (d,g) => `${d.hook}\n\n${d.result}\n\nNothing forced. Just ${g} doing what it does. Catch me live on Twitch, Kick & TikTok 👾`,
+    funny:       (d,g) => `I genuinely didn't know I was going to do that.\n\n${d.hook} — ${d.result}\n\nFollow for the moments chat loses their mind over 💀`,
+    clutch:      (d,g) => `Everything was gone. One move left.\n\n${d.hook} — ${d.result}\n\nThis is why I stream. Live on Twitch, Kick & TikTok 🎯`,
+    educational: (d,g) => `The move that changes everything in ${g}.\n\n${d.hook} — ${d.result}\n\nFollow for more clips and live gameplay on Twitch, Kick & TikTok 🎮`
   },
   yt: {
-    hype: (d,g) => `${g.toUpperCase()} - ${d.shortDesc} (INSANE CLIP)`,
-    chill: (d,g) => `${g} - ${d.shortDesc} | Stream Highlights`,
-    funny: (d,g) => `${g} - ${d.shortDesc} (You Won't Believe This)`,
-    clutch: (d,g) => `${g.toUpperCase()} CLUTCH - ${d.shortDesc}`,
-    educational: (d,g) => `${g} Tips - ${d.shortDesc} | How To Win`
+    hype:        (d,g) => `${g.toUpperCase()} - ${d.shortDesc} (Nobody Saw This Coming)`,
+    chill:       (d,g) => `${g} Highlights - ${d.shortDesc} | Khanvict TV`,
+    funny:       (d,g) => `${g} - ${d.shortDesc} (I Can't Explain This)`,
+    clutch:      (d,g) => `${g.toUpperCase()} - ${d.shortDesc} | Clutch or Kick`,
+    educational: (d,g) => `How To Win ${g} - ${d.shortDesc} | Khanvict TV`
   }
 };
 
 const HASHTAGS = {
   tt: {
-    hype:        ['#gaming', '#fyp', '#clutch', '#highlight', '#streamer', '#viral', '#foryou'],
-    chill:       ['#gaming', '#fyp', '#streamer', '#gaminglife', '#chill', '#foryoupage', '#gamer'],
-    funny:       ['#gaming', '#fyp', '#funny', '#gamingfails', '#streamer', '#comedy', '#foryou'],
-    clutch:      ['#gaming', '#clutch', '#fyp', '#competitive', '#streamer', '#highlights', '#foryou'],
-    educational: ['#gaming', '#gamertips', '#fyp', '#howto', '#streamer', '#levelup', '#tutorial']
+    hype:        ['#warzone', '#fyp', '#gaming', '#clutch', '#foryou', '#fps', '#khanvicttv'],
+    chill:       ['#warzone', '#fyp', '#gaming', '#streamer', '#foryoupage', '#fps', '#khanvicttv'],
+    funny:       ['#warzone', '#fyp', '#gaming', '#funny', '#foryou', '#fps', '#khanvicttv'],
+    clutch:      ['#warzone', '#clutch', '#fyp', '#gaming', '#foryou', '#fps', '#khanvicttv'],
+    educational: ['#warzone', '#gamertips', '#fyp', '#gaming', '#howtowin', '#fps', '#khanvicttv']
   },
   ig: {
-    hype:        ['#gaming', '#gamer', '#clutch', '#streamer', '#highlights', '#twitch'],
-    chill:       ['#gaming', '#gamer', '#streamer', '#gaminglife', '#twitch', '#kick'],
-    funny:       ['#gaming', '#gamer', '#funny', '#streamer', '#twitch', '#gamingmemes'],
-    clutch:      ['#gaming', '#clutch', '#gamer', '#competitive', '#streamer', '#esports'],
-    educational: ['#gaming', '#gamertips', '#gamer', '#howto', '#streamer', '#levelup']
+    hype:        ['#warzone', '#gaming', '#clutch', '#streamer', '#fps', '#twitch', '#khanvicttv'],
+    chill:       ['#warzone', '#gaming', '#streamer', '#fps', '#twitch', '#kick', '#khanvicttv'],
+    funny:       ['#warzone', '#gaming', '#funny', '#streamer', '#fps', '#twitch', '#khanvicttv'],
+    clutch:      ['#warzone', '#clutch', '#gaming', '#fps', '#streamer', '#twitch', '#khanvicttv'],
+    educational: ['#warzone', '#gamertips', '#gaming', '#fps', '#howto', '#streamer', '#khanvicttv']
   },
   yt: {
-    hype:        ['#gaming', '#shorts', '#clutch', '#highlights', '#fyp', '#gamingshorts'],
-    chill:       ['#gaming', '#shorts', '#streamer', '#gamingshorts', '#fyp', '#highlights'],
-    funny:       ['#gaming', '#shorts', '#funny', '#gamingshorts', '#fyp', '#highlights'],
-    clutch:      ['#gaming', '#shorts', '#clutch', '#competitive', '#fyp', '#gamingshorts'],
-    educational: ['#gaming', '#shorts', '#gamertips', '#howto', '#fyp', '#gamingshorts']
+    hype:        ['#warzone', '#shorts', '#gaming', '#clutch', '#fyp', '#fps', '#khanvicttv'],
+    chill:       ['#warzone', '#shorts', '#gaming', '#streamer', '#fyp', '#fps', '#khanvicttv'],
+    funny:       ['#warzone', '#shorts', '#gaming', '#funny', '#fyp', '#fps', '#khanvicttv'],
+    clutch:      ['#warzone', '#clutch', '#shorts', '#gaming', '#fyp', '#fps', '#khanvicttv'],
+    educational: ['#warzone', '#gamertips', '#shorts', '#gaming', '#fyp', '#fps', '#khanvicttv']
   }
 };
 
@@ -1350,8 +1350,9 @@ function switchCapTab(el, tab) {
 
 async function generateCaptions() {
   const desc = document.getElementById('cap-desc').value.trim();
-  const game = document.getElementById('cap-game').value.trim() || 'the game';
+  const game = document.getElementById('cap-game').value.trim() || 'Warzone';
   const tone = document.getElementById('cap-tone').value;
+  const clipId = parseInt(document.getElementById('cap-clip').value);
 
   if (!desc) {
     alert('Please add a description of what happens in the clip first.');
@@ -1360,20 +1361,41 @@ async function generateCaptions() {
 
   const apiKey = loadApiKey();
 
+  // Store generated hashtags on the clip for later use in engagement logging
+  const savedHashtags = {};
+
   if (apiKey) {
-    // ── REAL AI GENERATION ──────────────────────────────────────
     const PLATS = [
-      { key: 'tt', name: 'TikTok',           rules: 'Max 150 chars. Punchy hook first line. Gamer/streamer language. 1 CTA. Conversational, raw energy. Can use all caps for impact moments.' },
-      { key: 'ig', name: 'Instagram Reels',  rules: 'Max 220 chars. Storytelling hook. Line breaks encouraged. Emojis welcome. Mention live streaming on TikTok/Twitch/Kick.' },
-      { key: 'yt', name: 'YouTube Shorts',   rules: 'Title style, max 80 chars. Keyword-rich for SEO. No hashtags inline. Think "what would someone search for to find this."' }
+      {
+        key: 'tt', name: 'TikTok',
+        rules: `Max 150 chars total. Lead with a punchy 1-line hook — no emoji at the start, drop it mid or end.
+Short sentences. Raw, unfiltered voice. Can go ALL CAPS for one word/phrase max.
+End with something that doesn't ask to follow — just a cold confident closer.
+No hashtags in the caption body itself.`
+      },
+      {
+        key: 'ig', name: 'Instagram Reels',
+        rules: `120–200 chars. Open with a confident statement, not a question.
+Second line: what actually happened in the clip (one clean sentence).
+Third line: call to action — stream is live on Twitch, Kick & TikTok.
+Line breaks between each. Emojis max 2, placed at end of lines only.
+No hashtags in caption body.`
+      },
+      {
+        key: 'yt', name: 'YouTube Shorts',
+        rules: `Title format, max 70 chars. Must include the game name and a search-friendly keyword phrase.
+Think: what would someone type to find this specific clip?
+Include "Khanvict TV" or "Khanvict" at end after pipe symbol.
+No emojis. No hashtags inline.`
+      }
     ];
 
-    const toneMap = {
-      hype:        'hype, high energy, exclamation points, all-caps moments, feels unreal',
-      chill:       'chill and relaxed, casual and conversational, low-key cool',
-      funny:       'funny and relatable, self-aware, meme-aware, light comedy',
-      clutch:      'intense and competitive, clutch moment energy, dramatic stakes',
-      educational: 'educational and tip-focused, share value, teach the viewer something'
+    const toneGuide = {
+      hype:        'High energy and aggressive. SHORT words. Impact statements. ALL CAPS one phrase. Feels like a punch.',
+      chill:       'Smooth, confident, minimal. Says a lot with very little. Cool, not try-hard. Never desperate.',
+      funny:       'Self-aware and dry. Not cringe-funny — smart-funny. The kind of guy who is laughing at himself.',
+      clutch:      'Dramatic stakes, quiet confidence. Build tension in the hook, deliver the outcome matter-of-factly.',
+      educational: 'Direct and practical. State the tip upfront. No filler words.'
     };
 
     ['tt','ig','yt'].forEach(p => {
@@ -1382,46 +1404,58 @@ async function generateCaptions() {
     });
 
     for (const plat of PLATS) {
-      const prompt = `You write social media captions for a gaming streamer who streams on TikTok Live, Twitch, and Kick simultaneously.
+      const prompt = `You write short-form video captions for Khanvict TV — a gaming streamer who plays FPS/shooter games (Warzone, Fortnite, Apex) and posts kill/clutch highlight clips. He streams live simultaneously on Twitch, Kick and TikTok Live.
 
-Clip: ${desc}
-Game: ${game}
-Tone: ${toneMap[tone]}
-Platform: ${plat.name}
-Rules: ${plat.rules}
+His brand voice is: smooth and confident, sometimes hype and aggressive, occasionally funny and self-aware. Never cringe. Never desperate. Never generic. His clips are mostly insane kills, clutch moments, and wins that look effortless.
 
-Return ONLY a raw JSON object (no markdown, no code fences, no explanation) with:
-- "caption": the caption string
-- "hashtags": array of 6 strings each starting with #, first one should be #${game.toLowerCase().replace(/\s+/g,'')}
-- "tip": one platform-specific posting tip under 70 chars`;
+CLIP DESCRIPTION: ${desc}
+GAME: ${game}
+TONE FOR THIS CLIP: ${toneGuide[tone]}
+PLATFORM: ${plat.name}
+PLATFORM RULES: ${plat.rules}
+
+HASHTAG RULES: Choose 7 hashtags. Mix: 2 game-specific (e.g. #warzone #wzranked), 2 content-type (e.g. #clutch #fps), 2 reach tags (e.g. #fyp #gaming), 1 brand tag (#khanvicttv). All lowercase, no spaces. Include the actual game name as first hashtag.
+
+Return ONLY a raw JSON object with no markdown, no code fences:
+{
+  "caption": "the caption text",
+  "hashtags": ["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7"],
+  "tip": "one sharp posting tip for this platform under 65 chars"
+}`;
 
       try {
         const res = await fetch('https://api.anthropic.com/v1/messages', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-          body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+          body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 700, messages: [{ role: 'user', content: prompt }] })
         });
         if (!res.ok) throw new Error('API error ' + res.status);
         const data = await res.json();
         const raw = data.content.map(b => b.text || '').join('');
         const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
+        savedHashtags[plat.key] = parsed.hashtags;
         renderCapResult(plat.key, parsed.caption, parsed.hashtags, parsed.tip);
       } catch(e) {
-        if (e.message.includes('401')) {
+        if (e.message && e.message.includes('401')) {
           document.getElementById('cap-' + plat.key).innerHTML =
             '<div style="color:var(--red);font-size:13px;padding:12px 0;">Invalid API key. Check Settings and re-enter your key.</div>';
         } else {
-          // Fallback to template on error
-          renderCapFromTemplate(plat.key, desc, game, tone);
+          renderCapFromTemplate(plat.key, desc, game, tone, savedHashtags);
         }
       }
     }
 
   } else {
-    // ── TEMPLATE FALLBACK (no key) ───────────────────────────────
-    ['tt','ig','yt'].forEach(p => renderCapFromTemplate(p, desc, game, tone));
-    const notice = document.getElementById('cap-no-key-notice');
-    if (notice) notice.style.display = 'block';
+    ['tt','ig','yt'].forEach(p => {
+      const tags = renderCapFromTemplate(p, desc, game, tone);
+      savedHashtags[p] = tags;
+    });
+  }
+
+  // Save hashtags to the clip so engagement logging can pre-fill them
+  if (clipId) {
+    const clip = state.clips.find(c => c.id === clipId);
+    if (clip) { clip.lastHashtags = savedHashtags; save(); }
   }
 }
 
@@ -1436,8 +1470,10 @@ function renderCapFromTemplate(plat, desc, game, tone) {
   const fn = CAPTION_TEMPLATES[plat][tone];
   const caption = fn(d, game);
   const gameTag = '#' + game.toLowerCase().replace(/\s+/g,'');
-  const allTags = [gameTag, ...HASHTAGS[plat][tone].filter(t=>t!==gameTag)];
+  const baseTags = HASHTAGS[plat][tone].filter(t => t !== gameTag);
+  const allTags = [gameTag, ...baseTags];
   renderCapResult(plat, caption, allTags, PLATFORM_TIPS[plat]);
+  return allTags;
 }
 
 function renderCapResult(plat, caption, hashtags, tip) {
@@ -1877,18 +1913,35 @@ function renderEngageLog() {
 }
 
 function openEngageModal() {
-  // Populate with posted posts
   const posted = state.posts.filter(p => p.posted);
   const sel = document.getElementById('eng-post-sel');
   sel.innerHTML = posted.length
     ? posted.map(p => `<option value="${p.id}">${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('')
     : '<option value="">No posted clips yet</option>';
+
   document.getElementById('eng-views').value = '';
   document.getElementById('eng-likes').value = '';
   document.getElementById('eng-comments').value = '';
   document.getElementById('eng-followers').value = '';
-  document.getElementById('eng-hashtags').value = '';
   document.getElementById('eng-notes').value = '';
+  document.getElementById('eng-hashtags').value = '';
+
+  // Pre-fill hashtags when a post is selected
+  sel.onchange = function() {
+    const postId = parseInt(this.value);
+    const post = state.posts.find(p => p.id === postId);
+    if (!post) return;
+    const clip = state.clips.find(c => c.id === post.clipId);
+    if (clip && clip.lastHashtags && clip.lastHashtags[post.platform]) {
+      document.getElementById('eng-hashtags').value = clip.lastHashtags[post.platform].join(', ');
+    } else {
+      document.getElementById('eng-hashtags').value = '';
+    }
+  };
+
+  // Trigger prefill for first item
+  if (posted.length) sel.onchange.call(sel);
+
   document.getElementById('modal-engage').classList.add('open');
 }
 
