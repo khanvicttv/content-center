@@ -25,7 +25,7 @@
     --accent2: #a78bfa;
     --green: #22c55e;
     --amber: #f59e0b;
-    --red: #ef4444;
+    --red: #cc1414;
     --tiktok: #ff2d55;
     --ig: #e1306c;
     --yt: #ff6060;
@@ -339,8 +339,11 @@
 
   <!-- TOPBAR -->
   <header class="topbar">
-    <div class="logo">KCC</div>
-    <div style="font-size:11px;color:var(--muted);font-family:var(--mono);">Khanvict Command Center</div>
+    <img src="icon-192.png" alt="KCC" style="height:34px;width:34px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+    <div style="display:flex;flex-direction:column;gap:1px;">
+      <div class="logo" style="font-size:12px;letter-spacing:1.5px;">KHANVICT</div>
+      <div style="font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;">COMMAND CENTER</div>
+    </div>
     <div class="topbar-right">
       <div class="status-pill"><div class="status-dot"></div>ACTIVE</div>
       <div class="api-pill disconnected" id="api-pill" onclick="nav('settings')" title="Click to set API key">
@@ -375,11 +378,16 @@
 
     <!-- TODAY -->
     <div class="panel active" id="panel-today">
-      <div class="panel-header">
-        <div class="panel-title">TODAY <span id="today-date"></span></div>
-        <div class="flex">
-          <button class="btn btn-ghost btn-sm" onclick="nav('schedule')">Full schedule</button>
-          <button class="btn btn-primary btn-sm" onclick="openPostModal()">+ Schedule post</button>
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border);">
+        <img src="icon-512.png" alt="Khanvict Command Center" style="height:64px;width:64px;border-radius:14px;object-fit:cover;flex-shrink:0;">
+        <div>
+          <div style="font-family:var(--mono);font-size:17px;font-weight:700;letter-spacing:1.5px;color:var(--text);">KHANVICT</div>
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--red);">COMMAND CENTER</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;" id="today-date"></div>
+        </div>
+        <div class="flex" style="margin-left:auto;">
+          <button class="btn btn-ghost btn-sm" onclick="nav('schedule')">Schedule</button>
+          <button class="btn btn-primary btn-sm" onclick="openPostModal()">+ Post</button>
         </div>
       </div>
 
