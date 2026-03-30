@@ -141,6 +141,8 @@
   .time-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-align: right; padding: 9px 6px; background: var(--bg3); }
   .slot-empty { border: 1px dashed rgba(255,255,255,0.06); border-radius: 4px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: transparent; font-size: 18px; transition: all 0.15s; margin-bottom: 3px; }
   .slot-empty:hover { border-color: var(--accent); color: var(--accent); }
+  .slot-add-more { border: 1px dashed rgba(255,255,255,0.06); border-radius: 4px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: transparent; font-size: 13px; transition: all 0.15s; margin-top: 2px; }
+  .slot-add-more:hover { border-color: var(--accent); color: var(--accent); }
   .post-slot { border-radius: 4px; padding: 5px 7px; margin-bottom: 3px; cursor: grab; font-size: 11px; line-height: 1.3; transition: opacity 0.15s; min-height: 50px; user-select: none; }
   .post-slot:hover { opacity: 0.8; }
   .post-slot.slot-posted { opacity: 0.5; }
@@ -1124,6 +1126,18 @@ function buildClipRow(clip, isArchived) {
   const dur  = clip.duration ? ' · ' + clip.duration : '';
   const noDesc = !clip.desc;
 
+  // Find next scheduled post
+  const todayStr = new Date().toISOString().split('T')[0];
+  const futurePosts = state.posts
+    .filter(p => p.clipId === clip.id && !p.posted && p.date >= todayStr)
+    .sort((a,b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+  const nextPost = futurePosts[0];
+  const nextScheduled = nextPost
+    ? `<span style="color:var(--accent2);">Next: ${new Date(nextPost.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})} ${fmtTime(nextPost.time)} · ${PLAT_LABEL[nextPost.platform]}</span>`
+    : !isArchived ? `<span style="color:var(--muted);">Not scheduled</span>` : '';
+
+  const addedDate = new Date(clip.addedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+
   const descWarning = noDesc && clip.fromScan && !isArchived
     ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
          <input type="text" placeholder="Add a description for captions..."
@@ -1156,7 +1170,8 @@ function buildClipRow(clip, isArchived) {
   <div class="clip-row" id="cliprow-${clip.id}" style="${rowStyle}">
     <div style="min-width:0;">
       <div class="clip-name">${clip.name}${isArchived ? ' <span style="font-size:10px;font-family:var(--mono);color:var(--green);background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">DONE</span>' : ''}</div>
-      <div class="clip-meta">${game}${dur} · ${new Date(clip.addedAt).toLocaleDateString()} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
+      <div class="clip-meta">${game}${dur} · Added ${addedDate} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
+      ${!isArchived ? `<div class="clip-meta" style="margin-top:2px;">${nextScheduled}</div>` : ''}
       ${descWarning}
     </div>
     <div class="pdots">
@@ -1398,33 +1413,12 @@ function renderToday() {
 // ── DAYS REMAINING BANNER ────────────────────────────────────────────────
 function renderDaysBanner() {
   const banner = document.getElementById('days-banner');
-  if (!state.clips.length) { banner.innerHTML = ''; return; }
+  const activeClips = state.clips.filter(c => !c.archived);
+  if (!activeClips.length) { banner.innerHTML = ''; return; }
 
-  const todayStr = new Date().toISOString().split('T')[0];
-  const unscheduledClips = state.clips.filter(clip => {
-    if (clip.archived) return false;
-    // Clip is "available" if it has fewer posts scheduled than its platform count
-    const scheduledPlats = [...new Set(state.posts.filter(p => p.clipId === clip.id && p.date >= todayStr).map(p => p.platform))];
-    return clip.platforms.some(p => !scheduledPlats.includes(p));
-  });
-
-  // Count unscheduled platform slots per clip
-  let ttAvail = 0, igAvail = 0, ytAvail = 0;
-  state.clips.filter(c => !c.archived).forEach(clip => {
-    const futurePosts = state.posts.filter(p => p.clipId === clip.id && p.date >= todayStr);
-    const schedPlats = [...new Set(futurePosts.map(p => p.platform))];
-    if (clip.platforms.includes('tt') && !schedPlats.includes('tt')) ttAvail++;
-    if (clip.platforms.includes('ig') && !schedPlats.includes('ig')) igAvail++;
-    if (clip.platforms.includes('yt') && !schedPlats.includes('yt')) ytAvail++;
-  });
-
-  // Days = how many more days we can post at 3x/day (TikTok is the limiting platform)
-  // TikTok posts 3x/day so each clip = 1/3 of a day
-  const ttDays = Math.floor(ttAvail / 3);
-  const igDays = igAvail; // 1x/day
-  const ytDays = ytAvail; // 1x/day
-  const limitingDays = Math.min(ttDays || 999, igDays || 999, ytDays || 999);
-  const displayDays = limitingDays === 999 ? 0 : limitingDays;
+  // Simple calculation: total active clips ÷ 3 (posting 3x per day)
+  const totalClips  = activeClips.length;
+  const displayDays = Math.floor(totalClips / 3);
 
   const cls = displayDays >= 7 ? 'healthy' : displayDays >= 3 ? 'low' : 'critical';
   const msg = displayDays >= 7
@@ -1438,20 +1432,20 @@ function renderDaysBanner() {
     <div>
       <div class="days-num">${displayDays}</div>
       <div class="days-label">days of content remaining</div>
-      <div class="days-sub">${msg}</div>
+      <div class="days-sub">${msg} (${totalClips} clips ÷ 3 per day)</div>
     </div>
     <div class="days-breakdown">
       <div class="days-plat">
-        <div class="days-plat-num" style="color:var(--tiktok);">${ttAvail}</div>
-        <div class="days-plat-lbl">TikTok clips</div>
+        <div class="days-plat-num" style="color:var(--text);">${totalClips}</div>
+        <div class="days-plat-lbl">total clips</div>
       </div>
       <div class="days-plat">
-        <div class="days-plat-num" style="color:var(--ig);">${igAvail}</div>
-        <div class="days-plat-lbl">IG clips</div>
+        <div class="days-plat-num" style="color:var(--accent2);">3</div>
+        <div class="days-plat-lbl">posts/day</div>
       </div>
       <div class="days-plat">
-        <div class="days-plat-num" style="color:var(--yt);">${ytAvail}</div>
-        <div class="days-plat-lbl">YT clips</div>
+        <div class="days-plat-num" style="color:${cls==='healthy'?'var(--green)':cls==='low'?'var(--amber)':'var(--red)'};">${displayDays}</div>
+        <div class="days-plat-lbl">days left</div>
       </div>
     </div>
   </div>`;
@@ -1466,8 +1460,6 @@ function getWeekDates(offset) {
 
 function prevWeek() { state.weekOffset--; renderWeek(); }
 function nextWeek() { state.weekOffset++; renderWeek(); }
-
-let dragPostId = null;
 
 function renderWeek() {
   const days = getWeekDates(state.weekOffset);
@@ -1507,6 +1499,9 @@ function renderWeek() {
             draggable="true"
             ondragstart="onDragStart(event,${p.id})"
             ondragend="onDragEnd(event)"
+            ontouchstart="onTouchStart(event,${p.id})"
+            ontouchmove="onTouchMove(event)"
+            ontouchend="onTouchEnd(event)"
             onclick="openConfirmPost(${p.id})"
             title="Click to confirm posted · Drag to reschedule">
             <div class="slot-plat">${PLAT_LABEL[p.platform]}</div>
@@ -1514,6 +1509,8 @@ function renderWeek() {
             <div style="margin-top:2px;">${p.posted?'<span class="posted-badge">✓</span>':'<span class="pending-badge">•</span>'}</div>
           </div>`;
         });
+        // Always show add button so you can add more posts to the same slot
+        html += `<div class="slot-add-more" onclick="openPostModal('${dStr}','${slot.time}')" title="Add another post to this slot">+</div>`;
       } else {
         html += `<div class="slot-empty" onclick="openPostModal('${dStr}','${slot.time}')" title="Add post">+</div>`;
       }
@@ -1524,7 +1521,14 @@ function renderWeek() {
   grid.innerHTML = html;
 }
 
-// ── DRAG AND DROP ─────────────────────────────────────────────────────────
+// ── DRAG AND DROP (desktop + mobile touch) ───────────────────────────────
+let dragPostId = null;
+let touchDragEl = null;
+let touchDragClone = null;
+let touchStartX = 0;
+let touchStartY = 0;
+
+// Desktop drag
 function onDragStart(e, postId) {
   dragPostId = postId;
   e.dataTransfer.effectAllowed = 'move';
@@ -1542,7 +1546,6 @@ function onDropSlot(e, date, time) {
   if (!dragPostId) return;
   const post = state.posts.find(p => p.id === dragPostId);
   if (!post) return;
-  // Don't drop onto same slot
   if (post.date === date && post.time === time) return;
   post.date = date;
   post.time = time;
@@ -1551,6 +1554,84 @@ function onDropSlot(e, date, time) {
   renderWeek();
   renderToday();
   updateSidebar();
+  scheduleNtfyNotification(post);
+}
+
+// Mobile touch drag
+function onTouchStart(e, postId) {
+  const el = e.currentTarget;
+  dragPostId = postId;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+
+  // Create a floating clone
+  touchDragClone = el.cloneNode(true);
+  touchDragClone.style.cssText = `
+    position:fixed; z-index:9999; pointer-events:none; opacity:0.85;
+    width:${el.offsetWidth}px; border-radius:4px;
+    left:${el.getBoundingClientRect().left}px;
+    top:${el.getBoundingClientRect().top}px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.5);
+    transition:none;
+  `;
+  document.body.appendChild(touchDragClone);
+  el.style.opacity = '0.3';
+  touchDragEl = el;
+}
+
+function onTouchMove(e) {
+  if (!touchDragClone) return;
+  e.preventDefault();
+  const dx = e.touches[0].clientX - touchStartX;
+  const dy = e.touches[0].clientY - touchStartY;
+  const rect = touchDragEl.getBoundingClientRect();
+  touchDragClone.style.left = (rect.left + dx) + 'px';
+  touchDragClone.style.top  = (rect.top  + dy) + 'px';
+
+  // Highlight drop zone under finger
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+  touchDragClone.style.display = 'none';
+  const target = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+  touchDragClone.style.display = '';
+  if (target) {
+    const zone = target.closest('.drop-zone');
+    if (zone) zone.classList.add('drag-over');
+  }
+}
+
+function onTouchEnd(e) {
+  if (!touchDragClone) return;
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+  const x = e.changedTouches[0].clientX;
+  const y = e.changedTouches[0].clientY;
+  touchDragClone.style.display = 'none';
+  const target = document.elementFromPoint(x, y);
+  touchDragClone.style.display = '';
+
+  if (target) {
+    const zone = target.closest('.drop-zone');
+    if (zone && dragPostId) {
+      const date = zone.dataset.date;
+      const time = zone.dataset.time;
+      const post = state.posts.find(p => p.id === dragPostId);
+      if (post && !(post.date === date && post.time === time)) {
+        post.date = date;
+        post.time = time;
+        save();
+        renderWeek();
+        renderToday();
+        updateSidebar();
+        scheduleNtfyNotification(post);
+      }
+    }
+  }
+
+  // Cleanup
+  touchDragClone.remove();
+  touchDragClone = null;
+  if (touchDragEl) { touchDragEl.style.opacity = ''; touchDragEl = null; }
+  dragPostId = null;
 }
 
 // ── CONFIRM POSTED MODAL ──────────────────────────────────────────────────
