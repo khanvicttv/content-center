@@ -1,4 +1,4 @@
-const CACHE = 'kcc-v7';
+const CACHE = 'kcc-v9';
 const ASSETS = [
   '/content-center/',
   '/content-center/index.html',
@@ -18,15 +18,21 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    ).then(() => {
+      // Tell all open tabs a new version is active
+      self.clients.matchAll({ includeUncontrolled: true }).then(clients => {
+        clients.forEach(client => client.postMessage({ type: 'UPDATE_AVAILABLE' }));
+      });
+    })
   );
   self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
-  // For the main HTML — always try network first, fall back to cache
-  // This ensures updates are picked up immediately
-  if (e.request.url.includes('index.html') || e.request.url.endsWith('/content-center/')) {
+  // Always network-first for HTML — catches updates immediately
+  if (e.request.mode === 'navigate' ||
+      e.request.url.includes('index.html') ||
+      e.request.url.endsWith('/content-center/')) {
     e.respondWith(
       fetch(e.request)
         .then(res => {
@@ -38,10 +44,11 @@ self.addEventListener('fetch', e => {
     );
     return;
   }
-  // For everything else — cache first, network fallback
+  // Cache-first for everything else (icons, manifest)
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      return cached || fetch(e.request).catch(() => caches.match('/content-center/index.html'));
-    })
+    caches.match(e.request).then(cached =>
+      cached || fetch(e.request).catch(() => caches.match('/content-center/index.html'))
+    )
   );
 });
+

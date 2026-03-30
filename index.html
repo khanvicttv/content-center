@@ -225,6 +225,11 @@
 
   /* DAYS REMAINING BANNER */
   .days-banner { border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+  /* UPDATE BANNER */
+  .update-banner { display:none; position:fixed; top:52px; left:0; right:0; z-index:300; background:#1a1a2e; border-bottom:2px solid var(--accent); padding:10px 20px; align-items:center; justify-content:space-between; gap:12px; }
+  .update-banner.show { display:flex; }
+  @media (max-width:768px) { .update-banner { top:48px; padding:10px 14px; flex-wrap:wrap; } }
   .days-banner.healthy { background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.15); }
   .days-banner.low { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.2); }
   .days-banner.critical { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); }
@@ -370,6 +375,15 @@
 </head>
 <body>
 <div class="shell">
+
+<!-- UPDATE AVAILABLE BANNER -->
+<div class="update-banner" id="update-banner">
+  <div style="font-family:var(--mono);font-size:12px;color:var(--accent2);">
+    ✦ New update available
+    <span style="color:var(--muted);font-size:11px;margin-left:6px;">Reload to get the latest version</span>
+  </div>
+  <button class="btn btn-primary btn-sm" onclick="applyUpdate()">Reload now</button>
+</div>
 
   <!-- TOPBAR -->
   <header class="topbar">
@@ -2814,7 +2828,28 @@ setInterval(checkUpcomingPosts, 60000);
 })();
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/content-center/sw.js').catch(() => {});
+  navigator.serviceWorker.register('/content-center/sw.js').then(reg => {
+    // Check for updates every 60 seconds
+    setInterval(() => reg.update(), 60000);
+  }).catch(() => {});
+
+  // Listen for UPDATE_AVAILABLE message from the new service worker
+  navigator.serviceWorker.addEventListener('message', e => {
+    if (e.data && e.data.type === 'UPDATE_AVAILABLE') {
+      document.getElementById('update-banner').classList.add('show');
+    }
+  });
+
+  // Also detect when a new SW takes control (handles iOS quirks)
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    document.getElementById('update-banner').classList.add('show');
+  });
+}
+
+function applyUpdate() {
+  // Save any pending state then reload fresh
+  save();
+  window.location.reload(true);
 }
 </script>
 </body>
