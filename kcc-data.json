@@ -32,7 +32,9 @@
       ],
       "addedAt": "2026-03-28T22:03:17",
       "fromScan": true,
-      "lastHashtags": {}
+      "lastHashtags": {},
+      "archived": true,
+      "archivedAt": "2026-03-30T23:17:41.297Z"
     },
     {
       "id": 1774752970629,
