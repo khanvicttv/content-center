@@ -141,8 +141,10 @@
   .time-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-align: right; padding: 9px 6px; background: var(--bg3); }
   .slot-empty { border: 1px dashed rgba(255,255,255,0.06); border-radius: 4px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: transparent; font-size: 18px; transition: all 0.15s; margin-bottom: 3px; }
   .slot-empty:hover { border-color: var(--accent); color: var(--accent); }
-  .post-slot { border-radius: 4px; padding: 5px 7px; margin-bottom: 3px; cursor: pointer; font-size: 11px; line-height: 1.3; transition: opacity 0.15s; min-height: 50px; }
+  .post-slot { border-radius: 4px; padding: 5px 7px; margin-bottom: 3px; cursor: grab; font-size: 11px; line-height: 1.3; transition: opacity 0.15s; min-height: 50px; user-select: none; }
   .post-slot:hover { opacity: 0.8; }
+  .post-slot.slot-posted { opacity: 0.5; }
+  .drop-zone.drag-over { background: rgba(124,92,252,0.12); outline: 1px dashed var(--accent); }
   .post-slot.tt { background: rgba(255,45,85,0.12); border-left: 2px solid var(--tiktok); }
   .post-slot.ig { background: rgba(225,48,108,0.12); border-left: 2px solid var(--ig); }
   .post-slot.yt { background: rgba(255,96,96,0.12); border-left: 2px solid var(--yt); }
@@ -374,7 +376,6 @@
       <button class="nav-item" onclick="nav('schedule')" id="nav-schedule"><span class="nav-icon">▦</span>Schedule</button>
       <button class="nav-item" onclick="nav('clips')" id="nav-clips"><span class="nav-icon">◈</span>Clips <span class="nav-badge" id="clip-badge">0</span></button>
       <button class="nav-item" onclick="nav('captions')" id="nav-captions"><span class="nav-icon">✦</span>Captions</button>
-      <button class="nav-item" onclick="nav('checklist')" id="nav-checklist"><span class="nav-icon">◻</span>Checklist</button>
       <button class="nav-item" onclick="nav('analytics')" id="nav-analytics"><span class="nav-icon">◈</span>Analytics</button>
       <button class="nav-item" onclick="nav('settings')" id="nav-settings"><span class="nav-icon">⚙</span>Settings</button>
     </div>
@@ -523,20 +524,6 @@
       <div id="cap-yt" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
     </div>
 
-    <!-- CHECKLIST -->
-    <div class="panel" id="panel-checklist">
-      <div class="panel-header">
-        <div class="panel-title">UPLOAD <span>CHECKLIST</span></div>
-        <span id="chk-label" style="font-family:var(--mono);font-size:11px;color:var(--muted);">0 / 0 done</span>
-      </div>
-      <div class="progress-track" style="margin-bottom:20px;"><div class="progress-fill" id="chk-bar" style="width:0%"></div></div>
-      <div class="field">
-        <label>Filter by clip</label>
-        <select id="chk-clip" onchange="renderChecklist()"><option value="">— all clips —</option></select>
-      </div>
-      <div id="checklist-body"></div>
-    </div>
-
     <!-- ANALYTICS -->
     <div class="panel" id="panel-analytics">
       <div class="panel-header">
@@ -676,9 +663,6 @@
   <button class="bnav-item" onclick="nav('captions')" id="bnav-captions">
     <span class="bnav-icon">✦</span>Captions
   </button>
-  <button class="bnav-item" onclick="nav('checklist')" id="bnav-checklist">
-    <span class="bnav-icon">◻</span>Tasks
-  </button>
   <button class="bnav-item" onclick="nav('analytics')" id="bnav-analytics">
     <span class="bnav-icon">◈</span>Stats
   </button>
@@ -686,6 +670,18 @@
     <span class="bnav-icon">⚙</span>Settings
   </button>
 </nav>
+
+<!-- CONFIRM POSTED MODAL -->
+<div class="modal-overlay" id="modal-confirm-post">
+  <div class="modal" style="max-width:360px;">
+    <div class="modal-title">CONFIRM POST</div>
+    <div id="confirm-post-body" style="margin-bottom:20px;"></div>
+    <div class="flex flex-end" style="gap:10px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm-post')">Not yet</button>
+      <button class="btn btn-primary" onclick="confirmMarkPosted()">Yes, posted ✓</button>
+    </div>
+  </div>
+</div>
 
 <!-- ENGAGEMENT LOG MODAL -->
 <div class="modal-overlay" id="modal-engage">
@@ -1046,8 +1042,17 @@ function renderClipList() {
   const badge   = document.getElementById('clip-badge');
   const bnavBadge = document.getElementById('bnav-clip-badge');
 
-  const activeClips  = state.clips.filter(c => !c.archived);
-  const archiveClips = state.clips.filter(c => c.archived);
+  const activeClips  = state.clips.filter(c => !c.archived).sort((a, b) => {
+    // Sort by earliest future scheduled post date, unscheduled clips go last
+    const todayStr = new Date().toISOString().split('T')[0];
+    const aPost = state.posts.filter(p => p.clipId === a.id && p.date >= todayStr).sort((x,y) => x.date.localeCompare(y.date))[0];
+    const bPost = state.posts.filter(p => p.clipId === b.id && p.date >= todayStr).sort((x,y) => x.date.localeCompare(y.date))[0];
+    if (aPost && bPost) return aPost.date.localeCompare(bPost.date);
+    if (aPost) return -1;
+    if (bPost) return 1;
+    return new Date(b.addedAt) - new Date(a.addedAt); // unscheduled: newest first
+  });
+  const archiveClips = state.clips.filter(c => c.archived).sort((a,b) => new Date(b.archivedAt||0) - new Date(a.archivedAt||0));
 
   document.getElementById('ctab-active-count').textContent  = activeClips.length;
   document.getElementById('ctab-archive-count').textContent = archiveClips.length;
@@ -1434,6 +1439,8 @@ function getWeekDates(offset) {
 function prevWeek() { state.weekOffset--; renderWeek(); }
 function nextWeek() { state.weekOffset++; renderWeek(); }
 
+let dragPostId = null;
+
 function renderWeek() {
   const days = getWeekDates(state.weekOffset);
   const todayStr = new Date().toISOString().split('T')[0];
@@ -1460,24 +1467,112 @@ function renderWeek() {
     days.forEach(d => {
       const dStr = d.toISOString().split('T')[0];
       const posts = state.posts.filter(p => p.date === dStr && p.time === slot.time);
-      html += '<div class="week-cell">';
+      // Drop zone cell
+      html += `<div class="week-cell drop-zone" data-date="${dStr}" data-time="${slot.time}"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="onDropSlot(event,'${dStr}','${slot.time}')">`;
       if (posts.length) {
         posts.forEach(p => {
-          const short = p.clipName.length > 14 ? p.clipName.substring(0,12)+'…' : p.clipName;
-          html += `<div class="post-slot ${p.platform}" onclick="markPosted(${p.id})" title="${p.clipName} — click to toggle posted">
+          const short = p.clipName.length > 13 ? p.clipName.substring(0,11)+'…' : p.clipName;
+          html += `<div class="post-slot ${p.platform} ${p.posted?'slot-posted':''}"
+            draggable="true"
+            ondragstart="onDragStart(event,${p.id})"
+            ondragend="onDragEnd(event)"
+            onclick="openConfirmPost(${p.id})"
+            title="Click to confirm posted · Drag to reschedule">
             <div class="slot-plat">${PLAT_LABEL[p.platform]}</div>
             <div class="slot-clip-name">${short}</div>
             <div style="margin-top:2px;">${p.posted?'<span class="posted-badge">✓</span>':'<span class="pending-badge">•</span>'}</div>
           </div>`;
         });
       } else {
-        html += `<div class="slot-empty" onclick="openPostModal('${dStr}','${slot.time}')" title="Add post at ${fmtTime(slot.time)}">+</div>`;
+        html += `<div class="slot-empty" onclick="openPostModal('${dStr}','${slot.time}')" title="Add post">+</div>`;
       }
       html += '</div>';
     });
   });
 
   grid.innerHTML = html;
+}
+
+// ── DRAG AND DROP ─────────────────────────────────────────────────────────
+function onDragStart(e, postId) {
+  dragPostId = postId;
+  e.dataTransfer.effectAllowed = 'move';
+  e.currentTarget.style.opacity = '0.4';
+}
+
+function onDragEnd(e) {
+  e.currentTarget.style.opacity = '';
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
+function onDropSlot(e, date, time) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (!dragPostId) return;
+  const post = state.posts.find(p => p.id === dragPostId);
+  if (!post) return;
+  // Don't drop onto same slot
+  if (post.date === date && post.time === time) return;
+  post.date = date;
+  post.time = time;
+  dragPostId = null;
+  save();
+  renderWeek();
+  renderToday();
+  updateSidebar();
+}
+
+// ── CONFIRM POSTED MODAL ──────────────────────────────────────────────────
+let confirmPostId = null;
+
+function openConfirmPost(postId) {
+  const post = state.posts.find(p => p.id === postId);
+  if (!post) return;
+  confirmPostId = postId;
+  const color = PLAT_COLOR[post.platform];
+  const body = document.getElementById('confirm-post-body');
+
+  if (post.posted) {
+    // Already posted — offer to undo
+    body.innerHTML = `
+      <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">This post is already marked as posted.</div>
+      <div style="background:var(--bg3);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:4px;">${PLAT_LABEL[post.platform].toUpperCase()}</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);">${post.clipName}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · ${fmtTime(post.time)}</div>
+      </div>`;
+    document.querySelector('#modal-confirm-post .btn-primary').textContent = 'Undo posted';
+  } else {
+    body.innerHTML = `
+      <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">Have you posted this clip?</div>
+      <div style="background:var(--bg3);border-radius:8px;padding:12px 14px;">
+        <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:4px;">${PLAT_LABEL[post.platform].toUpperCase()}</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);">${post.clipName}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · ${fmtTime(post.time)}</div>
+      </div>`;
+    document.querySelector('#modal-confirm-post .btn-primary').textContent = 'Yes, posted ✓';
+  }
+
+  document.getElementById('modal-confirm-post').classList.add('open');
+}
+
+function confirmMarkPosted() {
+  if (!confirmPostId) return;
+  const post = state.posts.find(p => p.id === confirmPostId);
+  if (post) {
+    post.posted = !post.posted;
+    save();
+    autoArchiveClips();
+    renderWeek();
+    renderToday();
+    updateSidebar();
+    if (document.getElementById('panel-clips').classList.contains('active')) renderClipList();
+  }
+  closeModal('modal-confirm-post');
+  confirmPostId = null;
 }
 
 // ── CAPTIONS ─────────────────────────────────────────────────────────────
@@ -1719,64 +1814,6 @@ function renderSlotEditor() {
     </div>`).join('');
 }
 
-// ── CHECKLIST ────────────────────────────────────────────────────────────
-function renderChecklist() {
-  const body = document.getElementById('checklist-body');
-  const filterClipId = parseInt(document.getElementById('chk-clip').value) || null;
-  const clips = filterClipId ? state.clips.filter(c => c.id === filterClipId) : state.clips;
-
-  if (!clips.length) {
-    body.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:32px 0;">Add clips first to see your upload checklist.</div>';
-    updateChecklistProgress();
-    return;
-  }
-
-  body.innerHTML = clips.map(clip => {
-    const rows = clip.platforms.map(p => {
-      const cdata = state.checklist[clip.id]?.[p] || [];
-      return `<div class="chk-section">
-        <div class="chk-plat-header">
-          <div class="plat-dot" style="background:${PLAT_COLOR[p]}"></div>${PLAT_LABEL[p]}
-        </div>
-        ${CHECKLIST_ITEMS[p].map((item,i) => {
-          const checked = cdata[i] || false;
-          return `<div class="chk-item" onclick="toggleCheck(${clip.id},'${p}',${i})">
-            <div class="chk-box ${checked?'checked':''}">${checked?'✓':''}</div>
-            <div class="chk-label ${checked?'done':''}">${item}</div>
-          </div>`;
-        }).join('')}
-      </div>`;
-    }).join('');
-    return `<div style="margin-bottom:24px;">
-      <div style="font-family:var(--mono);font-size:11px;color:var(--text);margin-bottom:12px;letter-spacing:0.5px;">▸ ${clip.name}</div>
-      ${rows}
-    </div>`;
-  }).join('');
-
-  updateChecklistProgress();
-}
-
-function toggleCheck(clipId, plat, idx) {
-  if (!state.checklist[clipId]) return;
-  state.checklist[clipId][plat][idx] = !state.checklist[clipId][plat][idx];
-  save();
-  renderChecklist();
-}
-
-function updateChecklistProgress() {
-  let total = 0, done = 0;
-  state.clips.forEach(clip => {
-    const cdata = state.checklist[clip.id];
-    if (!cdata) return;
-    clip.platforms.forEach(p => {
-      (cdata[p] || []).forEach(v => { total++; if (v) done++; });
-    });
-  });
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById('chk-bar').style.width = pct + '%';
-  document.getElementById('chk-label').textContent = `${done} / ${total} done`;
-}
-
 // ── SETTINGS ─────────────────────────────────────────────────────────────
 
 function saveSlots() {
@@ -1811,8 +1848,6 @@ function refreshAllSelects() {
   const activeClips = state.clips.filter(c => !c.archived);
   const opts = activeClips.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
   document.getElementById('cap-clip').innerHTML = '<option value="">— choose a clip —</option>' + opts;
-  document.getElementById('chk-clip').innerHTML = '<option value="">— all clips —</option>' +
-    state.clips.map(c => `<option value="${c.id}">${c.name}${c.archived?' (archived)':''}</option>`).join('');
 }
 
 function refreshPostClipSelect() {
