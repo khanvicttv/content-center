@@ -1,0 +1,26 @@
+name: KCC Post Notifications
+
+on:
+  schedule:
+    # Runs every 30 minutes, 24/7
+    - cron: '0,30 * * * *'
+  workflow_dispatch:
+    # Allows manual trigger from GitHub Actions tab for testing
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run notification checker
+        env:
+          NTFY_CHANNEL: ${{ secrets.NTFY_CHANNEL }}
+        run: python notify.py
