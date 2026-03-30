@@ -143,6 +143,26 @@
   .slot-empty:hover { border-color: var(--accent); color: var(--accent); }
   .slot-add-more { border: 1px dashed rgba(255,255,255,0.06); border-radius: 4px; height: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: transparent; font-size: 13px; transition: all 0.15s; margin-top: 2px; }
   .slot-add-more:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Date picker grid for bulk scheduling */
+  .date-chip { padding:6px 4px; border-radius:6px; border:1px solid var(--border2); text-align:center; cursor:pointer; transition:all 0.15s; font-size:11px; background:var(--bg3); }
+  .date-chip:hover { border-color:var(--accent); }
+  .date-chip.selected { background:var(--accent); border-color:var(--accent); color:white; }
+  .date-chip .dc-day { font-size:9px; color:var(--muted); letter-spacing:0.5px; }
+  .date-chip.selected .dc-day { color:rgba(255,255,255,0.7); }
+  .date-chip .dc-num { font-family:var(--mono); font-size:14px; font-weight:700; color:var(--text); line-height:1.2; }
+  .date-chip.selected .dc-num { color:white; }
+  .date-chip.today-chip { border-color:var(--accent2); }
+
+  @media (max-width: 768px) {
+    .week-grid { grid-template-columns: 44px repeat(7,1fr); }
+    .week-cell { padding: 3px; max-height: 120px; overflow-y: auto; }
+    .post-slot { min-height: 36px; padding: 3px 4px; font-size: 10px; }
+    .slot-plat { font-size: 7px; }
+    .slot-clip-name { font-size: 9px; }
+    .slot-empty { height: 36px; }
+    .slot-add-more { height: 16px; }
+  }
   .post-slot { border-radius: 4px; padding: 5px 7px; margin-bottom: 3px; cursor: grab; font-size: 11px; line-height: 1.3; transition: opacity 0.15s; min-height: 50px; user-select: none; }
   .post-slot:hover { opacity: 0.8; }
   .post-slot.slot-posted { opacity: 0.5; }
@@ -519,6 +539,7 @@
         <button class="cap-tab tt active" onclick="switchCapTab(this,'tt')">TikTok</button>
         <button class="cap-tab ig" onclick="switchCapTab(this,'ig')">Instagram</button>
         <button class="cap-tab yt" onclick="switchCapTab(this,'yt')">YouTube</button>
+        <button class="btn btn-ghost btn-sm" onclick="remixCaption()" style="margin-left:auto;margin-bottom:1px;font-size:10px;" title="Regenerate current platform only">↻ Remix</button>
       </div>
 
       <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
@@ -783,7 +804,8 @@
 <div class="modal-overlay" id="modal-post">
   <div class="modal">
     <div class="modal-title">SCHEDULE POST</div>
-    <div class="field"><label>Clip</label>
+    <div class="field">
+      <label>Clip</label>
       <select id="mp-clip"><option value="">— select a clip —</option></select>
     </div>
     <div class="field">
@@ -800,13 +822,16 @@
         </label>
       </div>
     </div>
-    <div class="grid2">
-      <div class="field"><label>Date</label><input type="date" id="mp-date"></div>
-      <div class="field"><label>Time slot</label>
-        <select id="mp-time"></select>
-      </div>
+    <div class="field">
+      <label>Time slot</label>
+      <select id="mp-time"></select>
     </div>
-    <div class="flex flex-end" style="gap:10px;margin-top:6px;">
+    <div class="field">
+      <label>Dates <span style="color:var(--accent2);font-size:9px;">(select one or more)</span></label>
+      <div id="mp-dates-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px;"></div>
+    </div>
+    <div id="mp-selected-summary" style="font-size:11px;color:var(--accent2);font-family:var(--mono);margin-top:4px;min-height:16px;"></div>
+    <div class="flex flex-end" style="gap:10px;margin-top:12px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-post')">Cancel</button>
       <button class="btn btn-primary" onclick="schedulePost()">Schedule</button>
     </div>
@@ -966,13 +991,52 @@ function openClipModal() {
 
 function openPostModal(date, time) {
   refreshPostClipSelect();
-  const d = date || new Date().toISOString().split('T')[0];
-  document.getElementById('mp-date').value = d;
   document.getElementById('mp-tt').checked = true;
   document.getElementById('mp-ig').checked = true;
   document.getElementById('mp-yt').checked = false;
   refreshPostTimeSelect(time);
+  buildDateGrid(date);
   document.getElementById('modal-post').classList.add('open');
+}
+
+function buildDateGrid(preselect) {
+  const grid = document.getElementById('mp-dates-grid');
+  const summary = document.getElementById('mp-selected-summary');
+  const today = new Date();
+  const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const todayStr = today.toISOString().split('T')[0];
+  const chips = [];
+
+  // Show next 14 days
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const ds = d.toISOString().split('T')[0];
+    const isPreselect = preselect ? ds === preselect : i === 0;
+    chips.push({ ds, label: DAYS[d.getDay()], num: d.getDate(), selected: isPreselect, isToday: ds === todayStr });
+  }
+
+  const render = () => {
+    grid.innerHTML = chips.map((c,i) => `
+      <div class="date-chip${c.selected?' selected':''}${c.isToday?' today-chip':''}" onclick="toggleDateChip(${i})">
+        <div class="dc-day">${c.isToday?'TODAY':c.label}</div>
+        <div class="dc-num">${c.num}</div>
+      </div>`).join('');
+    const sel = chips.filter(c => c.selected);
+    summary.textContent = sel.length
+      ? `${sel.length} day${sel.length>1?'s':''} selected`
+      : 'Select at least one day';
+  };
+
+  // Store chips on window for toggle access
+  window._dateChips = chips;
+  window._renderDateGrid = render;
+  render();
+}
+
+function toggleDateChip(idx) {
+  window._dateChips[idx].selected = !window._dateChips[idx].selected;
+  window._renderDateGrid();
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
@@ -1287,10 +1351,9 @@ function captionFromClip(id) {
 // ── SCHEDULE POST ────────────────────────────────────────────────────────
 function schedulePost() {
   const clipId = parseInt(document.getElementById('mp-clip').value);
-  const date   = document.getElementById('mp-date').value;
   let time     = document.getElementById('mp-time').value;
 
-  if (!clipId || !date) { alert('Please select a clip and date.'); return; }
+  if (!clipId) { alert('Please select a clip.'); return; }
 
   const platforms = [];
   if (document.getElementById('mp-tt').checked) platforms.push('tt');
@@ -1298,16 +1361,22 @@ function schedulePost() {
   if (document.getElementById('mp-yt').checked) platforms.push('yt');
   if (!platforms.length) { alert('Please select at least one platform.'); return; }
 
+  const selectedDates = (window._dateChips || []).filter(c => c.selected).map(c => c.ds);
+  if (!selectedDates.length) { alert('Please select at least one date.'); return; }
+
   if (time === 'custom') {
     time = prompt('Enter time (HH:MM, 24hr format):', '18:00') || '18:00';
   }
 
   const clip = state.clips.find(c => c.id === clipId);
   const newPosts = [];
-  platforms.forEach(plat => {
-    const post = { id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false };
-    state.posts.push(post);
-    newPosts.push(post);
+
+  selectedDates.forEach(date => {
+    platforms.forEach(plat => {
+      const post = { id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false };
+      state.posts.push(post);
+      newPosts.push(post);
+    });
   });
 
   closeModal('modal-post');
@@ -1315,6 +1384,7 @@ function schedulePost() {
   renderToday();
   updateSidebar();
   renderDaysBanner();
+  renderClipList();
   if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
 
   // Schedule ntfy notifications for each new post
@@ -1720,6 +1790,63 @@ function switchCapTab(el, tab) {
   currentCapTab = tab;
 }
 
+async function remixCaption() {
+  // Regenerate only the currently active platform tab
+  const desc = document.getElementById('cap-desc').value.trim();
+  const game = document.getElementById('cap-game').value.trim() || 'Warzone';
+  const tone = document.getElementById('cap-tone').value;
+  const plat = currentCapTab;
+
+  if (!desc) { alert('Add a clip description first.'); return; }
+
+  const apiKey = loadApiKey();
+  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
+
+  document.getElementById('cap-' + plat).innerHTML =
+    '<div style="display:flex;align-items:center;gap:10px;padding:16px 0;color:var(--muted);font-family:var(--mono);font-size:12px;"><div style="width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Remixing...</div>';
+
+  if (apiKey) {
+    const toneGuide = {
+      hype: 'High energy and aggressive. SHORT words. Impact statements. ALL CAPS one phrase.',
+      chill: 'Smooth, confident, minimal. Says a lot with very little.',
+      funny: 'Self-aware and dry. Smart-funny, not cringe-funny.',
+      clutch: 'Dramatic stakes, quiet confidence.',
+      educational: 'Direct and practical. State the tip upfront.'
+    };
+    const platRules = {
+      tt: 'Max 150 chars. Punchy hook first. No hashtags in body. Different angle than before — try a different opening hook.',
+      ig: '120-200 chars. Confident statement opener. Different from before — lead with a different aspect of the clip.',
+      yt: 'Title format, max 70 chars, keyword-rich. Different phrasing than before.'
+    };
+    const prompt = `You write captions for Khanvict TV — FPS/shooter gaming streamer on Twitch, Kick and TikTok Live. Clips are kills, clutches, wins.
+
+CLIP: ${desc}
+GAME: ${game}
+TONE: ${toneGuide[tone]}
+PLATFORM: ${platNames[plat]}
+RULES: ${platRules[plat]}
+IMPORTANT: Generate a FRESH caption — different hook, different angle, different energy than a standard take. Be creative and unexpected.
+
+Return ONLY raw JSON: {"caption":"...","hashtags":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7"],"tip":"..."}`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+      });
+      const data = await res.json();
+      const raw = data.content.map(b => b.text || '').join('');
+      const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
+      renderCapResult(plat, parsed.caption, parsed.hashtags, parsed.tip);
+    } catch(e) {
+      renderCapFromTemplate(plat, desc, game, tone);
+    }
+  } else {
+    renderCapFromTemplate(plat, desc, game, tone);
+  }
+}
+
 async function generateCaptions() {
   const desc = document.getElementById('cap-desc').value.trim();
   const game = document.getElementById('cap-game').value.trim() || 'Warzone';
@@ -2111,7 +2238,21 @@ function refreshAllSelects() {
 }
 
 function refreshPostClipSelect() {
-  const opts = state.clips.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  const todayStr = new Date().toISOString().split('T')[0];
+  // Show active clips that haven't been fully scheduled yet
+  // "fully scheduled" = every platform has at least one future post
+  const availableClips = state.clips.filter(c => {
+    if (c.archived) return false;
+    // Check if any platform is still missing a future scheduled post
+    const futurePosts = state.posts.filter(p => p.clipId === c.id && p.date >= todayStr);
+    const scheduledPlats = [...new Set(futurePosts.map(p => p.platform))];
+    return c.platforms.some(p => !scheduledPlats.includes(p));
+  });
+
+  const opts = availableClips.length
+    ? availableClips.map(c => `<option value="${c.id}">${c.name}</option>`).join('')
+    : '<option value="" disabled>All clips are scheduled</option>';
+
   document.getElementById('mp-clip').innerHTML = '<option value="">— select a clip —</option>' + opts;
 }
 
