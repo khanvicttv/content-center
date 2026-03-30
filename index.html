@@ -627,6 +627,28 @@
         <div id="api-key-status" style="margin-top:10px;font-size:12px;font-family:var(--mono);"></div>
       </div>
 
+      <div class="settings-row" style="margin-top:12px;">
+        <div class="settings-row-title">NOTIFICATIONS — NTFY.SH</div>
+        <div class="alert-info" style="margin-bottom:14px;">
+          Get notified 30 minutes before each scheduled post — even when the app is closed.<br><br>
+          <strong>Setup (2 min):</strong><br>
+          1. Download the free <strong>ntfy</strong> app from the App Store<br>
+          2. Pick a unique private channel name below (make it hard to guess)<br>
+          3. In the ntfy app tap <strong>+</strong> and subscribe to your channel name<br>
+          4. Hit <strong>Send test</strong> below to confirm it works
+        </div>
+        <div class="field">
+          <label>Your private ntfy channel name</label>
+          <input type="text" id="ntfy-channel" placeholder="e.g. khanvicttv-kcc-9x4k" autocomplete="off">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="saveNtfyChannel()">Save channel</button>
+          <button class="btn btn-ghost btn-sm" onclick="sendTestNotification()">Send test</button>
+          <button class="btn btn-danger btn-sm" onclick="clearNtfyChannel()">Clear</button>
+        </div>
+        <div id="ntfy-status" style="margin-top:10px;font-size:12px;font-family:var(--mono);"></div>
+      </div>
+
       <div class="settings-row">
         <div class="settings-row-title">POSTING TIME SLOTS</div>
         <div class="alert-info" style="margin-bottom:14px;">These are the three daily posting slots shown throughout the tool. Edit them to match your schedule and timezone.</div>
@@ -1263,8 +1285,11 @@ function schedulePost() {
   }
 
   const clip = state.clips.find(c => c.id === clipId);
+  const newPosts = [];
   platforms.forEach(plat => {
-    state.posts.push({ id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false });
+    const post = { id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false };
+    state.posts.push(post);
+    newPosts.push(post);
   });
 
   closeModal('modal-post');
@@ -1273,6 +1298,9 @@ function schedulePost() {
   updateSidebar();
   renderDaysBanner();
   if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
+
+  // Schedule ntfy notifications for each new post
+  newPosts.forEach(p => scheduleNtfyNotification(p));
 }
 
 function markPosted(postId) {
@@ -1745,6 +1773,131 @@ function copyText(encoded, btn) {
   setTimeout(()=>btn.textContent=orig, 1600);
 }
 
+// ── NTFY NOTIFICATIONS ───────────────────────────────────────────────────
+function loadNtfyChannel() {
+  try { return localStorage.getItem('ntfy_channel') || ''; } catch(e) { return ''; }
+}
+
+function saveNtfyChannel() {
+  const ch = document.getElementById('ntfy-channel').value.trim().toLowerCase().replace(/\s+/g, '-');
+  if (!ch) { alert('Please enter a channel name.'); return; }
+  try { localStorage.setItem('ntfy_channel', ch); } catch(e) {}
+  document.getElementById('ntfy-channel').value = ch;
+  setNtfyStatus('✓ Channel saved: ' + ch, 'green');
+}
+
+function clearNtfyChannel() {
+  try { localStorage.removeItem('ntfy_channel'); } catch(e) {}
+  document.getElementById('ntfy-channel').value = '';
+  setNtfyStatus('Notifications cleared.', 'muted');
+}
+
+function setNtfyStatus(msg, type) {
+  const el = document.getElementById('ntfy-status');
+  if (!el) return;
+  const color = type === 'green' ? 'var(--green)' : type === 'red' ? 'var(--red)' : type === 'amber' ? 'var(--amber)' : 'var(--muted)';
+  el.innerHTML = `<span style="color:${color};">${msg}</span>`;
+}
+
+async function sendNtfy(channel, title, message, tags, priority) {
+  if (!channel) return false;
+  try {
+    const res = await fetch(`https://ntfy.sh/${channel}`, {
+      method: 'POST',
+      headers: {
+        'Title':    title,
+        'Tags':     tags    || 'bell',
+        'Priority': priority || 'default',
+        'Content-Type': 'text/plain'
+      },
+      body: message
+    });
+    return res.ok;
+  } catch(e) {
+    console.error('ntfy error:', e);
+    return false;
+  }
+}
+
+async function sendTestNotification() {
+  const channel = loadNtfyChannel();
+  if (!channel) {
+    setNtfyStatus('Save a channel name first.', 'amber');
+    return;
+  }
+  setNtfyStatus('Sending test...', 'muted');
+  const ok = await sendNtfy(
+    channel,
+    'KCC Test Notification',
+    'Notifications are working! You\'ll get reminders 30 min before each scheduled post.',
+    'white_check_mark',
+    'default'
+  );
+  if (ok) {
+    setNtfyStatus('✓ Test sent! Check your ntfy app.', 'green');
+  } else {
+    setNtfyStatus('Failed to send. Check your channel name and internet connection.', 'red');
+  }
+}
+
+async function scheduleNtfyNotification(post) {
+  const channel = loadNtfyChannel();
+  if (!channel) return;
+
+  // Calculate the notification time = post time minus 30 minutes
+  const [h, m] = post.time.split(':').map(Number);
+  const postDate = new Date(`${post.date}T${post.time}:00`);
+  const notifTime = new Date(postDate.getTime() - 30 * 60 * 1000);
+  const now = new Date();
+
+  // Only schedule if notification time is in the future
+  if (notifTime <= now) return;
+
+  const delayMs = notifTime.getTime() - now.getTime();
+  const platLabel = PLAT_LABEL[post.platform];
+  const timeStr = fmtTime(post.time);
+
+  // Use setTimeout to send the ntfy message when the time comes
+  // This only works while the app is open — for true background delivery
+  // ntfy handles it server-side via the At header
+  try {
+    const notifDateTime = notifTime.toISOString();
+    await fetch(`https://ntfy.sh/${channel}`, {
+      method: 'POST',
+      headers: {
+        'Title':    `Post to ${platLabel} in 30 min`,
+        'Tags':     getTagForPlatform(post.platform),
+        'Priority': 'high',
+        'At':       notifDateTime,   // ntfy schedules delivery server-side
+        'Content-Type': 'text/plain'
+      },
+      body: `"${post.clipName}" · ${platLabel} · ${timeStr} slot — time to get it ready!`
+    });
+  } catch(e) {
+    console.warn('Could not schedule ntfy notification:', e);
+  }
+}
+
+function getTagForPlatform(plat) {
+  const tags = { tt: 'musical_note', ig: 'camera', yt: 'movie_camera' };
+  return tags[plat] || 'bell';
+}
+
+// Re-schedule all future notifications (call after import/sync)
+async function rescheduleAllNotifications() {
+  const channel = loadNtfyChannel();
+  if (!channel) return;
+  const now = new Date();
+  const futurePosts = state.posts.filter(p => {
+    if (p.posted) return false;
+    const postDate = new Date(`${p.date}T${p.time}:00`);
+    return postDate > now;
+  });
+  for (const post of futurePosts) {
+    await scheduleNtfyNotification(post);
+  }
+}
+
 // ── API KEY MANAGEMENT ───────────────────────────────────────────────────
 function loadApiKey() {
   try { return localStorage.getItem('ccc_api_key') || ''; } catch(e) { return ''; }
@@ -1797,6 +1950,16 @@ function renderSlotEditor() {
     setSyncStatus('✓ GitHub sync is active — ' + cfg.user + '/' + cfg.repo, 'green');
   } else {
     setSyncStatus('Not connected. Enter your details above to enable sync.', 'muted');
+  }
+
+  // Pre-fill ntfy channel
+  const ntfyCh = loadNtfyChannel();
+  const ntfyInput = document.getElementById('ntfy-channel');
+  if (ntfyInput) ntfyInput.value = ntfyCh;
+  if (ntfyCh) {
+    setNtfyStatus('✓ Notifications active on channel: ' + ntfyCh, 'green');
+  } else {
+    setNtfyStatus('Not set up. Enter a channel name to enable notifications.', 'muted');
   }
 
   // Render time slot editor
@@ -2405,6 +2568,7 @@ setInterval(checkUpcomingPosts, 60000);
     if (pulled) {
       refreshAll();
       setSyncStatus('✓ Loaded ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}), 'green');
+      rescheduleAllNotifications();
     } else {
       setSyncStatus('No cloud data yet — will push on next change.', 'amber');
     }
