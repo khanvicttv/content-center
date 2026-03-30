@@ -165,7 +165,7 @@
       "platform": "tt",
       "date": "2026-03-29",
       "time": "13:00",
-      "posted": false
+      "posted": true
     },
     {
       "id": 1774803913927,
@@ -606,6 +606,6 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": []
 }
