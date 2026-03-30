@@ -486,6 +486,21 @@
 
       <div id="scan-banner" style="display:none;margin-bottom:16px;"></div>
 
+      <!-- Drag & Drop Zone -->
+      <div id="clip-drop-zone" style="
+        border:2px dashed var(--border2);border-radius:10px;padding:20px;
+        text-align:center;margin-bottom:16px;transition:all 0.2s;cursor:pointer;
+        background:var(--bg3);" 
+        onclick="document.getElementById('clip-file-input').click()"
+        ondragover="onClipDragOver(event)"
+        ondragleave="onClipDragLeave(event)"
+        ondrop="onClipDrop(event)">
+        <div style="font-size:22px;margin-bottom:6px;">🎬</div>
+        <div style="font-size:13px;font-weight:500;color:var(--text);">Drop video files here</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">.mp4 · .mov · .avi · .mkv — or click to browse</div>
+        <input type="file" id="clip-file-input" accept="video/*" multiple style="display:none;" onchange="onClipFileSelect(event)">
+      </div>
+
       <!-- Tab switcher -->
       <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;">
         <button class="clip-tab active" id="ctab-active" onclick="switchClipTab('active')"
@@ -1730,13 +1745,129 @@ function confirmMarkPosted() {
     renderWeek();
     renderToday();
     updateSidebar();
-    if (document.getElementById('panel-clips').classList.contains('active')) renderClipList();
+    renderDaysBanner();
+    renderClipList();      // always refresh — archiving affects clip list regardless of active panel
+    refreshAllSelects();   // keep dropdowns in sync
   }
   closeModal('modal-confirm-post');
   confirmPostId = null;
 }
 
-// ── CAPTIONS ─────────────────────────────────────────────────────────────
+// ── DRAG & DROP CLIP IMPORT ───────────────────────────────────────────────
+
+function onClipDragOver(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const zone = document.getElementById('clip-drop-zone');
+  zone.style.borderColor = 'var(--accent)';
+  zone.style.background = 'rgba(124,92,252,0.08)';
+}
+
+function onClipDragLeave(e) {
+  e.preventDefault();
+  const zone = document.getElementById('clip-drop-zone');
+  zone.style.borderColor = 'var(--border2)';
+  zone.style.background = 'var(--bg3)';
+}
+
+function onClipDrop(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  onClipDragLeave(e);
+  const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('video/') || /\.(mp4|mov|avi|mkv|webm)$/i.test(f.name));
+  if (!files.length) { alert('No video files detected. Drop .mp4, .mov, .avi, or .mkv files.'); return; }
+  processDroppedClips(files);
+}
+
+function onClipFileSelect(e) {
+  const files = [...e.target.files];
+  if (files.length) processDroppedClips(files);
+  e.target.value = ''; // reset so same file can be re-dropped
+}
+
+function cleanFileName(raw) {
+  // Remove extension
+  let name = raw.replace(/\.[^/.]+$/, '');
+  // Remove common capture suffixes like _final, _v2, _edit, _export, (1)
+  name = name.replace(/[_\s-]*(final|v\d+|edit|edited|export|exported|cut|trim|trimmed|render|rendered|upload|\(\d+\))$/gi, '');
+  // Replace underscores, hyphens, dots with spaces
+  name = name.replace(/[_\-\.]+/g, ' ');
+  // Remove leading/trailing whitespace
+  name = name.trim();
+  // Title case each word
+  name = name.replace(/\b\w/g, l => l.toUpperCase());
+  return name;
+}
+
+function guessGameFromName(name) {
+  const lower = name.toLowerCase();
+  const games = [
+    ['warzone', 'Warzone'],
+    ['wz', 'Warzone'],
+    ['fortnite', 'Fortnite'],
+    ['apex', 'Apex Legends'],
+    ['valorant', 'Valorant'],
+    ['cod', 'Call of Duty'],
+    ['mw3', 'MW3'],
+    ['bo6', 'Black Ops 6'],
+    ['cs2', 'CS2'],
+    ['pubg', 'PUBG'],
+    ['overwatch', 'Overwatch'],
+    ['minecraft', 'Minecraft'],
+    ['fifa', 'FIFA'],
+    ['2k', 'NBA 2K'],
+    ['rocket', 'Rocket League'],
+  ];
+  for (const [key, label] of games) {
+    if (lower.includes(key)) return label;
+  }
+  return '';
+}
+
+function processDroppedClips(files) {
+  let added = 0, skipped = 0;
+
+  files.forEach(file => {
+    // Skip duplicates by filename
+    const alreadyExists = state.clips.some(c => c.filename === file.name);
+    if (alreadyExists) { skipped++; return; }
+
+    const cleanName = cleanFileName(file.name);
+    const guessedGame = guessGameFromName(file.name);
+
+    const clip = {
+      id:        Date.now() + Math.random(),
+      name:      cleanName,
+      filename:  file.name,
+      duration:  '',
+      size_mb:   file.size ? (file.size / 1024 / 1024).toFixed(1) : '',
+      desc:      '',
+      game:      guessedGame,
+      platforms: ['tt', 'ig'],
+      addedAt:   new Date().toISOString(),
+      fromScan:  false,
+      fromDrop:  true
+    };
+
+    state.clips.push(clip);
+    state.checklist[clip.id] = {};
+    added++;
+  });
+
+  save();
+  renderClipList();
+  refreshAllSelects();
+  updateSidebar();
+  renderDaysBanner();
+
+  // Show result in the drop zone briefly
+  const zone = document.getElementById('clip-drop-zone');
+  const orig = zone.innerHTML;
+  zone.innerHTML = `<div style="font-size:13px;color:var(--green);font-weight:500;">
+    ✓ ${added} clip${added!==1?'s':''} added${skipped?` · ${skipped} skipped (already in library)`:''}
+  </div>`;
+  setTimeout(() => { zone.innerHTML = orig; }, 2500);
+}
 let currentCapTab = 'tt';
 
 function onCapClipChange() {
