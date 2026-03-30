@@ -1,4 +1,4 @@
-const CACHE = 'kcc-v6';
+const CACHE = 'kcc-v7';
 const ASSETS = [
   '/content-center/',
   '/content-center/index.html',

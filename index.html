@@ -700,9 +700,12 @@
   <div class="modal" style="max-width:360px;">
     <div class="modal-title">CONFIRM POST</div>
     <div id="confirm-post-body" style="margin-bottom:20px;"></div>
-    <div class="flex flex-end" style="gap:10px;">
-      <button class="btn btn-ghost" onclick="closeModal('modal-confirm-post')">Not yet</button>
-      <button class="btn btn-primary" onclick="confirmMarkPosted()">Yes, posted ✓</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+      <button class="btn btn-danger btn-sm" onclick="confirmRemovePost()">Remove from schedule</button>
+      <div class="flex" style="gap:8px;">
+        <button class="btn btn-ghost" onclick="closeModal('modal-confirm-post')">Not yet</button>
+        <button class="btn btn-primary" id="confirm-post-btn" onclick="confirmMarkPosted()">Yes, posted ✓</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1653,7 +1656,7 @@ function openConfirmPost(postId) {
         <div style="font-size:14px;font-weight:500;color:var(--text);">${post.clipName}</div>
         <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · ${fmtTime(post.time)}</div>
       </div>`;
-    document.querySelector('#modal-confirm-post .btn-primary').textContent = 'Undo posted';
+    document.getElementById('confirm-post-btn').textContent = 'Undo posted';
   } else {
     body.innerHTML = `
       <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">Have you posted this clip?</div>
@@ -1662,10 +1665,23 @@ function openConfirmPost(postId) {
         <div style="font-size:14px;font-weight:500;color:var(--text);">${post.clipName}</div>
         <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · ${fmtTime(post.time)}</div>
       </div>`;
-    document.querySelector('#modal-confirm-post .btn-primary').textContent = 'Yes, posted ✓';
+    document.getElementById('confirm-post-btn').textContent = 'Yes, posted ✓';
   }
 
   document.getElementById('modal-confirm-post').classList.add('open');
+}
+
+function confirmRemovePost() {
+  if (!confirmPostId) return;
+  state.posts = state.posts.filter(p => p.id !== confirmPostId);
+  save();
+  renderWeek();
+  renderToday();
+  updateSidebar();
+  renderDaysBanner();
+  if (document.getElementById('panel-clips').classList.contains('active')) renderClipList();
+  closeModal('modal-confirm-post');
+  confirmPostId = null;
 }
 
 function confirmMarkPosted() {
