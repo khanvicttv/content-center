@@ -836,16 +836,13 @@
         </label>
       </div>
     </div>
-    <div class="field">
-      <label>Time slot</label>
-      <select id="mp-time"></select>
+    <div class="grid2">
+      <div class="field"><label>Date</label><input type="date" id="mp-date"></div>
+      <div class="field"><label>Time slot</label>
+        <select id="mp-time"></select>
+      </div>
     </div>
-    <div class="field">
-      <label>Dates <span style="color:var(--accent2);font-size:9px;">(select one or more)</span></label>
-      <div id="mp-dates-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px;"></div>
-    </div>
-    <div id="mp-selected-summary" style="font-size:11px;color:var(--accent2);font-family:var(--mono);margin-top:4px;min-height:16px;"></div>
-    <div class="flex flex-end" style="gap:10px;margin-top:12px;">
+    <div class="flex flex-end" style="gap:10px;margin-top:6px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-post')">Cancel</button>
       <button class="btn btn-primary" onclick="schedulePost()">Schedule</button>
     </div>
@@ -1005,53 +1002,15 @@ function openClipModal() {
 
 function openPostModal(date, time) {
   refreshPostClipSelect();
+  document.getElementById('mp-date').value = date || new Date().toISOString().split('T')[0];
   document.getElementById('mp-tt').checked = true;
   document.getElementById('mp-ig').checked = true;
   document.getElementById('mp-yt').checked = false;
   refreshPostTimeSelect(time);
-  buildDateGrid(date);
   document.getElementById('modal-post').classList.add('open');
 }
 
-function buildDateGrid(preselect) {
-  const grid = document.getElementById('mp-dates-grid');
-  const summary = document.getElementById('mp-selected-summary');
-  const today = new Date();
-  const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  const todayStr = today.toISOString().split('T')[0];
-  const chips = [];
 
-  // Show next 14 days
-  for (let i = 0; i < 14; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
-    const ds = d.toISOString().split('T')[0];
-    const isPreselect = preselect ? ds === preselect : i === 0;
-    chips.push({ ds, label: DAYS[d.getDay()], num: d.getDate(), selected: isPreselect, isToday: ds === todayStr });
-  }
-
-  const render = () => {
-    grid.innerHTML = chips.map((c,i) => `
-      <div class="date-chip${c.selected?' selected':''}${c.isToday?' today-chip':''}" onclick="toggleDateChip(${i})">
-        <div class="dc-day">${c.isToday?'TODAY':c.label}</div>
-        <div class="dc-num">${c.num}</div>
-      </div>`).join('');
-    const sel = chips.filter(c => c.selected);
-    summary.textContent = sel.length
-      ? `${sel.length} day${sel.length>1?'s':''} selected`
-      : 'Select at least one day';
-  };
-
-  // Store chips on window for toggle access
-  window._dateChips = chips;
-  window._renderDateGrid = render;
-  render();
-}
-
-function toggleDateChip(idx) {
-  window._dateChips[idx].selected = !window._dateChips[idx].selected;
-  window._renderDateGrid();
-}
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
@@ -1365,9 +1324,10 @@ function captionFromClip(id) {
 // ── SCHEDULE POST ────────────────────────────────────────────────────────
 function schedulePost() {
   const clipId = parseInt(document.getElementById('mp-clip').value);
+  const date   = document.getElementById('mp-date').value;
   let time     = document.getElementById('mp-time').value;
 
-  if (!clipId) { alert('Please select a clip.'); return; }
+  if (!clipId || !date) { alert('Please select a clip and date.'); return; }
 
   const platforms = [];
   if (document.getElementById('mp-tt').checked) platforms.push('tt');
@@ -1375,22 +1335,16 @@ function schedulePost() {
   if (document.getElementById('mp-yt').checked) platforms.push('yt');
   if (!platforms.length) { alert('Please select at least one platform.'); return; }
 
-  const selectedDates = (window._dateChips || []).filter(c => c.selected).map(c => c.ds);
-  if (!selectedDates.length) { alert('Please select at least one date.'); return; }
-
   if (time === 'custom') {
     time = prompt('Enter time (HH:MM, 24hr format):', '18:00') || '18:00';
   }
 
   const clip = state.clips.find(c => c.id === clipId);
   const newPosts = [];
-
-  selectedDates.forEach(date => {
-    platforms.forEach(plat => {
-      const post = { id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false };
-      state.posts.push(post);
-      newPosts.push(post);
-    });
+  platforms.forEach(plat => {
+    const post = { id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false };
+    state.posts.push(post);
+    newPosts.push(post);
   });
 
   closeModal('modal-post');
@@ -1400,8 +1354,6 @@ function schedulePost() {
   renderDaysBanner();
   renderClipList();
   if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
-
-  // Schedule ntfy notifications for each new post
   newPosts.forEach(p => scheduleNtfyNotification(p));
 }
 
