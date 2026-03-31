@@ -2756,24 +2756,63 @@ function renderEngageLog() {
 
   container.innerHTML = sorted.map(e => `
     <div style="padding:10px 0;border-bottom:0.5px solid var(--border);">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;gap:8px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;gap:8px;flex-wrap:wrap;">
         <div>
           <span style="font-size:10px;font-family:var(--mono);color:${PC[e.platform]};letter-spacing:1px;">${PL[e.platform]}</span>
           <span style="font-size:13px;font-weight:500;color:var(--text);margin-left:8px;">${e.clipName}</span>
         </div>
-        <div style="display:flex;gap:14px;flex-wrap:wrap;">
-          <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.views||0).toLocaleString()} <span style="color:var(--muted);">views</span></span>
-          <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.likes||0).toLocaleString()} <span style="color:var(--muted);">likes</span></span>
-          <span style="font-family:var(--mono);font-size:11px;color:var(--green);">+${(e.followers||0)} <span style="color:var(--muted);">followers</span></span>
+        <div style="display:flex;gap:6px;flex-shrink:0;">
+          <button class="btn btn-ghost btn-sm" onclick="editEngagement(${e.id})" style="font-size:10px;padding:3px 8px;">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteEngagement(${e.id})" style="font-size:10px;padding:3px 8px;">✕</button>
         </div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:4px;">
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.views||0).toLocaleString()} <span style="color:var(--muted);">views</span></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.likes||0).toLocaleString()} <span style="color:var(--muted);">likes</span></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.comments||0).toLocaleString()} <span style="color:var(--muted);">comments</span></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--green);">+${(e.followers||0)} <span style="color:var(--muted);">followers</span></span>
       </div>
       ${e.hashtags && e.hashtags.length ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">${e.hashtags.map(h=>`<span style="background:rgba(124,92,252,0.1);color:var(--accent2);border:1px solid rgba(124,92,252,0.2);border-radius:4px;padding:2px 6px;font-family:var(--mono);font-size:10px;">${h}</span>`).join('')}</div>` : ''}
       ${e.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:5px;">${e.notes}</div>` : ''}
-      <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono);">${e.date} · ${fmtTime(e.time)}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:4px;font-family:var(--mono);">${e.date} · ${fmtTime(e.time)} · logged ${new Date(e.loggedAt).toLocaleDateString()}</div>
     </div>`).join('');
 }
 
+let editingEngagementId = null;
+
+function editEngagement(id) {
+  const e = state.engagements.find(x => x.id === id);
+  if (!e) return;
+  editingEngagementId = id;
+
+  const posted = state.posts.filter(p => p.posted);
+  const sel = document.getElementById('eng-post-sel');
+  sel.innerHTML = posted.length
+    ? posted.map(p => `<option value="${p.id}" ${p.id === e.postId ? 'selected' : ''}>${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('')
+    : `<option value="${e.postId}">${e.clipName} — ${PLAT_LABEL[e.platform]}</option>`;
+
+  document.getElementById('eng-views').value     = e.views     || '';
+  document.getElementById('eng-likes').value     = e.likes     || '';
+  document.getElementById('eng-comments').value  = e.comments  || '';
+  document.getElementById('eng-followers').value = e.followers || '';
+  document.getElementById('eng-hashtags').value  = e.hashtags  ? e.hashtags.join(', ') : '';
+  document.getElementById('eng-notes').value     = e.notes     || '';
+
+  document.querySelector('#modal-engage .modal-title').textContent = 'EDIT ENGAGEMENT';
+  document.getElementById('modal-engage').classList.add('open');
+}
+
+function deleteEngagement(id) {
+  if (!confirm('Delete this engagement entry? This will affect your analytics.')) return;
+  state.engagements = state.engagements.filter(e => e.id !== id);
+  save();
+  renderAnalytics();
+}
+
 function openEngageModal() {
+  editingEngagementId = null;
+  document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
+
   const posted = state.posts.filter(p => p.posted);
   const sel = document.getElementById('eng-post-sel');
   sel.innerHTML = posted.length
@@ -2807,30 +2846,48 @@ function openEngageModal() {
 }
 
 function saveEngagement() {
-  const postId = parseInt(document.getElementById('eng-post-sel').value);
-  const post = state.posts.find(p => p.id === postId);
+  const postId  = parseInt(document.getElementById('eng-post-sel').value);
+  const post    = state.posts.find(p => p.id === postId);
   if (!post) { alert('Please select a post.'); return; }
 
-  const rawTags = document.getElementById('eng-hashtags').value;
+  const rawTags  = document.getElementById('eng-hashtags').value;
   const hashtags = rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0)
     .map(t => t.startsWith('#') ? t : '#' + t);
 
-  state.engagements.push({
-    id:        Date.now(),
+  const values = {
     postId,
     clipId:    post.clipId,
     clipName:  post.clipName,
     platform:  post.platform,
     date:      post.date,
     time:      post.time,
-    views:     parseInt(document.getElementById('eng-views').value) || 0,
-    likes:     parseInt(document.getElementById('eng-likes').value) || 0,
-    comments:  parseInt(document.getElementById('eng-comments').value) || 0,
+    views:     parseInt(document.getElementById('eng-views').value)     || 0,
+    likes:     parseInt(document.getElementById('eng-likes').value)     || 0,
+    comments:  parseInt(document.getElementById('eng-comments').value)  || 0,
     followers: parseInt(document.getElementById('eng-followers').value) || 0,
     hashtags,
     notes:     document.getElementById('eng-notes').value.trim(),
-    loggedAt:  new Date().toISOString()
-  });
+  };
+
+  if (editingEngagementId) {
+    // Update existing entry — preserve original loggedAt, update updatedAt
+    const idx = state.engagements.findIndex(e => e.id === editingEngagementId);
+    if (idx !== -1) {
+      state.engagements[idx] = {
+        ...state.engagements[idx],
+        ...values,
+        updatedAt: new Date().toISOString()
+      };
+    }
+    editingEngagementId = null;
+  } else {
+    // New entry
+    state.engagements.push({
+      id: Date.now(),
+      ...values,
+      loggedAt: new Date().toISOString()
+    });
+  }
 
   save();
   closeModal('modal-engage');
