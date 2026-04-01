@@ -83,7 +83,9 @@
       ],
       "addedAt": "2026-03-27T00:37:00",
       "fromScan": true,
-      "lastHashtags": {}
+      "lastHashtags": {},
+      "archived": true,
+      "archivedAt": "2026-04-01T16:30:25.327Z"
     },
     {
       "id": 1774589022121,
@@ -243,7 +245,7 @@
       "platform": "tt",
       "date": "2026-04-01",
       "time": "09:00",
-      "posted": false
+      "posted": true
     },
     {
       "id": 1774881683651.7458,
