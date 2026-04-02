@@ -2074,8 +2074,8 @@ function processDroppedClips(files) {
 let currentCapTab = 'tt';
 
 function onCapClipChange() {
-  const clipId = parseInt(document.getElementById('cap-clip').value);
-  const clip = state.clips.find(c => c.id === clipId);
+  const clipIdStr = document.getElementById('cap-clip').value;
+  const clip = state.clips.find(c => String(c.id) === clipIdStr);
   if (!clip) return;
   document.getElementById('cap-game').value = clip.game || 'Warzone';
   // Pre-fill caption inputs if clip already has saved captions
@@ -2083,6 +2083,11 @@ function onCapClipChange() {
     if (clip.captions.tt) document.getElementById('cap-tt-input').value = clip.captions.tt.caption || '';
     if (clip.captions.ig) document.getElementById('cap-ig-input').value = clip.captions.ig.caption || '';
     if (clip.captions.yt) document.getElementById('cap-yt-input').value = clip.captions.yt.caption || '';
+  } else {
+    // Clear inputs when switching to a clip with no captions
+    document.getElementById('cap-tt-input').value = '';
+    document.getElementById('cap-ig-input').value = '';
+    document.getElementById('cap-yt-input').value = '';
   }
 }
 
@@ -2190,7 +2195,7 @@ async function analyseCaption() {
   const igCaption = document.getElementById('cap-ig-input').value.trim();
   const ytCaption = document.getElementById('cap-yt-input').value.trim();
   const game      = document.getElementById('cap-game').value.trim() || 'Warzone';
-  const clipId    = parseInt(document.getElementById('cap-clip').value);
+  const clipId    = document.getElementById('cap-clip').value; // keep as string to match float IDs
 
   if (!ttCaption) {
     alert('Write your TikTok caption first — even a rough draft is fine.');
@@ -2591,26 +2596,58 @@ function updateSidebar() {
 }
 
 // ── SELECTS ──────────────────────────────────────────────────────────────
+function sortClipsBySchedule(clips) {
+  const todayStr = new Date().toISOString().split('T')[0];
+  return [...clips].sort((a, b) => {
+    const aPost = state.posts
+      .filter(p => String(p.clipId) === String(a.id) && p.date >= todayStr)
+      .sort((x, y) => x.date.localeCompare(y.date) || x.time.localeCompare(y.time))[0];
+    const bPost = state.posts
+      .filter(p => String(p.clipId) === String(b.id) && p.date >= todayStr)
+      .sort((x, y) => x.date.localeCompare(y.date) || x.time.localeCompare(y.time))[0];
+    if (aPost && bPost) return aPost.date.localeCompare(bPost.date) || aPost.time.localeCompare(bPost.time);
+    if (aPost) return -1;  // scheduled clips first
+    if (bPost) return 1;
+    return new Date(b.addedAt) - new Date(a.addedAt); // unscheduled: newest first
+  });
+}
+
 function refreshAllSelects() {
-  const activeClips = state.clips.filter(c => !c.archived);
-  const opts = activeClips.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  const activeClips = sortClipsBySchedule(state.clips.filter(c => !c.archived));
+  const opts = activeClips.map(c => {
+    const todayStr = new Date().toISOString().split('T')[0];
+    const nextPost = state.posts
+      .filter(p => String(p.clipId) === String(c.id) && p.date >= todayStr)
+      .sort((a, b) => a.date.localeCompare(b.date))[0];
+    const label = nextPost
+      ? `${c.name} — ${nextPost.date.slice(5)} ${fmtTime(nextPost.time)}`
+      : c.name;
+    return `<option value="${c.id}">${label}</option>`;
+  }).join('');
   document.getElementById('cap-clip').innerHTML = '<option value="">— choose a clip —</option>' + opts;
 }
 
 function refreshPostClipSelect() {
   const todayStr = new Date().toISOString().split('T')[0];
-  // Show active clips that haven't been fully scheduled yet
-  // "fully scheduled" = every platform has at least one future post
   const availableClips = state.clips.filter(c => {
     if (c.archived) return false;
-    // Check if any platform is still missing a future scheduled post
-    const futurePosts = state.posts.filter(p => p.clipId === c.id && p.date >= todayStr);
+    const futurePosts = state.posts.filter(p => String(p.clipId) === String(c.id) && p.date >= todayStr);
     const scheduledPlats = [...new Set(futurePosts.map(p => p.platform))];
     return c.platforms.some(p => !scheduledPlats.includes(p));
   });
 
-  const opts = availableClips.length
-    ? availableClips.map(c => `<option value="${c.id}">${c.name}</option>`).join('')
+  const sorted = sortClipsBySchedule(availableClips);
+
+  const opts = sorted.length
+    ? sorted.map(c => {
+        const nextPost = state.posts
+          .filter(p => String(p.clipId) === String(c.id) && p.date >= todayStr)
+          .sort((a, b) => a.date.localeCompare(b.date))[0];
+        const label = nextPost
+          ? `${c.name} — ${nextPost.date.slice(5)}`
+          : c.name;
+        return `<option value="${c.id}">${label}</option>`;
+      }).join('')
     : '<option value="" disabled>All clips are scheduled</option>';
 
   document.getElementById('mp-clip').innerHTML = '<option value="">— select a clip —</option>' + opts;
@@ -3321,7 +3358,7 @@ function editEngagement(id) {
   if (!e) return;
   editingEngagementId = id;
 
-  const posted = state.posts.filter(p => p.posted);
+  const posted = [...state.posts.filter(p => p.posted)].sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
   const sel = document.getElementById('eng-post-sel');
   sel.innerHTML = posted.length
     ? posted.map(p => `<option value="${p.id}" ${String(p.id) === String(e.postId) ? 'selected' : ''}>${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('')
@@ -3351,7 +3388,8 @@ function openEngageModal() {
 
   // Exclude posts that already have an engagement entry
   const loggedPostIds = new Set(state.engagements.map(e => String(e.postId)));
-  const posted = state.posts.filter(p => p.posted && !loggedPostIds.has(String(p.id)));
+  const posted = [...state.posts.filter(p => p.posted && !loggedPostIds.has(String(p.id)))]
+    .sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time)); // most recent first for logging
   const sel = document.getElementById('eng-post-sel');
 
   if (!posted.length) {
