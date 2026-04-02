@@ -645,6 +645,12 @@
         <div id="hashtag-perf-list"><div style="color:var(--muted);font-size:13px;padding:12px 0;">No hashtag data yet.</div></div>
       </div>
 
+      <!-- Timing adherence -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Posting time adherence</div>
+        <div id="timing-adherence"></div>
+      </div>
+
       <!-- Engagement log -->
       <div class="card">
         <div class="card-title">Engagement log</div>
@@ -772,9 +778,13 @@
 
 <!-- CONFIRM POSTED MODAL -->
 <div class="modal-overlay" id="modal-confirm-post">
-  <div class="modal" style="max-width:360px;">
+  <div class="modal" style="max-width:380px;">
     <div class="modal-title">CONFIRM POST</div>
-    <div id="confirm-post-body" style="margin-bottom:20px;"></div>
+    <div id="confirm-post-body" style="margin-bottom:16px;"></div>
+    <div class="field" style="margin-bottom:16px;">
+      <label>Actual time you posted <span style="color:var(--muted);font-size:9px;font-weight:400;">(optional — leave blank to use scheduled time)</span></label>
+      <input type="time" id="actual-post-time" style="width:100%;">
+    </div>
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
       <button class="btn btn-danger btn-sm" onclick="confirmRemovePost()">Remove from schedule</button>
       <div class="flex" style="gap:8px;">
@@ -1739,10 +1749,13 @@ function openConfirmPost(postId) {
       <div style="background:var(--bg3);border-radius:8px;padding:12px 14px;">
         <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:4px;">${PLAT_LABEL[post.platform].toUpperCase()}</div>
         <div style="font-size:14px;font-weight:500;color:var(--text);">${post.clipName}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · ${fmtTime(post.time)}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · Scheduled ${fmtTime(post.time)}</div>
       </div>`;
     document.getElementById('confirm-post-btn').textContent = 'Yes, posted ✓';
   }
+
+  // Pre-fill actual time with scheduled time as default
+  document.getElementById('actual-post-time').value = post.time;
 
   document.getElementById('modal-confirm-post').classList.add('open');
 }
@@ -1765,14 +1778,32 @@ function confirmMarkPosted() {
   const post = state.posts.find(p => p.id === confirmPostId);
   if (post) {
     post.posted = !post.posted;
+
+    if (post.posted) {
+      // Save actual posted time — use input value or fall back to scheduled time
+      const actualTime = document.getElementById('actual-post-time').value || post.time;
+      post.actualTime   = actualTime;
+      post.postedAt     = new Date().toISOString();
+
+      // Calculate variance in minutes (actual vs scheduled)
+      const [sh, sm] = post.time.split(':').map(Number);
+      const [ah, am] = actualTime.split(':').map(Number);
+      post.timingVariance = (ah * 60 + am) - (sh * 60 + sm); // positive = late, negative = early
+    } else {
+      // Undo — clear actual time data
+      delete post.actualTime;
+      delete post.postedAt;
+      delete post.timingVariance;
+    }
+
     save();
     autoArchiveClips();
     renderWeek();
     renderToday();
     updateSidebar();
     renderDaysBanner();
-    renderClipList();      // always refresh — archiving affects clip list regardless of active panel
-    refreshAllSelects();   // keep dropdowns in sync
+    renderClipList();
+    refreshAllSelects();
   }
   closeModal('modal-confirm-post');
   confirmPostId = null;
@@ -2615,6 +2646,7 @@ function renderAnalytics() {
   renderBestTimes();
   renderStreak();
   renderHashtagPerf();
+  renderTimingAdherence();
   renderEngageLog();
 }
 
@@ -3190,6 +3222,84 @@ function saveEngagement() {
   closeModal('modal-engage');
   renderAnalytics();
   renderStreak();
+}
+
+// ── TIMING ADHERENCE ─────────────────────────────────────────────────────
+function renderTimingAdherence() {
+  const container = document.getElementById('timing-adherence');
+  const postedWithTiming = state.posts.filter(p => p.posted && p.timingVariance !== undefined);
+
+  if (!postedWithTiming.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0;">No timing data yet. When you confirm posts, enter the actual time you posted to track this.</div>';
+    return;
+  }
+
+  const WINDOW = 60; // minutes — within 1 hour = on time
+  const onTime  = postedWithTiming.filter(p => Math.abs(p.timingVariance) <= WINDOW);
+  const late    = postedWithTiming.filter(p => p.timingVariance > WINDOW);
+  const early   = postedWithTiming.filter(p => p.timingVariance < -WINDOW);
+  const total   = postedWithTiming.length;
+  const onPct   = Math.round(onTime.length / total * 100);
+
+  // Average variance for late posts
+  const avgLateMin  = late.length  ? Math.round(late.reduce((s,p)=>s+p.timingVariance,0)/late.length)   : 0;
+  const avgEarlyMin = early.length ? Math.round(Math.abs(early.reduce((s,p)=>s+p.timingVariance,0)/early.length)) : 0;
+
+  // Engagement comparison: on-time vs off-time
+  const onTimeIds  = new Set(onTime.map(p => p.id));
+  const offTimeIds = new Set([...late, ...early].map(p => p.id));
+
+  const engForPosts = (ids) => {
+    const engs = state.engagements.filter(e => ids.has(e.postId));
+    if (!engs.length) return null;
+    return Math.round(engs.reduce((s,e)=>s+(e.views||0),0) / engs.length);
+  };
+
+  const onTimeAvgViews  = engForPosts(onTimeIds);
+  const offTimeAvgViews = engForPosts(offTimeIds);
+
+  const engComparison = onTimeAvgViews && offTimeAvgViews
+    ? (() => {
+        const diff = onTimeAvgViews - offTimeAvgViews;
+        const pct  = Math.round(Math.abs(diff) / offTimeAvgViews * 100);
+        if (Math.abs(diff) < 50) return `<span style="color:var(--muted);">No significant difference in views between on-time and off-time posts yet.</span>`;
+        return diff > 0
+          ? `<span style="color:var(--green);">On-time posts average <strong>${pct}% more views</strong> (${onTimeAvgViews.toLocaleString()} vs ${offTimeAvgViews.toLocaleString()})</span>`
+          : `<span style="color:var(--amber);">On-time posts average <strong>${pct}% fewer views</strong> — your off-schedule posts may be hitting better organic windows</span>`;
+      })()
+    : '<span style="color:var(--muted);">Log engagement on posts to compare on-time vs off-time performance.</span>';
+
+  // Bar fill
+  const barColor = onPct >= 80 ? 'var(--green)' : onPct >= 50 ? 'var(--amber)' : 'var(--red)';
+
+  container.innerHTML = `
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:13px;color:var(--text);">Within 1 hour of scheduled time</div>
+        <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:${barColor};">${onPct}%</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:4px;height:8px;overflow:hidden;margin-bottom:10px;">
+        <div style="background:${barColor};height:100%;width:${onPct}%;border-radius:4px;transition:width 0.4s;"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">
+        <div style="text-align:center;background:var(--bg3);border-radius:6px;padding:10px;border:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--green);">${onTime.length}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px;">On time</div>
+          <div style="font-size:9px;color:var(--muted);">within ±1 hr</div>
+        </div>
+        <div style="text-align:center;background:var(--bg3);border-radius:6px;padding:10px;border:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--amber);">${late.length}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px;">Posted late</div>
+          <div style="font-size:9px;color:var(--muted);">${avgLateMin ? 'avg +' + avgLateMin + ' min' : 'no data'}</div>
+        </div>
+        <div style="text-align:center;background:var(--bg3);border-radius:6px;padding:10px;border:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent2);">${early.length}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:3px;">Posted early</div>
+          <div style="font-size:9px;color:var(--muted);">${avgEarlyMin ? 'avg -' + avgEarlyMin + ' min' : 'no data'}</div>
+        </div>
+      </div>
+      <div style="font-size:12px;line-height:1.6;">${engComparison}</div>
+    </div>`;
 }
 
 // ── UPCOMING POST ALERTS ─────────────────────────────────────────────────
