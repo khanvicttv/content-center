@@ -2126,36 +2126,34 @@ async function fetchTrendingHashtags(game, forceRefresh) {
     return trendingHashtagsCache;
   }
 
-  const prompt = `You are a TikTok hashtag researcher for gaming content. Use web search to find the CURRENTLY trending hashtags for ${game} and Call of Duty content on TikTok right now in 2026.
+  const prompt = `You are a TikTok hashtag researcher for gaming content. Search the web to find currently trending hashtags for ${game} and Call of Duty content on TikTok right now in 2026.
 
-Search for:
-1. Currently trending ${game} TikTok hashtags
-2. Trending Call of Duty / COD TikTok hashtags 2026
-3. What hashtags are getting the most reach for gaming clips on TikTok right now
+Search for: trending ${game} TikTok hashtags 2026, trending COD TikTok hashtags, gaming hashtags performing well on TikTok now.
 
-Based on your research, return ONLY a JSON object — no markdown, no explanation:
-{
-  "trending": ["#hashtag1","#hashtag2","#hashtag3","#hashtag4","#hashtag5","#hashtag6","#hashtag7","#hashtag8"],
-  "always_include": ["#warzone","#cod","#callofduty"],
-  "rising": ["#newtag1","#newtag2"],
-  "source_note": "one sentence on what you found"
-}
+Return ONLY this JSON — no markdown, no explanation:
+{"trending":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8"],"always_include":["#warzone","#cod","#callofduty"],"rising":["#tag1","#tag2"],"source_note":"one short sentence on what you found"}
 
-All tags lowercase, no spaces. Include tags that are actually getting traction right now, not just historically popular ones.`;
+All tags lowercase. No spaces in tags.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 600,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: prompt }]
       })
     });
+    if (!res.ok) {
+      console.warn('Trending hashtag API error:', res.status);
+      return null;
+    }
     const data = await res.json();
-    const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    // Extract text blocks only — skip tool_use and tool_result blocks
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    if (!text.trim()) return null;
     const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
     trendingHashtagsCache = parsed;
     trendingCacheTime = Date.now();
@@ -2205,25 +2203,30 @@ async function analyseCaption() {
   const apiKey = loadApiKey();
   const resultEl = document.getElementById('cap-analysis-result');
 
-  resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px 0;color:var(--muted);font-size:12px;font-family:var(--mono);"><div style="width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Researching trending hashtags & analysing your caption...</div>';
+  resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px 0;color:var(--muted);font-size:12px;font-family:var(--mono);"><div style="width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Analysing your caption & fetching trending hashtags...</div>';
 
-  // Fetch trending hashtags (uses cache if fresh)
-  const trending = apiKey ? await fetchTrendingHashtags(game, false) : null;
+  // Run trending fetch and caption analysis in parallel — analysis doesn't wait for trending
+  const trendingPromise = apiKey ? fetchTrendingHashtags(game, false) : Promise.resolve(null);
 
   if (!apiKey) {
-    // No API key — just render the captions as-is with default hashtags
     renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
     resultEl.innerHTML = '<div style="color:var(--amber);font-size:12px;padding:8px 0;">No API key — add one in Settings to get voice analysis and trending hashtags.</div>';
     return;
   }
 
-  const trendingContext = trending
-    ? `Currently trending hashtags for ${game} on TikTok: ${[...(trending.always_include||[]), ...(trending.trending||[])].join(', ')}\nRising tags: ${(trending.rising||[]).join(', ')}`
-    : `Use these proven hashtags: #warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv`;
-
   // Build adapted captions for IG and YT
   const igFinal = igCaption || `${ttCaption} — live on Twitch, Kick & TikTok`;
   const ytFinal = ytCaption || `${game} - ${ttCaption.charAt(0).toUpperCase() + ttCaption.slice(1)} | Khanvict TV`;
+
+  // Wait for trending (with timeout so it never blocks analysis)
+  const trending = await Promise.race([
+    trendingPromise,
+    new Promise(resolve => setTimeout(() => resolve(null), 8000))
+  ]);
+
+  const trendingContext = trending
+    ? `Currently trending hashtags for ${game} on TikTok: ${[...(trending.always_include||[]), ...(trending.trending||[])].join(', ')}\nRising tags: ${(trending.rising||[]).join(', ')}`
+    : `Use these proven hashtags: #warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv`;
 
   const prompt = `You are the caption coach for Khanvict TV — a Warzone/FPS streamer. His best captions are short, lowercase, matter-of-fact with occasional dry humor. No emojis, no hype words.
 
@@ -2262,6 +2265,10 @@ Return ONLY raw JSON:
       headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 700, messages: [{ role: 'user', content: prompt }] })
     });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(`API ${res.status}: ${errData.error?.message || res.statusText}`);
+    }
     const data = await res.json();
     const raw  = data.content.map(b => b.text || '').join('');
     const r    = JSON.parse(raw.replace(/```json|```/g, '').trim());
@@ -2296,7 +2303,8 @@ Return ONLY raw JSON:
     renderCapResult('yt', ytFinal,   r.yt_hashtags, 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
 
   } catch(e) {
-    resultEl.innerHTML = '<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed. Check your API key and try again.</div>';
+    console.error('Caption analysis error:', e);
+    resultEl.innerHTML = `<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed: ${e.message || 'Unknown error'}. Check your API key in Settings and try again.</div>`;
     renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
   }
 }
