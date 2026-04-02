@@ -155,6 +155,7 @@
   .date-chip.today-chip { border-color:var(--accent2); }
 
   @media (max-width: 768px) {
+    .analytics-half-grid { grid-template-columns: 1fr !important; }
     .week-grid { grid-template-columns: 44px repeat(7,1fr); }
     .week-cell { padding: 3px; max-height: 120px; overflow-y: auto; }
     .post-slot { min-height: 36px; padding: 3px 4px; font-size: 10px; }
@@ -580,6 +581,46 @@
     <div class="panel" id="panel-analytics">
       <div class="panel-header">
         <div class="panel-title">ANALYTICS <span>&amp; INSIGHTS</span></div>
+        <button class="btn btn-primary btn-sm" onclick="openEngageModal()">+ Log engagement</button>
+      </div>
+
+      <!-- Overview cards -->
+      <div id="analytics-overview" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:14px;"></div>
+
+      <!-- AI Insights -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>✦ AI Weekly Insights</span>
+          <button class="btn btn-ghost btn-sm" id="ai-insights-btn" onclick="generateInsights()">Generate</button>
+        </div>
+        <div id="ai-insights-body" style="font-size:13px;color:var(--muted);line-height:1.7;">
+          Hit Generate to get personalised recommendations based on your engagement data. Needs 5+ logged posts for useful insights.
+        </div>
+      </div>
+
+      <!-- Views over time -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Views over time</div>
+        <div id="views-chart" style="width:100%;overflow-x:auto;"></div>
+      </div>
+
+      <!-- Platform comparison -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">Platform comparison</div>
+        <div id="platform-comparison" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;"></div>
+      </div>
+
+      <!-- Day of week + Best time side by side -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;" class="analytics-half-grid">
+        <div class="card">
+          <div class="card-title">Best day to post</div>
+          <div id="dow-chart"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Best time slot</div>
+          <div class="grid3" id="best-times-grid" style="gap:8px;"></div>
+          <div style="font-size:10px;color:var(--muted);margin-top:8px;">Based on avg views per slot. Needs 3+ posts per slot.</div>
+        </div>
       </div>
 
       <!-- Streak -->
@@ -591,39 +632,23 @@
             <div style="font-size:11px;color:var(--muted);margin-top:4px;">day streak</div>
           </div>
           <div style="flex:1;min-width:180px;">
-            <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;">
-              <div style="font-size:13px;color:var(--text);">Best streak: <span id="streak-best" style="font-family:var(--mono);color:var(--accent2);">0</span> days</div>
-            </div>
+            <div style="font-size:13px;color:var(--text);margin-bottom:6px;">Best: <span id="streak-best" style="font-family:var(--mono);color:var(--accent2);">0</span> days</div>
             <div style="font-size:12px;color:var(--muted);margin-bottom:10px;" id="streak-msg">Start posting to build your streak.</div>
             <div style="display:flex;gap:4px;flex-wrap:wrap;" id="streak-heatmap"></div>
           </div>
         </div>
       </div>
 
-      <!-- Best times -->
-      <div class="card" style="margin-bottom:14px;">
-        <div class="card-title">Best time to post — based on your data</div>
-        <div class="grid3" id="best-times-grid" style="gap:10px;"></div>
-        <div style="font-size:11px;color:var(--muted);margin-top:10px;">Log engagement on your posts to personalise these recommendations.</div>
-      </div>
-
       <!-- Hashtag performance -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title">Hashtag performance</div>
-        <div id="hashtag-perf-list">
-          <div style="color:var(--muted);font-size:13px;padding:12px 0;">No hashtag data yet. Log engagement on posts that used specific hashtags to see which ones perform best.</div>
-        </div>
+        <div id="hashtag-perf-list"><div style="color:var(--muted);font-size:13px;padding:12px 0;">No hashtag data yet.</div></div>
       </div>
 
       <!-- Engagement log -->
       <div class="card">
-        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
-          <span>Engagement log</span>
-          <button class="btn btn-primary btn-sm" onclick="openEngageModal()">+ Log engagement</button>
-        </div>
-        <div id="engage-log-list">
-          <div style="color:var(--muted);font-size:13px;padding:12px 0;">No engagement logged yet. After posting, tap "+ Log engagement" to record your stats.</div>
-        </div>
+        <div class="card-title">Engagement log</div>
+        <div id="engage-log-list"><div style="color:var(--muted);font-size:13px;padding:12px 0;">No engagement logged yet.</div></div>
       </div>
     </div>
 
@@ -2583,10 +2608,282 @@ function clearAll() {
 // ── ANALYTICS ────────────────────────────────────────────────────────────
 
 function renderAnalytics() {
-  renderStreak();
+  renderOverviewCards();
+  renderViewsChart();
+  renderPlatformComparison();
+  renderDayOfWeekChart();
   renderBestTimes();
+  renderStreak();
   renderHashtagPerf();
   renderEngageLog();
+}
+
+// ── OVERVIEW CARDS ────────────────────────────────────────────────────────
+function renderOverviewCards() {
+  const eng = state.engagements;
+  if (!eng.length) {
+    document.getElementById('analytics-overview').innerHTML =
+      `<div style="grid-column:1/-1;color:var(--muted);font-size:13px;padding:8px 0;">Log engagement on your posts to see overview metrics here.</div>`;
+    return;
+  }
+
+  const totalViews     = eng.reduce((s,e) => s + (e.views||0), 0);
+  const totalLikes     = eng.reduce((s,e) => s + (e.likes||0), 0);
+  const totalComments  = eng.reduce((s,e) => s + (e.comments||0), 0);
+  const totalFollowers = eng.reduce((s,e) => s + (e.followers||0), 0);
+  const avgViews       = Math.round(totalViews / eng.length);
+  const engRate        = totalViews > 0 ? ((totalLikes + totalComments) / totalViews * 100).toFixed(1) : '0.0';
+
+  // Last 30 days
+  const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 30);
+  const recent = eng.filter(e => new Date(e.loggedAt) >= cutoff);
+  const recentViews = recent.reduce((s,e) => s + (e.views||0), 0);
+  const recentAvg   = recent.length ? Math.round(recentViews / recent.length) : 0;
+
+  const cards = [
+    { label: 'Total views',     val: totalViews.toLocaleString(),    sub: `${recent.length} posts logged`,        color: 'var(--accent2)' },
+    { label: 'Avg views/post',  val: avgViews.toLocaleString(),       sub: `${recentAvg.toLocaleString()} last 30d`, color: 'var(--green)' },
+    { label: 'Total likes',     val: totalLikes.toLocaleString(),     sub: `${totalComments} comments`,            color: 'var(--tiktok)' },
+    { label: 'Followers gained',val: '+' + totalFollowers,            sub: 'from logged posts',                    color: 'var(--ig)' },
+    { label: 'Engagement rate', val: engRate + '%',                   sub: '(likes+comments)÷views',               color: 'var(--amber)' },
+  ];
+
+  document.getElementById('analytics-overview').innerHTML = cards.map(c => `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:${c.color};">${c.val}</div>
+      <div style="font-size:11px;font-weight:500;color:var(--text);margin-top:4px;">${c.label}</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">${c.sub}</div>
+    </div>`).join('');
+}
+
+// ── VIEWS CHART ───────────────────────────────────────────────────────────
+function renderViewsChart() {
+  const container = document.getElementById('views-chart');
+  const eng = [...state.engagements].sort((a,b) => a.date.localeCompare(b.date));
+
+  if (eng.length < 2) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">Log at least 2 posts to see the views chart.</div>';
+    return;
+  }
+
+  // Group by date+platform — take max views per day per platform for display
+  const byDate = {};
+  eng.forEach(e => {
+    if (!byDate[e.date]) byDate[e.date] = { tt:0, ig:0, yt:0, total:0 };
+    byDate[e.date][e.platform] = Math.max(byDate[e.date][e.platform], e.views||0);
+    byDate[e.date].total += e.views||0;
+  });
+
+  const dates  = Object.keys(byDate).sort();
+  const maxVal = Math.max(...dates.map(d => byDate[d].total), 1);
+  const barW   = Math.max(24, Math.min(40, Math.floor(560 / dates.length)));
+  const chartH = 120;
+
+  const bars = dates.map(d => {
+    const data = byDate[d];
+    const h    = Math.round((data.total / maxVal) * chartH);
+    const dt   = new Date(d + 'T12:00:00');
+    const lbl  = dt.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    return `
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;width:${barW}px;" title="${lbl}: ${data.total.toLocaleString()} views">
+        <div style="font-size:9px;color:var(--muted);font-family:var(--mono);">${data.total >= 1000 ? (data.total/1000).toFixed(1)+'k' : data.total}</div>
+        <div style="width:${barW-6}px;height:${h}px;background:var(--accent);border-radius:3px 3px 0 0;min-height:3px;"></div>
+        <div style="font-size:8px;color:var(--muted);transform:rotate(-35deg);transform-origin:top left;margin-top:4px;white-space:nowrap;">${lbl}</div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div style="display:flex;align-items:flex-end;gap:3px;padding:8px 0 32px;overflow-x:auto;min-height:${chartH+60}px;">
+      ${bars}
+    </div>`;
+}
+
+// ── PLATFORM COMPARISON ───────────────────────────────────────────────────
+function renderPlatformComparison() {
+  const container = document.getElementById('platform-comparison');
+  const PLATS = ['tt','ig','yt'];
+  const PL    = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
+  const PC    = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
+
+  container.innerHTML = PLATS.map(plat => {
+    const platEng = state.engagements.filter(e => e.platform === plat);
+    if (!platEng.length) {
+      return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-size:10px;font-family:var(--mono);color:${PC[plat]};letter-spacing:1px;margin-bottom:8px;">${PL[plat].toUpperCase()}</div>
+        <div style="font-size:12px;color:var(--muted);">No data yet</div>
+      </div>`;
+    }
+
+    const avgViews = Math.round(platEng.reduce((s,e) => s+(e.views||0),0) / platEng.length);
+    const avgLikes = Math.round(platEng.reduce((s,e) => s+(e.likes||0),0) / platEng.length);
+    const engRate  = avgViews > 0 ? ((platEng.reduce((s,e)=>s+(e.likes||0)+(e.comments||0),0)/platEng.length) / avgViews * 100).toFixed(1) : '0.0';
+    const totFollow= platEng.reduce((s,e)=>s+(e.followers||0),0);
+
+    return `<div style="background:var(--bg3);border:1px solid var(--border);border-left:3px solid ${PC[plat]};border-radius:8px;padding:12px;">
+      <div style="font-size:10px;font-family:var(--mono);color:${PC[plat]};letter-spacing:1px;margin-bottom:10px;">${PL[plat].toUpperCase()} · ${platEng.length} posts</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:11px;color:var(--muted);">Avg views</span>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--text);">${avgViews.toLocaleString()}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:11px;color:var(--muted);">Avg likes</span>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--text);">${avgLikes.toLocaleString()}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:11px;color:var(--muted);">Eng. rate</span>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--amber);">${engRate}%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:11px;color:var(--muted);">Followers</span>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--green);">+${totFollow}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── DAY OF WEEK CHART ─────────────────────────────────────────────────────
+function renderDayOfWeekChart() {
+  const container = document.getElementById('dow-chart');
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  if (!state.engagements.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">No data yet.</div>';
+    return;
+  }
+
+  const byDay = Array(7).fill(null).map(() => ({ views:0, count:0 }));
+  state.engagements.forEach(e => {
+    const d = new Date(e.date + 'T12:00:00').getDay();
+    byDay[d].views += e.views||0;
+    byDay[d].count++;
+  });
+
+  const avgs   = byDay.map(d => d.count ? Math.round(d.views/d.count) : 0);
+  const maxAvg = Math.max(...avgs, 1);
+
+  container.innerHTML = `<div style="display:flex;align-items:flex-end;gap:4px;height:80px;margin-top:8px;">` +
+    DAYS.map((day, i) => {
+      const avg = avgs[i];
+      const h   = Math.round((avg / maxAvg) * 64);
+      const col = avg === Math.max(...avgs) ? 'var(--green)' : 'var(--accent)';
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
+        <div style="font-size:9px;color:var(--muted);font-family:var(--mono);">${avg>=1000?(avg/1000).toFixed(1)+'k':avg||''}</div>
+        <div style="width:100%;height:${h||2}px;background:${h?col:'var(--bg4)'};border-radius:2px 2px 0 0;"></div>
+        <div style="font-size:9px;color:${avg===Math.max(...avgs)?'var(--green)':'var(--muted)'};">${day}</div>
+      </div>`;
+    }).join('') + `</div>`;
+}
+
+// ── AI WEEKLY INSIGHTS ────────────────────────────────────────────────────
+async function generateInsights() {
+  const eng = state.engagements;
+  if (eng.length < 5) {
+    document.getElementById('ai-insights-body').innerHTML =
+      '<span style="color:var(--amber);">Need at least 5 logged posts to generate meaningful insights. You have ' + eng.length + '.</span>';
+    return;
+  }
+
+  const apiKey = loadApiKey();
+  if (!apiKey) {
+    document.getElementById('ai-insights-body').innerHTML =
+      '<span style="color:var(--amber);">Add your Anthropic API key in Settings to use AI insights.</span>';
+    return;
+  }
+
+  const btn = document.getElementById('ai-insights-btn');
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+  document.getElementById('ai-insights-body').innerHTML =
+    '<div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;"><div style="width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Analysing your data...</div>';
+
+  // Build data summary for the prompt
+  const PLATS = ['tt','ig','yt'];
+  const PL    = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
+  const platStats = PLATS.map(p => {
+    const e = eng.filter(x => x.platform === p);
+    if (!e.length) return null;
+    const avgV = Math.round(e.reduce((s,x)=>s+(x.views||0),0)/e.length);
+    const engR = avgV > 0 ? ((e.reduce((s,x)=>s+(x.likes||0)+(x.comments||0),0)/e.length)/avgV*100).toFixed(1) : 0;
+    return `${PL[p]}: ${e.length} posts, avg ${avgV} views, ${engR}% engagement rate`;
+  }).filter(Boolean).join('\n');
+
+  // Time slot performance
+  const slotStats = {};
+  eng.forEach(e => {
+    if (!slotStats[e.time]) slotStats[e.time] = { views:0, count:0 };
+    slotStats[e.time].views += e.views||0;
+    slotStats[e.time].count++;
+  });
+  const slotSummary = Object.entries(slotStats)
+    .map(([t,d]) => `${fmtTime(t)}: avg ${Math.round(d.views/d.count)} views (${d.count} posts)`)
+    .join('\n');
+
+  // Day of week
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const byDay = Array(7).fill(null).map(()=>({views:0,count:0}));
+  eng.forEach(e => { const d=new Date(e.date+'T12:00:00').getDay(); byDay[d].views+=(e.views||0); byDay[d].count++; });
+  const dowSummary = DAYS.map((d,i) => byDay[i].count ? `${d}: avg ${Math.round(byDay[i].views/byDay[i].count)} views (${byDay[i].count} posts)` : null).filter(Boolean).join('\n');
+
+  // Top hashtags
+  const tagData = {};
+  eng.forEach(e => (e.hashtags||[]).forEach(t => { if(!tagData[t]) tagData[t]={v:0,c:0}; tagData[t].v+=(e.views||0); tagData[t].c++; }));
+  const topTags = Object.entries(tagData).sort((a,b)=>(b[1].v/b[1].c)-(a[1].v/a[1].c)).slice(0,8)
+    .map(([t,d])=>`${t}: avg ${Math.round(d.v/d.c)} views`).join('\n');
+
+  const prompt = `You are a social media growth advisor for Khanvict TV — an FPS/shooter streamer (Warzone, Fortnite, Apex) who posts kill and clutch clips on TikTok, Instagram Reels, and YouTube Shorts. He streams live on Twitch, Kick, and TikTok Live simultaneously and aims to post 3x per day.
+
+Here is his actual engagement data from the last ${eng.length} logged posts:
+
+PLATFORM PERFORMANCE:
+${platStats}
+
+TIME SLOT PERFORMANCE:
+${slotSummary}
+
+DAY OF WEEK PERFORMANCE:
+${dowSummary}
+
+TOP HASHTAGS BY AVG VIEWS:
+${topTags || 'Not enough hashtag data yet'}
+
+Based on this real data, give him 4 specific, actionable insights. Each insight should:
+- Reference his actual numbers (not generic advice)
+- Tell him exactly what to do differently
+- Be written in a direct, no-BS tone
+
+Format your response as a JSON array of objects:
+[
+  { "title": "short title", "insight": "specific finding from the data", "action": "exactly what to do" },
+  ...
+]
+
+Return ONLY the JSON array, no markdown, no explanation.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'x-api-key':apiKey, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
+      body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:900, messages:[{role:'user',content:prompt}] })
+    });
+    const data = await res.json();
+    const raw  = data.content.map(b=>b.text||'').join('');
+    const insights = JSON.parse(raw.replace(/```json|```/g,'').trim());
+
+    document.getElementById('ai-insights-body').innerHTML = insights.map((ins, i) => `
+      <div style="padding:12px 0;border-bottom:0.5px solid var(--border);${i===insights.length-1?'border-bottom:none;':''}">
+        <div style="font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:4px;">${ins.title}</div>
+        <div style="font-size:12px;color:var(--text);margin-bottom:6px;line-height:1.6;">${ins.insight}</div>
+        <div style="font-size:11px;color:var(--green);font-family:var(--mono);background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:4px;padding:6px 10px;">→ ${ins.action}</div>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('ai-insights-body').innerHTML =
+      '<span style="color:var(--red);">Failed to generate insights. Check your API key and try again.</span>';
+  }
+
+  btn.textContent = '↻ Refresh';
+  btn.disabled = false;
 }
 
 // ── STREAK ───────────────────────────────────────────────────────────────
