@@ -42,14 +42,16 @@
       "filename": "all_of_them_pushed_together.mp4",
       "duration": "0:28",
       "size_mb": 104.7,
-      "desc": "",
+      "desc": "i get it, you like holding each others pockets, i never stood a chance",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-03-28T21:56:10",
-      "fromScan": true
+      "fromScan": true,
+      "archived": true,
+      "archivedAt": "2026-04-02T03:35:35.886Z"
     },
     {
       "id": 1774590114440,
