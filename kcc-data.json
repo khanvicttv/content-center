@@ -536,6 +536,15 @@
       "date": "2026-04-04",
       "time": "19:00",
       "posted": false
+    },
+    {
+      "id": 1775148445361.2349,
+      "clipId": 1775147776629,
+      "clipName": "Locked in tryin to survive",
+      "platform": "tt",
+      "date": "2026-04-05",
+      "time": "09:00",
+      "posted": false
     }
   ],
   "checklist": {
@@ -1261,7 +1270,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
