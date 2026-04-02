@@ -209,7 +209,47 @@
         "ig"
       ],
       "addedAt": "2026-04-02T10:09:23",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "Fearless was doin work in that final circle",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "Fearless was doin work in that final circle\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "Fearless was doin work in that final circle — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#streamer",
+            "#twitch",
+            "#khanvicttv"
+          ],
+          "full": "Fearless was doin work in that final circle — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #streamer #twitch #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - Fearless was doin work in that final circle | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#bo6",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - Fearless was doin work in that final circle | Khanvict TV\n\n#warzone #cod #callofduty #shorts #bo6 #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775141462249,
