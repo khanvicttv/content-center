@@ -42,15 +42,14 @@
       "filename": "all_of_them_pushed_together.mp4",
       "duration": "0:28",
       "size_mb": 104.7,
-      "desc": "I get it, you like holding each others pockets",
+      "desc": "",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-03-28T21:56:10",
-      "fromScan": true,
-      "lastHashtags": {}
+      "fromScan": true
     },
     {
       "id": 1774590114440,
@@ -213,7 +212,7 @@
       "platform": "tt",
       "date": "2026-04-01",
       "time": "19:00",
-      "posted": false
+      "posted": true
     },
     {
       "id": 1774803992264,
