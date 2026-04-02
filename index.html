@@ -1136,8 +1136,10 @@ function switchClipTab(tab) {
 
 function isClipFullyPosted(clip) {
   // A clip is fully posted when all its selected platforms have at least one posted entry
+  // Use string comparison to avoid float precision issues with IDs
+  const clipIdStr = String(clip.id);
   return clip.platforms.every(plat =>
-    state.posts.some(p => p.clipId === clip.id && p.platform === plat && p.posted)
+    state.posts.some(p => String(p.clipId) === clipIdStr && p.platform === plat && p.posted)
   );
 }
 
@@ -1731,7 +1733,7 @@ function onTouchEnd(e) {
 let confirmPostId = null;
 
 function openConfirmPost(postId) {
-  const post = state.posts.find(p => p.id === postId);
+  const post = state.posts.find(p => String(p.id) === String(postId));
   if (!post) return;
   confirmPostId = postId;
   const color = PLAT_COLOR[post.platform];
@@ -1766,7 +1768,7 @@ function openConfirmPost(postId) {
 
 function confirmRemovePost() {
   if (!confirmPostId) return;
-  state.posts = state.posts.filter(p => p.id !== confirmPostId);
+  state.posts = state.posts.filter(p => String(p.id) !== String(confirmPostId));
   save();
   renderWeek();
   renderToday();
@@ -1779,7 +1781,7 @@ function confirmRemovePost() {
 
 function confirmMarkPosted() {
   if (!confirmPostId) return;
-  const post = state.posts.find(p => p.id === confirmPostId);
+  const post = state.posts.find(p => String(p.id) === String(confirmPostId));
   if (post) {
     post.posted = !post.posted;
 
@@ -3157,7 +3159,7 @@ function editEngagement(id) {
   const posted = state.posts.filter(p => p.posted);
   const sel = document.getElementById('eng-post-sel');
   sel.innerHTML = posted.length
-    ? posted.map(p => `<option value="${p.id}" ${p.id === e.postId ? 'selected' : ''}>${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('')
+    ? posted.map(p => `<option value="${p.id}" ${String(p.id) === String(e.postId) ? 'selected' : ''}>${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('')
     : `<option value="${e.postId}">${e.clipName} — ${PLAT_LABEL[e.platform]}</option>`;
 
   document.getElementById('eng-views').value     = e.views     || '';
@@ -3182,11 +3184,20 @@ function openEngageModal() {
   editingEngagementId = null;
   document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
 
-  const posted = state.posts.filter(p => p.posted);
+  // Exclude posts that already have an engagement entry
+  const loggedPostIds = new Set(state.engagements.map(e => String(e.postId)));
+  const posted = state.posts.filter(p => p.posted && !loggedPostIds.has(String(p.id)));
   const sel = document.getElementById('eng-post-sel');
-  sel.innerHTML = posted.length
-    ? posted.map(p => `<option value="${p.id}">${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('')
-    : '<option value="">No posted clips yet</option>';
+
+  if (!posted.length) {
+    const allPosted = state.posts.filter(p => p.posted);
+    sel.innerHTML = allPosted.length
+      ? '<option value="">All posted clips are already logged</option>'
+      : '<option value="">No posted clips yet</option>';
+  } else {
+    sel.innerHTML = '<option value="">— select a post —</option>' +
+      posted.map(p => `<option value="${p.id}">${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('');
+  }
 
   document.getElementById('eng-views').value = '';
   document.getElementById('eng-likes').value = '';
@@ -3195,10 +3206,10 @@ function openEngageModal() {
   document.getElementById('eng-notes').value = '';
   document.getElementById('eng-hashtags').value = '';
 
-  // Pre-fill hashtags when a post is selected
+  // Pre-fill hashtags when a post is selected — use string comparison to avoid float precision issues
   sel.onchange = function() {
-    const postId = parseInt(this.value);
-    const post = state.posts.find(p => p.id === postId);
+    const postIdStr = this.value;
+    const post = state.posts.find(p => String(p.id) === postIdStr);
     if (!post) return;
     const clip = state.clips.find(c => c.id === post.clipId);
     if (clip && clip.lastHashtags && clip.lastHashtags[post.platform]) {
@@ -3208,23 +3219,21 @@ function openEngageModal() {
     }
   };
 
-  // Trigger prefill for first item
   if (posted.length) sel.onchange.call(sel);
-
   document.getElementById('modal-engage').classList.add('open');
 }
 
 function saveEngagement() {
-  const postId  = parseInt(document.getElementById('eng-post-sel').value);
-  const post    = state.posts.find(p => p.id === postId);
-  if (!post) { alert('Please select a post.'); return; }
+  const postIdStr = document.getElementById('eng-post-sel').value;
+  if (!postIdStr) { alert('Please select a post.'); return; }
+  const post = state.posts.find(p => String(p.id) === postIdStr);
 
   const rawTags  = document.getElementById('eng-hashtags').value;
   const hashtags = rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0)
     .map(t => t.startsWith('#') ? t : '#' + t);
 
   const values = {
-    postId,
+    postId:    post.id,
     clipId:    post.clipId,
     clipName:  post.clipName,
     platform:  post.platform,
