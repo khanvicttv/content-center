@@ -527,54 +527,62 @@
     <!-- CAPTIONS -->
     <div class="panel" id="panel-captions">
       <div class="panel-header">
-        <div class="panel-title">CAPTION <span>GENERATOR</span></div>
+        <div class="panel-title">CAPTION <span>ASSISTANT</span></div>
+        <button class="btn btn-ghost btn-sm" onclick="refreshTrendingHashtags()" id="trending-refresh-btn" style="font-size:10px;">↻ Trending tags</button>
       </div>
 
       <div class="alert-info">
-        <strong>How this works:</strong> Select a clip, choose the tone, then hit Generate. Captions are built from the description you wrote when you added the clip — no video upload needed. The more detail you put in the description, the better the captions.
+        <strong>How this works:</strong> Write your caption the way you naturally would, select your clip and game, then hit Analyse. The AI checks your caption against your best performers, searches for currently trending Warzone hashtags, and builds you the best tag set. Your caption stays yours — the AI handles the research.
       </div>
 
       <div class="grid2" style="margin-bottom:14px;">
         <div class="field">
-          <label>Select clip</label>
+          <label>Select clip <span style="color:var(--muted);font-size:9px;">(optional — links result to clip)</span></label>
           <select id="cap-clip" onchange="onCapClipChange()">
             <option value="">— choose a clip —</option>
           </select>
         </div>
         <div class="field">
-          <label>Tone / vibe</label>
-          <select id="cap-tone">
-            <option value="hype">🔥 Hype & energetic</option>
-            <option value="chill">😎 Chill & relaxed</option>
-            <option value="funny">😂 Funny & relatable</option>
-            <option value="clutch">🎯 Clutch / competitive</option>
-            <option value="educational">💡 Tips & educational</option>
-          </select>
+          <label>Game</label>
+          <input type="text" id="cap-game" placeholder="Warzone" value="Warzone">
         </div>
       </div>
 
-      <div class="field">
-        <label>Clip description <span style="color:var(--accent2);font-size:9px;">(auto-filled from library — edit if needed)</span></label>
-        <textarea id="cap-desc" rows="3" placeholder="Describe what happens in the clip — the more detail, the better the captions..."></textarea>
+      <div class="field" style="margin-bottom:8px;">
+        <label>Your TikTok caption <span style="color:var(--accent2);font-size:9px;">write it yourself — short, lowercase, no emoji</span></label>
+        <textarea id="cap-tt-input" rows="2" placeholder='e.g. "the dude was lost, broke every bone in his body"' style="font-size:14px;"></textarea>
+      </div>
+      <div class="field" style="margin-bottom:8px;">
+        <label>Instagram caption <span style="color:var(--muted);font-size:9px;">(optional — leave blank to auto-adapt from TikTok)</span></label>
+        <textarea id="cap-ig-input" rows="2" placeholder="Can be slightly longer — mention live on Twitch, Kick & TikTok"></textarea>
+      </div>
+      <div class="field" style="margin-bottom:16px;">
+        <label>YouTube title <span style="color:var(--muted);font-size:9px;">(optional — leave blank to auto-adapt)</span></label>
+        <input type="text" id="cap-yt-input" placeholder="Warzone Clip - your title here | Khanvict TV">
       </div>
 
-      <div class="field">
-        <label>Game</label>
-        <input type="text" id="cap-game" placeholder="e.g. Warzone, Fortnite, Apex...">
+      <button class="btn btn-primary" onclick="analyseCaption()" style="margin-bottom:20px;">✦ Analyse &amp; get hashtags</button>
+
+      <!-- Trending hashtags strip -->
+      <div id="trending-strip" style="margin-bottom:16px;display:none;">
+        <div style="font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:1px;margin-bottom:8px;">TRENDING NOW — WARZONE / COD</div>
+        <div id="trending-tags" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:6px;" id="trending-updated"></div>
       </div>
 
-      <button class="btn btn-primary" onclick="generateCaptions()" style="margin-bottom:24px;">✦ Generate captions for all platforms</button>
+      <!-- Analysis result -->
+      <div id="cap-analysis-result"></div>
 
-      <div class="cap-tabs">
+      <!-- Per-platform results -->
+      <div class="cap-tabs" style="margin-top:8px;">
         <button class="cap-tab tt active" onclick="switchCapTab(this,'tt')">TikTok</button>
         <button class="cap-tab ig" onclick="switchCapTab(this,'ig')">Instagram</button>
         <button class="cap-tab yt" onclick="switchCapTab(this,'yt')">YouTube</button>
-        <button class="btn btn-ghost btn-sm" onclick="remixCaption()" style="margin-left:auto;margin-bottom:1px;font-size:10px;" title="Regenerate current platform only">↻ Remix</button>
       </div>
 
-      <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
-      <div id="cap-ig" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
-      <div id="cap-yt" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Hit "Generate captions" to build your content above.</div></div>
+      <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
+      <div id="cap-ig" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
+      <div id="cap-yt" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
     </div>
 
     <!-- ANALYTICS -->
@@ -1369,6 +1377,19 @@ function importFromScan(e) {
 }
 
 
+function copyTodayCaption(encoded, btn) {
+  navigator.clipboard.writeText(decodeURIComponent(encoded)).catch(() => {});
+  const orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  btn.style.background = 'var(--green)';
+  btn.style.color = '#000';
+  setTimeout(() => {
+    btn.textContent = orig;
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 2000);
+}
+
 function captionFromClip(id) {
   nav('captions');
   setTimeout(() => {
@@ -1411,6 +1432,115 @@ function schedulePost() {
   renderClipList();
   if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
   newPosts.forEach(p => scheduleNtfyNotification(p));
+
+  // Auto-generate captions in background if clip has a description and no captions yet
+  if (clip && clip.description && (!clip.captions || Object.keys(clip.captions).length === 0)) {
+    autoGenerateCaptions(clip);
+  }
+}
+
+async function batchGenerateCaptions() {
+  const apiKey = loadApiKey();
+  const btn = document.getElementById('batch-cap-btn');
+
+  // Find all active clips with descriptions but missing captions
+  const clipsNeedingCaptions = state.clips.filter(c =>
+    !c.archived &&
+    c.description &&
+    c.description.trim() &&
+    (!c.captions || Object.keys(c.captions).length < 3)
+  );
+
+  if (!clipsNeedingCaptions.length) {
+    alert('All clips with descriptions already have captions generated.');
+    return;
+  }
+
+  if (!apiKey) {
+    alert(`Found ${clipsNeedingCaptions.length} clips needing captions, but no API key is set. Add your Anthropic API key in Settings.`);
+    return;
+  }
+
+  if (!confirm(`Generate captions for ${clipsNeedingCaptions.length} clip${clipsNeedingCaptions.length !== 1 ? 's' : ''}? This runs in the background — you can keep using the app.`)) return;
+
+  btn.textContent = `⚡ 0/${clipsNeedingCaptions.length}`;
+  btn.disabled = true;
+
+  let done = 0;
+  for (const clip of clipsNeedingCaptions) {
+    await autoGenerateCaptions(clip);
+    done++;
+    btn.textContent = `⚡ ${done}/${clipsNeedingCaptions.length}`;
+  }
+
+  btn.textContent = '⚡ Generate all';
+  btn.disabled = false;
+  renderToday();
+  alert(`Done! Captions generated for ${done} clip${done !== 1 ? 's' : ''}. Copy buttons now appear on your Today screen.`);
+}
+
+async function autoGenerateCaptions(clip) {
+  const apiKey = loadApiKey();
+  if (!apiKey) return; // silently skip if no API key
+
+  const desc = clip.description;
+  const game = clip.game || 'Warzone';
+  const tone = 'clutch'; // default tone for auto-generation
+  const clipId = clip.id;
+
+  const toneGuide = {
+    clutch: 'Matter-of-fact about something that was clearly not matter-of-fact. Understated. "broke every bone in his body" energy.'
+  };
+
+  const PLATS = [
+    { key: 'tt', name: 'TikTok' },
+    { key: 'ig', name: 'Instagram Reels' },
+    { key: 'yt', name: 'YouTube Shorts' }
+  ];
+
+  const platRules = {
+    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.',
+    ig: 'Same voice, 1-2 sentences. Can mention live on Twitch/Kick/TikTok.',
+    yt: 'Title format 40-70 chars, searchable, game name + action. End with | Khanvict TV.'
+  };
+
+  for (const plat of PLATS) {
+    // Skip if already have caption for this platform
+    if (clip.captions && clip.captions[plat.key]) continue;
+
+    const prompt = `You write TikTok captions for Khanvict TV — a Warzone/FPS streamer.
+
+Style: very short (5-16 words), no emojis, lowercase casual, matter-of-fact.
+Examples: "The dude was lost, broke every bone in his body" / "AK74 is meta right now for close range" / "legit OP, if you dont have it, you are doing yourself injustice"
+
+CLIP: ${desc}
+GAME: ${game}
+PLATFORM: ${plat.name}
+RULES: ${platRules[plat.key]}
+
+Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#rebirthisland","#warzoneclips","#khanvicttv"],"tip":"..."}`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
+      });
+      if (!res.ok) continue;
+      const data = await res.json();
+      const raw = data.content.map(b => b.text || '').join('');
+      const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+      const full = parsed.caption + '\n\n' + parsed.hashtags.join(' ');
+
+      // Save directly to clip — no UI rendering needed
+      if (!clip.captions) clip.captions = {};
+      clip.captions[plat.key] = { caption: parsed.caption, hashtags: parsed.hashtags, full };
+      save();
+      renderToday(); // refresh Today screen so Copy button appears
+    } catch(e) {
+      // Silently fail per platform — user can still generate manually
+    }
+  }
 }
 
 function markPosted(postId) {
@@ -1484,19 +1614,30 @@ function renderToday() {
       const h = p.time.split(':');
       const hr = parseInt(h[0]); const mn = h[1];
       const ap = hr>=12?'PM':'AM'; const h12 = hr%12||12;
+
+      // Get stored caption for this platform
+      const clip = state.clips.find(c => String(c.id) === String(p.clipId));
+      const hasCaption = clip && clip.captions && clip.captions[p.platform];
+      const captionEncoded = hasCaption ? encodeURIComponent(clip.captions[p.platform].full) : '';
+      const filename = clip && clip.filename ? `<div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;" title="${clip.filename}">${clip.filename}</div>` : '';
+
       return `
       <div class="today-slot-card ${p.posted?'done':''}" style="border-left:3px solid ${color};">
         <div>
           <div class="slot-time">${h12}:${mn}<span class="ampm"> ${ap}</span></div>
         </div>
-        <div>
+        <div style="min-width:0;flex:1;">
           <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:3px;">${PLAT_LABEL[p.platform].toUpperCase()}</div>
           <div style="font-size:13px;font-weight:500;">${p.clipName}</div>
+          ${filename}
           <div style="margin-top:5px;">${p.posted ? '<span class="posted-badge">✓ POSTED</span>' : '<span class="pending-badge">PENDING</span>'}</div>
         </div>
-        <div class="flex" style="flex-direction:column;align-items:flex-end;gap:6px;">
-          <button class="btn btn-ghost btn-sm" onclick="markPosted(${p.id})">${p.posted?'Undo':'Mark posted'}</button>
-          <button class="btn btn-danger btn-sm" onclick="removePost(${p.id})">Remove</button>
+        <div class="flex" style="flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+          ${hasCaption
+            ? `<button class="btn btn-primary btn-sm" onclick="copyTodayCaption('${captionEncoded}',this)" style="font-size:10px;">Copy caption</button>`
+            : `<button class="btn btn-ghost btn-sm" onclick="captionFromClip(${p.clipId})" style="font-size:10px;">Get caption</button>`
+          }
+          <button class="btn btn-ghost btn-sm" onclick="openConfirmPost(${p.id})">${p.posted?'Undo':'Mark posted'}</button>
         </div>
       </div>`;
     }).join('');
@@ -1935,9 +2076,13 @@ let currentCapTab = 'tt';
 function onCapClipChange() {
   const clipId = parseInt(document.getElementById('cap-clip').value);
   const clip = state.clips.find(c => c.id === clipId);
-  if (clip) {
-    document.getElementById('cap-desc').value = clip.desc || '';
-    document.getElementById('cap-game').value = clip.game || '';
+  if (!clip) return;
+  document.getElementById('cap-game').value = clip.game || 'Warzone';
+  // Pre-fill caption inputs if clip already has saved captions
+  if (clip.captions) {
+    if (clip.captions.tt) document.getElementById('cap-tt-input').value = clip.captions.tt.caption || '';
+    if (clip.captions.ig) document.getElementById('cap-ig-input').value = clip.captions.ig.caption || '';
+    if (clip.captions.yt) document.getElementById('cap-yt-input').value = clip.captions.yt.caption || '';
   }
 }
 
@@ -1949,211 +2094,221 @@ function switchCapTab(el, tab) {
   currentCapTab = tab;
 }
 
-async function remixCaption() {
-  // Regenerate only the currently active platform tab
-  const desc = document.getElementById('cap-desc').value.trim();
+// ── CAPTION ASSISTANT ─────────────────────────────────────────────────────
+
+// Cache trending hashtags so we don't search every single time
+let trendingHashtagsCache = null;
+let trendingCacheTime = null;
+const TRENDING_CACHE_MS = 60 * 60 * 1000; // 1 hour
+
+async function refreshTrendingHashtags() {
+  const btn = document.getElementById('trending-refresh-btn');
+  btn.textContent = '↻ Searching...';
+  btn.disabled = true;
   const game = document.getElementById('cap-game').value.trim() || 'Warzone';
-  const tone = document.getElementById('cap-tone').value;
-  const plat = currentCapTab;
+  await fetchTrendingHashtags(game, true);
+  btn.textContent = '↻ Trending tags';
+  btn.disabled = false;
+}
 
-  if (!desc) { alert('Add a clip description first.'); return; }
-
+async function fetchTrendingHashtags(game, forceRefresh) {
   const apiKey = loadApiKey();
-  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
+  if (!apiKey) return null;
 
-  document.getElementById('cap-' + plat).innerHTML =
-    '<div style="display:flex;align-items:center;gap:10px;padding:16px 0;color:var(--muted);font-family:var(--mono);font-size:12px;"><div style="width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Remixing...</div>';
+  const now = Date.now();
+  if (!forceRefresh && trendingHashtagsCache && trendingCacheTime && (now - trendingCacheTime) < TRENDING_CACHE_MS) {
+    renderTrendingStrip(trendingHashtagsCache);
+    return trendingHashtagsCache;
+  }
 
-  if (apiKey) {
-    const toneGuide = {
-      hype: 'High energy and aggressive. SHORT words. Impact statements. ALL CAPS one phrase.',
-      chill: 'Smooth, confident, minimal. Says a lot with very little.',
-      funny: 'Self-aware and dry. Smart-funny, not cringe-funny.',
-      clutch: 'Dramatic stakes, quiet confidence.',
-      educational: 'Direct and practical. State the tip upfront.'
-    };
-    const platRules = {
-      tt: 'TikTok: 5-16 words, no emoji, no hype, lowercase casual, matter-of-fact. Different angle than before.',
-      ig: 'Instagram: same voice, 1-2 sentences, slightly more descriptive. No emoji. Can mention live on Twitch/Kick/TikTok.',
-      yt: 'YouTube: title format 40-70 chars, searchable, include game name and clip action. Title case. End with | Khanvict TV.'
-    };
-    const prompt = `You write captions for Khanvict TV — Warzone/FPS streamer. His style: very short (5-16 words), no emojis, no hype words, lowercase casual, matter-of-fact with occasional dry humor.
+  const prompt = `You are a TikTok hashtag researcher for gaming content. Use web search to find the CURRENTLY trending hashtags for ${game} and Call of Duty content on TikTok right now in 2026.
 
-Real examples of his captions:
-- "The dude was lost, broke every bone in his body"
-- "AK74 is meta right now for close range"  
-- "legit OP, if you dont have it, you are doing yourself injustice"
-- "Its a simple change but a good one"
-- "This optic is just hitscan"
+Search for:
+1. Currently trending ${game} TikTok hashtags
+2. Trending Call of Duty / COD TikTok hashtags 2026
+3. What hashtags are getting the most reach for gaming clips on TikTok right now
 
-CLIP: ${desc}
-GAME: ${game}
-TONE: ${toneGuide[tone]}
-PLATFORM: ${platNames[plat]}
-RULES: ${platRules[plat]}
-IMPORTANT: Generate a FRESH take — different angle, different opener. Still short, still lowercase, still no emoji.
+Based on your research, return ONLY a JSON object — no markdown, no explanation:
+{
+  "trending": ["#hashtag1","#hashtag2","#hashtag3","#hashtag4","#hashtag5","#hashtag6","#hashtag7","#hashtag8"],
+  "always_include": ["#warzone","#cod","#callofduty"],
+  "rising": ["#newtag1","#newtag2"],
+  "source_note": "one sentence on what you found"
+}
 
-Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#tag5","#tag6","#khanvicttv"],"tip":"..."}`;
+All tags lowercase, no spaces. Include tags that are actually getting traction right now, not just historically popular ones.`;
 
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
-      });
-      const data = await res.json();
-      const raw = data.content.map(b => b.text || '').join('');
-      const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
-      renderCapResult(plat, parsed.caption, parsed.hashtags, parsed.tip);
-    } catch(e) {
-      renderCapFromTemplate(plat, desc, game, tone);
-    }
-  } else {
-    renderCapFromTemplate(plat, desc, game, tone);
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 600,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
+    trendingHashtagsCache = parsed;
+    trendingCacheTime = Date.now();
+    renderTrendingStrip(parsed);
+    return parsed;
+  } catch(e) {
+    console.warn('Trending hashtag fetch failed:', e);
+    return null;
   }
 }
 
-async function generateCaptions() {
-  const desc = document.getElementById('cap-desc').value.trim();
-  const game = document.getElementById('cap-game').value.trim() || 'Warzone';
-  const tone = document.getElementById('cap-tone').value;
-  const clipId = parseInt(document.getElementById('cap-clip').value);
+function renderTrendingStrip(data) {
+  if (!data) return;
+  const strip = document.getElementById('trending-strip');
+  const tagsEl = document.getElementById('trending-tags');
+  const updatedEl = document.getElementById('trending-updated');
+  strip.style.display = 'block';
 
-  if (!desc) {
-    alert('Please add a description of what happens in the clip first.');
+  const all = [...new Set([...(data.always_include||[]), ...(data.trending||[]), ...(data.rising||[])])];
+  tagsEl.innerHTML = all.map(tag => {
+    const isRising = (data.rising||[]).includes(tag);
+    const isCore   = (data.always_include||[]).includes(tag);
+    const bg = isCore ? 'rgba(204,20,20,0.12)' : isRising ? 'rgba(34,197,94,0.1)' : 'rgba(124,92,252,0.1)';
+    const border = isCore ? 'rgba(204,20,20,0.3)' : isRising ? 'rgba(34,197,94,0.25)' : 'rgba(124,92,252,0.2)';
+    const color = isCore ? 'var(--red)' : isRising ? 'var(--green)' : 'var(--accent2)';
+    const label = isRising ? tag + ' ↑' : tag;
+    return `<span style="background:${bg};border:1px solid ${border};color:${color};border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:10px;cursor:pointer;" onclick="copyText('${encodeURIComponent(tag)}',this)" title="Click to copy">${label}</span>`;
+  }).join('');
+
+  if (data.source_note) {
+    updatedEl.innerHTML = `<span style="color:var(--muted);">${data.source_note}</span> · <span style="color:var(--muted);">Updated just now</span>`;
+  }
+}
+
+async function analyseCaption() {
+  const ttCaption = document.getElementById('cap-tt-input').value.trim();
+  const igCaption = document.getElementById('cap-ig-input').value.trim();
+  const ytCaption = document.getElementById('cap-yt-input').value.trim();
+  const game      = document.getElementById('cap-game').value.trim() || 'Warzone';
+  const clipId    = parseInt(document.getElementById('cap-clip').value);
+
+  if (!ttCaption) {
+    alert('Write your TikTok caption first — even a rough draft is fine.');
     return;
   }
 
   const apiKey = loadApiKey();
+  const resultEl = document.getElementById('cap-analysis-result');
 
-  // Store generated hashtags on the clip for later use in engagement logging
-  const savedHashtags = {};
+  resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px 0;color:var(--muted);font-size:12px;font-family:var(--mono);"><div style="width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Researching trending hashtags & analysing your caption...</div>';
 
-  if (apiKey) {
-    const PLATS = [
-      {
-        key: 'tt', name: 'TikTok',
-        rules: `CRITICAL — study these real captions from Khanvict TV's top posts before writing:
-- "The dude was lost, broke every bone in his body" (103 likes)
-- "AK74 is meta right now for close range" (119 likes)
-- "@Art_Is_War audio tune is legit OP, if you dont have it, you are doing yourself injustice" (831 likes, highest ever)
-- "Its a simple change but a good one" (43 likes)
-- "This optic is just hitscan" (19 likes)
-- "How to use the body shield in warzone" (66 likes)
+  // Fetch trending hashtags (uses cache if fresh)
+  const trending = apiKey ? await fetchTrendingHashtags(game, false) : null;
 
-RULES derived from his actual writing:
-- 5 to 16 words MAX. Short, declarative. Not a sentence fragment but not a paragraph.
-- NO emojis. Zero. He never uses them in captions.
-- NO hype words: no "insane", no "CRAZY", no "you won't believe", no "POV:", no exclamation points.
-- NO hashtags in the caption body — they go separately.
-- Lowercase style — casual, confident, like texting a friend who games.
-- State what happened or what the viewer is about to see — matter of fact.
-- Occasionally a touch of dry humor or mild shade ("broke every bone in his body", "you are doing yourself injustice").
-- Never ask the viewer to follow or subscribe.`
-      },
-      {
-        key: 'ig', name: 'Instagram Reels',
-        rules: `Same voice as TikTok but can be slightly longer — 1 to 2 sentences max (30-80 chars).
-Same rules: no emojis, no hype words, lowercase casual, declarative.
-Can add one line mentioning live on Twitch, Kick & TikTok if it fits naturally.
-No hashtags in body. No exclamation points.`
-      },
-      {
-        key: 'yt', name: 'YouTube Shorts',
-        rules: `Title format, 40-70 chars. Include the game name and what happens in the clip.
-Must be searchable — think what someone would type to find this clip.
-Include "| Khanvict TV" at the end.
-No emojis. Capitalize important words (title case).`
-      }
-    ];
-
-    const toneGuide = {
-      hype:        'Still short and direct, but the word choice carries weight. One strong declarative statement. Maybe one word in all caps if earned — not forced.',
-      chill:       'Smooth, minimal. Barely says anything but says everything. The confidence is in what you DON\'T say.',
-      funny:       'Dry. Slightly condescending in a self-aware way. Like you\'re narrating something ridiculous that just happened. No jokes — just facts that are funny.',
-      clutch:      'Matter-of-fact about something that was clearly not matter-of-fact. Understated. "broke every bone in his body" energy.',
-      educational: 'Direct tip or fact. Sounds like a knowledgeable friend giving advice, not a tutorial. Example: "AK74 is meta right now for close range".'
-    };
-
-    ['tt','ig','yt'].forEach(p => {
-      document.getElementById('cap-' + p).innerHTML =
-        '<div style="display:flex;align-items:center;gap:10px;padding:16px 0;color:var(--muted);font-family:var(--mono);font-size:12px;"><div style="width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Generating with AI...</div>';
-    });
-
-    for (const plat of PLATS) {
-      const prompt = `You write TikTok captions for Khanvict TV — a Warzone/FPS streamer on Twitch, Kick and TikTok Live.
-
-You have studied his actual top-performing captions. His style is:
-- Very short (5-16 words)
-- No emojis ever
-- No hype words ("insane", "crazy", "unbelievable")
-- Lowercase casual — like texting a gamer friend
-- States what happened matter-of-factly, sometimes with dry understated humor
-- Never asks viewers to follow
-
-His best caption ever (831 likes, 32% engagement): "legit OP, if you dont have it, you are doing yourself injustice"
-His clutch energy: "The dude was lost, broke every bone in his body"
-His educational style: "AK74 is meta right now for close range"
-His minimal style: "Its a simple change but a good one" / "This optic is just hitscan"
-
-CLIP: ${desc}
-GAME: ${game}
-TONE: ${toneGuide[tone]}
-PLATFORM: ${plat.name}
-PLATFORM RULES: ${plat.rules}
-
-HASHTAG RULES:
-- Always start with the game: #warzone or #${game.toLowerCase().replace(/\s+/g,'')}
-- Always include: #cod #callofduty
-- Add 2-3 content-specific tags based on what happens in the clip
-- Add 1 brand tag: #khanvicttv
-- Total: 6-7 hashtags. All lowercase. No spaces.
-- His most used: #warzone #cod #callofduty #bo6 #rebirthisland #streamer #clutch
-
-Return ONLY raw JSON, no markdown:
-{
-  "caption": "the caption — short, lowercase, no emoji, no hype",
-  "hashtags": ["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7"],
-  "tip": "one sharp posting tip under 65 chars"
-}`;
-
-      try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-          body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 700, messages: [{ role: 'user', content: prompt }] })
-        });
-        if (!res.ok) throw new Error('API error ' + res.status);
-        const data = await res.json();
-        const raw = data.content.map(b => b.text || '').join('');
-        const parsed = JSON.parse(raw.replace(/```json|```/g,'').trim());
-        savedHashtags[plat.key] = parsed.hashtags;
-        renderCapResult(plat.key, parsed.caption, parsed.hashtags, parsed.tip);
-      } catch(e) {
-        if (e.message && e.message.includes('401')) {
-          document.getElementById('cap-' + plat.key).innerHTML =
-            '<div style="color:var(--red);font-size:13px;padding:12px 0;">Invalid API key. Check Settings and re-enter your key.</div>';
-        } else {
-          renderCapFromTemplate(plat.key, desc, game, tone, savedHashtags);
-        }
-      }
-    }
-
-  } else {
-    ['tt','ig','yt'].forEach(p => {
-      const tags = renderCapFromTemplate(p, desc, game, tone);
-      savedHashtags[p] = tags;
-    });
+  if (!apiKey) {
+    // No API key — just render the captions as-is with default hashtags
+    renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
+    resultEl.innerHTML = '<div style="color:var(--amber);font-size:12px;padding:8px 0;">No API key — add one in Settings to get voice analysis and trending hashtags.</div>';
+    return;
   }
 
-  // Save hashtags to the clip so engagement logging can pre-fill them
-  if (clipId) {
-    const clip = state.clips.find(c => c.id === clipId);
-    if (clip) { clip.lastHashtags = savedHashtags; save(); }
+  const trendingContext = trending
+    ? `Currently trending hashtags for ${game} on TikTok: ${[...(trending.always_include||[]), ...(trending.trending||[])].join(', ')}\nRising tags: ${(trending.rising||[]).join(', ')}`
+    : `Use these proven hashtags: #warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv`;
+
+  // Build adapted captions for IG and YT
+  const igFinal = igCaption || `${ttCaption} — live on Twitch, Kick & TikTok`;
+  const ytFinal = ytCaption || `${game} - ${ttCaption.charAt(0).toUpperCase() + ttCaption.slice(1)} | Khanvict TV`;
+
+  const prompt = `You are the caption coach for Khanvict TV — a Warzone/FPS streamer. His best captions are short, lowercase, matter-of-fact with occasional dry humor. No emojis, no hype words.
+
+His top performing captions for reference:
+- "The dude was lost, broke every bone in his body" (103 likes)
+- "AK74 is meta right now for close range" (119 likes)  
+- "legit OP, if you dont have it, you are doing yourself injustice" (831 likes — his best ever)
+- "Its a simple change but a good one" (43 likes)
+- "This optic is just hitscan" (19 likes)
+
+CAPTION HE WROTE: "${ttCaption}"
+GAME: ${game}
+
+${trendingContext}
+
+Your job:
+1. Voice check — does this sound like him? Score it 1-10 and explain briefly (1-2 sentences max)
+2. Build the BEST hashtag set for TikTok using the trending tags above — 6-7 tags, always include #warzone #cod #callofduty, add trending ones, end with #khanvicttv
+3. Build hashtag set for Instagram (similar but can swap 1-2 tags)
+4. Build hashtag set for YouTube (add #shorts, keep 5-6 tags)
+5. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
+
+Return ONLY raw JSON:
+{
+  "voice_score": 8,
+  "voice_note": "one sentence feedback",
+  "alt_caption": "only if genuinely better, else empty string",
+  "tt_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
+  "ig_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
+  "yt_hashtags": ["#warzone","#cod","#callofduty","#shorts","#tag","#khanvicttv"]
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 700, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const raw  = data.content.map(b => b.text || '').join('');
+    const r    = JSON.parse(raw.replace(/```json|```/g, '').trim());
+
+    // Voice check UI
+    const scoreColor = r.voice_score >= 8 ? 'var(--green)' : r.voice_score >= 6 ? 'var(--amber)' : 'var(--red)';
+    const scoreFill  = Math.round((r.voice_score / 10) * 100);
+    resultEl.innerHTML = `
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <div style="font-size:11px;font-family:var(--mono);color:var(--muted);letter-spacing:1px;">VOICE CHECK</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:${scoreColor};">${r.voice_score}/10</div>
+        </div>
+        <div style="background:var(--bg4);border-radius:4px;height:5px;margin-bottom:8px;overflow:hidden;">
+          <div style="background:${scoreColor};height:100%;width:${scoreFill}%;border-radius:4px;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text);line-height:1.5;">${r.voice_note}</div>
+        ${r.alt_caption ? `<div style="margin-top:10px;padding:8px 10px;background:rgba(124,92,252,0.08);border:1px solid rgba(124,92,252,0.2);border-radius:6px;">
+          <div style="font-size:10px;font-family:var(--mono);color:var(--accent2);margin-bottom:4px;">STRONGER ALTERNATIVE</div>
+          <div style="font-size:13px;color:var(--text);">${r.alt_caption}</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:6px;font-size:10px;" onclick="document.getElementById('cap-tt-input').value='${r.alt_caption.replace(/'/g,"\\'")}';this.textContent='✓ Applied'">Use this instead</button>
+        </div>` : ''}
+      </div>`;
+
+    // Render platform results
+    const ttFull = ttCaption + '\n\n' + r.tt_hashtags.join(' ');
+    const igFull2 = igFinal  + '\n\n' + r.ig_hashtags.join(' ');
+    const ytFull = ytFinal   + '\n\n' + r.yt_hashtags.join(' ');
+
+    renderCapResult('tt', ttCaption, r.tt_hashtags, 'Post within 1hr of your best slot for max early engagement.', clipId);
+    renderCapResult('ig', igFinal,   r.ig_hashtags, 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
+    renderCapResult('yt', ytFinal,   r.yt_hashtags, 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
+
+  } catch(e) {
+    resultEl.innerHTML = '<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed. Check your API key and try again.</div>';
+    renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
   }
 }
 
-function renderCapFromTemplate(plat, desc, game, tone) {
+function renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId) {
+  const defaultTags = { tt: ['#warzone','#cod','#callofduty','#bo6','#rebirthisland','#warzoneclips','#khanvicttv'],
+                        ig: ['#warzone','#cod','#callofduty','#bo6','#streamer','#twitch','#khanvicttv'],
+                        yt: ['#warzone','#cod','#callofduty','#shorts','#bo6','#khanvicttv'] };
+  const igF = igCaption || `${ttCaption} — live on Twitch, Kick & TikTok`;
+  const ytF = ytCaption || `${game} - ${ttCaption.charAt(0).toUpperCase() + ttCaption.slice(1)} | Khanvict TV`;
+  renderCapResult('tt', ttCaption, defaultTags.tt, '', clipId);
+  renderCapResult('ig', igF, defaultTags.ig, '', clipId);
+  renderCapResult('yt', ytF, defaultTags.yt, '', clipId);
+}
+
+
+function renderCapFromTemplate(plat, desc, game, tone, clipId) {
   const words = desc.split(' ');
   const hookEnd = Math.min(12, Math.ceil(words.length * 0.4));
   const d = {
@@ -2166,11 +2321,11 @@ function renderCapFromTemplate(plat, desc, game, tone) {
   const gameTag = '#' + game.toLowerCase().replace(/\s+/g,'');
   const baseTags = HASHTAGS[plat][tone].filter(t => t !== gameTag);
   const allTags = [gameTag, ...baseTags];
-  renderCapResult(plat, caption, allTags, PLATFORM_TIPS[plat]);
+  renderCapResult(plat, caption, allTags, PLATFORM_TIPS[plat], clipId);
   return allTags;
 }
 
-function renderCapResult(plat, caption, hashtags, tip) {
+function renderCapResult(plat, caption, hashtags, tip, clipId) {
   const full = caption + '\n\n' + hashtags.join(' ');
   const encoded = encodeURIComponent(full);
   document.getElementById('cap-' + plat).innerHTML = `
@@ -2183,6 +2338,16 @@ function renderCapResult(plat, caption, hashtags, tip) {
       ${hashtags.map(h=>`<div class="tag" onclick="copyText('${encodeURIComponent(h)}',this)">${h}</div>`).join('')}
     </div>
     <div class="tip-box"><span class="tip-label">PLATFORM TIP</span>${tip}</div>`;
+
+  // Save caption to clip for use in Today screen copy button
+  if (clipId) {
+    const clip = state.clips.find(c => String(c.id) === String(clipId));
+    if (clip) {
+      if (!clip.captions) clip.captions = {};
+      clip.captions[plat] = { caption, hashtags, full };
+      save();
+    }
+  }
 }
 
 function copyText(encoded, btn) {
