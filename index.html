@@ -952,52 +952,56 @@ const CHECKLIST_ITEMS = {
   ]
 };
 
-// Caption templates by platform and tone — tuned for FPS/shooter, kills/clutches, Khanvict style
+// Caption templates — written to match Khanvict TV's actual caption style
+// Short, lowercase, no emoji, matter-of-fact, occasional dry humor
 const CAPTION_TEMPLATES = {
   tt: {
-    hype:        (d,g) => `NOT A SINGLE CHANCE 😤🔥\n\n${d.hook}\n\n${d.result}\n\nthey never stood a chance`,
-    chill:       (d,g) => `${d.hook}\n\n${d.result}\n\njust a regular day in ${g}. nothing to see here 😮‍💨`,
-    funny:       (d,g) => `bro really thought he had me 💀\n\n${d.hook}\n\n${d.result}\n\npov: being me in ${g}`,
-    clutch:      (d,g) => `1 vs everything. still walked out. 🎯\n\n${d.hook}\n\n${d.result}`,
-    educational: (d,g) => `how I actually win in ${g} ⬇️\n\n${d.hook}\n\n${d.result}\n\nsave this`
+    hype:        (d,g) => `${d.shortDesc.toLowerCase()} in ${g}`,
+    chill:       (d,g) => `${d.hook.toLowerCase()}`,
+    funny:       (d,g) => `${d.hook.toLowerCase()}, broke every expectation`,
+    clutch:      (d,g) => `${d.hook.toLowerCase()}`,
+    educational: (d,g) => `${d.shortDesc.toLowerCase()} in ${g}`
   },
   ig: {
-    hype:        (d,g) => `Some clips you just have to post.\n\n${d.hook} — ${d.result}\n\nLive on Twitch, Kick & TikTok every stream. Follow to catch the next one happen in real time 🔴`,
-    chill:       (d,g) => `${d.hook}\n\n${d.result}\n\nNothing forced. Just ${g} doing what it does. Catch me live on Twitch, Kick & TikTok 👾`,
-    funny:       (d,g) => `I genuinely didn't know I was going to do that.\n\n${d.hook} — ${d.result}\n\nFollow for the moments chat loses their mind over 💀`,
-    clutch:      (d,g) => `Everything was gone. One move left.\n\n${d.hook} — ${d.result}\n\nThis is why I stream. Live on Twitch, Kick & TikTok 🎯`,
-    educational: (d,g) => `The move that changes everything in ${g}.\n\n${d.hook} — ${d.result}\n\nFollow for more clips and live gameplay on Twitch, Kick & TikTok 🎮`
+    hype:        (d,g) => `${d.hook.toLowerCase()} in ${g}. live on twitch, kick & tiktok`,
+    chill:       (d,g) => `${d.hook.toLowerCase()}. catch it live on twitch, kick & tiktok`,
+    funny:       (d,g) => `${d.hook.toLowerCase()}. this is ${g} for you`,
+    clutch:      (d,g) => `${d.hook.toLowerCase()} in ${g}. live on twitch, kick & tiktok`,
+    educational: (d,g) => `${d.shortDesc.toLowerCase()} — ${g} tip. live on twitch, kick & tiktok`
   },
   yt: {
-    hype:        (d,g) => `${g.toUpperCase()} - ${d.shortDesc} (Nobody Saw This Coming)`,
-    chill:       (d,g) => `${g} Highlights - ${d.shortDesc} | Khanvict TV`,
-    funny:       (d,g) => `${g} - ${d.shortDesc} (I Can't Explain This)`,
-    clutch:      (d,g) => `${g.toUpperCase()} - ${d.shortDesc} | Clutch or Kick`,
-    educational: (d,g) => `How To Win ${g} - ${d.shortDesc} | Khanvict TV`
+    hype:        (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
+    chill:       (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
+    funny:       (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
+    clutch:      (d,g) => `${g} Clutch - ${d.shortDesc} | Khanvict TV`,
+    educational: (d,g) => `${g} Tips - ${d.shortDesc} | Khanvict TV`
   }
 };
 
+// Hashtags based on Khanvict TV's actual most-used tags from 443 real posts
+// Core: #warzone #cod #callofduty always present
+// Rotate content-specific tags based on tone/clip type
 const HASHTAGS = {
   tt: {
-    hype:        ['#warzone', '#fyp', '#gaming', '#clutch', '#foryou', '#fps', '#khanvicttv'],
-    chill:       ['#warzone', '#fyp', '#gaming', '#streamer', '#foryoupage', '#fps', '#khanvicttv'],
-    funny:       ['#warzone', '#fyp', '#gaming', '#funny', '#foryou', '#fps', '#khanvicttv'],
-    clutch:      ['#warzone', '#clutch', '#fyp', '#gaming', '#foryou', '#fps', '#khanvicttv'],
-    educational: ['#warzone', '#gamertips', '#fyp', '#gaming', '#howtowin', '#fps', '#khanvicttv']
+    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#rebirthisland', '#warzoneclips', '#khanvicttv'],
+    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#streamer', '#twitchstreamer', '#khanvicttv'],
+    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#funnymoments', '#warzonefunny', '#khanvicttv'],
+    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#rebirthisland', '#khanvicttv'],
+    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#bo6', '#warzonetips', '#khanvicttv']
   },
   ig: {
-    hype:        ['#warzone', '#gaming', '#clutch', '#streamer', '#fps', '#twitch', '#khanvicttv'],
-    chill:       ['#warzone', '#gaming', '#streamer', '#fps', '#twitch', '#kick', '#khanvicttv'],
-    funny:       ['#warzone', '#gaming', '#funny', '#streamer', '#fps', '#twitch', '#khanvicttv'],
-    clutch:      ['#warzone', '#clutch', '#gaming', '#fps', '#streamer', '#twitch', '#khanvicttv'],
-    educational: ['#warzone', '#gamertips', '#gaming', '#fps', '#howto', '#streamer', '#khanvicttv']
+    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#rebirthisland', '#warzoneclips', '#khanvicttv'],
+    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#streamer', '#twitch', '#khanvicttv'],
+    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#funnymoments', '#codmoments', '#khanvicttv'],
+    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#rebirthisland', '#khanvicttv'],
+    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#warzonetips', '#bo6', '#khanvicttv']
   },
   yt: {
-    hype:        ['#warzone', '#shorts', '#gaming', '#clutch', '#fyp', '#fps', '#khanvicttv'],
-    chill:       ['#warzone', '#shorts', '#gaming', '#streamer', '#fyp', '#fps', '#khanvicttv'],
-    funny:       ['#warzone', '#shorts', '#gaming', '#funny', '#fyp', '#fps', '#khanvicttv'],
-    clutch:      ['#warzone', '#clutch', '#shorts', '#gaming', '#fyp', '#fps', '#khanvicttv'],
-    educational: ['#warzone', '#gamertips', '#shorts', '#gaming', '#fyp', '#fps', '#khanvicttv']
+    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#warzoneclips', '#khanvicttv'],
+    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#streamer', '#khanvicttv'],
+    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#funnymoments', '#khanvicttv'],
+    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#shorts', '#khanvicttv'],
+    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#warzonetips', '#shorts', '#khanvicttv']
   }
 };
 
@@ -1967,20 +1971,27 @@ async function remixCaption() {
       educational: 'Direct and practical. State the tip upfront.'
     };
     const platRules = {
-      tt: 'Max 150 chars. Punchy hook first. No hashtags in body. Different angle than before — try a different opening hook.',
-      ig: '120-200 chars. Confident statement opener. Different from before — lead with a different aspect of the clip.',
-      yt: 'Title format, max 70 chars, keyword-rich. Different phrasing than before.'
+      tt: 'TikTok: 5-16 words, no emoji, no hype, lowercase casual, matter-of-fact. Different angle than before.',
+      ig: 'Instagram: same voice, 1-2 sentences, slightly more descriptive. No emoji. Can mention live on Twitch/Kick/TikTok.',
+      yt: 'YouTube: title format 40-70 chars, searchable, include game name and clip action. Title case. End with | Khanvict TV.'
     };
-    const prompt = `You write captions for Khanvict TV — FPS/shooter gaming streamer on Twitch, Kick and TikTok Live. Clips are kills, clutches, wins.
+    const prompt = `You write captions for Khanvict TV — Warzone/FPS streamer. His style: very short (5-16 words), no emojis, no hype words, lowercase casual, matter-of-fact with occasional dry humor.
+
+Real examples of his captions:
+- "The dude was lost, broke every bone in his body"
+- "AK74 is meta right now for close range"  
+- "legit OP, if you dont have it, you are doing yourself injustice"
+- "Its a simple change but a good one"
+- "This optic is just hitscan"
 
 CLIP: ${desc}
 GAME: ${game}
 TONE: ${toneGuide[tone]}
 PLATFORM: ${platNames[plat]}
 RULES: ${platRules[plat]}
-IMPORTANT: Generate a FRESH caption — different hook, different angle, different energy than a standard take. Be creative and unexpected.
+IMPORTANT: Generate a FRESH take — different angle, different opener. Still short, still lowercase, still no emoji.
 
-Return ONLY raw JSON: {"caption":"...","hashtags":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7"],"tip":"..."}`;
+Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#tag5","#tag6","#khanvicttv"],"tip":"..."}`;
 
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -2020,34 +2031,46 @@ async function generateCaptions() {
     const PLATS = [
       {
         key: 'tt', name: 'TikTok',
-        rules: `Max 150 chars total. Lead with a punchy 1-line hook — no emoji at the start, drop it mid or end.
-Short sentences. Raw, unfiltered voice. Can go ALL CAPS for one word/phrase max.
-End with something that doesn't ask to follow — just a cold confident closer.
-No hashtags in the caption body itself.`
+        rules: `CRITICAL — study these real captions from Khanvict TV's top posts before writing:
+- "The dude was lost, broke every bone in his body" (103 likes)
+- "AK74 is meta right now for close range" (119 likes)
+- "@Art_Is_War audio tune is legit OP, if you dont have it, you are doing yourself injustice" (831 likes, highest ever)
+- "Its a simple change but a good one" (43 likes)
+- "This optic is just hitscan" (19 likes)
+- "How to use the body shield in warzone" (66 likes)
+
+RULES derived from his actual writing:
+- 5 to 16 words MAX. Short, declarative. Not a sentence fragment but not a paragraph.
+- NO emojis. Zero. He never uses them in captions.
+- NO hype words: no "insane", no "CRAZY", no "you won't believe", no "POV:", no exclamation points.
+- NO hashtags in the caption body — they go separately.
+- Lowercase style — casual, confident, like texting a friend who games.
+- State what happened or what the viewer is about to see — matter of fact.
+- Occasionally a touch of dry humor or mild shade ("broke every bone in his body", "you are doing yourself injustice").
+- Never ask the viewer to follow or subscribe.`
       },
       {
         key: 'ig', name: 'Instagram Reels',
-        rules: `120–200 chars. Open with a confident statement, not a question.
-Second line: what actually happened in the clip (one clean sentence).
-Third line: call to action — stream is live on Twitch, Kick & TikTok.
-Line breaks between each. Emojis max 2, placed at end of lines only.
-No hashtags in caption body.`
+        rules: `Same voice as TikTok but can be slightly longer — 1 to 2 sentences max (30-80 chars).
+Same rules: no emojis, no hype words, lowercase casual, declarative.
+Can add one line mentioning live on Twitch, Kick & TikTok if it fits naturally.
+No hashtags in body. No exclamation points.`
       },
       {
         key: 'yt', name: 'YouTube Shorts',
-        rules: `Title format, max 70 chars. Must include the game name and a search-friendly keyword phrase.
-Think: what would someone type to find this specific clip?
-Include "Khanvict TV" or "Khanvict" at end after pipe symbol.
-No emojis. No hashtags inline.`
+        rules: `Title format, 40-70 chars. Include the game name and what happens in the clip.
+Must be searchable — think what someone would type to find this clip.
+Include "| Khanvict TV" at the end.
+No emojis. Capitalize important words (title case).`
       }
     ];
 
     const toneGuide = {
-      hype:        'High energy and aggressive. SHORT words. Impact statements. ALL CAPS one phrase. Feels like a punch.',
-      chill:       'Smooth, confident, minimal. Says a lot with very little. Cool, not try-hard. Never desperate.',
-      funny:       'Self-aware and dry. Not cringe-funny — smart-funny. The kind of guy who is laughing at himself.',
-      clutch:      'Dramatic stakes, quiet confidence. Build tension in the hook, deliver the outcome matter-of-factly.',
-      educational: 'Direct and practical. State the tip upfront. No filler words.'
+      hype:        'Still short and direct, but the word choice carries weight. One strong declarative statement. Maybe one word in all caps if earned — not forced.',
+      chill:       'Smooth, minimal. Barely says anything but says everything. The confidence is in what you DON\'T say.',
+      funny:       'Dry. Slightly condescending in a self-aware way. Like you\'re narrating something ridiculous that just happened. No jokes — just facts that are funny.',
+      clutch:      'Matter-of-fact about something that was clearly not matter-of-fact. Understated. "broke every bone in his body" energy.',
+      educational: 'Direct tip or fact. Sounds like a knowledgeable friend giving advice, not a tutorial. Example: "AK74 is meta right now for close range".'
     };
 
     ['tt','ig','yt'].forEach(p => {
@@ -2056,23 +2079,40 @@ No emojis. No hashtags inline.`
     });
 
     for (const plat of PLATS) {
-      const prompt = `You write short-form video captions for Khanvict TV — a gaming streamer who plays FPS/shooter games (Warzone, Fortnite, Apex) and posts kill/clutch highlight clips. He streams live simultaneously on Twitch, Kick and TikTok Live.
+      const prompt = `You write TikTok captions for Khanvict TV — a Warzone/FPS streamer on Twitch, Kick and TikTok Live.
 
-His brand voice is: smooth and confident, sometimes hype and aggressive, occasionally funny and self-aware. Never cringe. Never desperate. Never generic. His clips are mostly insane kills, clutch moments, and wins that look effortless.
+You have studied his actual top-performing captions. His style is:
+- Very short (5-16 words)
+- No emojis ever
+- No hype words ("insane", "crazy", "unbelievable")
+- Lowercase casual — like texting a gamer friend
+- States what happened matter-of-factly, sometimes with dry understated humor
+- Never asks viewers to follow
 
-CLIP DESCRIPTION: ${desc}
+His best caption ever (831 likes, 32% engagement): "legit OP, if you dont have it, you are doing yourself injustice"
+His clutch energy: "The dude was lost, broke every bone in his body"
+His educational style: "AK74 is meta right now for close range"
+His minimal style: "Its a simple change but a good one" / "This optic is just hitscan"
+
+CLIP: ${desc}
 GAME: ${game}
-TONE FOR THIS CLIP: ${toneGuide[tone]}
+TONE: ${toneGuide[tone]}
 PLATFORM: ${plat.name}
 PLATFORM RULES: ${plat.rules}
 
-HASHTAG RULES: Choose 7 hashtags. Mix: 2 game-specific (e.g. #warzone #wzranked), 2 content-type (e.g. #clutch #fps), 2 reach tags (e.g. #fyp #gaming), 1 brand tag (#khanvicttv). All lowercase, no spaces. Include the actual game name as first hashtag.
+HASHTAG RULES:
+- Always start with the game: #warzone or #${game.toLowerCase().replace(/\s+/g,'')}
+- Always include: #cod #callofduty
+- Add 2-3 content-specific tags based on what happens in the clip
+- Add 1 brand tag: #khanvicttv
+- Total: 6-7 hashtags. All lowercase. No spaces.
+- His most used: #warzone #cod #callofduty #bo6 #rebirthisland #streamer #clutch
 
-Return ONLY a raw JSON object with no markdown, no code fences:
+Return ONLY raw JSON, no markdown:
 {
-  "caption": "the caption text",
+  "caption": "the caption — short, lowercase, no emoji, no hype",
   "hashtags": ["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7"],
-  "tip": "one sharp posting tip for this platform under 65 chars"
+  "tip": "one sharp posting tip under 65 chars"
 }`;
 
       try {
