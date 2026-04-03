@@ -528,7 +528,10 @@
     <div class="panel" id="panel-captions">
       <div class="panel-header">
         <div class="panel-title">CAPTION <span>ASSISTANT</span></div>
-        <button class="btn btn-ghost btn-sm" onclick="refreshTrendingHashtags()" id="trending-refresh-btn" style="font-size:10px;">↻ Trending tags</button>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="batchGenerateCaptions()" id="batch-cap-btn" style="font-size:10px;">⚡ Auto-gen all</button>
+          <button class="btn btn-ghost btn-sm" onclick="refreshTrendingHashtags()" id="trending-refresh-btn" style="font-size:10px;">↻ Trending tags</button>
+        </div>
       </div>
 
       <div class="alert-info">
@@ -1400,11 +1403,11 @@ function captionFromClip(id) {
 
 // ── SCHEDULE POST ────────────────────────────────────────────────────────
 function schedulePost() {
-  const clipId = parseInt(document.getElementById('mp-clip').value);
+  const clipIdStr = document.getElementById('mp-clip').value;
   const date   = document.getElementById('mp-date').value;
   let time     = document.getElementById('mp-time').value;
 
-  if (!clipId || !date) { alert('Please select a clip and date.'); return; }
+  if (!clipIdStr || !date) { alert('Please select a clip and date.'); return; }
 
   const platforms = [];
   if (document.getElementById('mp-tt').checked) platforms.push('tt');
@@ -1416,10 +1419,12 @@ function schedulePost() {
     time = prompt('Enter time (HH:MM, 24hr format):', '18:00') || '18:00';
   }
 
-  const clip = state.clips.find(c => c.id === clipId);
+  const clip = state.clips.find(c => String(c.id) === clipIdStr);
+  if (!clip) { alert('Could not find that clip. Please try again.'); return; }
+
   const newPosts = [];
   platforms.forEach(plat => {
-    const post = { id: Date.now() + Math.random(), clipId, clipName: clip.name, platform: plat, date, time, posted: false };
+    const post = { id: Date.now() + Math.random(), clipId: clip.id, clipName: clip.name, platform: plat, date, time, posted: false };
     state.posts.push(post);
     newPosts.push(post);
   });
@@ -1434,7 +1439,7 @@ function schedulePost() {
   newPosts.forEach(p => scheduleNtfyNotification(p));
 
   // Auto-generate captions in background if clip has a description and no captions yet
-  if (clip && clip.description && (!clip.captions || Object.keys(clip.captions).length === 0)) {
+  if (clip && clip.desc && (!clip.captions || Object.keys(clip.captions).length === 0)) {
     autoGenerateCaptions(clip);
   }
 }
@@ -1442,12 +1447,11 @@ function schedulePost() {
 async function batchGenerateCaptions() {
   const apiKey = loadApiKey();
   const btn = document.getElementById('batch-cap-btn');
-
   // Find all active clips with descriptions but missing captions
   const clipsNeedingCaptions = state.clips.filter(c =>
     !c.archived &&
-    c.description &&
-    c.description.trim() &&
+    c.desc &&
+    c.desc.trim() &&
     (!c.captions || Object.keys(c.captions).length < 3)
   );
 
@@ -1463,18 +1467,16 @@ async function batchGenerateCaptions() {
 
   if (!confirm(`Generate captions for ${clipsNeedingCaptions.length} clip${clipsNeedingCaptions.length !== 1 ? 's' : ''}? This runs in the background — you can keep using the app.`)) return;
 
-  btn.textContent = `⚡ 0/${clipsNeedingCaptions.length}`;
-  btn.disabled = true;
+  if (btn) { btn.textContent = `⚡ 0/${clipsNeedingCaptions.length}`; btn.disabled = true; }
 
   let done = 0;
   for (const clip of clipsNeedingCaptions) {
     await autoGenerateCaptions(clip);
     done++;
-    btn.textContent = `⚡ ${done}/${clipsNeedingCaptions.length}`;
+    if (btn) btn.textContent = `⚡ ${done}/${clipsNeedingCaptions.length}`;
   }
 
-  btn.textContent = '⚡ Generate all';
-  btn.disabled = false;
+  if (btn) { btn.textContent = '⚡ Auto-gen all'; btn.disabled = false; }
   renderToday();
   alert(`Done! Captions generated for ${done} clip${done !== 1 ? 's' : ''}. Copy buttons now appear on your Today screen.`);
 }
@@ -1483,7 +1485,7 @@ async function autoGenerateCaptions(clip) {
   const apiKey = loadApiKey();
   if (!apiKey) return; // silently skip if no API key
 
-  const desc = clip.description;
+  const desc = clip.desc;
   const game = clip.game || 'Warzone';
   const tone = 'clutch'; // default tone for auto-generation
   const clipId = clip.id;
@@ -1544,7 +1546,7 @@ Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofdut
 }
 
 function markPosted(postId) {
-  const post = state.posts.find(p => p.id === postId);
+  const post = state.posts.find(p => String(p.id) === String(postId));
   if (post) {
     post.posted = !post.posted;
     save();
@@ -1556,7 +1558,7 @@ function markPosted(postId) {
 }
 
 function removePost(postId) {
-  state.posts = state.posts.filter(p => p.id !== postId);
+  state.posts = state.posts.filter(p => String(p.id) !== String(postId));
   save();
   renderToday();
   updateSidebar();
@@ -2864,7 +2866,11 @@ function importData(e) {
   reader.onload = ev => {
     try {
       state = JSON.parse(ev.target.result);
-      if (!state.slots) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
+      if (!state.slots)       state.slots       = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
+      if (!state.engagements) state.engagements = [];
+      if (!state.clips)       state.clips       = [];
+      if (!state.posts)       state.posts       = [];
+      if (!state.checklist)   state.checklist   = {};
       save();
       renderClipList();
       refreshAllSelects();
@@ -2879,7 +2885,7 @@ function importData(e) {
 
 function clearAll() {
   if (!confirm('Clear ALL data? This cannot be undone.')) return;
-  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0 };
+  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [] };
   save();
   renderClipList();
   refreshAllSelects();
