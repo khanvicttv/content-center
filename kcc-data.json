@@ -323,7 +323,47 @@
         "ig"
       ],
       "addedAt": "2026-04-02T09:43:40",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "Good different or bad different?",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "Good different or bad different?\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "Good different or bad different? — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#streamer",
+            "#twitch",
+            "#khanvicttv"
+          ],
+          "full": "Good different or bad different? — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #streamer #twitch #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - Good different or bad different? | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#bo6",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - Good different or bad different? | Khanvict TV\n\n#warzone #cod #callofduty #shorts #bo6 #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775148230108,
