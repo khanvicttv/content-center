@@ -266,7 +266,47 @@
         "ig"
       ],
       "addedAt": "2026-04-02T09:51:02",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "Come and stop by the stream, we would love to have ya",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "Come and stop by the stream, we would love to have ya\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "Come and stop by the stream, we would love to have ya — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#streamer",
+            "#twitch",
+            "#khanvicttv"
+          ],
+          "full": "Come and stop by the stream, we would love to have ya — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #streamer #twitch #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - Come and stop by the stream, we would love to have ya | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#bo6",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - Come and stop by the stream, we would love to have ya | Khanvict TV\n\n#warzone #cod #callofduty #shorts #bo6 #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775141020056,
