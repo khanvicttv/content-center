@@ -380,7 +380,47 @@
         "ig"
       ],
       "addedAt": "2026-04-02T11:43:50",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "It was literally right there in front of me",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "It was literally right there in front of me\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "It was literally right there in front of me — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#streamer",
+            "#twitch",
+            "#khanvicttv"
+          ],
+          "full": "It was literally right there in front of me — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #streamer #twitch #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - It was literally right there in front of me | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#bo6",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - It was literally right there in front of me | Khanvict TV\n\n#warzone #cod #callofduty #shorts #bo6 #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775147776629,
