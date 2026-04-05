@@ -2117,10 +2117,22 @@ function switchCapTab(el, tab) {
 
 // ── CAPTION ASSISTANT ─────────────────────────────────────────────────────
 
-// Cache trending hashtags so we don't search every single time
-let trendingHashtagsCache = null;
-let trendingCacheTime = null;
+// Cache trending hashtags — persisted to localStorage so page reloads don't bust it
 const TRENDING_CACHE_MS = 60 * 60 * 1000; // 1 hour
+
+function loadTrendingCache() {
+  try {
+    const raw = localStorage.getItem('kcc_trending_cache');
+    if (!raw) return { data: null, time: null };
+    return JSON.parse(raw);
+  } catch(e) { return { data: null, time: null }; }
+}
+
+function saveTrendingCache(data) {
+  try {
+    localStorage.setItem('kcc_trending_cache', JSON.stringify({ data, time: Date.now() }));
+  } catch(e) {}
+}
 
 async function refreshTrendingHashtags() {
   const btn = document.getElementById('trending-refresh-btn');
@@ -2137,9 +2149,10 @@ async function fetchTrendingHashtags(game, forceRefresh) {
   if (!apiKey) return null;
 
   const now = Date.now();
-  if (!forceRefresh && trendingHashtagsCache && trendingCacheTime && (now - trendingCacheTime) < TRENDING_CACHE_MS) {
-    renderTrendingStrip(trendingHashtagsCache);
-    return trendingHashtagsCache;
+  const cached = loadTrendingCache();
+  if (!forceRefresh && cached.data && cached.time && (now - cached.time) < TRENDING_CACHE_MS) {
+    renderTrendingStrip(cached.data);
+    return cached.data;
   }
 
   const prompt = `You are a TikTok hashtag researcher for gaming content. Search the web to find currently trending hashtags for ${game} and Call of Duty content on TikTok right now in 2026.
@@ -2156,7 +2169,7 @@ All tags lowercase. No spaces in tags.`;
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 600,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: prompt }]
@@ -2171,8 +2184,7 @@ All tags lowercase. No spaces in tags.`;
     const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
     if (!text.trim()) return null;
     const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
-    trendingHashtagsCache = parsed;
-    trendingCacheTime = Date.now();
+    saveTrendingCache(parsed);
     renderTrendingStrip(parsed);
     return parsed;
   } catch(e) {
