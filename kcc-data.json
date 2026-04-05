@@ -564,7 +564,47 @@
         "ig"
       ],
       "addedAt": "2026-04-02T11:17:41",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "I was so embarrassed, parachute failure",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#codclips",
+            "#gaminghumor",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "I was so embarrassed, parachute failure\n\n#warzone #cod #callofduty #codclips #gaminghumor #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "I was so embarrassed, parachute failure — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#codclips",
+            "#warzonecommunity",
+            "#gaminghumor",
+            "#khanvicttv"
+          ],
+          "full": "I was so embarrassed, parachute failure — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #codclips #warzonecommunity #gaminghumor #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - I was so embarrassed, parachute failure | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#codclips",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - I was so embarrassed, parachute failure | Khanvict TV\n\n#warzone #cod #callofduty #shorts #codclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775146131649,
