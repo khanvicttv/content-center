@@ -765,7 +765,35 @@
         "ig"
       ],
       "addedAt": "2026-04-04T23:34:06",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "rocket league meta shift, you probably still using the old setup",
+          "hashtags": [
+            "#rocketleague",
+            "#rl",
+            "#esports",
+            "#gaming",
+            "#meta",
+            "#clips",
+            "#khanvicttv"
+          ],
+          "full": "rocket league meta shift, you probably still using the old setup\n\n#rocketleague #rl #esports #gaming #meta #clips #khanvicttv"
+        },
+        "ig": {
+          "caption": "you're losing ones because you don't have flip reset mechanics down, period",
+          "hashtags": [
+            "#rocketleague",
+            "#esports",
+            "#1v1",
+            "#mechanics",
+            "#gaming",
+            "#khanvicttv",
+            "#rljetsam"
+          ],
+          "full": "you're losing ones because you don't have flip reset mechanics down, period\n\n#rocketleague #esports #1v1 #mechanics #gaming #khanvicttv #rljetsam"
+        }
+      }
     },
     {
       "id": 1775362884883,
@@ -1022,6 +1050,15 @@
       "platform": "tt",
       "date": "2026-04-05",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1775364203328.8948,
+      "clipId": 1775363646092,
+      "clipName": "MK35 ISR Loadout",
+      "platform": "tt",
+      "date": "2026-04-05",
+      "time": "09:00",
       "posted": false
     }
   ],
