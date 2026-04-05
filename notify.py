@@ -139,7 +139,7 @@ def main():
             plat_label = PLAT_LABELS.get(platform, platform.upper())
             plat_tag   = PLAT_TAGS.get(platform, 'bell')
 
-            title = f"Post to {plat_label} in ~30 min"
+            title = f"Post to {plat_label} in ~{round(minutes_until)} min"
             body  = f'"{clip_name}"\n{plat_label} · {fmt_time(time_str)}\n\nTime to get it ready!'
 
             print(f"         → Sending: {title}")

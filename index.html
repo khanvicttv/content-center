@@ -1048,7 +1048,6 @@ function nav(id) {
   }
   if (id === 'today')     { renderToday(); renderDaysBanner(); }
   if (id === 'schedule')  renderWeek();
-  if (id === 'checklist') renderChecklist();
   if (id === 'analytics') renderAnalytics();
   if (id === 'settings')  renderSlotEditor();
 }
@@ -1409,6 +1408,10 @@ function schedulePost() {
 
   if (time === 'custom') {
     time = prompt('Enter time (HH:MM, 24hr format):', '18:00') || '18:00';
+    if (!/^\d{1,2}:\d{2}$/.test(time)) { alert('Invalid time format. Use HH:MM (e.g. 18:00).'); return; }
+    const [hh, mm] = time.split(':').map(Number);
+    if (hh > 23 || mm > 59) { alert('Invalid time. Hours must be 0–23, minutes 0–59.'); return; }
+    time = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
   }
 
   const clip = state.clips.find(c => String(c.id) === clipIdStr);
@@ -1592,7 +1595,7 @@ function renderToday() {
   let streak = 0;
   const dd = new Date();
   for (let i = 0; i < 90; i++) {
-    const ds = dd.toISOString().split('T')[0];
+    const ds = localDateStr(dd);
     if ((byDate[ds] || 0) >= goal) { if (i === 0 || streak > 0) streak++; }
     else if (i > 0 && streak > 0) break;
     dd.setDate(dd.getDate() - 1);
@@ -2064,6 +2067,9 @@ function processDroppedClips(files) {
 
     state.clips.push(clip);
     state.checklist[clip.id] = {};
+    ['tt','ig','yt'].forEach(p => {
+      state.checklist[clip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
+    });
     added++;
   });
 
@@ -2150,7 +2156,7 @@ All tags lowercase. No spaces in tags.`;
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 600,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: prompt }]
@@ -2299,15 +2305,11 @@ Return ONLY raw JSON:
         ${r.alt_caption ? `<div style="margin-top:10px;padding:8px 10px;background:rgba(124,92,252,0.08);border:1px solid rgba(124,92,252,0.2);border-radius:6px;">
           <div style="font-size:10px;font-family:var(--mono);color:var(--accent2);margin-bottom:4px;">STRONGER ALTERNATIVE</div>
           <div style="font-size:13px;color:var(--text);">${r.alt_caption}</div>
-          <button class="btn btn-ghost btn-sm" style="margin-top:6px;font-size:10px;" onclick="document.getElementById('cap-tt-input').value='${r.alt_caption.replace(/'/g,"\\'")}';this.textContent='✓ Applied'">Use this instead</button>
+          <button class="btn btn-ghost btn-sm" style="margin-top:6px;font-size:10px;" onclick="applyAltCaption(this)" data-alt="${encodeURIComponent(r.alt_caption)}">Use this instead</button>
         </div>` : ''}
       </div>`;
 
     // Render platform results
-    const ttFull = ttCaption + '\n\n' + r.tt_hashtags.join(' ');
-    const igFull2 = igFinal  + '\n\n' + r.ig_hashtags.join(' ');
-    const ytFull = ytFinal   + '\n\n' + r.yt_hashtags.join(' ');
-
     renderCapResult('tt', ttCaption, r.tt_hashtags, 'Post within 1hr of your best slot for max early engagement.', clipId);
     renderCapResult('ig', igFinal,   r.ig_hashtags, 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
     renderCapResult('yt', ytFinal,   r.yt_hashtags, 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
@@ -2385,6 +2387,11 @@ function copyText(encoded, btn) {
   setTimeout(()=>btn.textContent=orig, 1600);
 }
 
+function applyAltCaption(btn) {
+  document.getElementById('cap-tt-input').value = decodeURIComponent(btn.dataset.alt);
+  btn.textContent = '✓ Applied';
+}
+
 // ── NTFY NOTIFICATIONS ───────────────────────────────────────────────────
 function loadNtfyChannel() {
   try { return localStorage.getItem('ntfy_channel') || ''; } catch(e) { return ''; }
@@ -2457,7 +2464,6 @@ async function scheduleNtfyNotification(post) {
   if (!channel) return;
 
   // Calculate the notification time = post time minus 30 minutes
-  const [h, m] = post.time.split(':').map(Number);
   const postDate = new Date(`${post.date}T${post.time}:00`);
   const notifTime = new Date(postDate.getTime() - 30 * 60 * 1000);
   const now = new Date();
@@ -2606,8 +2612,8 @@ function updateSidebar() {
   const now = new Date();
   const weekStart = new Date(now); weekStart.setDate(now.getDate()-now.getDay());
   const weekEnd   = new Date(weekStart); weekEnd.setDate(weekStart.getDate()+6);
-  const ws = weekStart.toISOString().split('T')[0];
-  const we = weekEnd.toISOString().split('T')[0];
+  const ws = localDateStr(weekStart);
+  const we = localDateStr(weekEnd);
   const weekPosts = state.posts.filter(p => p.date >= ws && p.date <= we);
   const postedWk  = weekPosts.filter(p => p.posted).length;
 
@@ -2640,7 +2646,7 @@ function sortClipsBySchedule(clips) {
 function refreshAllSelects() {
   const activeClips = sortClipsBySchedule(state.clips.filter(c => !c.archived));
   const opts = activeClips.map(c => {
-    const todayStr = new Date().toISOString().split('T')[0];
+    const todayStr = localDateStr();
     const nextPost = state.posts
       .filter(p => String(p.clipId) === String(c.id) && p.date >= todayStr)
       .sort((a, b) => a.date.localeCompare(b.date))[0];
@@ -2653,7 +2659,7 @@ function refreshAllSelects() {
 }
 
 function refreshPostClipSelect() {
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = localDateStr();
   const availableClips = state.clips.filter(c => {
     if (c.archived) return false;
     const futurePosts = state.posts.filter(p => String(p.clipId) === String(c.id) && p.date >= todayStr);
@@ -3072,11 +3078,11 @@ function renderDayOfWeekChart() {
     DAYS.map((day, i) => {
       const avg = avgs[i];
       const h   = Math.round((avg / maxAvg) * 64);
-      const col = avg === Math.max(...avgs) ? 'var(--green)' : 'var(--accent)';
+      const col = avg === maxAvg ? 'var(--green)' : 'var(--accent)';
       return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;">
         <div style="font-size:9px;color:var(--muted);font-family:var(--mono);">${avg>=1000?(avg/1000).toFixed(1)+'k':avg||''}</div>
         <div style="width:100%;height:${h||2}px;background:${h?col:'var(--bg4)'};border-radius:2px 2px 0 0;"></div>
-        <div style="font-size:9px;color:${avg===Math.max(...avgs)?'var(--green)':'var(--muted)'};">${day}</div>
+        <div style="font-size:9px;color:${avg===maxAvg?'var(--green)':'var(--muted)'};">${day}</div>
       </div>`;
     }).join('') + `</div>`;
 }
@@ -3172,6 +3178,10 @@ Return ONLY the JSON array, no markdown, no explanation.`;
       headers: { 'Content-Type':'application/json', 'x-api-key':apiKey, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access':'true' },
       body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:900, messages:[{role:'user',content:prompt}] })
     });
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(`API ${res.status}: ${errData.error?.message || res.statusText}`);
+    }
     const data = await res.json();
     const raw  = data.content.map(b=>b.text||'').join('');
     const insights = JSON.parse(raw.replace(/```json|```/g,'').trim());
@@ -3195,7 +3205,6 @@ Return ONLY the JSON array, no markdown, no explanation.`;
 function renderStreak() {
   const goal = 3; // posts per day
   const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
 
   // Build map of date → posted count
   const byDate = {};
@@ -3204,24 +3213,33 @@ function renderStreak() {
   });
 
   // Calculate current streak (consecutive days hitting goal, going back from today)
+  // Today is skipped if incomplete — it doesn't break the streak
   let streak = 0;
-  let best = 0;
-  let tempStreak = 0;
   const d = new Date(today);
-
-  // Check last 90 days for streak
   for (let i = 0; i < 90; i++) {
-    const ds = d.toISOString().split('T')[0];
+    const ds = localDateStr(d);
     const count = byDate[ds] || 0;
     if (count >= goal) {
-      if (i === 0 || streak > 0) streak++;
+      streak++;
+    } else if (i > 0) {
+      break; // gap found on a past day — streak ends
+    }
+    d.setDate(d.getDate() - 1);
+  }
+
+  // Calculate all-time best streak over last 90 days (separate full pass — no early break)
+  let best = 0;
+  let tempStreak = 0;
+  const d2 = new Date(today);
+  for (let i = 0; i < 90; i++) {
+    const ds = localDateStr(d2);
+    if ((byDate[ds] || 0) >= goal) {
       tempStreak++;
       best = Math.max(best, tempStreak);
     } else {
-      if (i === 0) streak = 0; // today not hit yet — streak not broken
-      else { tempStreak = 0; if (streak > 0) break; }
+      tempStreak = 0;
     }
-    d.setDate(d.getDate() - 1);
+    d2.setDate(d2.getDate() - 1);
   }
 
   document.getElementById('streak-num').textContent = streak;
@@ -3244,7 +3262,7 @@ function renderStreak() {
   for (let i = 27; i >= 0; i--) {
     const dd = new Date(today);
     dd.setDate(today.getDate() - i);
-    const ds = dd.toISOString().split('T')[0];
+    const ds = localDateStr(dd);
     const cnt = byDate[ds] || 0;
     const pct = Math.min(1, cnt / goal);
     const alpha = pct === 0 ? 0.08 : 0.3 + pct * 0.7;
