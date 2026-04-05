@@ -750,7 +750,48 @@
         "ig"
       ],
       "addedAt": "2026-04-04T23:39:17",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this kid needed a reality check, got sent back to lobby",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this kid needed a reality check, got sent back to lobby\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "this kid needed a reality check, got taught a lesson in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this kid needed a reality check, got taught a lesson in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "kid got humbled real quick, needed that reality check fr",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "kid got humbled real quick, needed that reality check fr\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775363646092,
@@ -1071,6 +1112,15 @@
       "platform": "tt",
       "date": "2026-04-05",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1775364215233.4058,
+      "clipId": 1775363957433,
+      "clipName": "Loved the hot mic - oh my goodness",
+      "platform": "tt",
+      "date": "2026-04-05",
+      "time": "13:00",
       "posted": false
     }
   ],
