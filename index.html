@@ -449,7 +449,7 @@
       <div class="stats-row">
         <div class="stat-card sc-purple"><div class="stat-num" id="s-today">0</div><div class="stat-label">posts today</div></div>
         <div class="stat-card sc-green"><div class="stat-num" id="s-posted">0</div><div class="stat-label">posted ✓</div></div>
-        <div class="stat-card sc-amber"><div class="stat-num" id="s-pending">0</div><div class="stat-label">pending</div></div>
+        <div class="stat-card sc-amber" id="pending-card"><div class="stat-num" id="s-pending">0</div><div class="stat-label">pending</div></div>
         <div class="stat-card sc-red" style="cursor:pointer;" onclick="nav('analytics')"><div class="stat-num" id="s-streak">0</div><div class="stat-label">day streak 🔥</div></div>
       </div>
 
@@ -1032,7 +1032,7 @@ updateClock();
 
 const today = new Date();
 document.getElementById('today-date').textContent =
-  today.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }).toUpperCase();
+  today.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' }).toUpperCase();
 
 // ── NAV ──────────────────────────────────────────────────────────────────
 function nav(id) {
@@ -1067,7 +1067,7 @@ function openClipModal() {
 
 function openPostModal(date, time) {
   refreshPostClipSelect();
-  document.getElementById('mp-date').value = date || new Date().toISOString().split('T')[0];
+  document.getElementById('mp-date').value = date || localDateStr();
   document.getElementById('mp-tt').checked = true;
   document.getElementById('mp-ig').checked = true;
   document.getElementById('mp-yt').checked = false;
@@ -1173,16 +1173,7 @@ function renderClipList() {
   const badge   = document.getElementById('clip-badge');
   const bnavBadge = document.getElementById('bnav-clip-badge');
 
-  const activeClips  = state.clips.filter(c => !c.archived).sort((a, b) => {
-    // Sort by earliest future scheduled post date, unscheduled clips go last
-    const todayStr = new Date().toISOString().split('T')[0];
-    const aPost = state.posts.filter(p => p.clipId === a.id && p.date >= todayStr).sort((x,y) => x.date.localeCompare(y.date))[0];
-    const bPost = state.posts.filter(p => p.clipId === b.id && p.date >= todayStr).sort((x,y) => x.date.localeCompare(y.date))[0];
-    if (aPost && bPost) return aPost.date.localeCompare(bPost.date);
-    if (aPost) return -1;
-    if (bPost) return 1;
-    return new Date(b.addedAt) - new Date(a.addedAt); // unscheduled: newest first
-  });
+  const activeClips  = sortClipsBySchedule(state.clips.filter(c => !c.archived));
   const archiveClips = state.clips.filter(c => c.archived).sort((a,b) => new Date(b.archivedAt||0) - new Date(a.archivedAt||0));
 
   document.getElementById('ctab-active-count').textContent  = activeClips.length;
@@ -1308,7 +1299,7 @@ function updateClipDesc(id, desc) {
 function scheduleFromClip(id) {
   refreshPostClipSelect();
   document.getElementById('mp-clip').value = id;
-  document.getElementById('mp-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('mp-date').value = localDateStr();
   refreshPostTimeSelect();
   document.getElementById('modal-post').classList.add('open');
 }
@@ -1395,10 +1386,11 @@ function copyTodayCaption(encoded, btn) {
 
 function captionFromClip(id) {
   nav('captions');
+  refreshAllSelects(); // ensure the dropdown is populated before we set a value
   setTimeout(() => {
-    document.getElementById('cap-clip').value = id;
+    document.getElementById('cap-clip').value = String(id);
     onCapClipChange();
-  }, 30);
+  }, 50);
 }
 
 // ── SCHEDULE POST ────────────────────────────────────────────────────────
@@ -1566,9 +1558,19 @@ function removePost(postId) {
   if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
 }
 
+// ── LOCAL DATE HELPER ─────────────────────────────────────────────────────
+// toISOString() is UTC — in CST (UTC-6) before 6am it returns yesterday's date.
+// Always use this for comparing against post.date which is stored as local date.
+function localDateStr(d) {
+  const dt = d || new Date();
+  return dt.getFullYear() + '-' +
+    String(dt.getMonth() + 1).padStart(2, '0') + '-' +
+    String(dt.getDate()).padStart(2, '0');
+}
+
 // ── TODAY ────────────────────────────────────────────────────────────────
 function renderToday() {
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = localDateStr();
   const todayPosts = state.posts.filter(p => p.date === todayStr).sort((a,b) => a.time.localeCompare(b.time));
   const posted  = todayPosts.filter(p => p.posted).length;
   const pending = todayPosts.filter(p => !p.posted).length;
@@ -1576,6 +1578,12 @@ function renderToday() {
   document.getElementById('s-today').textContent   = todayPosts.length;
   document.getElementById('s-posted').textContent  = posted;
   document.getElementById('s-pending').textContent = pending;
+
+  // Dynamic colour: 0 pending = green, 1-2 = amber, 3+ = red
+  const pendingCard = document.getElementById('pending-card');
+  if (pendingCard) {
+    pendingCard.className = 'stat-card ' + (pending === 0 ? 'sc-green' : pending <= 2 ? 'sc-amber' : 'sc-red');
+  }
 
   // Calculate streak for today card
   const goal = 3;
@@ -1701,7 +1709,7 @@ function nextWeek() { state.weekOffset++; renderWeek(); }
 
 function renderWeek() {
   const days = getWeekDates(state.weekOffset);
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = localDateStr();
   const DAYS = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 
   document.getElementById('week-label').textContent =
@@ -1714,7 +1722,7 @@ function renderWeek() {
   // Header
   html += '<div class="week-cell week-header" style="background:var(--bg4);"><span style="font-family:var(--mono);font-size:9px;color:var(--muted);">SLOT</span></div>';
   days.forEach((d,i) => {
-    const dStr = d.toISOString().split('T')[0];
+    const dStr = localDateStr(d);
     const isToday = dStr === todayStr;
     html += `<div class="week-cell week-header ${isToday?'today':''}"><div class="day-name">${DAYS[i]}</div><div class="day-num">${d.getDate()}</div></div>`;
   });
@@ -1723,7 +1731,7 @@ function renderWeek() {
   state.slots.forEach(slot => {
     html += `<div class="time-label">${fmtTime(slot.time)}</div>`;
     days.forEach(d => {
-      const dStr = d.toISOString().split('T')[0];
+      const dStr = localDateStr(d);
       const posts = state.posts.filter(p => p.date === dStr && p.time === slot.time);
       // Drop zone cell
       html += `<div class="week-cell drop-zone" data-date="${dStr}" data-time="${slot.time}"
@@ -2306,7 +2314,12 @@ Return ONLY raw JSON:
 
   } catch(e) {
     console.error('Caption analysis error:', e);
-    resultEl.innerHTML = `<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed: ${e.message || 'Unknown error'}. Check your API key in Settings and try again.</div>`;
+    const errMsg = e.message || 'Unknown error';
+    const isCreditError = errMsg.toLowerCase().includes('credit') || errMsg.toLowerCase().includes('billing');
+    const hint = isCreditError
+      ? 'Your Anthropic account is out of credits — add credits at <strong>console.anthropic.com → Billing</strong>.'
+      : 'Check your API key in Settings and try again.';
+    resultEl.innerHTML = `<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed: ${errMsg}<br><br>${hint}</div>`;
     renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
   }
 }
@@ -2607,13 +2620,15 @@ function updateSidebar() {
 
 // ── SELECTS ──────────────────────────────────────────────────────────────
 function sortClipsBySchedule(clips) {
-  const todayStr = new Date().toISOString().split('T')[0];
+  // Sort by nearest scheduled post (any date, posted or not) so clips with
+  // past-due schedules stay at the top rather than sinking to the bottom.
+  // Unscheduled clips fall to the end, sorted newest-added first.
   return [...clips].sort((a, b) => {
     const aPost = state.posts
-      .filter(p => String(p.clipId) === String(a.id) && p.date >= todayStr)
+      .filter(p => String(p.clipId) === String(a.id) && !p.posted)
       .sort((x, y) => x.date.localeCompare(y.date) || x.time.localeCompare(y.time))[0];
     const bPost = state.posts
-      .filter(p => String(p.clipId) === String(b.id) && p.date >= todayStr)
+      .filter(p => String(p.clipId) === String(b.id) && !p.posted)
       .sort((x, y) => x.date.localeCompare(y.date) || x.time.localeCompare(y.time))[0];
     if (aPost && bPost) return aPost.date.localeCompare(bPost.date) || aPost.time.localeCompare(bPost.time);
     if (aPost) return -1;  // scheduled clips first
@@ -3574,7 +3589,7 @@ function checkUpcomingPosts() {
   if (!container) return;
 
   const now = new Date();
-  const todayStr = now.toISOString().split('T')[0];
+  const todayStr = localDateStr(now);
   const nowMins = now.getHours() * 60 + now.getMinutes();
 
   const todayPosts = state.posts.filter(p => p.date === todayStr && !p.posted);
