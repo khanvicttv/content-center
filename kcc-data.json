@@ -814,12 +814,12 @@
             "#warzone",
             "#cod",
             "#callofduty",
-            "#warzonemeta",
             "#codclips",
             "#warzoneclips",
+            "#blackops6",
             "#khanvicttv"
           ],
-          "full": "You are losing your 1v1 because you don't have this meta build\n\n#warzone #cod #callofduty #warzonemeta #codclips #warzoneclips #khanvicttv"
+          "full": "You are losing your 1v1 because you don't have this meta build\n\n#warzone #cod #callofduty #codclips #warzoneclips #blackops6 #khanvicttv"
         },
         "ig": {
           "caption": "You are losing your 1v1 because you don't have this meta build — live on Twitch, Kick & TikTok",
@@ -827,12 +827,12 @@
             "#warzone",
             "#cod",
             "#callofduty",
-            "#warzonemeta",
-            "#warzonecommunity",
-            "#codwarzone",
+            "#codclips",
+            "#gamingcommunity",
+            "#blackops6",
             "#khanvicttv"
           ],
-          "full": "You are losing your 1v1 because you don't have this meta build — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #warzonemeta #warzonecommunity #codwarzone #khanvicttv"
+          "full": "You are losing your 1v1 because you don't have this meta build — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #codclips #gamingcommunity #blackops6 #khanvicttv"
         },
         "yt": {
           "caption": "Warzone - You are losing your 1v1 because you don't have this meta build | Khanvict TV",
@@ -841,10 +841,10 @@
             "#cod",
             "#callofduty",
             "#shorts",
-            "#warzonemeta",
+            "#codclips",
             "#khanvicttv"
           ],
-          "full": "Warzone - You are losing your 1v1 because you don't have this meta build | Khanvict TV\n\n#warzone #cod #callofduty #shorts #warzonemeta #khanvicttv"
+          "full": "Warzone - You are losing your 1v1 because you don't have this meta build | Khanvict TV\n\n#warzone #cod #callofduty #shorts #codclips #khanvicttv"
         }
       }
     },
@@ -2075,7 +2075,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
