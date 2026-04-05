@@ -1002,7 +1002,7 @@
       "clipId": 1775147776629,
       "clipName": "Locked in tryin to survive",
       "platform": "tt",
-      "date": "2026-04-05",
+      "date": "2026-04-06",
       "time": "09:00",
       "posted": false
     },
@@ -1011,7 +1011,7 @@
       "clipId": 1775147495943,
       "clipName": "Just kept gunning for me",
       "platform": "tt",
-      "date": "2026-04-05",
+      "date": "2026-04-06",
       "time": "13:00",
       "posted": false
     },
@@ -1876,7 +1876,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
