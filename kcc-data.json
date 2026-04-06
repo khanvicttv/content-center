@@ -2530,6 +2530,102 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1775519767616,
+        "runDate": "2026-04-06T23:54:57.478Z",
+        "weekLabel": "Week of Apr 7 – Apr 11, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "movement cancel technique that pros don't want you to know",
+                "type": "tutorial",
+                "why": "Movement tech tutorials consistently perform well, especially when framed as 'secret' knowledge. Builds on his strategic content strength.",
+                "streamFocus": "Demonstrate slide-cancel to jump-shot transitions in multiple scenarios, capture clean examples with different weapons",
+                "captionDirection": "this movement cancel will change your game, most players dont even know it exists"
+              },
+              {
+                "priority": 2,
+                "title": "audio settings that actually matter for ranked",
+                "type": "settings",
+                "why": "Settings content performs well and audio optimization is always relevant for competitive players seeking advantages.",
+                "streamFocus": "Show exact audio settings in-game, demonstrate footstep clarity differences, test with live gameplay",
+                "captionDirection": "these audio settings will make you hear everything, ranked players swear by this"
+              },
+              {
+                "priority": 3,
+                "title": "rotations that guarantee top 10 in ranked",
+                "type": "strategy",
+                "why": "Strategic positioning content aligns with his successful 'tips/strategy' format and ranked focus appeals to serious players.",
+                "streamFocus": "Execute specific rotation patterns on current map, show positioning choices and explain timing decisions",
+                "captionDirection": "if you rotate like this, you will never die to zone again"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "meta SMG loadout that's actually broken right now",
+                "type": "loadout",
+                "why": "Loadout videos are his top performing content type. Current meta focus ensures relevance and searchability.",
+                "streamFocus": "Build and test the loadout live, show damage numbers, demonstrate in various engagement ranges",
+                "captionDirection": "this SMG setup is actually broken, if you dont try it you are missing out"
+              },
+              {
+                "priority": 2,
+                "title": "why most players fail at final circles",
+                "type": "tips",
+                "why": "Tips content performs well for him, and endgame strategy is universally applicable and highly valuable to viewers.",
+                "streamFocus": "Focus on final circle gameplay, capture multiple endgame scenarios and positioning decisions",
+                "captionDirection": "stop dying in final circle, this is why you keep losing"
+              },
+              {
+                "priority": 3,
+                "title": "aim training routine that actually works",
+                "type": "tutorial",
+                "why": "Skill improvement content appeals to his audience seeking to improve their gameplay fundamentals.",
+                "streamFocus": "Show specific aim training exercises, demonstrate before/after improvement, use in-game firing range",
+                "captionDirection": "do this aim routine for 10 minutes, your shots will be different"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "long range AR build everyone is sleeping on",
+                "type": "loadout",
+                "why": "Loadout content is his strongest performer. Long-range builds are always in demand for Warzone's large maps.",
+                "streamFocus": "Test the AR build at various ranges, show recoil control, compare damage to popular alternatives",
+                "captionDirection": "everyone sleeps on this AR, it actually beams at long range"
+              },
+              {
+                "priority": 2,
+                "title": "clutch strategies when your team is down",
+                "type": "strategy",
+                "why": "Clutch scenarios are relatable content that showcases skill while providing actionable strategy advice.",
+                "streamFocus": "Create clutch situations, demonstrate positioning and decision-making when outnumbered",
+                "captionDirection": "when your team dies, do this and you will clutch more"
+              },
+              {
+                "priority": 3,
+                "title": "controller vs mouse aim comparison",
+                "type": "tutorial",
+                "why": "Input method discussions generate engagement and debate, appealing to players on both platforms.",
+                "streamFocus": "Demonstrate aim techniques on both inputs, show practical differences in real gameplay scenarios",
+                "captionDirection": "controller vs mouse for warzone, the difference will surprise you"
+              }
+            ]
+          }
+        ],
+        "trends": null,
+        "competitors": []
+      },
+      {
         "id": 1775517960066,
         "runDate": "2026-04-06T23:24:58.167Z",
         "weekLabel": "Week of Apr 7 – Apr 11, 2026",
@@ -2626,6 +2722,6 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-04-06T23:24:58.167Z"
+    "lastRun": "2026-04-06T23:54:57.478Z"
   }
 }
