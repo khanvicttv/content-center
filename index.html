@@ -413,6 +413,7 @@
       <button class="nav-item" onclick="nav('schedule')" id="nav-schedule"><span class="nav-icon">▦</span>Schedule</button>
       <button class="nav-item" onclick="nav('clips')" id="nav-clips"><span class="nav-icon">◈</span>Clips <span class="nav-badge" id="clip-badge">0</span></button>
       <button class="nav-item" onclick="nav('captions')" id="nav-captions"><span class="nav-icon">✦</span>Captions</button>
+      <button class="nav-item" onclick="nav('intel')" id="nav-intel"><span class="nav-icon">⚡</span>Content Intel</button>
       <button class="nav-item" onclick="nav('analytics')" id="nav-analytics"><span class="nav-icon">◈</span>Analytics</button>
       <button class="nav-item" onclick="nav('settings')" id="nav-settings"><span class="nav-icon">⚙</span>Settings</button>
     </div>
@@ -586,6 +587,76 @@
       <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
       <div id="cap-ig" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
       <div id="cap-yt" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
+    </div>
+
+    <!-- CONTENT INTEL -->
+    <div class="panel" id="panel-intel">
+      <div class="panel-header">
+        <div class="panel-title">CONTENT <span>INTEL</span></div>
+        <div class="flex" style="flex-wrap:wrap;gap:6px;">
+          <span id="intel-last-run" style="font-family:var(--mono);font-size:10px;color:var(--muted);"></span>
+          <button class="btn btn-primary btn-sm" id="intel-run-btn" onclick="runContentIntel()">⚡ Research now</button>
+        </div>
+      </div>
+
+      <div class="alert-info" style="margin-bottom:18px;">
+        Your AI content strategist. Researches trending Warzone topics, meta shifts, and what's performing on TikTok, IG Reels &amp; YouTube Shorts — then gives you 3 content topics mapped to your Tue / Thu / Sat stream schedule. Auto-runs Sunday nights.
+      </div>
+
+      <!-- Stream schedule reminder -->
+      <div id="intel-schedule-bar" style="display:flex;gap:10px;margin-bottom:18px;">
+        <div style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:4px;">STREAM 1</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Tuesday</div>
+        </div>
+        <div style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:4px;">STREAM 2</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Thursday</div>
+        </div>
+        <div style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:4px;">STREAM 3</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text);">Saturday</div>
+        </div>
+      </div>
+
+      <!-- Weekly Brief -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>⚡ THIS WEEK'S CONTENT BRIEF</span>
+          <span id="intel-week-label" style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:0;text-transform:none;"></span>
+        </div>
+        <div id="intel-brief-body">
+          <div style="color:var(--muted);font-size:13px;padding:16px 0;text-align:center;">
+            <div style="font-size:28px;margin-bottom:10px;">⚡</div>
+            Hit <strong style="color:var(--accent2);">Research now</strong> to get your first content brief.<br>
+            <span style="font-size:11px;">The agent will search for trending Warzone topics, meta shifts, and what's performing on short-form platforms.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trend Radar -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">📡 TREND RADAR — WARZONE</div>
+        <div id="intel-trends-body">
+          <div style="color:var(--muted);font-size:13px;padding:12px 0;">Run research to see current trending topics.</div>
+        </div>
+      </div>
+
+      <!-- Competitor Watch -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title">👁 COMPETITOR WATCH</div>
+        <div id="intel-competitors-body">
+          <div style="color:var(--muted);font-size:13px;padding:12px 0;">Run research to see what's working for Lucky Chamu, Galaxywz, MPX, and Camy.</div>
+        </div>
+      </div>
+
+      <!-- Research History -->
+      <div class="card">
+        <div class="card-title">📋 PAST BRIEFS</div>
+        <div id="intel-history-body">
+          <div style="color:var(--muted);font-size:13px;padding:12px 0;">No past research yet.</div>
+        </div>
+      </div>
     </div>
 
     <!-- ANALYTICS -->
@@ -779,6 +850,9 @@
   <button class="bnav-item" onclick="nav('captions')" id="bnav-captions">
     <span class="bnav-icon">✦</span>Captions
   </button>
+  <button class="bnav-item" onclick="nav('intel')" id="bnav-intel">
+    <span class="bnav-icon">⚡</span>Intel
+  </button>
   <button class="bnav-item" onclick="nav('analytics')" id="bnav-analytics">
     <span class="bnav-icon">◈</span>Stats
   </button>
@@ -924,7 +998,8 @@ let state = {
   checklist: {},
   slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)),
   weekOffset: 0,
-  engagements: []
+  engagements: [],
+  contentIntel: { briefs: [], lastRun: null }
 };
 
 const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
@@ -1049,6 +1124,7 @@ function nav(id) {
   if (id === 'today')     { renderToday(); renderDaysBanner(); }
   if (id === 'schedule')  renderWeek();
   if (id === 'analytics') renderAnalytics();
+  if (id === 'intel')     renderIntel();
   if (id === 'settings')  renderSlotEditor();
 }
 
@@ -2117,22 +2193,10 @@ function switchCapTab(el, tab) {
 
 // ── CAPTION ASSISTANT ─────────────────────────────────────────────────────
 
-// Cache trending hashtags — persisted to localStorage so page reloads don't bust it
+// Cache trending hashtags so we don't search every single time
+let trendingHashtagsCache = null;
+let trendingCacheTime = null;
 const TRENDING_CACHE_MS = 60 * 60 * 1000; // 1 hour
-
-function loadTrendingCache() {
-  try {
-    const raw = localStorage.getItem('kcc_trending_cache');
-    if (!raw) return { data: null, time: null };
-    return JSON.parse(raw);
-  } catch(e) { return { data: null, time: null }; }
-}
-
-function saveTrendingCache(data) {
-  try {
-    localStorage.setItem('kcc_trending_cache', JSON.stringify({ data, time: Date.now() }));
-  } catch(e) {}
-}
 
 async function refreshTrendingHashtags() {
   const btn = document.getElementById('trending-refresh-btn');
@@ -2149,10 +2213,9 @@ async function fetchTrendingHashtags(game, forceRefresh) {
   if (!apiKey) return null;
 
   const now = Date.now();
-  const cached = loadTrendingCache();
-  if (!forceRefresh && cached.data && cached.time && (now - cached.time) < TRENDING_CACHE_MS) {
-    renderTrendingStrip(cached.data);
-    return cached.data;
+  if (!forceRefresh && trendingHashtagsCache && trendingCacheTime && (now - trendingCacheTime) < TRENDING_CACHE_MS) {
+    renderTrendingStrip(trendingHashtagsCache);
+    return trendingHashtagsCache;
   }
 
   const prompt = `You are a TikTok hashtag researcher for gaming content. Search the web to find currently trending hashtags for ${game} and Call of Duty content on TikTok right now in 2026.
@@ -2169,7 +2232,7 @@ All tags lowercase. No spaces in tags.`;
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-sonnet-4-6',
         max_tokens: 600,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: prompt }]
@@ -2184,7 +2247,8 @@ All tags lowercase. No spaces in tags.`;
     const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
     if (!text.trim()) return null;
     const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
-    saveTrendingCache(parsed);
+    trendingHashtagsCache = parsed;
+    trendingCacheTime = Date.now();
     renderTrendingStrip(parsed);
     return parsed;
   } catch(e) {
@@ -2821,6 +2885,7 @@ async function pullFromGithub() {
     state = { ...state, ...remote };
     if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
     if (!state.engagements) state.engagements = [];
+    if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
     return true;
@@ -2858,6 +2923,7 @@ function refreshAll() {
   renderDaysBanner();
   if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
   if (document.getElementById('panel-analytics').classList.contains('active')) renderAnalytics();
+  if (document.getElementById('panel-intel').classList.contains('active')) renderIntel();
 }
 
 // ── PERSIST ──────────────────────────────────────────────────────────────
@@ -2880,6 +2946,7 @@ function load() {
       state = { ...state, ...saved };
       if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
       if (!state.engagements) state.engagements = [];
+      if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
     }
   } catch(e) {}
 }
@@ -2904,6 +2971,7 @@ function importData(e) {
       if (!state.clips)       state.clips       = [];
       if (!state.posts)       state.posts       = [];
       if (!state.checklist)   state.checklist   = {};
+      if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
       save();
       renderClipList();
       refreshAllSelects();
@@ -2918,7 +2986,7 @@ function importData(e) {
 
 function clearAll() {
   if (!confirm('Clear ALL data? This cannot be undone.')) return;
-  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [] };
+  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null } };
   save();
   renderClipList();
   refreshAllSelects();
@@ -3653,6 +3721,424 @@ function checkUpcomingPosts() {
       <button class="btn btn-ghost btn-sm" onclick="markPosted(${post.id});checkUpcomingPosts();">Mark posted</button>
     </div>`;
   }).join('');
+}
+
+// ── CONTENT INTEL ─────────────────────────────────────────────────────────
+
+const INTEL_STREAM_DAYS = ['Tuesday', 'Thursday', 'Saturday'];
+const INTEL_COMPETITORS = ['Lucky Chamu', 'Galaxywz', 'MPX', 'Camy'];
+
+function renderIntel() {
+  const ci = state.contentIntel || { briefs: [], lastRun: null };
+  const lastRunEl = document.getElementById('intel-last-run');
+  const weekLabel = document.getElementById('intel-week-label');
+
+  if (ci.lastRun) {
+    const d = new Date(ci.lastRun);
+    lastRunEl.textContent = 'Last run: ' + d.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' ' + d.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+  } else {
+    lastRunEl.textContent = '';
+  }
+
+  // Render latest brief
+  if (ci.briefs && ci.briefs.length > 0) {
+    const latest = ci.briefs[0];
+    weekLabel.textContent = latest.weekLabel || '';
+    renderBriefBody(latest);
+    renderTrendsBody(latest);
+    renderCompetitorsBody(latest);
+  }
+
+  // Render history
+  renderIntelHistory();
+
+  // Auto-run check: if today is Sunday and lastRun > 6 days ago
+  checkIntelAutoRun();
+}
+
+function renderBriefBody(brief) {
+  const el = document.getElementById('intel-brief-body');
+  if (!brief || !brief.topics || !brief.topics.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0;text-align:center;">No topics yet. Hit Research now.</div>';
+    return;
+  }
+
+  const typeColors = {
+    'tips': 'var(--green)',
+    'strategy': 'var(--green)',
+    'loadout': 'var(--accent2)',
+    'meta': 'var(--accent2)',
+    'highlight': 'var(--tiktok)',
+    'tutorial': 'var(--amber)',
+    'reaction': 'var(--amber)',
+    'challenge': 'var(--ig)',
+    'news': '#2dd4bf'
+  };
+
+  el.innerHTML = brief.topics.map((t, i) => {
+    const typeColor = typeColors[t.type?.toLowerCase()] || 'var(--accent2)';
+    const streamDay = INTEL_STREAM_DAYS[i] || 'TBD';
+    return `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;${i===0?'border-left:3px solid var(--accent);':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+            <span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:rgba(124,92,252,0.12);color:var(--accent2);padding:2px 8px;border-radius:3px;">STREAM ${i+1} — ${streamDay.toUpperCase()}</span>
+            <span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:${typeColor}20;color:${typeColor};padding:2px 8px;border-radius:3px;text-transform:uppercase;">${t.type || 'content'}</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:6px;">${t.title}</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:12px;">${t.why}</div>
+      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:10px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--accent);margin-bottom:4px;">WHAT TO CAPTURE ON STREAM</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.6;">${t.streamFocus}</div>
+      </div>
+      <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:6px;padding:10px 12px;margin-bottom:10px;">
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--green);margin-bottom:4px;">CAPTION DIRECTION</div>
+        <div style="font-size:12px;color:var(--text);line-height:1.5;">${t.captionDirection}</div>
+      </div>
+      ${t.hooks && t.hooks.length ? `
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        ${t.hooks.map(h => `<span style="font-size:10px;font-family:var(--mono);background:rgba(124,92,252,0.08);border:1px solid rgba(124,92,252,0.18);color:var(--accent2);padding:3px 8px;border-radius:4px;">${h}</span>`).join('')}
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderTrendsBody(brief) {
+  const el = document.getElementById('intel-trends-body');
+  if (!brief || !brief.trends) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">Run research to see trends.</div>';
+    return;
+  }
+  const t = brief.trends;
+  el.innerHTML = `
+    ${t.metaShifts ? `<div style="margin-bottom:14px;">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--amber);margin-bottom:6px;">META SHIFTS</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.7;">${t.metaShifts}</div>
+    </div>` : ''}
+    ${t.viralFormats && t.viralFormats.length ? `<div style="margin-bottom:14px;">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--tiktok);margin-bottom:6px;">VIRAL FORMATS RIGHT NOW</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        ${t.viralFormats.map(f => `<div style="font-size:12px;color:var(--text);line-height:1.5;padding:6px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;">• ${f}</div>`).join('')}
+      </div>
+    </div>` : ''}
+    ${t.patchNotes ? `<div style="margin-bottom:14px;">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--green);margin-bottom:6px;">RECENT UPDATES / PATCH NOTES</div>
+      <div style="font-size:12px;color:var(--text);line-height:1.7;">${t.patchNotes}</div>
+    </div>` : ''}
+    ${t.risingTopics && t.risingTopics.length ? `<div>
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:1px;color:var(--accent2);margin-bottom:8px;">RISING TOPICS</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        ${t.risingTopics.map(rt => `<span style="font-size:11px;font-family:var(--mono);background:rgba(124,92,252,0.08);border:1px solid rgba(124,92,252,0.18);color:var(--accent2);padding:4px 10px;border-radius:4px;">${rt}</span>`).join('')}
+      </div>
+    </div>` : ''}
+  `;
+}
+
+function renderCompetitorsBody(brief) {
+  const el = document.getElementById('intel-competitors-body');
+  if (!brief || !brief.competitors || !brief.competitors.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">Run research to see competitor intel.</div>';
+    return;
+  }
+  el.innerHTML = brief.competitors.map(c => `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <div style="font-size:13px;font-weight:600;color:var(--text);">${c.name}</div>
+        ${c.platform ? `<span style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.5px;">${c.platform}</span>` : ''}
+      </div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;">${c.insight}</div>
+      ${c.takeaway ? `<div style="font-size:11px;color:var(--green);font-family:var(--mono);margin-top:6px;">→ ${c.takeaway}</div>` : ''}
+    </div>`).join('');
+}
+
+function renderIntelHistory() {
+  const el = document.getElementById('intel-history-body');
+  const ci = state.contentIntel || { briefs: [] };
+  if (!ci.briefs || ci.briefs.length < 2) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">Past briefs will appear here after your second research run.</div>';
+    return;
+  }
+  // Show all but the latest (which is displayed above)
+  el.innerHTML = ci.briefs.slice(1, 8).map(b => `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;cursor:pointer;" onclick="viewPastBrief('${b.id}')">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-size:12px;font-weight:500;color:var(--text);">${b.weekLabel || 'Week brief'}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;">${b.topics ? b.topics.map(t => t.type).join(' · ') : ''}</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted);">${b.runDate ? new Date(b.runDate).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : ''}</div>
+      </div>
+    </div>`).join('');
+}
+
+function viewPastBrief(id) {
+  const ci = state.contentIntel || { briefs: [] };
+  const brief = ci.briefs.find(b => String(b.id) === String(id));
+  if (!brief) return;
+  renderBriefBody(brief);
+  renderTrendsBody(brief);
+  renderCompetitorsBody(brief);
+  document.getElementById('intel-week-label').textContent = (brief.weekLabel || '') + ' (past)';
+  // Scroll to top of brief
+  document.getElementById('intel-brief-body').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function checkIntelAutoRun() {
+  const ci = state.contentIntel || { briefs: [], lastRun: null };
+  const now = new Date();
+  // Only auto-run on Sundays after 6 PM CST
+  if (now.getDay() !== 0) return;
+  const hour = now.getHours();
+  if (hour < 18) return;
+  // Check if lastRun is >6 days ago
+  if (ci.lastRun) {
+    const lastRun = new Date(ci.lastRun);
+    const daysSince = (now - lastRun) / (1000 * 60 * 60 * 24);
+    if (daysSince < 6) return;
+  }
+  // Check API key
+  const apiKey = loadApiKey();
+  if (!apiKey) return;
+  // Auto run
+  runContentIntel();
+}
+
+async function runContentIntel() {
+  const apiKey = loadApiKey();
+  if (!apiKey) {
+    alert('Add your Anthropic API key in Settings first.');
+    return;
+  }
+
+  const btn = document.getElementById('intel-run-btn');
+  btn.textContent = 'Researching...';
+  btn.disabled = true;
+
+  const briefBody = document.getElementById('intel-brief-body');
+  const trendsBody = document.getElementById('intel-trends-body');
+  const compBody = document.getElementById('intel-competitors-body');
+
+  briefBody.innerHTML = `
+    <div style="text-align:center;padding:32px 0;">
+      <div style="width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px;"></div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--muted);" id="intel-progress">Step 1/3 — Scanning Warzone trends &amp; meta...</div>
+    </div>`;
+
+  // Build date context
+  const now = new Date();
+  const nextTue = getNextDayOfWeek(2);
+  const nextThu = getNextDayOfWeek(4);
+  const nextSat = getNextDayOfWeek(6);
+  const weekLabel = `Week of ${nextTue.toLocaleDateString('en-US', {month:'short', day:'numeric'})} – ${nextSat.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}`;
+
+  // Get engagement context if available
+  const engContext = buildEngagementContext();
+
+  try {
+    // ── STEP 1: Trend Research ──────────────────────────────────────────
+    document.getElementById('intel-progress').innerHTML = 'Step 1/3 — Scanning Warzone trends &amp; meta...';
+    const trendsResult = await intelApiCall(apiKey, `You are a gaming content research agent. Your job is to search the web for the LATEST trending topics in the Call of Duty: Warzone space right now in ${now.getFullYear()}.
+
+Search for:
+1. Latest Warzone / COD patch notes, updates, season changes, new weapons, map changes
+2. Current meta weapons and loadouts that are trending on TikTok and YouTube
+3. Viral content formats for Warzone/COD on TikTok, Instagram Reels, YouTube Shorts right now
+4. Rising topics in the COD/Warzone community (Reddit, Twitter/X, YouTube)
+5. Any new game modes, events, or limited-time content
+
+Today's date: ${now.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}
+
+Return ONLY this JSON — no markdown, no explanation:
+{
+  "metaShifts": "2-3 sentences about current meta weapons/loadout changes",
+  "patchNotes": "2-3 sentences about most recent updates/patches if any",
+  "viralFormats": ["format 1 description", "format 2", "format 3", "format 4"],
+  "risingTopics": ["topic1", "topic2", "topic3", "topic4", "topic5"],
+  "hotWeapons": ["weapon1", "weapon2", "weapon3"],
+  "communityBuzz": "1-2 sentences on what the community is talking about right now"
+}`, true);
+
+    // ── STEP 2: Competitor Research ─────────────────────────────────────
+    document.getElementById('intel-progress').innerHTML = 'Step 2/3 — Checking what competitors are posting...';
+    const compResult = await intelApiCall(apiKey, `You are a gaming content research agent. Search the web for the latest content from these Warzone / Call of Duty creators:
+
+1. Lucky Chamu — search for: Lucky Chamu warzone tiktok recent
+2. Galaxywz — search for: Galaxywz warzone content recent
+3. MPX — search for: MPX cod warzone tiktok recent  
+4. Camy — search for: Camy warzone tiktok recent
+
+For each creator, find what TYPE of content they've been posting recently (loadout videos, tips, clutch clips, tutorials, funny moments, etc.) and what seems to be performing well.
+
+Today's date: ${now.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}
+
+Return ONLY this JSON:
+{
+  "competitors": [
+    {"name": "Lucky Chamu", "platform": "TikTok", "insight": "2-3 sentences about their recent content and what seems to work", "takeaway": "one action to learn from them"},
+    {"name": "Galaxywz", "platform": "TikTok", "insight": "...", "takeaway": "..."},
+    {"name": "MPX", "platform": "TikTok", "insight": "...", "takeaway": "..."},
+    {"name": "Camy", "platform": "TikTok", "insight": "...", "takeaway": "..."}
+  ],
+  "commonThemes": "1-2 sentences about what all these creators have in common right now"
+}`, true);
+
+    // ── STEP 3: Synthesize Content Brief ─────────────────────────────────
+    document.getElementById('intel-progress').innerHTML = 'Step 3/3 — Building your content brief...';
+
+    // Parse results from steps 1 and 2
+    let trends = null, competitors = null;
+    try { trends = JSON.parse(trendsResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Trends parse failed:', e); }
+    try { competitors = JSON.parse(compResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Competitors parse failed:', e); }
+
+    const trendsContext = trends
+      ? `CURRENT TRENDS:\n- Meta weapons: ${(trends.hotWeapons||[]).join(', ')}\n- Meta shifts: ${trends.metaShifts||'unknown'}\n- Viral formats: ${(trends.viralFormats||[]).join('; ')}\n- Rising topics: ${(trends.risingTopics||[]).join(', ')}\n- Community buzz: ${trends.communityBuzz||''}\n- Patch notes: ${trends.patchNotes||'none found'}`
+      : 'No trend data available — use general Warzone knowledge.';
+
+    const compContext = competitors && competitors.competitors
+      ? `COMPETITOR INSIGHTS:\n${competitors.competitors.map(c => `- ${c.name}: ${c.insight}`).join('\n')}\nCommon themes: ${competitors.commonThemes || ''}`
+      : 'No competitor data available.';
+
+    const synthesisPrompt = `You are the content strategist for Khanvict TV — a Warzone/FPS streamer who streams Tue/Thu/Sat and posts edited clips on TikTok, Instagram Reels, and YouTube Shorts.
+
+His strengths: 5 years streaming, strong FPS gameplay, editing in DaVinci Resolve, uses text overlays on clips. Currently building audience on all 3 platforms.
+
+His data shows: tips/strategy/loadout videos outperform pure kill clips. His best-performing captions are short, lowercase, matter-of-fact. Best example: "legit OP, if you dont have it, you are doing yourself injustice" (831 likes).
+
+${engContext}
+
+${trendsContext}
+
+${compContext}
+
+Create 3 content topics for this week, one for each stream day (Tuesday, Thursday, Saturday). The AI should decide the best mix of content types based on what's trending and what performs well. Content types to choose from: tips, strategy, loadout, highlight, tutorial, reaction, challenge, news.
+
+Bias towards tips, strategy, and loadout content (2-3 of the 3 topics should be these types) — pure highlight clips should be rare unless trends strongly favor them.
+
+Each topic should:
+1. Be directly tied to something currently trending or recently changed in Warzone
+2. Specify EXACTLY what footage to capture during the stream
+3. Include a caption direction in Khanvict's voice (short, lowercase, no emoji, matter-of-fact)
+4. Include 2-3 hook ideas (first 2 seconds of the clip)
+
+Return ONLY this JSON:
+{
+  "topics": [
+    {
+      "title": "Topic title — specific and actionable",
+      "type": "tips|strategy|loadout|highlight|tutorial|reaction|challenge|news",
+      "why": "2-3 sentences why this will perform well right now — reference specific trends",
+      "streamFocus": "Exactly what to do/capture on stream for this content",
+      "captionDirection": "example caption in his voice — short, lowercase, matter-of-fact",
+      "hooks": ["hook idea 1 for first 2 sec", "hook idea 2", "hook idea 3"]
+    },
+    { ... },
+    { ... }
+  ]
+}`;
+
+    const synthesisResult = await intelApiCall(apiKey, synthesisPrompt, false);
+    let synthesis = null;
+    try { synthesis = JSON.parse(synthesisResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Synthesis parse failed:', e); }
+
+    // Build the brief object
+    const brief = {
+      id: Date.now(),
+      runDate: now.toISOString(),
+      weekLabel,
+      topics: synthesis ? synthesis.topics : [],
+      trends: trends || null,
+      competitors: competitors ? competitors.competitors : []
+    };
+
+    // Save to state
+    if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+    state.contentIntel.briefs.unshift(brief);
+    // Keep max 12 briefs
+    if (state.contentIntel.briefs.length > 12) state.contentIntel.briefs = state.contentIntel.briefs.slice(0, 12);
+    state.contentIntel.lastRun = now.toISOString();
+    save();
+
+    // Render
+    renderBriefBody(brief);
+    renderTrendsBody(brief);
+    renderCompetitorsBody(brief);
+    renderIntelHistory();
+    document.getElementById('intel-week-label').textContent = weekLabel;
+    document.getElementById('intel-last-run').textContent = 'Last run: ' + now.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + ' ' + now.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+
+  } catch(e) {
+    console.error('Content Intel error:', e);
+    briefBody.innerHTML = `<div style="color:var(--red);font-size:12px;padding:16px 0;text-align:center;">
+      Research failed: ${e.message || 'Unknown error'}<br>
+      <span style="color:var(--muted);font-size:11px;">Check your API key and try again.</span>
+    </div>`;
+  }
+
+  btn.textContent = '⚡ Research now';
+  btn.disabled = false;
+}
+
+async function intelApiCall(apiKey, prompt, useWebSearch) {
+  const body = {
+    model: 'claude-sonnet-4-20250514',
+    max_tokens: 1200,
+    messages: [{ role: 'user', content: prompt }]
+  };
+  if (useWebSearch) {
+    body.tools = [{ type: 'web_search_20250305', name: 'web_search' }];
+  }
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(`API ${res.status}: ${errData.error?.message || res.statusText}`);
+  }
+  const data = await res.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+  if (!text.trim()) throw new Error('Empty response from API');
+  return text;
+}
+
+function getNextDayOfWeek(dayNum) {
+  // dayNum: 0=Sun, 1=Mon, 2=Tue, etc.
+  const now = new Date();
+  const diff = (dayNum - now.getDay() + 7) % 7;
+  const next = new Date(now);
+  next.setDate(now.getDate() + (diff === 0 ? 0 : diff));
+  return next;
+}
+
+function buildEngagementContext() {
+  const eng = state.engagements || [];
+  if (eng.length < 3) return 'Not enough engagement data yet to inform recommendations.';
+
+  // Content type performance from past captions (infer from engagement notes/hashtags)
+  const totalViews = eng.reduce((s, e) => s + (e.views || 0), 0);
+  const avgViews = Math.round(totalViews / eng.length);
+  const bestPost = eng.reduce((best, e) => (e.views || 0) > (best.views || 0) ? e : best, eng[0]);
+
+  // Platform performance
+  const PLATS = ['tt', 'ig', 'yt'];
+  const PL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
+  const platStats = PLATS.map(p => {
+    const e = eng.filter(x => x.platform === p);
+    if (!e.length) return null;
+    const avgV = Math.round(e.reduce((s, x) => s + (x.views || 0), 0) / e.length);
+    return `${PL[p]}: ${e.length} posts, avg ${avgV} views`;
+  }).filter(Boolean).join(', ');
+
+  return `ENGAGEMENT DATA (${eng.length} logged posts):\nAvg views: ${avgViews} | Best post: ${bestPost.clipName || 'unknown'} (${(bestPost.views||0).toLocaleString()} views)\nPlatform breakdown: ${platStats}`;
 }
 
 // ── INIT ─────────────────────────────────────────────────────────────────
