@@ -600,7 +600,7 @@
       </div>
 
       <div class="alert-info" style="margin-bottom:18px;">
-        Your AI content strategist. Researches trending Warzone topics, meta shifts, and what's performing on TikTok, IG Reels &amp; YouTube Shorts — then gives you 3 content topics mapped to your Tue / Thu / Sat stream schedule. Auto-runs Sunday nights.
+        Your AI content strategist. Researches trending Warzone topics, meta shifts, and what's performing on TikTok, IG Reels &amp; YouTube Shorts — then builds a weekly content plan with 3 priority-ordered topics for each stream day (Tue / Thu / Sat). 9 topics total, ready before you go live. Auto-runs Sunday nights.
       </div>
 
       <!-- Stream schedule reminder -->
@@ -622,14 +622,14 @@
       <!-- Weekly Brief -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
-          <span>⚡ THIS WEEK'S CONTENT BRIEF</span>
+          <span>⚡ THIS WEEK'S CONTENT PLAN</span>
           <span id="intel-week-label" style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:0;text-transform:none;"></span>
         </div>
         <div id="intel-brief-body">
           <div style="color:var(--muted);font-size:13px;padding:16px 0;text-align:center;">
             <div style="font-size:28px;margin-bottom:10px;">⚡</div>
-            Hit <strong style="color:var(--accent2);">Research now</strong> to get your first content brief.<br>
-            <span style="font-size:11px;">The agent will search for trending Warzone topics, meta shifts, and what's performing on short-form platforms.</span>
+            Hit <strong style="color:var(--accent2);">Research now</strong> to get your weekly content plan.<br>
+            <span style="font-size:11px;">The agent will research 9 trending topics — 3 per stream day (Tue / Thu / Sat) — priority ordered so you know what to capture first.</span>
           </div>
         </div>
       </div>
@@ -3758,7 +3758,14 @@ function renderIntel() {
 
 function renderBriefBody(brief) {
   const el = document.getElementById('intel-brief-body');
-  if (!brief || !brief.topics || !brief.topics.length) {
+  // Support both new (days) and legacy (topics) format
+  const days = brief.days || [];
+  if (!days.length) {
+    // Legacy fallback for old briefs that used flat topics array
+    if (brief.topics && brief.topics.length) {
+      renderLegacyBriefBody(brief);
+      return;
+    }
     el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0;text-align:center;">No topics yet. Hit Research now.</div>';
     return;
   }
@@ -3772,36 +3779,70 @@ function renderBriefBody(brief) {
     'tutorial': 'var(--amber)',
     'reaction': 'var(--amber)',
     'challenge': 'var(--ig)',
-    'news': '#2dd4bf'
+    'news': '#2dd4bf',
+    'settings': '#2dd4bf'
   };
 
+  const dayColors = {
+    'Tuesday':  'var(--accent)',
+    'Thursday': 'var(--tiktok)',
+    'Saturday': 'var(--green)'
+  };
+
+  el.innerHTML = days.map((day, di) => {
+    const dayColor = dayColors[day.day] || 'var(--accent)';
+    const topics = (day.topics || []).sort((a, b) => (a.priority || 99) - (b.priority || 99));
+    return `
+    <div style="margin-bottom:${di < days.length - 1 ? '20px' : '0'};">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid ${dayColor}30;">
+        <div style="background:${dayColor};color:white;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;padding:4px 12px;border-radius:4px;font-weight:700;">${(day.day || '').toUpperCase()}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;">STREAM ${di + 1} — ${topics.length} TOPICS</div>
+      </div>
+      ${topics.map((t, ti) => {
+        const typeColor = typeColors[t.type?.toLowerCase()] || 'var(--accent2)';
+        const priorityBg = ti === 0 ? `border-left:3px solid ${dayColor};` : '';
+        return `
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;${priorityBg}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:${dayColor};width:18px;">#${t.priority || ti + 1}</span>
+          <span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:${typeColor}18;color:${typeColor};padding:2px 8px;border-radius:3px;text-transform:uppercase;">${t.type || 'content'}</span>
+          <span style="font-size:13px;font-weight:600;color:var(--text);flex:1;min-width:0;">${t.title}</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:8px;">${t.why}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div style="background:var(--bg4);border:1px solid var(--border);border-radius:6px;padding:8px 10px;">
+            <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--accent);margin-bottom:3px;">CAPTURE</div>
+            <div style="font-size:11px;color:var(--text);line-height:1.5;">${t.streamFocus}</div>
+          </div>
+          <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.12);border-radius:6px;padding:8px 10px;">
+            <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--green);margin-bottom:3px;">CAPTION</div>
+            <div style="font-size:11px;color:var(--text);line-height:1.5;font-style:italic;">${t.captionDirection}</div>
+          </div>
+        </div>
+      </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+// Legacy support for old briefs with flat topics array
+function renderLegacyBriefBody(brief) {
+  const el = document.getElementById('intel-brief-body');
+  const typeColors = {
+    'tips': 'var(--green)', 'strategy': 'var(--green)', 'loadout': 'var(--accent2)',
+    'highlight': 'var(--tiktok)', 'tutorial': 'var(--amber)', 'settings': '#2dd4bf'
+  };
   el.innerHTML = brief.topics.map((t, i) => {
     const typeColor = typeColors[t.type?.toLowerCase()] || 'var(--accent2)';
     const streamDay = INTEL_STREAM_DAYS[i] || 'TBD';
     return `
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;${i===0?'border-left:3px solid var(--accent);':''}">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
-        <div style="flex:1;min-width:0;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
-            <span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:rgba(124,92,252,0.12);color:var(--accent2);padding:2px 8px;border-radius:3px;">STREAM ${i+1} — ${streamDay.toUpperCase()}</span>
-            <span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:${typeColor}20;color:${typeColor};padding:2px 8px;border-radius:3px;text-transform:uppercase;">${t.type || 'content'}</span>
-          </div>
-          <div style="font-size:15px;font-weight:600;color:var(--text);line-height:1.4;margin-bottom:6px;">${t.title}</div>
-        </div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+        <span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:rgba(124,92,252,0.12);color:var(--accent2);padding:2px 8px;border-radius:3px;">${streamDay.toUpperCase()}</span>
+        <span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:${typeColor}20;color:${typeColor};padding:2px 8px;border-radius:3px;text-transform:uppercase;">${t.type || 'content'}</span>
       </div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:12px;">${t.why}</div>
-      <div style="background:var(--bg4);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:10px;">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--accent);margin-bottom:4px;">WHAT TO CAPTURE ON STREAM</div>
-        <div style="font-size:12px;color:var(--text);line-height:1.6;">${t.streamFocus}</div>
-      </div>
-      <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:6px;padding:10px 12px;margin-bottom:10px;">
-        <div style="font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--green);margin-bottom:4px;">CAPTION DIRECTION</div>
-        <div style="font-size:12px;color:var(--text);line-height:1.5;">${t.captionDirection}</div>
-      </div>
-      ${t.hooks && t.hooks.length ? `
-      <div style="display:flex;gap:6px;flex-wrap:wrap;">
-        ${t.hooks.map(h => `<span style="font-size:10px;font-family:var(--mono);background:rgba(124,92,252,0.08);border:1px solid rgba(124,92,252,0.18);color:var(--accent2);padding:3px 8px;border-radius:4px;">${h}</span>`).join('')}
-      </div>` : ''}
+      <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px;">${t.title}</div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.6;">${t.why}</div>
     </div>`;
   }).join('');
 }
@@ -3862,16 +3903,23 @@ function renderIntelHistory() {
     return;
   }
   // Show all but the latest (which is displayed above)
-  el.innerHTML = ci.briefs.slice(1, 8).map(b => `
+  el.innerHTML = ci.briefs.slice(1, 8).map(b => {
+    // Support both new (days) and legacy (topics) format
+    const topicCount = b.days ? b.days.reduce((s, d) => s + (d.topics ? d.topics.length : 0), 0) : (b.topics ? b.topics.length : 0);
+    const types = b.days
+      ? b.days.flatMap(d => (d.topics || []).map(t => t.type)).filter(Boolean).join(' · ')
+      : (b.topics ? b.topics.map(t => t.type).join(' · ') : '');
+    return `
     <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px;cursor:pointer;" onclick="viewPastBrief('${b.id}')">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div>
           <div style="font-size:12px;font-weight:500;color:var(--text);">${b.weekLabel || 'Week brief'}</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:2px;">${b.topics ? b.topics.map(t => t.type).join(' · ') : ''}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:2px;">${topicCount} topics · ${types}</div>
         </div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--muted);">${b.runDate ? new Date(b.runDate).toLocaleDateString('en-US', {month:'short',day:'numeric'}) : ''}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function viewPastBrief(id) {
@@ -4013,33 +4061,49 @@ ${trendsContext}
 
 ${compContext}
 
-Create 3 content topics for this week, one for each stream day (Tuesday, Thursday, Saturday). The AI should decide the best mix of content types based on what's trending and what performs well. Content types to choose from: tips, strategy, loadout, highlight, tutorial, reaction, challenge, news.
+Create a content plan for this week with 3 stream days: Tuesday, Thursday, Saturday.
+Each stream day gets exactly 3 content topics, priority-ordered (#1 = most important to capture that session).
+That is 9 total topics across the week.
 
-Bias towards tips, strategy, and loadout content (2-3 of the 3 topics should be these types) — pure highlight clips should be rare unless trends strongly favor them.
+Content types to choose from: tips, strategy, loadout, highlight, tutorial, reaction, challenge, news, settings.
+Bias towards tips, strategy, loadout, settings, and tutorial content — pure highlight clips should be rare unless trends strongly favor them. Mix up the types across the week so each day feels varied.
 
 Each topic should:
-1. Be directly tied to something currently trending or recently changed in Warzone
-2. Specify EXACTLY what footage to capture during the stream
-3. Include a caption direction in Khanvict's voice (short, lowercase, no emoji, matter-of-fact)
-4. Include 2-3 hook ideas (first 2 seconds of the clip)
+1. Be specific and actionable — not vague (e.g. "best MK35 ISR loadout for ranked" not "try a new gun")
+2. Be tied to something currently trending or recently changed in Warzone
+3. Specify exactly what footage to capture during the stream
+4. Include a caption direction in Khanvict's voice (short, lowercase, no emoji, matter-of-fact)
 
 Return ONLY this JSON:
 {
-  "topics": [
+  "days": [
     {
-      "title": "Topic title — specific and actionable",
-      "type": "tips|strategy|loadout|highlight|tutorial|reaction|challenge|news",
-      "why": "2-3 sentences why this will perform well right now — reference specific trends",
-      "streamFocus": "Exactly what to do/capture on stream for this content",
-      "captionDirection": "example caption in his voice — short, lowercase, matter-of-fact",
-      "hooks": ["hook idea 1 for first 2 sec", "hook idea 2", "hook idea 3"]
+      "day": "Tuesday",
+      "topics": [
+        {
+          "priority": 1,
+          "title": "Specific actionable topic title",
+          "type": "tips|strategy|loadout|highlight|tutorial|settings|news",
+          "why": "1-2 sentences why this will perform — reference specific trends",
+          "streamFocus": "Exactly what to do/capture on stream",
+          "captionDirection": "example caption in his voice"
+        },
+        { "priority": 2, ... },
+        { "priority": 3, ... }
+      ]
     },
-    { ... },
-    { ... }
+    {
+      "day": "Thursday",
+      "topics": [ ... ]
+    },
+    {
+      "day": "Saturday",
+      "topics": [ ... ]
+    }
   ]
 }`;
 
-    const synthesisResult = await intelApiCall(apiKey, synthesisPrompt, false);
+    const synthesisResult = await intelApiCall(apiKey, synthesisPrompt, false, 3000);
     let synthesis = null;
     try { synthesis = JSON.parse(synthesisResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Synthesis parse failed:', e); }
 
@@ -4048,7 +4112,7 @@ Return ONLY this JSON:
       id: Date.now(),
       runDate: now.toISOString(),
       weekLabel,
-      topics: synthesis ? synthesis.topics : [],
+      days: synthesis ? synthesis.days : [],
       trends: trends || null,
       competitors: competitors ? competitors.competitors : []
     };
@@ -4081,10 +4145,10 @@ Return ONLY this JSON:
   btn.disabled = false;
 }
 
-async function intelApiCall(apiKey, prompt, useWebSearch) {
+async function intelApiCall(apiKey, prompt, useWebSearch, maxTokens) {
   const body = {
     model: 'claude-sonnet-4-20250514',
-    max_tokens: 1200,
+    max_tokens: maxTokens || 1200,
     messages: [{ role: 'user', content: prompt }]
   };
   if (useWebSearch) {
