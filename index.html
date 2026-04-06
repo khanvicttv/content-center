@@ -3985,31 +3985,46 @@ async function runContentIntel() {
   // Get engagement context if available
   const engContext = buildEngagementContext();
 
+  const monthYear = now.toLocaleDateString('en-US', {month:'long', year:'numeric'});
+  const shortDate = now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+
   try {
     // ── STEP 1: Trend Research ──────────────────────────────────────────
     document.getElementById('intel-progress').innerHTML = 'Step 1/3 — Scanning Warzone trends &amp; meta...';
-    const trendsResult = await intelApiCall(apiKey, `Gaming content research agent. Search the web for what is trending in Call of Duty Warzone right now.
+    const trendsResult = await intelApiCall(apiKey, `You are a gaming content research agent. Today is ${shortDate}. ONLY report information from the last 2 weeks. Anything older is USELESS — discard it.
 
-Search for: Warzone patch notes ${now.getFullYear()}, Warzone meta weapons, trending Warzone TikTok content, COD community news
+Do these web searches:
+1. "Warzone patch notes ${monthYear}" — find the most recent update
+2. "Warzone best loadout ${monthYear}" OR "Warzone meta ${monthYear}" — find what guns are currently dominant RIGHT NOW
+3. "Warzone TikTok trending ${monthYear}" — find viral Warzone content formats
+4. "Call of Duty Warzone news this week" — latest community news
+5. "Warzone reddit ${monthYear}" — what players are talking about right now
 
-Today: ${now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}
+CRITICAL: If search results are from ${now.getFullYear() - 1} or earlier, IGNORE THEM. Only include weapons, loadouts, and meta info that is current as of ${shortDate}. If you are unsure whether something is current, do NOT include it.
 
 Return ONLY JSON:
-{"metaShifts":"2-3 sentences on current meta","patchNotes":"latest updates/patches","viralFormats":["format1","format2","format3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["weapon1","weapon2","weapon3"],"communityBuzz":"1-2 sentences"}`, true, 1200, 'claude-haiku-4-5-20251001');
+{"metaShifts":"2-3 sentences on the CURRENT meta as of ${shortDate} — name specific weapons","patchNotes":"most recent patch/update — include date if found","viralFormats":["format1","format2","format3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["weapon1","weapon2","weapon3"],"communityBuzz":"1-2 sentences on what players are discussing THIS week"}`, true, 1200, 'claude-haiku-4-5-20251001');
 
     // Wait 10 seconds before next call to stay safe on rate limits
     await intelCooldown(10, 'intel-progress', 'Step 1 done — cooling down before competitor scan');
 
     // ── STEP 2: Competitor Research ─────────────────────────────────────
     document.getElementById('intel-progress').innerHTML = 'Step 2/3 — Checking what competitors are posting...';
-    const compResult = await intelApiCall(apiKey, `Gaming content research agent. Search the web for recent content from these Warzone creators: Lucky Chamu, Galaxywz, MPX, Camy.
+    const compResult = await intelApiCall(apiKey, `You are a gaming content research agent. Today is ${shortDate}. Search for the MOST RECENT content from these Warzone creators.
 
-Search for each creator's recent TikTok/YouTube content. What type of videos are they posting and what's performing?
+Do these web searches:
+1. "Lucky Chamu" tiktok OR youtube — find their latest videos
+2. "Galaxywz" warzone tiktok OR youtube — find their latest videos
+3. "MPX" warzone cod tiktok — find their latest content
+4. "Camy" warzone tiktok — find their latest content
 
-Today: ${now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}
+For each creator, report:
+- What type of content they posted MOST RECENTLY (loadout guides, tips, highlights, tutorials, funny moments, etc.)
+- What seems to be getting the most engagement
+- ONLY include content from the last 30 days. If you can only find older content, say so honestly.
 
 Return ONLY JSON:
-{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"2-3 sentences","takeaway":"one action"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"1-2 sentences"}`, true, 1200, 'claude-haiku-4-5-20251001');
+{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"what they posted recently and what worked — be specific about video topics","takeaway":"one thing to learn from them"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"1-2 sentences about patterns across all 4 creators"}`, true, 1200, 'claude-haiku-4-5-20251001');
 
     // Wait 10 seconds before next call to stay safe on rate limits
     await intelCooldown(10, 'intel-progress', 'Step 2 done — cooling down before building plan');
@@ -4031,6 +4046,8 @@ Return ONLY JSON:
       : 'No competitor data available.';
 
     const synthesisPrompt = `You are the content strategist for Khanvict TV — a Warzone/FPS streamer who streams Tue/Thu/Sat and posts edited clips on TikTok, Instagram Reels, and YouTube Shorts.
+
+Today is ${shortDate}. ONLY create topics about things that are relevant RIGHT NOW. Do NOT suggest weapons, loadouts, or features from previous seasons or years. If the trend data below mentions anything outdated, skip it.
 
 His strengths: 5 years streaming, strong FPS gameplay, editing in DaVinci Resolve, uses text overlays on clips. Currently building audience on all 3 platforms.
 
