@@ -494,7 +494,47 @@
         "ig"
       ],
       "addedAt": "2026-04-02T11:31:35",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "Can I be left alone? Lol Im just trying to have some fun",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#codclips",
+            "#blackops6",
+            "#khanvicttv"
+          ],
+          "full": "Can I be left alone? Lol Im just trying to have some fun\n\n#warzone #cod #callofduty #warzoneclips #codclips #blackops6 #khanvicttv"
+        },
+        "ig": {
+          "caption": "Can I be left alone? Lol Im just trying to have some fun — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzonecommunity",
+            "#codclips",
+            "#fpsgames",
+            "#khanvicttv"
+          ],
+          "full": "Can I be left alone? Lol Im just trying to have some fun — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #warzonecommunity #codclips #fpsgames #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - Can I be left alone? Lol Im just trying to have some fun | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#codclips",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - Can I be left alone? Lol Im just trying to have some fun | Khanvict TV\n\n#warzone #cod #callofduty #shorts #codclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775147246868,
