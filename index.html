@@ -3995,10 +3995,10 @@ Search for: Warzone patch notes ${now.getFullYear()}, Warzone meta weapons, tren
 Today: ${now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}
 
 Return ONLY JSON:
-{"metaShifts":"2-3 sentences on current meta","patchNotes":"latest updates/patches","viralFormats":["format1","format2","format3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["weapon1","weapon2","weapon3"],"communityBuzz":"1-2 sentences"}`, true);
+{"metaShifts":"2-3 sentences on current meta","patchNotes":"latest updates/patches","viralFormats":["format1","format2","format3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["weapon1","weapon2","weapon3"],"communityBuzz":"1-2 sentences"}`, true, 1200, 'claude-haiku-4-5-20251001');
 
-    // Wait 15 seconds before next call to avoid rate limit
-    await intelCooldown(15, 'intel-progress', 'Step 1 done — cooling down before competitor scan');
+    // Wait 10 seconds before next call to stay safe on rate limits
+    await intelCooldown(10, 'intel-progress', 'Step 1 done — cooling down before competitor scan');
 
     // ── STEP 2: Competitor Research ─────────────────────────────────────
     document.getElementById('intel-progress').innerHTML = 'Step 2/3 — Checking what competitors are posting...';
@@ -4009,10 +4009,10 @@ Search for each creator's recent TikTok/YouTube content. What type of videos are
 Today: ${now.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}
 
 Return ONLY JSON:
-{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"2-3 sentences","takeaway":"one action"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"1-2 sentences"}`, true);
+{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"2-3 sentences","takeaway":"one action"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"1-2 sentences"}`, true, 1200, 'claude-haiku-4-5-20251001');
 
-    // Wait 15 seconds before next call to avoid rate limit
-    await intelCooldown(15, 'intel-progress', 'Step 2 done — cooling down before building plan');
+    // Wait 10 seconds before next call to stay safe on rate limits
+    await intelCooldown(10, 'intel-progress', 'Step 2 done — cooling down before building plan');
 
     // ── STEP 3: Synthesize Content Brief ─────────────────────────────────
     document.getElementById('intel-progress').innerHTML = 'Step 3/3 — Building your weekly content plan...';
@@ -4134,9 +4134,9 @@ async function intelCooldown(seconds, progressElId, msg) {
   }
 }
 
-async function intelApiCall(apiKey, prompt, useWebSearch, maxTokens) {
+async function intelApiCall(apiKey, prompt, useWebSearch, maxTokens, model) {
   const body = {
-    model: 'claude-sonnet-4-20250514',
+    model: model || 'claude-sonnet-4-20250514',
     max_tokens: maxTokens || 1200,
     messages: [{ role: 'user', content: prompt }]
   };
