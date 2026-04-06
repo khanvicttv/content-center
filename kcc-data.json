@@ -2528,7 +2528,104 @@
     }
   ],
   "contentIntel": {
-    "briefs": [],
-    "lastRun": null
+    "briefs": [
+      {
+        "id": 1775517960066,
+        "runDate": "2026-04-06T23:24:58.167Z",
+        "weekLabel": "Week of Apr 7 – Apr 11, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Best XM4 assault rifle loadout for Season 1 Reloaded meta",
+                "type": "loadout",
+                "why": "Season 1 Reloaded weapon balancing made XM4 extremely viable. Loadout content consistently outperforms highlights.",
+                "streamFocus": "Build and showcase XM4 loadout, demonstrate in multiple engagements, explain each attachment choice",
+                "captionDirection": "this xm4 build is actually broken now, everyone sleeping on it"
+              },
+              {
+                "priority": 2,
+                "title": "How to win more 1v2 situations in close quarters",
+                "type": "tips",
+                "why": "Tips content performs well for Khanvict. 1v2 scenarios are common pain points viewers want to improve.",
+                "streamFocus": "Actively seek out 1v2 situations, talk through positioning and decision-making process during fights",
+                "captionDirection": "most people panic in 1v2s, this changes everything"
+              },
+              {
+                "priority": 3,
+                "title": "Optimal audio settings for hearing enemy footsteps",
+                "type": "settings",
+                "why": "Audio advantage is crucial in Warzone. Settings content provides immediate value viewers can implement.",
+                "streamFocus": "Show exact audio settings in-game, demonstrate difference in footstep audio clarity",
+                "captionDirection": "if you cant hear enemies coming, your settings are wrong"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Why you should never rotate through Stadium in ranked",
+                "type": "strategy",
+                "why": "Map positioning strategy performs well. Stadium rotations are common mistakes in ranked play.",
+                "streamFocus": "Show multiple examples of bad Stadium rotations, demonstrate better rotation paths around it",
+                "captionDirection": "stadium rotation will cost you rank, trust me on this"
+              },
+              {
+                "priority": 2,
+                "title": "Step by step slide cancel tutorial for controller players",
+                "type": "tutorial",
+                "why": "Movement tutorials provide clear value. Controller players often struggle with slide canceling consistency.",
+                "streamFocus": "Break down slide cancel inputs slowly, show hand positioning on controller, practice repeatedly",
+                "captionDirection": "controller slide cancel made simple, no more excuses"
+              },
+              {
+                "priority": 3,
+                "title": "LR7 Sniper loadout that actually hits shots",
+                "type": "loadout",
+                "why": "LR7 is popular but many struggle with inconsistent builds. Loadout content aligns with his best performers.",
+                "streamFocus": "Test LR7 build focused on bullet velocity and ADS speed, hit long range shots consistently",
+                "captionDirection": "this lr7 build fixes the hit reg issues everyone complains about"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "How to play final circle without getting third partied",
+                "type": "strategy",
+                "why": "End game strategy is high-value content. Third partying in final circles is a universal frustration.",
+                "streamFocus": "Focus on final circle positioning, show examples of avoiding third parties and controlling space",
+                "captionDirection": "final circle positioning that actually works, no more third parties"
+              },
+              {
+                "priority": 2,
+                "title": "FOV and visual settings that give you an edge",
+                "type": "settings",
+                "why": "Visual advantage settings provide immediate improvement. Complements Tuesday's audio settings for complete setup.",
+                "streamFocus": "Demonstrate FOV differences, show visual clarity settings, explain competitive advantages",
+                "captionDirection": "these visual settings will make enemies easier to spot"
+              },
+              {
+                "priority": 3,
+                "title": "Why everyone should run ghost in their second loadout",
+                "type": "tips",
+                "why": "Perk strategy tips perform well. Ghost timing is crucial but many players use it incorrectly.",
+                "streamFocus": "Show difference between early ghost vs second loadout ghost, demonstrate UAV avoidance timing",
+                "captionDirection": "ghost on first loadout is throwing, here's when to actually use it"
+              }
+            ]
+          }
+        ],
+        "trends": null,
+        "competitors": []
+      }
+    ],
+    "lastRun": "2026-04-06T23:24:58.167Z"
   }
 }
