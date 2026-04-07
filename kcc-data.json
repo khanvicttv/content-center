@@ -1152,7 +1152,48 @@
         "ig"
       ],
       "addedAt": "2026-04-06T21:35:04",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "VST is actually broken right now, melts everything close range",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "VST is actually broken right now, melts everything close range\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "vst is actually broken right now, literally melting people at range",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "vst is actually broken right now, literally melting people at range\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "vst smg is actually broken right now, melts everything",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#smg",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "vst smg is actually broken right now, melts everything\n\n#warzone #cod #callofduty #bo6 #smg #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -1433,6 +1474,15 @@
       "platform": "tt",
       "date": "2026-04-07",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1775568991174.8713,
+      "clipId": 1775529304734,
+      "clipName": "I dont even have this leveled up VST",
+      "platform": "tt",
+      "date": "2026-04-07",
+      "time": "13:00",
       "posted": false
     }
   ],
