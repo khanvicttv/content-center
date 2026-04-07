@@ -1062,7 +1062,48 @@
         "ig"
       ],
       "addedAt": "2026-04-06T22:36:41",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "landed on onlybear and somehow walked away with the dub",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "landed on onlybear and somehow walked away with the dub\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "landed on onlybear and lady luck was on my side that day",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "landed on onlybear and lady luck was on my side that day\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "landed on onlybear and got extremely lucky this round",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "landed on onlybear and got extremely lucky this round\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775532598384,
@@ -1480,6 +1521,15 @@
       "id": 1775568991174.8713,
       "clipId": 1775529304734,
       "clipName": "I dont even have this leveled up VST",
+      "platform": "tt",
+      "date": "2026-04-07",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1775569006440.9524,
+      "clipId": 1775533001588,
+      "clipName": "Shoutout to onlybear",
       "platform": "tt",
       "date": "2026-04-07",
       "time": "13:00",
