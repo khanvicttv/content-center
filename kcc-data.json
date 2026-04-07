@@ -1174,7 +1174,48 @@
         "ig"
       ],
       "addedAt": "2026-04-06T22:27:16",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "final circle is literally all about positioning, rotations matter more than kills",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "final circle is literally all about positioning, rotations matter more than kills\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "final circle positioning is literally everything. placement over kills, always.",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "final circle positioning is literally everything. placement over kills, always.\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "final circle positioning is literally everything in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "final circle positioning is literally everything in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775531001911,
@@ -1592,6 +1633,15 @@
       "platform": "tt",
       "date": "2026-04-08",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1775569031075.144,
+      "clipId": 1775531001911,
+      "clipName": "Art is war tune",
+      "platform": "tt",
+      "date": "2026-04-08",
+      "time": "19:00",
       "posted": false
     }
   ],
