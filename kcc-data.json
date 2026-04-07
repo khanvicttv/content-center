@@ -1015,12 +1015,12 @@
             "#warzone",
             "#cod",
             "#callofduty",
-            "#bo6",
+            "#codclips",
             "#warzoneclips",
-            "#gaming",
+            "#fpsgaming",
             "#khanvicttv"
           ],
-          "full": "billion dollar company and this is what we get lol\n\n#warzone #cod #callofduty #bo6 #warzoneclips #gaming #khanvicttv"
+          "full": "billion dollar company and this is what we get lol\n\n#warzone #cod #callofduty #codclips #warzoneclips #fpsgaming #khanvicttv"
         },
         "ig": {
           "caption": "billion dollar company and this is what we get, actually embarrassing",
@@ -1028,12 +1028,12 @@
             "#warzone",
             "#cod",
             "#callofduty",
-            "#bo6",
-            "#rebirthisland",
-            "#gaming",
+            "#warzoneclips",
+            "#codclips",
+            "#gamingtok",
             "#khanvicttv"
           ],
-          "full": "billion dollar company and this is what we get, actually embarrassing\n\n#warzone #cod #callofduty #bo6 #rebirthisland #gaming #khanvicttv"
+          "full": "billion dollar company and this is what we get, actually embarrassing\n\n#warzone #cod #callofduty #warzoneclips #codclips #gamingtok #khanvicttv"
         },
         "yt": {
           "caption": "billion dollar company and this is the triple-a title we get",
@@ -1042,14 +1042,12 @@
             "#cod",
             "#callofduty",
             "#shorts",
-            "#bo6",
+            "#codclips",
             "#khanvicttv"
           ],
-          "full": "billion dollar company and this is the triple-a title we get\n\n#warzone #cod #callofduty #shorts #bo6 #khanvicttv"
+          "full": "billion dollar company and this is the triple-a title we get\n\n#warzone #cod #callofduty #shorts #codclips #khanvicttv"
         }
-      },
-      "archived": true,
-      "archivedAt": "2026-04-07T13:44:41.490Z"
+      }
     },
     {
       "id": 1775533001588,
@@ -1722,10 +1720,7 @@
       "platform": "tt",
       "date": "2026-04-07",
       "time": "09:00",
-      "posted": true,
-      "actualTime": "08:44",
-      "postedAt": "2026-04-07T13:44:35.466Z",
-      "timingVariance": -16
+      "posted": false
     },
     {
       "id": 1775568991174.8713,
@@ -3234,6 +3229,28 @@
       ],
       "notes": "",
       "loggedAt": "2026-04-07T13:39:07.800Z"
+    },
+    {
+      "id": 1775569667524,
+      "postId": 1775148423822.7034,
+      "clipId": 1775146131649,
+      "clipName": "The best types of downs",
+      "platform": "tt",
+      "date": "2026-04-04",
+      "time": "13:00",
+      "views": 289,
+      "likes": 10,
+      "comments": 0,
+      "followers": 0,
+      "hashtags": [
+        "#warzone",
+        "#cod",
+        "#callofduty",
+        "#bo6",
+        "#rebirthisland"
+      ],
+      "notes": "",
+      "loggedAt": "2026-04-07T13:47:47.524Z"
     }
   ],
   "contentIntel": {
