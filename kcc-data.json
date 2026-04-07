@@ -1118,7 +1118,22 @@
         "ig"
       ],
       "addedAt": "2026-04-06T22:29:58",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "getting stuck on random debris is actually insane, happens every game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "getting stuck on random debris is actually insane, happens every game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775532436658,
@@ -1533,6 +1548,15 @@
       "platform": "tt",
       "date": "2026-04-07",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1775569019001.505,
+      "clipId": 1775532598384,
+      "clipName": "Got stuck on what",
+      "platform": "tt",
+      "date": "2026-04-08",
+      "time": "09:00",
       "posted": false
     }
   ],
