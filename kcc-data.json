@@ -1230,7 +1230,22 @@
         "ig"
       ],
       "addedAt": "2026-04-06T22:03:21",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "pc players sleeping on this setup, gonna change your whole game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "pc players sleeping on this setup, gonna change your whole game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775530767354,
