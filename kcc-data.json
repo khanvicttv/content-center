@@ -1244,6 +1244,32 @@
             "#khanvicttv"
           ],
           "full": "pc players sleeping on this setup, gonna change your whole game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "pc players sleeping on this, come watch live and see what you missing",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "pc players sleeping on this, come watch live and see what you missing\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "pc players sleeping on this warzone setup fr",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#pcgaming",
+            "#warzonesetup",
+            "#khanvicttv"
+          ],
+          "full": "pc players sleeping on this warzone setup fr\n\n#warzone #cod #callofduty #bo6 #pcgaming #warzonesetup #khanvicttv"
         }
       }
     },
@@ -1260,7 +1286,22 @@
         "ig"
       ],
       "addedAt": "2026-04-06T21:59:27",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "never claim to be a sniper, just built different with the luck",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "never claim to be a sniper, just built different with the luck\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775530594879,
@@ -1657,6 +1698,15 @@
       "platform": "tt",
       "date": "2026-04-08",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1775569038532.4482,
+      "clipId": 1775530767354,
+      "clipName": "Still not a sniper",
+      "platform": "tt",
+      "date": "2026-04-09",
+      "time": "09:00",
       "posted": false
     }
   ],
