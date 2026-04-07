@@ -1047,9 +1047,7 @@
           ],
           "full": "billion dollar company and this is the triple-a title we get\n\n#warzone #cod #callofduty #shorts #codclips #khanvicttv"
         }
-      },
-      "archived": true,
-      "archivedAt": "2026-04-07T17:48:11.211Z"
+      }
     },
     {
       "id": 1775533001588,
@@ -1722,10 +1720,7 @@
       "platform": "tt",
       "date": "2026-04-07",
       "time": "09:00",
-      "posted": true,
-      "actualTime": "09:00",
-      "postedAt": "2026-04-07T17:48:06.818Z",
-      "timingVariance": 0
+      "posted": false
     },
     {
       "id": 1775568991174.8713,
@@ -1743,7 +1738,10 @@
       "platform": "tt",
       "date": "2026-04-07",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "12:50",
+      "postedAt": "2026-04-07T17:50:52.132Z",
+      "timingVariance": -10
     },
     {
       "id": 1775569019001.505,
