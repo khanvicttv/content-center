@@ -680,6 +680,27 @@
         </div>
       </div>
 
+      <!-- Follower Growth Tracker -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>📈 Follower growth — TikTok</span>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('follower-input-row').style.display = document.getElementById('follower-input-row').style.display === 'none' ? 'flex' : 'none'">+ Log count</button>
+        </div>
+        <div id="follower-input-row" style="display:none;align-items:flex-end;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+          <div class="field" style="margin:0;flex:0 0 130px;">
+            <label>Date</label>
+            <input type="date" id="fs-date">
+          </div>
+          <div class="field" style="margin:0;flex:0 0 120px;">
+            <label>Total followers</label>
+            <input type="text" id="fs-count" placeholder="e.g. 3279" inputmode="numeric">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="addFollowerSnapshot()" style="flex-shrink:0;">Save</button>
+        </div>
+        <div id="follower-growth-chart"></div>
+        <div id="follower-growth-log" style="margin-top:10px;"></div>
+      </div>
+
       <!-- Views over time -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title">Views over time</div>
@@ -999,7 +1020,8 @@ let state = {
   slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)),
   weekOffset: 0,
   engagements: [],
-  contentIntel: { briefs: [], lastRun: null }
+  contentIntel: { briefs: [], lastRun: null },
+  followerSnapshots: []
 };
 
 const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
@@ -2886,6 +2908,7 @@ async function pullFromGithub() {
     if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
     if (!state.engagements) state.engagements = [];
     if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+    if (!state.followerSnapshots) state.followerSnapshots = [];
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
     return true;
@@ -2947,6 +2970,7 @@ function load() {
       if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
       if (!state.engagements) state.engagements = [];
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+      if (!state.followerSnapshots) state.followerSnapshots = [];
     }
   } catch(e) {}
 }
@@ -2972,6 +2996,7 @@ function importData(e) {
       if (!state.posts)       state.posts       = [];
       if (!state.checklist)   state.checklist   = {};
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+      if (!state.followerSnapshots) state.followerSnapshots = [];
       save();
       renderClipList();
       refreshAllSelects();
@@ -2986,7 +3011,7 @@ function importData(e) {
 
 function clearAll() {
   if (!confirm('Clear ALL data? This cannot be undone.')) return;
-  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null } };
+  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null }, followerSnapshots: [] };
   save();
   renderClipList();
   refreshAllSelects();
@@ -2999,6 +3024,7 @@ function clearAll() {
 
 function renderAnalytics() {
   renderOverviewCards();
+  renderFollowerGrowth();
   renderViewsChart();
   renderPlatformComparison();
   renderDayOfWeekChart();
@@ -3007,6 +3033,191 @@ function renderAnalytics() {
   renderHashtagPerf();
   renderTimingAdherence();
   renderEngageLog();
+}
+
+// ── FOLLOWER GROWTH TRACKER ──────────────────────────────────────────────
+
+function addFollowerSnapshot() {
+  const dateInput = document.getElementById('fs-date');
+  const countInput = document.getElementById('fs-count');
+  const date = dateInput.value;
+  const count = parseInt(countInput.value.replace(/,/g, ''), 10);
+
+  if (!date) { alert('Pick a date.'); return; }
+  if (isNaN(count) || count < 0) { alert('Enter a valid follower count.'); return; }
+
+  if (!state.followerSnapshots) state.followerSnapshots = [];
+
+  // Check if entry for this date already exists — update it
+  const existing = state.followerSnapshots.find(s => s.date === date);
+  if (existing) {
+    if (!confirm('You already logged ' + existing.count.toLocaleString() + ' for ' + date + '. Update to ' + count.toLocaleString() + '?')) return;
+    existing.count = count;
+    existing.updatedAt = new Date().toISOString();
+  } else {
+    state.followerSnapshots.push({
+      date,
+      count,
+      platform: 'tt',
+      loggedAt: new Date().toISOString()
+    });
+  }
+
+  // Sort chronologically
+  state.followerSnapshots.sort((a, b) => a.date.localeCompare(b.date));
+
+  save();
+  countInput.value = '';
+  document.getElementById('follower-input-row').style.display = 'none';
+  renderFollowerGrowth();
+}
+
+function deleteFollowerSnapshot(date) {
+  if (!confirm('Remove follower entry for ' + date + '?')) return;
+  state.followerSnapshots = state.followerSnapshots.filter(s => s.date !== date);
+  save();
+  renderFollowerGrowth();
+}
+
+function renderFollowerGrowth() {
+  const chartEl = document.getElementById('follower-growth-chart');
+  const logEl = document.getElementById('follower-growth-log');
+  const dateInput = document.getElementById('fs-date');
+
+  // Pre-fill date input to today
+  const now = new Date();
+  dateInput.value = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+
+  const snaps = (state.followerSnapshots || []).slice().sort((a,b) => a.date.localeCompare(b.date));
+
+  if (snaps.length === 0) {
+    chartEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No follower data yet. Tap <strong>+ Log count</strong> to record your current TikTok follower count.</div>';
+    logEl.innerHTML = '';
+    return;
+  }
+
+  // Current count + change
+  const latest = snaps[snaps.length - 1];
+  const earliest = snaps[0];
+  const totalChange = latest.count - earliest.count;
+  const changeSign = totalChange >= 0 ? '+' : '';
+  const changeColor = totalChange >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // Recent change (last 7 days)
+  const weekAgo = new Date(now);
+  weekAgo.setDate(weekAgo.getDate() - 7);
+  const weekAgoStr = weekAgo.toISOString().split('T')[0];
+  const weekSnap = snaps.filter(s => s.date <= weekAgoStr).pop();
+  let weekChange = '';
+  if (weekSnap) {
+    const wc = latest.count - weekSnap.count;
+    const ws = wc >= 0 ? '+' : '';
+    weekChange = `<span style="font-size:11px;color:${wc >= 0 ? 'var(--green)' : 'var(--red)'};margin-left:12px;">${ws}${wc} last 7d</span>`;
+  }
+
+  // Summary row
+  let summaryHtml = `
+    <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text);">${latest.count.toLocaleString()}</div>
+      <div style="font-size:12px;color:${changeColor};font-family:var(--mono);">${changeSign}${totalChange.toLocaleString()} total</div>
+      ${weekChange}
+      <div style="font-size:10px;color:var(--muted);margin-left:auto;">as of ${new Date(latest.date + 'T12:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}</div>
+    </div>`;
+
+  // Chart — line chart with area fill
+  if (snaps.length < 2) {
+    chartEl.innerHTML = summaryHtml + '<div style="color:var(--muted);font-size:12px;">Log at least 2 entries to see the trend chart.</div>';
+    logEl.innerHTML = renderFollowerLog(snaps);
+    return;
+  }
+
+  const counts = snaps.map(s => s.count);
+  const minC = Math.min(...counts);
+  const maxC = Math.max(...counts);
+  const range = maxC - minC || 1;
+  const chartW = 560;
+  const chartH = 120;
+  const padTop = 10;
+  const padBottom = 30;
+  const innerH = chartH - padTop - padBottom;
+
+  const points = snaps.map((s, i) => {
+    const x = snaps.length === 1 ? chartW / 2 : (i / (snaps.length - 1)) * (chartW - 20) + 10;
+    const y = padTop + innerH - ((s.count - minC) / range) * innerH;
+    return { x, y, ...s };
+  });
+
+  const polyline = points.map(p => `${p.x},${p.y}`).join(' ');
+  const areaPath = `M${points[0].x},${padTop + innerH} ` + points.map(p => `L${p.x},${p.y}`).join(' ') + ` L${points[points.length-1].x},${padTop + innerH} Z`;
+
+  // Y-axis labels
+  const yLabels = [minC, Math.round((minC + maxC) / 2), maxC];
+  const yLabelSvg = yLabels.map(v => {
+    const y = padTop + innerH - ((v - minC) / range) * innerH;
+    return `<text x="0" y="${y + 3}" fill="var(--muted)" font-size="9" font-family="var(--mono)">${v >= 1000 ? (v/1000).toFixed(1)+'k' : v}</text>
+            <line x1="30" x2="${chartW}" y1="${y}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
+  }).join('');
+
+  // X-axis labels (show ~6 evenly spaced dates)
+  const step = Math.max(1, Math.floor(snaps.length / 6));
+  const xLabelSvg = points.filter((_, i) => i % step === 0 || i === points.length - 1).map(p => {
+    const dt = new Date(p.date + 'T12:00:00');
+    const lbl = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return `<text x="${p.x}" y="${chartH - 2}" fill="var(--muted)" font-size="8" font-family="var(--mono)" text-anchor="middle">${lbl}</text>`;
+  }).join('');
+
+  // Dots
+  const dots = points.map(p =>
+    `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="var(--accent)" stroke="var(--bg2)" stroke-width="1.5">
+      <title>${new Date(p.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})} — ${p.count.toLocaleString()} followers</title>
+    </circle>`
+  ).join('');
+
+  const svg = `
+    <svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%;height:auto;max-height:160px;" xmlns="http://www.w3.org/2000/svg">
+      ${yLabelSvg}
+      <path d="${areaPath}" fill="rgba(124,92,252,0.08)" />
+      <polyline points="${polyline}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${dots}
+      ${xLabelSvg}
+    </svg>`;
+
+  chartEl.innerHTML = summaryHtml + svg;
+  logEl.innerHTML = renderFollowerLog(snaps);
+}
+
+function renderFollowerLog(snaps) {
+  if (!snaps.length) return '';
+
+  // Show last 10 entries, newest first
+  const recent = snaps.slice().reverse().slice(0, 10);
+
+  const rows = recent.map((s, i) => {
+    const dt = new Date(s.date + 'T12:00:00');
+    const lbl = dt.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+    // Calculate daily change
+    const allSorted = (state.followerSnapshots || []).slice().sort((a,b) => a.date.localeCompare(b.date));
+    const idx = allSorted.findIndex(x => x.date === s.date);
+    let changeHtml = '';
+    if (idx > 0) {
+      const diff = s.count - allSorted[idx - 1].count;
+      const sign = diff >= 0 ? '+' : '';
+      const col = diff > 0 ? 'var(--green)' : diff < 0 ? 'var(--red)' : 'var(--muted)';
+      changeHtml = `<span style="font-family:var(--mono);font-size:11px;color:${col};">${sign}${diff}</span>`;
+    }
+
+    return `
+      <div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;">
+        <span style="color:var(--muted);min-width:110px;">${lbl}</span>
+        <span style="font-family:var(--mono);font-weight:600;color:var(--text);">${s.count.toLocaleString()}</span>
+        ${changeHtml}
+        <button onclick="deleteFollowerSnapshot('${s.date}')" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:2px 6px;opacity:0.5;" title="Delete entry">✕</button>
+      </div>`;
+  }).join('');
+
+  return `
+    <div style="font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:1px;margin-bottom:6px;">RECENT ENTRIES${snaps.length > 10 ? ' (last 10)' : ''}</div>
+    ${rows}`;
 }
 
 // ── OVERVIEW CARDS ────────────────────────────────────────────────────────
