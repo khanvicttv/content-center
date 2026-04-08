@@ -1180,17 +1180,17 @@
       "fromScan": true,
       "captions": {
         "tt": {
-          "caption": "final circle rotations will actually win you games",
+          "caption": "final circle is literally all about positioning, rotations matter more than kills",
           "hashtags": [
             "#warzone",
             "#cod",
             "#callofduty",
-            "#codwarzone",
-            "#warzonevibes",
-            "#codclips",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
             "#khanvicttv"
           ],
-          "full": "final circle rotations will actually win you games\n\n#warzone #cod #callofduty #codwarzone #warzonevibes #codclips #khanvicttv"
+          "full": "final circle is literally all about positioning, rotations matter more than kills\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         },
         "ig": {
           "caption": "final circle positioning is literally everything. placement over kills, always.",
@@ -1198,12 +1198,12 @@
             "#warzone",
             "#cod",
             "#callofduty",
-            "#codwarzone",
-            "#warzonevibes",
-            "#gamingforyou",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
             "#khanvicttv"
           ],
-          "full": "final circle positioning is literally everything. placement over kills, always.\n\n#warzone #cod #callofduty #codwarzone #warzonevibes #gamingforyou #khanvicttv"
+          "full": "final circle positioning is literally everything. placement over kills, always.\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         },
         "yt": {
           "caption": "final circle positioning is literally everything in warzone",
@@ -1211,11 +1211,12 @@
             "#warzone",
             "#cod",
             "#callofduty",
-            "#shorts",
-            "#codclips",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
             "#khanvicttv"
           ],
-          "full": "final circle positioning is literally everything in warzone\n\n#warzone #cod #callofduty #shorts #codclips #khanvicttv"
+          "full": "final circle positioning is literally everything in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     },
@@ -1799,7 +1800,10 @@
       "platform": "tt",
       "date": "2026-04-08",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:30",
+      "postedAt": "2026-04-08T18:44:12.857Z",
+      "timingVariance": 30
     },
     {
       "id": 1775569031075.144,
