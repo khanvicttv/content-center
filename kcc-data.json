@@ -3648,5 +3648,13 @@
       }
     ],
     "lastRun": "2026-04-06T23:54:57.478Z"
-  }
+  },
+  "followerSnapshots": [
+    {
+      "date": "2026-04-08",
+      "count": 3280,
+      "platform": "tt",
+      "loggedAt": "2026-04-08T18:18:53.555Z"
+    }
+  ]
 }
