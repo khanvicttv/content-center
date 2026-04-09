@@ -3507,8 +3507,8 @@
       "platform": "tt",
       "date": "2026-04-05",
       "time": "09:00",
-      "views": 470,
-      "likes": 23,
+      "views": 486,
+      "likes": 24,
       "comments": 7,
       "followers": 1,
       "hashtags": [
@@ -3519,7 +3519,8 @@
         "#warzoneseason"
       ],
       "notes": "",
-      "loggedAt": "2026-04-08T16:16:50.123Z"
+      "loggedAt": "2026-04-08T16:16:50.123Z",
+      "updatedAt": "2026-04-09T16:45:58.981Z"
     },
     {
       "id": 1775665061496,
