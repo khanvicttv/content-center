@@ -1463,7 +1463,35 @@
         "ig"
       ],
       "addedAt": "2026-04-08T11:07:51",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "pc players sleeping on this audio setup, absolute game changer",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "pc players sleeping on this audio setup, absolute game changer\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "pc players sleeping on this audio setup, straight up game changer for competitive",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "pc players sleeping on this audio setup, straight up game changer for competitive\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775663416893,
@@ -1838,7 +1866,7 @@
       "clipId": 1775530594879,
       "clipName": "Aiming is better than positioning",
       "platform": "tt",
-      "date": "2026-04-09",
+      "date": "2026-04-10",
       "time": "13:00",
       "posted": false
     },
