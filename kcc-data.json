@@ -1490,6 +1490,19 @@
             "#khanvicttv"
           ],
           "full": "pc players sleeping on this audio setup, straight up game changer for competitive\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "pc players need this audio setup for warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "pc players need this audio setup for warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     },
@@ -1506,7 +1519,35 @@
         "ig"
       ],
       "addedAt": "2026-04-08T10:50:16",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "grappling hooks on rebirth would actually change the whole map meta",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "grappling hooks on rebirth would actually change the whole map meta\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "grappling hooks on rebirth would be absolutely insane, change the whole meta",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "grappling hooks on rebirth would be absolutely insane, change the whole meta\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -1877,6 +1918,24 @@
       "platform": "tt",
       "date": "2026-04-09",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1775694194792.1428,
+      "clipId": 1775663416893,
+      "clipName": "Thoughts on the grapling hooks",
+      "platform": "tt",
+      "date": "2026-04-09",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1775694194792.62,
+      "clipId": 1775663416893,
+      "clipName": "Thoughts on the grapling hooks",
+      "platform": "ig",
+      "date": "2026-04-09",
+      "time": "13:00",
       "posted": false
     }
   ],
