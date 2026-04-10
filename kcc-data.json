@@ -1582,42 +1582,17 @@
       "fromScan": true,
       "captions": {
         "tt": {
-          "caption": "When they think they got you on the run",
+          "caption": "they thought i was finished, then i turned it around hard",
           "hashtags": [
             "#warzone",
             "#cod",
             "#callofduty",
             "#bo6",
-            "#warzoneclips",
             "#rebirthisland",
-            "#khanvicttv"
-          ],
-          "full": "When they think they got you on the run\n\n#warzone #cod #callofduty #bo6 #warzoneclips #rebirthisland #khanvicttv"
-        },
-        "ig": {
-          "caption": "When they think they got you on the run — live on Twitch, Kick & TikTok",
-          "hashtags": [
-            "#warzone",
-            "#cod",
-            "#callofduty",
-            "#bo6",
-            "#warzoneclips",
-            "#rebirthisland",
-            "#khanvicttv"
-          ],
-          "full": "When they think they got you on the run — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #warzoneclips #rebirthisland #khanvicttv"
-        },
-        "yt": {
-          "caption": "Warzone - When they think they got you on the run | Khanvict TV",
-          "hashtags": [
-            "#warzone",
-            "#cod",
-            "#callofduty",
-            "#shorts",
             "#warzoneclips",
             "#khanvicttv"
           ],
-          "full": "Warzone - When they think they got you on the run | Khanvict TV\n\n#warzone #cod #callofduty #shorts #warzoneclips #khanvicttv"
+          "full": "they thought i was finished, then i turned it around hard\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     },
@@ -2027,6 +2002,24 @@
       "actualTime": "16:00",
       "postedAt": "2026-04-09T21:03:24.472Z",
       "timingVariance": 180
+    },
+    {
+      "id": 1775854791541.3276,
+      "clipId": 1775833820024,
+      "clipName": "People love to chase - no audio",
+      "platform": "tt",
+      "date": "2026-04-10",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1775854791541.136,
+      "clipId": 1775833820024,
+      "clipName": "People love to chase - no audio",
+      "platform": "ig",
+      "date": "2026-04-10",
+      "time": "13:00",
+      "posted": false
     }
   ],
   "checklist": {
