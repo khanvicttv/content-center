@@ -1579,7 +1579,47 @@
         "ig"
       ],
       "addedAt": "2026-04-10T10:10:20",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "When they think they got you on the run",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#rebirthisland",
+            "#khanvicttv"
+          ],
+          "full": "When they think they got you on the run\n\n#warzone #cod #callofduty #bo6 #warzoneclips #rebirthisland #khanvicttv"
+        },
+        "ig": {
+          "caption": "When they think they got you on the run — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#rebirthisland",
+            "#khanvicttv"
+          ],
+          "full": "When they think they got you on the run — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #warzoneclips #rebirthisland #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - When they think they got you on the run | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - When they think they got you on the run | Khanvict TV\n\n#warzone #cod #callofduty #shorts #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1775832924888,
