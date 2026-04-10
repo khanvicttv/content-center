@@ -1635,7 +1635,48 @@
         "ig"
       ],
       "addedAt": "2026-04-10T09:55:24",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "crossbow one-shot headshot is actually broken, so fun to use",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "crossbow one-shot headshot is actually broken, so fun to use\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "crossbow one-shot headshots hit different, literally unbeatable right now",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "crossbow one-shot headshots hit different, literally unbeatable right now\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "crossbow one-shot headshots hitting different in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "crossbow one-shot headshots hitting different in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -2036,6 +2077,15 @@
       "platform": "tt",
       "date": "2026-04-10",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1775854798493.3184,
+      "clipId": 1775832924888,
+      "clipName": "Crossbow is back",
+      "platform": "tt",
+      "date": "2026-04-10",
+      "time": "19:00",
       "posted": false
     }
   ],
