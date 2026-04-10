@@ -1565,6 +1565,36 @@
       },
       "archived": true,
       "archivedAt": "2026-04-09T21:03:26.822Z"
+    },
+    {
+      "id": 1775833820024,
+      "name": "People love to chase - no audio",
+      "filename": "People love to chase - no audio.mp4",
+      "duration": "0:14",
+      "size_mb": 50.4,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-04-10T10:10:20",
+      "fromScan": true
+    },
+    {
+      "id": 1775832924888,
+      "name": "Crossbow is back",
+      "filename": "Crossbow is back.mp4",
+      "duration": "0:37",
+      "size_mb": 143.6,
+      "desc": "",
+      "game": "",
+      "platforms": [
+        "tt",
+        "ig"
+      ],
+      "addedAt": "2026-04-10T09:55:24",
+      "fromScan": true
     }
   ],
   "posts": [
@@ -3049,6 +3079,70 @@
       ]
     },
     "1775663416893": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1775833820024": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1775832924888": {
       "tt": [
         false,
         false,
