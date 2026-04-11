@@ -1694,7 +1694,47 @@
       ],
       "addedAt": "2026-04-11T08:19:26.224Z",
       "fromScan": false,
-      "fromDrop": true
+      "fromDrop": true,
+      "captions": {
+        "tt": {
+          "caption": "This hipfire SMG is amazing",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#rebirthisland",
+            "#khanvicttv"
+          ],
+          "full": "This hipfire SMG is amazing\n\n#warzone #cod #callofduty #bo6 #warzoneclips #rebirthisland #khanvicttv"
+        },
+        "ig": {
+          "caption": "This hipfire SMG is amazing — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#codmeta"
+          ],
+          "full": "This hipfire SMG is amazing — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #codmeta"
+        },
+        "yt": {
+          "caption": "Warzone - This hipfire SMG is amazing | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - This hipfire SMG is amazing | Khanvict TV\n\n#warzone #cod #callofduty #shorts #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
