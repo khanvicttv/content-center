@@ -2156,7 +2156,10 @@
       "platform": "tt",
       "date": "2026-04-11",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "11:00",
+      "postedAt": "2026-04-12T01:00:57.714Z",
+      "timingVariance": 120
     }
   ],
   "checklist": {
