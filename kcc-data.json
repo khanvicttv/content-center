@@ -1858,6 +1858,17 @@
       ],
       "addedAt": "2026-04-12T21:56:42",
       "fromScan": true
+    },
+    {
+      "id": 1776050916840,
+      "name": "Made excuses",
+      "desc": "This guy made up excuses of glitching out as he lost lol",
+      "game": "Warzone",
+      "duration": "",
+      "platforms": [
+        "tt"
+      ],
+      "addedAt": "2026-04-13T03:28:36.840Z"
     }
   ],
   "posts": [
@@ -3802,6 +3813,38 @@
       ]
     },
     "1776049002715": {
+      "tt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "ig": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "yt": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    "1776050916840": {
       "tt": [
         false,
         false,
