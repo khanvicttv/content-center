@@ -2286,6 +2286,15 @@
       "actualTime": "11:00",
       "postedAt": "2026-04-12T01:00:57.714Z",
       "timingVariance": 120
+    },
+    {
+      "id": 1776050677693.7056,
+      "clipId": 1776050501764,
+      "clipName": "This team pissed me off",
+      "platform": "tt",
+      "date": "2026-04-13",
+      "time": "09:00",
+      "posted": false
     }
   ],
   "checklist": {
@@ -3779,7 +3788,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
