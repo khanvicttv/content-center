@@ -680,27 +680,6 @@
         </div>
       </div>
 
-      <!-- Follower Growth Tracker -->
-      <div class="card" style="margin-bottom:14px;">
-        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
-          <span>📈 Follower growth — TikTok</span>
-          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('follower-input-row').style.display = document.getElementById('follower-input-row').style.display === 'none' ? 'flex' : 'none'">+ Log count</button>
-        </div>
-        <div id="follower-input-row" style="display:none;align-items:flex-end;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
-          <div class="field" style="margin:0;flex:0 0 130px;">
-            <label>Date</label>
-            <input type="date" id="fs-date">
-          </div>
-          <div class="field" style="margin:0;flex:0 0 120px;">
-            <label>Total followers</label>
-            <input type="text" id="fs-count" placeholder="e.g. 3279" inputmode="numeric">
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="addFollowerSnapshot()" style="flex-shrink:0;">Save</button>
-        </div>
-        <div id="follower-growth-chart"></div>
-        <div id="follower-growth-log" style="margin-top:10px;"></div>
-      </div>
-
       <!-- Views over time -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title">Views over time</div>
@@ -1020,8 +999,7 @@ let state = {
   slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)),
   weekOffset: 0,
   engagements: [],
-  contentIntel: { briefs: [], lastRun: null },
-  followerSnapshots: []
+  contentIntel: { briefs: [], lastRun: null }
 };
 
 const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
@@ -2218,7 +2196,19 @@ function switchCapTab(el, tab) {
 // Cache trending hashtags so we don't search every single time
 let trendingHashtagsCache = null;
 let trendingCacheTime = null;
-const TRENDING_CACHE_MS = 60 * 60 * 1000; // 1 hour
+const TRENDING_CACHE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days — hashtags don't change daily
+
+// Load cached hashtags from localStorage on init
+try {
+  const saved = localStorage.getItem('kcc_hashtag_cache');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    if (parsed && parsed.data && parsed.ts && (Date.now() - parsed.ts) < TRENDING_CACHE_MS) {
+      trendingHashtagsCache = parsed.data;
+      trendingCacheTime = parsed.ts;
+    }
+  }
+} catch(e) {}
 
 async function refreshTrendingHashtags() {
   const btn = document.getElementById('trending-refresh-btn');
@@ -2245,9 +2235,9 @@ async function fetchTrendingHashtags(game, forceRefresh) {
 Search for: trending ${game} TikTok hashtags 2026, trending COD TikTok hashtags, gaming hashtags performing well on TikTok now.
 
 Return ONLY this JSON — no markdown, no explanation:
-{"trending":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8"],"always_include":["#warzone","#cod","#callofduty"],"rising":["#tag1","#tag2"],"source_note":"one short sentence on what you found"}
+{"trending":["#tag1","#tag2"],"always_include":["#warzone","#cod","#callofduty"],"rising":["#tag1"],"source_note":"one short sentence on what you found"}
 
-All tags lowercase. No spaces in tags.`;
+Rules: Return at most 2 trending tags and 1 rising tag. Always include the 3 core tags. All tags lowercase. No spaces in tags. Total tags across all arrays must be 5 or fewer (we are capped at 5 hashtags on TikTok/Instagram).`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -2271,6 +2261,7 @@ All tags lowercase. No spaces in tags.`;
     const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
     trendingHashtagsCache = parsed;
     trendingCacheTime = Date.now();
+    try { localStorage.setItem('kcc_hashtag_cache', JSON.stringify({ data: parsed, ts: trendingCacheTime })); } catch(e) {}
     renderTrendingStrip(parsed);
     return parsed;
   } catch(e) {
@@ -2298,7 +2289,11 @@ function renderTrendingStrip(data) {
   }).join('');
 
   if (data.source_note) {
-    updatedEl.innerHTML = `<span style="color:var(--muted);">${data.source_note}</span> · <span style="color:var(--muted);">Updated just now</span>`;
+    const cacheAgeMs = trendingCacheTime ? Date.now() - trendingCacheTime : 0;
+    const cacheAgeDays = Math.floor(cacheAgeMs / (1000 * 60 * 60 * 24));
+    const cacheAgeHrs = Math.floor(cacheAgeMs / (1000 * 60 * 60));
+    const ageLabel = cacheAgeDays >= 1 ? `${cacheAgeDays}d ago` : cacheAgeHrs >= 1 ? `${cacheAgeHrs}h ago` : 'just now';
+    updatedEl.innerHTML = `<span style="color:var(--muted);">${data.source_note}</span> · <span style="color:var(--muted);">Cached ${ageLabel} — refreshes weekly</span>`;
   }
 }
 
@@ -2358,19 +2353,21 @@ ${trendingContext}
 
 Your job:
 1. Voice check — does this sound like him? Score it 1-10 and explain briefly (1-2 sentences max)
-2. Build the BEST hashtag set for TikTok using the trending tags above — 6-7 tags, always include #warzone #cod #callofduty, add trending ones, end with #khanvicttv
-3. Build hashtag set for Instagram (similar but can swap 1-2 tags)
-4. Build hashtag set for YouTube (add #shorts, keep 5-6 tags)
+2. Build the BEST hashtag set for TikTok — EXACTLY 5 tags: always #warzone #cod #callofduty, pick the 1 best trending tag from above, end with #khanvicttv
+3. Build hashtag set for Instagram — EXACTLY 5 tags (same structure, can swap 1 tag)
+4. Build hashtag set for YouTube — EXACTLY 5 tags: include #shorts, #warzone, #cod, 1 topic tag, #khanvicttv
 5. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
+
+IMPORTANT: TikTok and Instagram cap at 5 hashtags. Never return more than 5 per platform.
 
 Return ONLY raw JSON:
 {
   "voice_score": 8,
   "voice_note": "one sentence feedback",
   "alt_caption": "only if genuinely better, else empty string",
-  "tt_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
-  "ig_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
-  "yt_hashtags": ["#warzone","#cod","#callofduty","#shorts","#tag","#khanvicttv"]
+  "tt_hashtags": ["#warzone","#cod","#callofduty","#trendingtag","#khanvicttv"],
+  "ig_hashtags": ["#warzone","#cod","#callofduty","#trendingtag","#khanvicttv"],
+  "yt_hashtags": ["#warzone","#cod","#shorts","#trendingtag","#khanvicttv"]
 }`;
 
   try {
@@ -2408,9 +2405,9 @@ Return ONLY raw JSON:
       </div>`;
 
     // Render platform results
-    renderCapResult('tt', ttCaption, r.tt_hashtags, 'Post within 1hr of your best slot for max early engagement.', clipId);
-    renderCapResult('ig', igFinal,   r.ig_hashtags, 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
-    renderCapResult('yt', ytFinal,   r.yt_hashtags, 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
+    renderCapResult('tt', ttCaption, (r.tt_hashtags||[]).slice(0,5), 'Post within 1hr of your best slot for max early engagement.', clipId);
+    renderCapResult('ig', igFinal,   (r.ig_hashtags||[]).slice(0,5), 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
+    renderCapResult('yt', ytFinal,   (r.yt_hashtags||[]).slice(0,5), 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
 
   } catch(e) {
     console.error('Caption analysis error:', e);
@@ -2908,7 +2905,6 @@ async function pullFromGithub() {
     if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
     if (!state.engagements) state.engagements = [];
     if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
-    if (!state.followerSnapshots) state.followerSnapshots = [];
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
     return true;
@@ -2970,7 +2966,6 @@ function load() {
       if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
       if (!state.engagements) state.engagements = [];
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
-      if (!state.followerSnapshots) state.followerSnapshots = [];
     }
   } catch(e) {}
 }
@@ -2996,7 +2991,6 @@ function importData(e) {
       if (!state.posts)       state.posts       = [];
       if (!state.checklist)   state.checklist   = {};
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
-      if (!state.followerSnapshots) state.followerSnapshots = [];
       save();
       renderClipList();
       refreshAllSelects();
@@ -3011,7 +3005,7 @@ function importData(e) {
 
 function clearAll() {
   if (!confirm('Clear ALL data? This cannot be undone.')) return;
-  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null }, followerSnapshots: [] };
+  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null } };
   save();
   renderClipList();
   refreshAllSelects();
@@ -3024,7 +3018,6 @@ function clearAll() {
 
 function renderAnalytics() {
   renderOverviewCards();
-  renderFollowerGrowth();
   renderViewsChart();
   renderPlatformComparison();
   renderDayOfWeekChart();
@@ -3033,191 +3026,6 @@ function renderAnalytics() {
   renderHashtagPerf();
   renderTimingAdherence();
   renderEngageLog();
-}
-
-// ── FOLLOWER GROWTH TRACKER ──────────────────────────────────────────────
-
-function addFollowerSnapshot() {
-  const dateInput = document.getElementById('fs-date');
-  const countInput = document.getElementById('fs-count');
-  const date = dateInput.value;
-  const count = parseInt(countInput.value.replace(/,/g, ''), 10);
-
-  if (!date) { alert('Pick a date.'); return; }
-  if (isNaN(count) || count < 0) { alert('Enter a valid follower count.'); return; }
-
-  if (!state.followerSnapshots) state.followerSnapshots = [];
-
-  // Check if entry for this date already exists — update it
-  const existing = state.followerSnapshots.find(s => s.date === date);
-  if (existing) {
-    if (!confirm('You already logged ' + existing.count.toLocaleString() + ' for ' + date + '. Update to ' + count.toLocaleString() + '?')) return;
-    existing.count = count;
-    existing.updatedAt = new Date().toISOString();
-  } else {
-    state.followerSnapshots.push({
-      date,
-      count,
-      platform: 'tt',
-      loggedAt: new Date().toISOString()
-    });
-  }
-
-  // Sort chronologically
-  state.followerSnapshots.sort((a, b) => a.date.localeCompare(b.date));
-
-  save();
-  countInput.value = '';
-  document.getElementById('follower-input-row').style.display = 'none';
-  renderFollowerGrowth();
-}
-
-function deleteFollowerSnapshot(date) {
-  if (!confirm('Remove follower entry for ' + date + '?')) return;
-  state.followerSnapshots = state.followerSnapshots.filter(s => s.date !== date);
-  save();
-  renderFollowerGrowth();
-}
-
-function renderFollowerGrowth() {
-  const chartEl = document.getElementById('follower-growth-chart');
-  const logEl = document.getElementById('follower-growth-log');
-  const dateInput = document.getElementById('fs-date');
-
-  // Pre-fill date input to today
-  const now = new Date();
-  dateInput.value = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
-
-  const snaps = (state.followerSnapshots || []).slice().sort((a,b) => a.date.localeCompare(b.date));
-
-  if (snaps.length === 0) {
-    chartEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No follower data yet. Tap <strong>+ Log count</strong> to record your current TikTok follower count.</div>';
-    logEl.innerHTML = '';
-    return;
-  }
-
-  // Current count + change
-  const latest = snaps[snaps.length - 1];
-  const earliest = snaps[0];
-  const totalChange = latest.count - earliest.count;
-  const changeSign = totalChange >= 0 ? '+' : '';
-  const changeColor = totalChange >= 0 ? 'var(--green)' : 'var(--red)';
-
-  // Recent change (last 7 days)
-  const weekAgo = new Date(now);
-  weekAgo.setDate(weekAgo.getDate() - 7);
-  const weekAgoStr = weekAgo.toISOString().split('T')[0];
-  const weekSnap = snaps.filter(s => s.date <= weekAgoStr).pop();
-  let weekChange = '';
-  if (weekSnap) {
-    const wc = latest.count - weekSnap.count;
-    const ws = wc >= 0 ? '+' : '';
-    weekChange = `<span style="font-size:11px;color:${wc >= 0 ? 'var(--green)' : 'var(--red)'};margin-left:12px;">${ws}${wc} last 7d</span>`;
-  }
-
-  // Summary row
-  let summaryHtml = `
-    <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-      <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text);">${latest.count.toLocaleString()}</div>
-      <div style="font-size:12px;color:${changeColor};font-family:var(--mono);">${changeSign}${totalChange.toLocaleString()} total</div>
-      ${weekChange}
-      <div style="font-size:10px;color:var(--muted);margin-left:auto;">as of ${new Date(latest.date + 'T12:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}</div>
-    </div>`;
-
-  // Chart — line chart with area fill
-  if (snaps.length < 2) {
-    chartEl.innerHTML = summaryHtml + '<div style="color:var(--muted);font-size:12px;">Log at least 2 entries to see the trend chart.</div>';
-    logEl.innerHTML = renderFollowerLog(snaps);
-    return;
-  }
-
-  const counts = snaps.map(s => s.count);
-  const minC = Math.min(...counts);
-  const maxC = Math.max(...counts);
-  const range = maxC - minC || 1;
-  const chartW = 560;
-  const chartH = 120;
-  const padTop = 10;
-  const padBottom = 30;
-  const innerH = chartH - padTop - padBottom;
-
-  const points = snaps.map((s, i) => {
-    const x = snaps.length === 1 ? chartW / 2 : (i / (snaps.length - 1)) * (chartW - 20) + 10;
-    const y = padTop + innerH - ((s.count - minC) / range) * innerH;
-    return { x, y, ...s };
-  });
-
-  const polyline = points.map(p => `${p.x},${p.y}`).join(' ');
-  const areaPath = `M${points[0].x},${padTop + innerH} ` + points.map(p => `L${p.x},${p.y}`).join(' ') + ` L${points[points.length-1].x},${padTop + innerH} Z`;
-
-  // Y-axis labels
-  const yLabels = [minC, Math.round((minC + maxC) / 2), maxC];
-  const yLabelSvg = yLabels.map(v => {
-    const y = padTop + innerH - ((v - minC) / range) * innerH;
-    return `<text x="0" y="${y + 3}" fill="var(--muted)" font-size="9" font-family="var(--mono)">${v >= 1000 ? (v/1000).toFixed(1)+'k' : v}</text>
-            <line x1="30" x2="${chartW}" y1="${y}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
-  }).join('');
-
-  // X-axis labels (show ~6 evenly spaced dates)
-  const step = Math.max(1, Math.floor(snaps.length / 6));
-  const xLabelSvg = points.filter((_, i) => i % step === 0 || i === points.length - 1).map(p => {
-    const dt = new Date(p.date + 'T12:00:00');
-    const lbl = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    return `<text x="${p.x}" y="${chartH - 2}" fill="var(--muted)" font-size="8" font-family="var(--mono)" text-anchor="middle">${lbl}</text>`;
-  }).join('');
-
-  // Dots
-  const dots = points.map(p =>
-    `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="var(--accent)" stroke="var(--bg2)" stroke-width="1.5">
-      <title>${new Date(p.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})} — ${p.count.toLocaleString()} followers</title>
-    </circle>`
-  ).join('');
-
-  const svg = `
-    <svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%;height:auto;max-height:160px;" xmlns="http://www.w3.org/2000/svg">
-      ${yLabelSvg}
-      <path d="${areaPath}" fill="rgba(124,92,252,0.08)" />
-      <polyline points="${polyline}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-      ${dots}
-      ${xLabelSvg}
-    </svg>`;
-
-  chartEl.innerHTML = summaryHtml + svg;
-  logEl.innerHTML = renderFollowerLog(snaps);
-}
-
-function renderFollowerLog(snaps) {
-  if (!snaps.length) return '';
-
-  // Show last 10 entries, newest first
-  const recent = snaps.slice().reverse().slice(0, 10);
-
-  const rows = recent.map((s, i) => {
-    const dt = new Date(s.date + 'T12:00:00');
-    const lbl = dt.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
-    // Calculate daily change
-    const allSorted = (state.followerSnapshots || []).slice().sort((a,b) => a.date.localeCompare(b.date));
-    const idx = allSorted.findIndex(x => x.date === s.date);
-    let changeHtml = '';
-    if (idx > 0) {
-      const diff = s.count - allSorted[idx - 1].count;
-      const sign = diff >= 0 ? '+' : '';
-      const col = diff > 0 ? 'var(--green)' : diff < 0 ? 'var(--red)' : 'var(--muted)';
-      changeHtml = `<span style="font-family:var(--mono);font-size:11px;color:${col};">${sign}${diff}</span>`;
-    }
-
-    return `
-      <div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;">
-        <span style="color:var(--muted);min-width:110px;">${lbl}</span>
-        <span style="font-family:var(--mono);font-weight:600;color:var(--text);">${s.count.toLocaleString()}</span>
-        ${changeHtml}
-        <button onclick="deleteFollowerSnapshot('${s.date}')" style="margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:2px 6px;opacity:0.5;" title="Delete entry">✕</button>
-      </div>`;
-  }).join('');
-
-  return `
-    <div style="font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:1px;margin-bottom:6px;">RECENT ENTRIES${snaps.length > 10 ? ' (last 10)' : ''}</div>
-    ${rows}`;
 }
 
 // ── OVERVIEW CARDS ────────────────────────────────────────────────────────
@@ -4245,8 +4053,23 @@ Return ONLY JSON:
 
     // Parse results from steps 1 and 2
     let trends = null, competitors = null;
-    try { trends = JSON.parse(trendsResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Trends parse failed:', e); }
-    try { competitors = JSON.parse(compResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Competitors parse failed:', e); }
+    let parseErrors = [];
+    try {
+      // Strip any leading text before the JSON object (Haiku sometimes adds a preamble)
+      const trendsClean = trendsResult.replace(/```json|```/g, '').trim();
+      const trendsJson = trendsClean.substring(trendsClean.indexOf('{'));
+      trends = JSON.parse(trendsJson);
+    } catch(e) { parseErrors.push('Trend data parse failed: ' + e.message); console.warn('Trends parse failed:', e, '\nRaw:', trendsResult); }
+    try {
+      const compClean = compResult.replace(/```json|```/g, '').trim();
+      const compJson = compClean.substring(compClean.indexOf('{'));
+      competitors = JSON.parse(compJson);
+    } catch(e) { parseErrors.push('Competitor data parse failed: ' + e.message); console.warn('Competitors parse failed:', e, '\nRaw:', compResult); }
+
+    // If both failed, something is wrong — surface it instead of silently building empty brief
+    if (!trends && !competitors) {
+      throw new Error('Both research steps failed to return valid data. ' + parseErrors.join('. '));
+    }
 
     const trendsContext = trends
       ? `CURRENT TRENDS:\n- Meta weapons: ${(trends.hotWeapons||[]).join(', ')}\n- Meta shifts: ${trends.metaShifts||'unknown'}\n- Viral formats: ${(trends.viralFormats||[]).join('; ')}\n- Rising topics: ${(trends.risingTopics||[]).join(', ')}\n- Community buzz: ${trends.communityBuzz||''}\n- Patch notes: ${trends.patchNotes||'none found'}`
@@ -4314,7 +4137,17 @@ Return ONLY this JSON:
 
     const synthesisResult = await intelApiCall(apiKey, synthesisPrompt, false, 3000);
     let synthesis = null;
-    try { synthesis = JSON.parse(synthesisResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Synthesis parse failed:', e); }
+    try {
+      const synClean = synthesisResult.replace(/```json|```/g, '').trim();
+      const synJson = synClean.substring(synClean.indexOf('{'));
+      synthesis = JSON.parse(synJson);
+    } catch(e) {
+      console.warn('Synthesis parse failed:', e, '\nRaw:', synthesisResult);
+      throw new Error('Content plan synthesis failed to parse. Raw response logged to console.');
+    }
+    if (!synthesis || !synthesis.days || synthesis.days.length === 0) {
+      throw new Error('Content plan returned empty. Try again — this sometimes happens with rate limiting.');
+    }
 
     // Build the brief object
     const brief = {
@@ -4346,7 +4179,8 @@ Return ONLY this JSON:
     console.error('Content Intel error:', e);
     briefBody.innerHTML = `<div style="color:var(--red);font-size:12px;padding:16px 0;text-align:center;">
       Research failed: ${e.message || 'Unknown error'}<br>
-      <span style="color:var(--muted);font-size:11px;">Check your API key and try again.</span>
+      <span style="color:var(--muted);font-size:11px;">If you see a rate limit error, wait 60 seconds and retry. If API credits, top up at console.anthropic.com.</span><br>
+      <button class="btn btn-ghost btn-sm" style="margin-top:10px;font-size:11px;" onclick="runContentIntel()">↺ Retry</button>
     </div>`;
   }
 
@@ -4434,6 +4268,8 @@ renderDaysBanner();
 updateApiPill();
 updateSyncPill();
 checkUpcomingPosts();
+// Restore cached hashtag strip if available
+if (trendingHashtagsCache) renderTrendingStrip(trendingHashtagsCache);
 setInterval(checkUpcomingPosts, 60000);
 
 // Pull from GitHub on startup if configured
