@@ -1923,7 +1923,42 @@
         "ig"
       ],
       "addedAt": "2026-04-12T22:08:02",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "1v3 with no plates, easy win for @fearless",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "1v3 with no plates, easy win for @fearless\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "1v3 with no plates, easy win for @fearless — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#khanvicttv"
+          ],
+          "full": "1v3 with no plates, easy win for @fearless — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - 1v3 with no plates, easy win for @fearless | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#shorts",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - 1v3 with no plates, easy win for @fearless | Khanvict TV\n\n#warzone #cod #shorts #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776049560557,
