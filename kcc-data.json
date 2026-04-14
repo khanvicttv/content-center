@@ -2032,7 +2032,42 @@
         "ig"
       ],
       "addedAt": "2026-04-12T22:01:21",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "Pov: You have been streaming for 5 hours",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#codwarzone",
+            "#khanvicttv"
+          ],
+          "full": "Pov: You have been streaming for 5 hours\n\n#warzone #cod #callofduty #codwarzone #khanvicttv"
+        },
+        "ig": {
+          "caption": "Pov: You have been streaming for 5 hours — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#gamingontiktok",
+            "#khanvicttv"
+          ],
+          "full": "Pov: You have been streaming for 5 hours — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #gamingontiktok #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - Pov: You have been streaming for 5 hours | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#shorts",
+            "#codwarzone",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - Pov: You have been streaming for 5 hours | Khanvict TV\n\n#warzone #cod #shorts #codwarzone #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776049156464,
