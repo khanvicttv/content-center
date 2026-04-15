@@ -2141,7 +2141,42 @@
         "ig"
       ],
       "addedAt": "2026-04-12T21:56:42",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "I don’t get how people enjoy playing this game like this",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#codwarzone",
+            "#khanvicttv"
+          ],
+          "full": "I don’t get how people enjoy playing this game like this\n\n#warzone #cod #callofduty #codwarzone #khanvicttv"
+        },
+        "ig": {
+          "caption": "I don’t get how people enjoy playing this game like this — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "I don’t get how people enjoy playing this game like this — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - I don’t get how people enjoy playing this game like this | Khanvict TV",
+          "hashtags": [
+            "#shorts",
+            "#warzone",
+            "#cod",
+            "#codwarzone",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - I don’t get how people enjoy playing this game like this | Khanvict TV\n\n#shorts #warzone #cod #codwarzone #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776050916840,
