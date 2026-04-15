@@ -2614,7 +2614,10 @@
       "platform": "tt",
       "date": "2026-04-14",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-04-15T06:24:44.114Z",
+      "timingVariance": 0
     },
     {
       "id": 1776050728898.962,
