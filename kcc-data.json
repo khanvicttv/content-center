@@ -2084,7 +2084,47 @@
         "ig"
       ],
       "addedAt": "2026-04-12T21:59:16",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "Luck or skills",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "Luck or skills\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "Luck or skills — live on Twitch, Kick & TikTok",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#streamer",
+            "#twitch",
+            "#khanvicttv"
+          ],
+          "full": "Luck or skills — live on Twitch, Kick & TikTok\n\n#warzone #cod #callofduty #bo6 #streamer #twitch #khanvicttv"
+        },
+        "yt": {
+          "caption": "Warzone - Luck or skills | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#shorts",
+            "#bo6",
+            "#khanvicttv"
+          ],
+          "full": "Warzone - Luck or skills | Khanvict TV\n\n#warzone #cod #callofduty #shorts #bo6 #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776049002715,
