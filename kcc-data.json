@@ -2241,7 +2241,48 @@
         "ig"
       ],
       "addedAt": "2026-04-15T21:33:49",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "tomahawk eliminates hit different, no cap",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "tomahawk eliminates hit different, no cap\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "tomahawk kills hit different, come watch live on twitch",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "tomahawk kills hit different, come watch live on twitch\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "tomahawk eliminations hit different in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "tomahawk eliminations hit different in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776306618437,
@@ -2480,7 +2521,22 @@
         "ig"
       ],
       "addedAt": "2026-04-15T21:09:05",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "sometimes you gotta sit and listen like a rat to win",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "sometimes you gotta sit and listen like a rat to win\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776305143622,
@@ -3190,6 +3246,15 @@
       "platform": "tt",
       "date": "2026-04-18",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776307064810.8843,
+      "clipId": 1776305345538,
+      "clipName": "Camp and listen",
+      "platform": "tt",
+      "date": "2026-04-18",
+      "time": "13:00",
       "posted": false
     }
   ],
