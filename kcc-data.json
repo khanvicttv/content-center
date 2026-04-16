@@ -2256,7 +2256,48 @@
         "ig"
       ],
       "addedAt": "2026-04-15T21:30:18",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "either holdin hands or hiding in a corner, what is this game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "either holdin hands or hiding in a corner, what is this game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro camping in the corner while i'm out here actually fighting, this is what warzone has become",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro camping in the corner while i'm out here actually fighting, this is what warzone has become\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone players really out here holding hands instead of fighting",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone players really out here holding hands instead of fighting\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776306367542,
@@ -3082,6 +3123,24 @@
       "platform": "tt",
       "date": "2026-04-17",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776307048496.82,
+      "clipId": 1776306618437,
+      "clipName": "Every single team holdin hands",
+      "platform": "tt",
+      "date": "2026-04-17",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1776307053953.0557,
+      "clipId": 1776305143622,
+      "clipName": "Grapples are loud",
+      "platform": "tt",
+      "date": "2026-04-17",
+      "time": "19:00",
       "posted": false
     }
   ],
