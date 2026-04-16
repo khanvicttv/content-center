@@ -2218,7 +2218,19 @@ function switchCapTab(el, tab) {
 // Cache trending hashtags so we don't search every single time
 let trendingHashtagsCache = null;
 let trendingCacheTime = null;
-const TRENDING_CACHE_MS = 60 * 60 * 1000; // 1 hour
+const TRENDING_CACHE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days — hashtags don't change daily
+
+// Load cached hashtags from localStorage on init
+try {
+  const saved = localStorage.getItem('kcc_hashtag_cache');
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    if (parsed && parsed.data && parsed.ts && (Date.now() - parsed.ts) < TRENDING_CACHE_MS) {
+      trendingHashtagsCache = parsed.data;
+      trendingCacheTime = parsed.ts;
+    }
+  }
+} catch(e) {}
 
 async function refreshTrendingHashtags() {
   const btn = document.getElementById('trending-refresh-btn');
@@ -2245,9 +2257,9 @@ async function fetchTrendingHashtags(game, forceRefresh) {
 Search for: trending ${game} TikTok hashtags 2026, trending COD TikTok hashtags, gaming hashtags performing well on TikTok now.
 
 Return ONLY this JSON — no markdown, no explanation:
-{"trending":["#tag1","#tag2","#tag3","#tag4","#tag5","#tag6","#tag7","#tag8"],"always_include":["#warzone","#cod","#callofduty"],"rising":["#tag1","#tag2"],"source_note":"one short sentence on what you found"}
+{"trending":["#tag1","#tag2"],"always_include":["#warzone","#cod","#callofduty"],"rising":["#tag1"],"source_note":"one short sentence on what you found"}
 
-All tags lowercase. No spaces in tags.`;
+Rules: Return at most 2 trending tags and 1 rising tag. Always include the 3 core tags. All tags lowercase. No spaces in tags. Total tags across all arrays must be 5 or fewer (we are capped at 5 hashtags on TikTok/Instagram).`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -2271,6 +2283,7 @@ All tags lowercase. No spaces in tags.`;
     const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
     trendingHashtagsCache = parsed;
     trendingCacheTime = Date.now();
+    try { localStorage.setItem('kcc_hashtag_cache', JSON.stringify({ data: parsed, ts: trendingCacheTime })); } catch(e) {}
     renderTrendingStrip(parsed);
     return parsed;
   } catch(e) {
@@ -2298,7 +2311,11 @@ function renderTrendingStrip(data) {
   }).join('');
 
   if (data.source_note) {
-    updatedEl.innerHTML = `<span style="color:var(--muted);">${data.source_note}</span> · <span style="color:var(--muted);">Updated just now</span>`;
+    const cacheAgeMs = trendingCacheTime ? Date.now() - trendingCacheTime : 0;
+    const cacheAgeDays = Math.floor(cacheAgeMs / (1000 * 60 * 60 * 24));
+    const cacheAgeHrs = Math.floor(cacheAgeMs / (1000 * 60 * 60));
+    const ageLabel = cacheAgeDays >= 1 ? `${cacheAgeDays}d ago` : cacheAgeHrs >= 1 ? `${cacheAgeHrs}h ago` : 'just now';
+    updatedEl.innerHTML = `<span style="color:var(--muted);">${data.source_note}</span> · <span style="color:var(--muted);">Cached ${ageLabel} — refreshes weekly</span>`;
   }
 }
 
@@ -2358,19 +2375,21 @@ ${trendingContext}
 
 Your job:
 1. Voice check — does this sound like him? Score it 1-10 and explain briefly (1-2 sentences max)
-2. Build the BEST hashtag set for TikTok using the trending tags above — 6-7 tags, always include #warzone #cod #callofduty, add trending ones, end with #khanvicttv
-3. Build hashtag set for Instagram (similar but can swap 1-2 tags)
-4. Build hashtag set for YouTube (add #shorts, keep 5-6 tags)
+2. Build the BEST hashtag set for TikTok — EXACTLY 5 tags: always #warzone #cod #callofduty, pick the 1 best trending tag from above, end with #khanvicttv
+3. Build hashtag set for Instagram — EXACTLY 5 tags (same structure, can swap 1 tag)
+4. Build hashtag set for YouTube — EXACTLY 5 tags: include #shorts, #warzone, #cod, 1 topic tag, #khanvicttv
 5. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
+
+IMPORTANT: TikTok and Instagram cap at 5 hashtags. Never return more than 5 per platform.
 
 Return ONLY raw JSON:
 {
   "voice_score": 8,
   "voice_note": "one sentence feedback",
   "alt_caption": "only if genuinely better, else empty string",
-  "tt_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
-  "ig_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
-  "yt_hashtags": ["#warzone","#cod","#callofduty","#shorts","#tag","#khanvicttv"]
+  "tt_hashtags": ["#warzone","#cod","#callofduty","#trendingtag","#khanvicttv"],
+  "ig_hashtags": ["#warzone","#cod","#callofduty","#trendingtag","#khanvicttv"],
+  "yt_hashtags": ["#warzone","#cod","#shorts","#trendingtag","#khanvicttv"]
 }`;
 
   try {
@@ -2408,9 +2427,9 @@ Return ONLY raw JSON:
       </div>`;
 
     // Render platform results
-    renderCapResult('tt', ttCaption, r.tt_hashtags, 'Post within 1hr of your best slot for max early engagement.', clipId);
-    renderCapResult('ig', igFinal,   r.ig_hashtags, 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
-    renderCapResult('yt', ytFinal,   r.yt_hashtags, 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
+    renderCapResult('tt', ttCaption, (r.tt_hashtags||[]).slice(0,5), 'Post within 1hr of your best slot for max early engagement.', clipId);
+    renderCapResult('ig', igFinal,   (r.ig_hashtags||[]).slice(0,5), 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
+    renderCapResult('yt', ytFinal,   (r.yt_hashtags||[]).slice(0,5), 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
 
   } catch(e) {
     console.error('Caption analysis error:', e);
@@ -2908,7 +2927,7 @@ async function pullFromGithub() {
     if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
     if (!state.engagements) state.engagements = [];
     if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
-    if (!state.followerSnapshots) state.followerSnapshots = [];
+      if (!state.followerSnapshots) state.followerSnapshots = [];
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
     return true;
@@ -4245,8 +4264,23 @@ Return ONLY JSON:
 
     // Parse results from steps 1 and 2
     let trends = null, competitors = null;
-    try { trends = JSON.parse(trendsResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Trends parse failed:', e); }
-    try { competitors = JSON.parse(compResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Competitors parse failed:', e); }
+    let parseErrors = [];
+    try {
+      // Strip any leading text before the JSON object (Haiku sometimes adds a preamble)
+      const trendsClean = trendsResult.replace(/```json|```/g, '').trim();
+      const trendsJson = trendsClean.substring(trendsClean.indexOf('{'));
+      trends = JSON.parse(trendsJson);
+    } catch(e) { parseErrors.push('Trend data parse failed: ' + e.message); console.warn('Trends parse failed:', e, '\nRaw:', trendsResult); }
+    try {
+      const compClean = compResult.replace(/```json|```/g, '').trim();
+      const compJson = compClean.substring(compClean.indexOf('{'));
+      competitors = JSON.parse(compJson);
+    } catch(e) { parseErrors.push('Competitor data parse failed: ' + e.message); console.warn('Competitors parse failed:', e, '\nRaw:', compResult); }
+
+    // If both failed, something is wrong — surface it instead of silently building empty brief
+    if (!trends && !competitors) {
+      throw new Error('Both research steps failed to return valid data. ' + parseErrors.join('. '));
+    }
 
     const trendsContext = trends
       ? `CURRENT TRENDS:\n- Meta weapons: ${(trends.hotWeapons||[]).join(', ')}\n- Meta shifts: ${trends.metaShifts||'unknown'}\n- Viral formats: ${(trends.viralFormats||[]).join('; ')}\n- Rising topics: ${(trends.risingTopics||[]).join(', ')}\n- Community buzz: ${trends.communityBuzz||''}\n- Patch notes: ${trends.patchNotes||'none found'}`
@@ -4314,7 +4348,17 @@ Return ONLY this JSON:
 
     const synthesisResult = await intelApiCall(apiKey, synthesisPrompt, false, 3000);
     let synthesis = null;
-    try { synthesis = JSON.parse(synthesisResult.replace(/```json|```/g, '').trim()); } catch(e) { console.warn('Synthesis parse failed:', e); }
+    try {
+      const synClean = synthesisResult.replace(/```json|```/g, '').trim();
+      const synJson = synClean.substring(synClean.indexOf('{'));
+      synthesis = JSON.parse(synJson);
+    } catch(e) {
+      console.warn('Synthesis parse failed:', e, '\nRaw:', synthesisResult);
+      throw new Error('Content plan synthesis failed to parse. Raw response logged to console.');
+    }
+    if (!synthesis || !synthesis.days || synthesis.days.length === 0) {
+      throw new Error('Content plan returned empty. Try again — this sometimes happens with rate limiting.');
+    }
 
     // Build the brief object
     const brief = {
@@ -4346,7 +4390,8 @@ Return ONLY this JSON:
     console.error('Content Intel error:', e);
     briefBody.innerHTML = `<div style="color:var(--red);font-size:12px;padding:16px 0;text-align:center;">
       Research failed: ${e.message || 'Unknown error'}<br>
-      <span style="color:var(--muted);font-size:11px;">Check your API key and try again.</span>
+      <span style="color:var(--muted);font-size:11px;">If you see a rate limit error, wait 60 seconds and retry. If API credits, top up at console.anthropic.com.</span><br>
+      <button class="btn btn-ghost btn-sm" style="margin-top:10px;font-size:11px;" onclick="runContentIntel()">↺ Retry</button>
     </div>`;
   }
 
@@ -4434,6 +4479,8 @@ renderDaysBanner();
 updateApiPill();
 updateSyncPill();
 checkUpcomingPosts();
+// Restore cached hashtag strip if available
+if (trendingHashtagsCache) renderTrendingStrip(trendingHashtagsCache);
 setInterval(checkUpcomingPosts, 60000);
 
 // Pull from GitHub on startup if configured
