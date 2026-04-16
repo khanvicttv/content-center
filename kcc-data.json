@@ -2286,7 +2286,35 @@
         "ig"
       ],
       "addedAt": "2026-04-15T21:23:44",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "back to back dubs, thats just how we moving on live",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "back to back dubs, thats just how we moving on live\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "live dubs hitting different on tiktok, come catch them on twitch",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "live dubs hitting different on tiktok, come catch them on twitch\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776305735744,
@@ -2932,6 +2960,15 @@
       "platform": "tt",
       "date": "2026-04-16",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776307024837.175,
+      "clipId": 1776306224967,
+      "clipName": "Endgame Gameplay",
+      "platform": "tt",
+      "date": "2026-04-16",
+      "time": "13:00",
       "posted": false
     }
   ],
