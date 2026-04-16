@@ -5964,6 +5964,122 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1776347095184,
+        "runDate": "2026-04-16T13:43:48.147Z",
+        "weekLabel": "Week of Apr 21 – Apr 18, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "MK35 ISR meta loadout that's dominating Season 3",
+                "type": "loadout",
+                "why": "His best post was MK35 ISR loadout content, and trends show it just became the top AR without nerfs while others got hit.",
+                "streamFocus": "Build and test the optimal MK35 ISR setup, show damage comparisons vs nerfed Voyak KT-3, get multiple kills with the build",
+                "captionDirection": "mk35 isr is the new king, voyak got nerfed so this stepped up"
+              },
+              {
+                "priority": 2,
+                "title": "Grappling Hook positioning tricks for Verdansk rotations",
+                "type": "tips",
+                "why": "Grappling Hooks just hit core playlists in Season 3 and movement tech is trending heavily right now.",
+                "streamFocus": "Demonstrate 3-4 specific grappling hook spots that give rotation advantages, show the timing and positioning",
+                "captionDirection": "grappling hook spots that actually matter for rotations"
+              },
+              {
+                "priority": 3,
+                "title": "VST vs Razor 9mm SMG comparison for close range",
+                "type": "strategy",
+                "why": "Both SMGs are trending as meta options, and comparison content helps viewers make loadout decisions.",
+                "streamFocus": "Test both SMGs in same close-range situations, compare TTK and handling, show which works better in different scenarios",
+                "captionDirection": "vst vs razor 9mm, one is clearly better up close"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Iron Gauntlet settings optimization for competitive play",
+                "type": "settings",
+                "why": "Iron Gauntlet got revamped in Season 3 and competitive mode content tends to perform well for strategy-focused audiences.",
+                "streamFocus": "Test different FOV, sensitivity, and audio settings specifically for Iron Gauntlet, show performance differences",
+                "captionDirection": "iron gauntlet settings that actually help you win more fights"
+              },
+              {
+                "priority": 2,
+                "title": "Rebirth Island solo squad positioning guide",
+                "type": "tutorial",
+                "why": "Rebirth gameplay dominance is trending and solo squad content appeals to skilled players who follow strategy creators.",
+                "streamFocus": "Play solo squads on Rebirth, focus on positioning callouts and rotations, capture clean 1v3/1v4 moments",
+                "captionDirection": "rebirth solo squad positioning, this is how you survive"
+              },
+              {
+                "priority": 3,
+                "title": "Season 3 weapon nerfs breakdown reaction",
+                "type": "news",
+                "why": "Community is buzzing about broken meta and weapon balance changes, plus his audience likes strategy breakdowns.",
+                "streamFocus": "Go through patch notes live, test nerfed weapons like Voyak KT-3, show the damage differences before/after",
+                "captionDirection": "season 3 nerfs hit different, some guns are actually dead now"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Top 5 AR loadouts ranked after Season 3 changes",
+                "type": "loadout",
+                "why": "Community is actively sharing 'TOP 5 META AR LOADOUTS' content and his loadout videos are his best performers.",
+                "streamFocus": "Build and test 5 different AR setups, rank them by performance in actual games, show damage and range tests",
+                "captionDirection": "top 5 ars after the update, number 2 will surprise you"
+              },
+              {
+                "priority": 2,
+                "title": "Gas zone clutch strategies for final circles",
+                "type": "strategy",
+                "why": "Clutch gas plays are trending as viral content and strategy content outperforms pure highlights for his audience.",
+                "streamFocus": "Force late-game gas situations, demonstrate positioning and timing for gas plays, capture successful clutches",
+                "captionDirection": "gas zone clutch strats that actually work in ranked"
+              },
+              {
+                "priority": 3,
+                "title": "Advanced bunny hop movement tutorial",
+                "type": "tutorial",
+                "why": "Movement tech showcases including bunny hopping are trending, and tutorial content performs well for his strategy-focused audience.",
+                "streamFocus": "Break down bunny hop mechanics step-by-step, show input timing, demonstrate in actual gunfights",
+                "captionDirection": "bunny hop tutorial that will change how you move"
+              }
+            ]
+          }
+        ],
+        "trends": {
+          "metaShifts": "<cite index=\"13-33,13-35\">Warzone Season 3 is live and the MK35 ISR just walked to the front of the meta without knocking.</cite> <cite index=\"13-27\">The VST sits middle-of-road for SMGs, with several alternatives offering faster raw TTK but the VST providing forgiveness through its fire rate consistency.</cite> <cite index=\"13-32\">The Voyak KT-3, which had been quietly popular heading into Season 3, received nerfs to damage range and bullet velocity specifically because it had become too dominant in the long-range AR role.</cite>",
+          "patchNotes": "<cite index=\"4-2\">The Warzone Season 3 update goes live on Thursday, April 2, 2026.</cite> <cite index=\"2-5,2-12,2-13\">Season 3 goes live in Black Ops 7 and Warzone on April 2, and the latest patch notes reveal all the major changes for Call of Duty's various modes. These adjustments include weapon tuning across various modes, several improvements for Zombies, and a fix for the broken wingsuit controls in Warzone.</cite> <cite index=\"4-4\">Warzone Season 3 is live with Verdansk back in rotation, Grappling Hooks in core playlists, and a revamped Iron Gauntlet.</cite>",
+          "viralFormats": [
+            "Clutch gas plays & 1v4 solo squad moments",
+            "META loadout class breakdowns",
+            "Movement tech showcases (bunny hopping & jump spots)"
+          ],
+          "risingTopics": [
+            "Rebirth Island gameplay dominance",
+            "Verdansk map rotation cycling",
+            "Grappling Hook mechanics & strategies",
+            "Iron Gauntlet competitive mode"
+          ],
+          "hotWeapons": [
+            "MK35 ISR (AR)",
+            "VST (SMG)",
+            "Razor 9mm (SMG)"
+          ],
+          "communityBuzz": "<cite index=\"29-6\">Players are discussing \"NEW BROKEN META RUINS EVERYONES DAY\" loadout changes.</cite> <cite index=\"29-3,29-13\">The community is actively sharing \"TOP 5 META AR LOADOUTS\" and debating new weapon balance changes across TikTok and gaming forums.</cite>"
+        },
+        "competitors": []
+      },
+      {
         "id": 1775519767616,
         "runDate": "2026-04-06T23:54:57.478Z",
         "weekLabel": "Week of Apr 7 – Apr 11, 2026",
@@ -6156,7 +6272,7 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-04-06T23:54:57.478Z"
+    "lastRun": "2026-04-16T13:43:48.147Z"
   },
   "followerSnapshots": [
     {
