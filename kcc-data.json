@@ -2495,7 +2495,47 @@
         "ig"
       ],
       "addedAt": "2026-04-15T21:05:43",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "grapple is loud as hell, everyone knows exactly where you at",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "grapple is loud as hell, everyone knows exactly where you at\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "grapple is loud as hell, enemy team hears you coming from next map",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "grapple is loud as hell, enemy team hears you coming from next map\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "grapple is loud af, everyone knows where you are",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "grapple is loud af, everyone knows where you are\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776302236361,
@@ -3141,6 +3181,15 @@
       "platform": "tt",
       "date": "2026-04-17",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776307060161.8364,
+      "clipId": 1776306829997,
+      "clipName": "How does that work",
+      "platform": "tt",
+      "date": "2026-04-18",
+      "time": "09:00",
       "posted": false
     }
   ],
