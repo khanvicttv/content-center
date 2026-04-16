@@ -3212,7 +3212,10 @@
       "platform": "tt",
       "date": "2026-04-16",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "08:40",
+      "postedAt": "2026-04-16T13:43:31.514Z",
+      "timingVariance": -20
     },
     {
       "id": 1776307024837.175,
