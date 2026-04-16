@@ -2313,6 +2313,19 @@
             "#khanvicttv"
           ],
           "full": "live dubs hitting different on tiktok, come catch them on twitch\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "live dub grinding on warzone, chat was going crazy",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneduos",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "live dub grinding on warzone, chat was going crazy\n\n#warzone #cod #callofduty #warzoneduos #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     },
@@ -2415,7 +2428,48 @@
         "ig"
       ],
       "addedAt": "2026-04-15T20:17:16",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "crossbow gameplay hits different, honestly way more satisfying than guns",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "crossbow gameplay hits different, honestly way more satisfying than guns\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "crossbow in warzone hits different, legitimately broken weapon right now",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "crossbow in warzone hits different, legitimately broken weapon right now\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "crossbow in warzone hits different, pure skill",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "crossbow in warzone hits different, pure skill\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -2969,6 +3023,15 @@
       "platform": "tt",
       "date": "2026-04-16",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1776307030158.8438,
+      "clipId": 1776302236361,
+      "clipName": "Crossbow is a blast",
+      "platform": "tt",
+      "date": "2026-04-16",
+      "time": "19:00",
       "posted": false
     }
   ],
