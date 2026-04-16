@@ -2301,7 +2301,35 @@
         "ig"
       ],
       "addedAt": "2026-04-15T21:15:35",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "gotta have pride in what you do right",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "gotta have pride in what you do right\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "gotta have pride in what you do, that's just facts. live on twitch every night",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "gotta have pride in what you do, that's just facts. live on twitch every night\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776305345538,
@@ -2883,6 +2911,15 @@
       "actualTime": "21:00",
       "postedAt": "2026-04-16T01:59:18.820Z",
       "timingVariance": 120
+    },
+    {
+      "id": 1776307010596.6611,
+      "clipId": 1776305735744,
+      "clipName": "Gotta have pride",
+      "platform": "tt",
+      "date": "2026-04-16",
+      "time": "09:00",
+      "posted": false
     }
   ],
   "checklist": {
