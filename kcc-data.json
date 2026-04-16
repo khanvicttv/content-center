@@ -2271,7 +2271,35 @@
         "ig"
       ],
       "addedAt": "2026-04-15T21:26:07",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "tue, thurs, sat live on stream. come through if you want real gameplay",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "tue, thurs, sat live on stream. come through if you want real gameplay\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "live every tuesday thursday and saturday on twitch, come run some warzone with us",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "live every tuesday thursday and saturday on twitch, come run some warzone with us\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776306224967,
@@ -3032,6 +3060,15 @@
       "platform": "tt",
       "date": "2026-04-16",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776307039335.4204,
+      "clipId": 1776306367542,
+      "clipName": "Come check us out",
+      "platform": "tt",
+      "date": "2026-04-17",
+      "time": "09:00",
       "posted": false
     }
   ],
