@@ -3292,7 +3292,10 @@
       "platform": "tt",
       "date": "2026-04-18",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "00:30",
+      "postedAt": "2026-04-19T17:29:41.818Z",
+      "timingVariance": -1110
     },
     {
       "id": 1776525596888.0464,
