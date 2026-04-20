@@ -2730,7 +2730,48 @@
         "ig"
       ],
       "addedAt": "2026-04-20T00:58:09",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "you can literally undo the ammo box animation, game changing",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "you can literally undo the ammo box animation, game changing\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro you can literally undo the ammo box animation, game changer",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro you can literally undo the ammo box animation, game changer\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "you can undo ammo box animations in warzone, game changer",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "you can undo ammo box animations in warzone, game changer\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776664546952,
@@ -3413,6 +3454,15 @@
       "platform": "tt",
       "date": "2026-04-20",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776665240978.7214,
+      "clipId": 1776664689750,
+      "clipName": "Undo ammo box animation",
+      "platform": "tt",
+      "date": "2026-04-20",
+      "time": "13:00",
       "posted": false
     }
   ],
