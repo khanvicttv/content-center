@@ -2674,7 +2674,48 @@
         "ig"
       ],
       "addedAt": "2026-04-20T01:03:40",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "both pushing different angles, lets see who gets the kill first",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "both pushing different angles, lets see who gets the kill first\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "both pushing different angles, this is how you take map control",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "both pushing different angles, this is how you take map control\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "both moving smart, this is how you coordinate wins",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "both moving smart, this is how you coordinate wins\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776664689750,
@@ -3364,6 +3405,15 @@
       "actualTime": "15:00",
       "postedAt": "2026-04-19T05:55:44.958Z",
       "timingVariance": 120
+    },
+    {
+      "id": 1776665232250.9277,
+      "clipId": 1776665020446,
+      "clipName": "Gotta watch both",
+      "platform": "tt",
+      "date": "2026-04-20",
+      "time": "09:00",
+      "posted": false
     }
   ],
   "checklist": {
@@ -5273,7 +5323,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
