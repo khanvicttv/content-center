@@ -2786,7 +2786,22 @@
         "ig"
       ],
       "addedAt": "2026-04-20T00:55:46",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "map rotation and positioning literally wins you games, stop rushing",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "map rotation and positioning literally wins you games, stop rushing\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776664291006,
@@ -2828,6 +2843,19 @@
             "#khanvicttv"
           ],
           "full": "camping in rooms is the most boring playstyle in warzone, change my mind\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "camping rooms is the most boring playstyle in warzone fr",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "camping rooms is the most boring playstyle in warzone fr\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     }
@@ -3500,6 +3528,15 @@
       "platform": "tt",
       "date": "2026-04-20",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776665252764.6953,
+      "clipId": 1776664546952,
+      "clipName": "Positioning equal dubs",
+      "platform": "tt",
+      "date": "2026-04-21",
+      "time": "09:00",
       "posted": false
     }
   ],
