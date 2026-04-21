@@ -7462,6 +7462,122 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1776748955724,
+        "runDate": "2026-04-21T05:21:28.552Z",
+        "weekLabel": "Week of Apr 21 – Apr 25, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "MK35 ISR ranked loadout that dominates long range",
+                "type": "loadout",
+                "why": "MK35 ISR just walked to the front of the meta after Voyak KT-3 nerf. Loadout content consistently outperforms other types.",
+                "streamFocus": "Build the optimal MK35 ISR setup live, test damage ranges in firing range, show before/after comparisons with old meta weapons",
+                "captionDirection": "mk35 isr is actually broken right now, this build hits different"
+              },
+              {
+                "priority": 2,
+                "title": "grappling hook positioning tips for verdansk rotations",
+                "type": "tips",
+                "why": "Grappling hooks just entered core playlists with Season 3, and his 'grapples are loud' post was his best performer at 601 views.",
+                "streamFocus": "Demonstrate 3-4 specific grapple spots around key Verdansk POIs, show common mistakes and optimal positioning",
+                "captionDirection": "if you grapple here instead, easy dubs"
+              },
+              {
+                "priority": 3,
+                "title": "razor 9mm vs vst smg damage comparison",
+                "type": "strategy",
+                "why": "Both are current meta SMGs. Strategy content performs well and weapon comparisons give clear actionable takeaways.",
+                "streamFocus": "Side-by-side damage tests, TTK comparisons at different ranges, show which situations favor each weapon",
+                "captionDirection": "razor 9mm actually kills faster, numbers dont lie"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "black ops royale movement tech tutorial",
+                "type": "tutorial",
+                "why": "Black Ops Royale gameplay is a rising topic and movement tutorials align with viral bunny hop tutorial trends.",
+                "streamFocus": "Record step-by-step movement techniques specific to Black Ops Royale mode, show input timing with text overlays",
+                "captionDirection": "this movement tech works in br, most people dont know"
+              },
+              {
+                "priority": 2,
+                "title": "kogot-7 is actually overpowered right now",
+                "type": "loadout",
+                "why": "Community creators are calling the KOGOT-7 broken and highlighting best meta builds for competitive play.",
+                "streamFocus": "Build optimal KOGOT-7 setup, demonstrate why it's broken with gameplay examples, compare to other meta ARs",
+                "captionDirection": "kogot-7 legit broken, if you dont have this build you are doing yourself injustice"
+              },
+              {
+                "priority": 3,
+                "title": "season 3 weapon tuning changes explained",
+                "type": "news",
+                "why": "Season 3 weapon tuning just went live, players need to understand what changed to stay competitive.",
+                "streamFocus": "Break down the most impactful weapon changes, test affected weapons live, explain how meta shifted",
+                "captionDirection": "season 3 changed everything, this is what actually matters"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "best settings for new verdansk lighting",
+                "type": "settings",
+                "why": "Verdansk is back in rotation with Season 3. Settings content gives clear competitive advantage and actionable tips.",
+                "streamFocus": "Adjust display settings live, show before/after visibility comparisons in different Verdansk areas, test optimal brightness/contrast",
+                "captionDirection": "these settings make enemies easier to spot, thank me later"
+              },
+              {
+                "priority": 2,
+                "title": "1v4 clutch strategies for final circle",
+                "type": "strategy",
+                "why": "Clutch 1v4 gas play moments are trending as viral formats. Strategy content performs well for his audience.",
+                "streamFocus": "Execute and capture multiple 1v4 scenarios, break down decision-making process, show positioning and timing",
+                "captionDirection": "how to actually win 1v4s in final circle"
+              },
+              {
+                "priority": 3,
+                "title": "kilo mp5 combo still works in ranked",
+                "type": "tips",
+                "why": "Community is discussing return of classic meta with OG Kilo & MP5 showing up again, creating nostalgia engagement.",
+                "streamFocus": "Run Kilo/MP5 loadout in ranked matches, show effectiveness against current meta weapons, highlight why it still works",
+                "captionDirection": "kilo mp5 still hits in ranked, og players know"
+              }
+            ]
+          }
+        ],
+        "trends": {
+          "metaShifts": "<cite index=\"11-1,11-2\">The current meta is dominated by the MK35 ISR assault rifle, with Razor 9mm SMG and Peacekeeper Mk1 assault rifle as strong alternatives</cite>. <cite index=\"13-33,13-43\">The MK35 ISR just walked to the front of the meta, with a nerfed Voyak KT-3 that had become too dominant in the long-range AR role</cite>.",
+          "patchNotes": "<cite index=\"3-2\">Warzone Season 3 update went live on Thursday, April 2, 2026</cite>. <cite index=\"2-5,2-6\">Season 3 includes weapon tuning across various modes, several improvements for Zombies, and a fix for the broken wingsuit controls in Warzone</cite>. <cite index=\"3-4\">Warzone Season 3 is live with Verdansk back in rotation, Grappling Hooks in core playlists, and a revamped Iron Gauntlet</cite>.",
+          "viralFormats": [
+            "Clutch 1v4 gas play moments",
+            "Meta loadout breakdowns",
+            "Movement/bunny hop tutorials"
+          ],
+          "risingTopics": [
+            "Black Ops Royale gameplay",
+            "Verdansk POI rotations",
+            "Ranked Play competition",
+            "Grappling Hook mechanics"
+          ],
+          "hotWeapons": [
+            "MK35 ISR",
+            "Razor 9mm",
+            "VST SMG"
+          ],
+          "communityBuzz": "<cite index=\"27-3\">Players are discussing the return of classic meta with the OG Kilo & MP5 showing up again, and top 5 meta AR loadouts are trending</cite>. <cite index=\"27-20,27-30\">Community content creators are breaking down the KOGOT-7 as broken and highlighting best meta builds for competitive play</cite>."
+        },
+        "competitors": []
+      },
+      {
         "id": 1776347095184,
         "runDate": "2026-04-16T13:43:48.147Z",
         "weekLabel": "Week of Apr 21 – Apr 18, 2026",
@@ -7770,7 +7886,7 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-04-16T13:43:48.147Z"
+    "lastRun": "2026-04-21T05:21:28.552Z"
   },
   "followerSnapshots": [
     {
