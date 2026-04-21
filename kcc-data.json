@@ -2892,7 +2892,22 @@
         "ig"
       ],
       "addedAt": "2026-04-20T19:43:37",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "audio settings cranked, hearing every single footstep on the map",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "audio settings cranked, hearing every single footstep on the map\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776731538638,
@@ -3878,6 +3893,15 @@
       "platform": "tt",
       "date": "2026-04-21",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776748799038.5256,
+      "clipId": 1776732217178,
+      "clipName": "When the audio is audioing",
+      "platform": "tt",
+      "date": "2026-04-22",
+      "time": "09:00",
       "posted": false
     }
   ],
