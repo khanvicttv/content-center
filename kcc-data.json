@@ -2956,7 +2956,48 @@
         "ig"
       ],
       "addedAt": "2026-04-20T19:08:14",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this smg is actually broken right now, no joke",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this smg is actually broken right now, no joke\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "this smg is actually broken, melts everyone up close",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this smg is actually broken, melts everyone up close\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "this smg is actually broken, literally melts everyone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#smg",
+            "#khanvicttv"
+          ],
+          "full": "this smg is actually broken, literally melts everyone\n\n#warzone #cod #callofduty #bo6 #warzoneclips #smg #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776728701182,
@@ -3792,6 +3833,15 @@
       "platform": "tt",
       "date": "2026-04-21",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1776732892509.252,
+      "clipId": 1776730094449,
+      "clipName": "Razor 9mm Build",
+      "platform": "tt",
+      "date": "2026-04-21",
+      "time": "09:00",
       "posted": false
     }
   ],
