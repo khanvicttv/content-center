@@ -3853,6 +3853,19 @@
             "#khanvicttv"
           ],
           "full": "bro tried everything, still got sent to the lobby\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone: when effort just isnt enough | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone: when effort just isnt enough | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     },
@@ -3925,7 +3938,22 @@
         "ig"
       ],
       "addedAt": "2026-04-22T11:10:52",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "good audio will legit change your whole warzone game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "good audio will legit change your whole warzone game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776873642962,
@@ -4880,6 +4908,15 @@
       "platform": "tt",
       "date": "2026-04-27",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776876861741.92,
+      "clipId": 1776874252792,
+      "clipName": "Vibin with great audio",
+      "platform": "tt",
+      "date": "2026-04-28",
+      "time": "09:00",
       "posted": false
     }
   ],
