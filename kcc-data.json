@@ -3800,7 +3800,35 @@
         "ig"
       ],
       "addedAt": "2026-04-22T11:16:28",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "nah bro, luck got nothing to do with it, pure aim",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "nah bro, luck got nothing to do with it, pure aim\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "nah bro luck got nothing to do with it, pure aim and game sense",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "nah bro luck got nothing to do with it, pure aim and game sense\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776874252792,
@@ -4734,6 +4762,24 @@
       "platform": "tt",
       "date": "2026-04-26",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776876843979.6938,
+      "clipId": 1776874588983,
+      "clipName": "Guess Im Lucky",
+      "platform": "tt",
+      "date": "2026-04-27",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776876843979.9724,
+      "clipId": 1776874588983,
+      "clipName": "Guess Im Lucky",
+      "platform": "ig",
+      "date": "2026-04-27",
+      "time": "09:00",
       "posted": false
     }
   ],
