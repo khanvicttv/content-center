@@ -3323,7 +3323,22 @@
         "ig"
       ],
       "addedAt": "2026-04-20T18:14:55",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "when the shots connect and everything just feels right",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "when the shots connect and everything just feels right\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776725222513,
@@ -4336,6 +4351,15 @@
       "platform": "tt",
       "date": "2026-04-25",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776871443783.4678,
+      "clipId": 1776726895353,
+      "clipName": "We love our crossbows",
+      "platform": "tt",
+      "date": "2026-04-25",
+      "time": "13:00",
       "posted": false
     }
   ],
