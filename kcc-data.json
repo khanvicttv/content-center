@@ -3826,7 +3826,35 @@
         "ig"
       ],
       "addedAt": "2026-04-22T11:19:34",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "he tried his best, just didnt work out this time",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "he tried his best, just didnt work out this time\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro tried everything, still got sent to the lobby",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro tried everything, still got sent to the lobby\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776874588983,
@@ -4843,6 +4871,15 @@
       "platform": "tt",
       "date": "2026-04-27",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1776876857052.6775,
+      "clipId": 1776874774263,
+      "clipName": "He tried",
+      "platform": "tt",
+      "date": "2026-04-27",
+      "time": "19:00",
       "posted": false
     }
   ],
