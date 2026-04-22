@@ -3770,7 +3770,48 @@
         "ig"
       ],
       "addedAt": "2026-04-22T11:24:04",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "when the streamer leaves and chat takes over the account",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "when the streamer leaves and chat takes over the account\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "chat keeps me entertained while im out, this is peak content",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "chat keeps me entertained while im out, this is peak content\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "chat entertainment mode activated while i handle business",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "chat entertainment mode activated while i handle business\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776874774263,
@@ -4793,6 +4834,15 @@
       "platform": "ig",
       "date": "2026-04-27",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776876850484.095,
+      "clipId": 1776875044416,
+      "clipName": "Told him to talk to chat",
+      "platform": "tt",
+      "date": "2026-04-27",
+      "time": "13:00",
       "posted": false
     }
   ],
