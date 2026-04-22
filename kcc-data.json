@@ -3155,7 +3155,35 @@
         "ig"
       ],
       "addedAt": "2026-04-20T18:45:01",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "sent the whole squad back to the lobby, they never saw it coming",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "sent the whole squad back to the lobby, they never saw it coming\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "whole squad back to the lobby, they never stood a chance",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "whole squad back to the lobby, they never stood a chance\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776728066107,
@@ -4086,6 +4114,15 @@
       "platform": "tt",
       "date": "2026-04-23",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776871388105.8843,
+      "clipId": 1776728701182,
+      "clipName": "Solo squad Wipe",
+      "platform": "tt",
+      "date": "2026-04-23",
+      "time": "13:00",
       "posted": false
     }
   ],
