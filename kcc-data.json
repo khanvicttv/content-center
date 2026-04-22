@@ -3450,7 +3450,22 @@
         "ig"
       ],
       "addedAt": "2026-04-20T17:39:09",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this is literally the only way he beats me every single time lol",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this is literally the only way he beats me every single time lol\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776724574007,
@@ -4386,6 +4401,15 @@
       "platform": "tt",
       "date": "2026-04-25",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1776871450904.5469,
+      "clipId": 1776724749957,
+      "clipName": "More kills than me",
+      "platform": "tt",
+      "date": "2026-04-25",
+      "time": "19:00",
       "posted": false
     }
   ],
@@ -6776,7 +6800,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
