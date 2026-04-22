@@ -3480,7 +3480,48 @@
         "ig"
       ],
       "addedAt": "2026-04-20T17:25:11",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "stop chasing, how many times i gotta say this",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "stop chasing, how many times i gotta say this\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "stop chasing, this is the third time im telling you",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "stop chasing, this is the third time im telling you\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "stop chasing, its the biggest mistake youre making",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "stop chasing, its the biggest mistake youre making\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776723685781,
@@ -4286,6 +4327,15 @@
       "platform": "tt",
       "date": "2026-04-24",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776871426533.475,
+      "clipId": 1776723911336,
+      "clipName": "Hate the water",
+      "platform": "tt",
+      "date": "2026-04-25",
+      "time": "09:00",
       "posted": false
     }
   ],
