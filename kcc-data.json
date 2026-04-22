@@ -3047,7 +3047,22 @@
         "ig"
       ],
       "addedAt": "2026-04-20T19:13:20",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "sometimes you gotta know when to back out and live to fight",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "sometimes you gotta know when to back out and live to fight\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776730094449,
@@ -3986,6 +4001,15 @@
       "platform": "tt",
       "date": "2026-04-22",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1776871353621.9282,
+      "clipId": 1776730400736,
+      "clipName": "Dont do that one",
+      "platform": "tt",
+      "date": "2026-04-22",
+      "time": "19:00",
       "posted": false
     }
   ],
