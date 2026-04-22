@@ -2991,7 +2991,22 @@
         "ig"
       ],
       "addedAt": "2026-04-20T19:23:57",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this mode was clearly not designed with us older players in mind",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this mode was clearly not designed with us older players in mind\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776730400736,
@@ -3937,6 +3952,15 @@
       "actualTime": "09:00",
       "postedAt": "2026-04-22T15:22:10.458Z",
       "timingVariance": 0
+    },
+    {
+      "id": 1776871345764.6606,
+      "clipId": 1776731037205,
+      "clipName": "Not for unc",
+      "platform": "tt",
+      "date": "2026-04-22",
+      "time": "13:00",
+      "posted": false
     }
   ],
   "checklist": {
