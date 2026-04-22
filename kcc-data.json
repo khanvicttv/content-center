@@ -3379,7 +3379,35 @@
         "ig"
       ],
       "addedAt": "2026-04-20T17:47:02",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "bro that angle was impossible, somehow still scored",
+          "hashtags": [
+            "#rocketleague",
+            "#gaming",
+            "#esports",
+            "#clips",
+            "#impossible",
+            "#khanvicttv",
+            "#fpsstreamer"
+          ],
+          "full": "bro that angle was impossible, somehow still scored\n\n#rocketleague #gaming #esports #clips #impossible #khanvicttv #fpsstreamer"
+        },
+        "ig": {
+          "caption": "bro said he was gonna make it. he actually made it.",
+          "hashtags": [
+            "#rocketleague",
+            "#gaming",
+            "#esports",
+            "#khanvicttv",
+            "#clips",
+            "#insane",
+            "#clutch"
+          ],
+          "full": "bro said he was gonna make it. he actually made it.\n\n#rocketleague #gaming #esports #khanvicttv #clips #insane #clutch"
+        }
+      }
     },
     {
       "id": 1776724956314,
@@ -4445,6 +4473,15 @@
       "platform": "tt",
       "date": "2026-04-26",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1776871463385.052,
+      "clipId": 1776723685781,
+      "clipName": "Duo quad dubs",
+      "platform": "tt",
+      "date": "2026-04-26",
+      "time": "13:00",
       "posted": false
     }
   ],
@@ -6835,7 +6872,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
