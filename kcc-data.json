@@ -3271,7 +3271,35 @@
         "ig"
       ],
       "addedAt": "2026-04-20T17:42:36",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "these guys definitely ran this play a thousand times before",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "these guys definitely ran this play a thousand times before\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro they had to have put in work in aim trainers or something, that was crazy",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro they had to have put in work in aim trainers or something, that was crazy\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776724749957,
@@ -4136,6 +4164,15 @@
       "platform": "tt",
       "date": "2026-04-23",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1776871396994.869,
+      "clipId": 1776724956314,
+      "clipName": "Jabbawockeez",
+      "platform": "tt",
+      "date": "2026-04-23",
+      "time": "19:00",
       "posted": false
     }
   ],
