@@ -3260,7 +3260,35 @@
         "ig"
       ],
       "addedAt": "2026-04-20T17:36:14",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this tool is keeping my aim on point, no cap",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this tool is keeping my aim on point, no cap\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "this tool keeping my aim locked in, no missing shots",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this tool keeping my aim locked in, no missing shots\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1776723911336,
@@ -4036,6 +4064,15 @@
       "platform": "tt",
       "date": "2026-04-22",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1776871377327.833,
+      "clipId": 1776724574007,
+      "clipName": "KCC Promo",
+      "platform": "tt",
+      "date": "2026-04-23",
+      "time": "09:00",
       "posted": false
     }
   ],
