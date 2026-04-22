@@ -3931,7 +3931,10 @@
       "platform": "tt",
       "date": "2026-04-22",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-04-22T15:22:10.458Z",
+      "timingVariance": 0
     }
   ],
   "checklist": {
