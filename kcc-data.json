@@ -4904,7 +4904,10 @@
       "platform": "ig",
       "date": "2026-04-23",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-04-23T19:54:05.867Z",
+      "timingVariance": 0
     },
     {
       "id": 1776876835978.9006,
