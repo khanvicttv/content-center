@@ -8853,6 +8853,123 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1777136867669,
+        "runDate": "2026-04-25T17:06:40.893Z",
+        "weekLabel": "Week of Apr 28 – Apr 25, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "MK35 ISR post-patch loadout for long-range dominance",
+                "type": "loadout",
+                "why": "April 21 patch made MK35 ISR the absolute S-tier meta weapon. Loadout content consistently outperforms kill clips for Khanvict.",
+                "streamFocus": "Build and test the optimal MK35 ISR class setup, showcase recoil control and damage output at range",
+                "captionDirection": "mk35 is actually broken now, if you sleep on this build you will regret it"
+              },
+              {
+                "priority": 2,
+                "title": "gas rotation strategy after loot economy changes",
+                "type": "strategy",
+                "why": "Patch 1.0.8 normalized legendary supply boxes, changing early game strategy. Gas play content performs well based on his data.",
+                "streamFocus": "Demonstrate new early game rotations without relying on first-circle legendary box dominance",
+                "captionDirection": "loot economy changed everything, this rotation wins games now"
+              },
+              {
+                "priority": 3,
+                "title": "bunny hop movement tutorial comeback",
+                "type": "tutorial",
+                "why": "Movement guides are trending with 'bunny hop is BACK' format gaining traction across platforms.",
+                "streamFocus": "Break down bunny hop mechanics step-by-step, show practical applications in gunfights",
+                "captionDirection": "bunny hop actually works again, here is exactly how to do it"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "VST SMG vs Razor 9mm close-range comparison",
+                "type": "loadout",
+                "why": "Both SMGs are current meta options for close quarters. Head-to-head loadout comparisons drive engagement for strategy content.",
+                "streamFocus": "Test both SMG builds back-to-back in same scenarios, compare TTK and mobility",
+                "captionDirection": "vst or razor, this will settle it once and for all"
+              },
+              {
+                "priority": 2,
+                "title": "rebirth island jump spot guide",
+                "type": "tips",
+                "why": "Rebirth Island jump spots are trending in movement guides. Tips content is Khanvict's strongest performing category.",
+                "streamFocus": "Hit 5-7 key jump spots on Rebirth, show the angles and advantages each provides",
+                "captionDirection": "these spots will save your life on rebirth, most players dont know them"
+              },
+              {
+                "priority": 3,
+                "title": "season 3 reloaded preview reaction",
+                "type": "news",
+                "why": "Season 3 Reloaded launches April 30 with new modes and weapons. Community is buzzing about upcoming content.",
+                "streamFocus": "React to latest Season 3 Reloaded trailers/info, discuss Siren energy weapon and new modes",
+                "captionDirection": "season 3 reloaded looks insane, siren weapon might break the game"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "1v4 team wipe with current meta weapons",
+                "type": "highlight",
+                "why": "1v4/1v5 team wipe highlights are currently viral format trending across platforms.",
+                "streamFocus": "Go for aggressive 1v4 situations using MK35 ISR and VST/Razor combo, capture clean team wipes",
+                "captionDirection": "1v4 with meta weapons, they never saw it coming"
+              },
+              {
+                "priority": 2,
+                "title": "hot pursuit mode strategy breakdown",
+                "type": "strategy",
+                "why": "Hot Pursuit cops-and-robbers mode on Avalon is part of Season 3 Reloaded hype building toward April 30 launch.",
+                "streamFocus": "Play Hot Pursuit mode, develop and explain optimal strategies for both cop and robber sides",
+                "captionDirection": "hot pursuit strategy that actually works, most players do this wrong"
+              },
+              {
+                "priority": 3,
+                "title": "audio settings for hearing grapples better",
+                "type": "settings",
+                "why": "His best post was 'Grapples are loud' with 601 views. Audio settings content can build on that success.",
+                "streamFocus": "Adjust and test audio settings live, demonstrate how to better hear grapples and movement audio cues",
+                "captionDirection": "these audio settings will make you hear everything, grapples included"
+              }
+            ]
+          }
+        ],
+        "trends": {
+          "metaShifts": "<cite index=\"11-1,11-4\">The April 21, 2026 Patch 1.0.8 update fundamentally shifted the loot economy and long-range engagement meta with recoil adjustments to the dominant AK-27 and MK35 platforms</cite>. <cite index=\"13-1,13-2\">The MK35 ISR is now S-tier, with VST SMG and Razor 9mm as meta options</cite>.",
+          "patchNotes": "<cite index=\"2-1\">Patch 1.0.8 released April 21, 2026</cite> — <cite index=\"11-9\">Legendary Supply Boxes normalized to prevent dominance in first three minutes of match</cite>. <cite index=\"11-11,11-12\">Season 3 Reloaded arriving April 30, 2026 with Siren energy weapon and Katana melee</cite>.",
+          "viralFormats": [
+            "Meta loadout class setups (\"TOP 5 META AR LOADOUTS in #warzone\")",
+            "Clutch gas play moments (\"solo squad gas play clutch\" format)",
+            "Movement guides (\"bunny hop is BACK\", rebirth island jump spots)",
+            "1v4/1v5 team wipe highlights"
+          ],
+          "risingTopics": [
+            "Season 3 Reloaded incoming content (April 30 launch)",
+            "RoboCop crossover event & cosmetics",
+            "Hot Pursuit cops-and-robbers mode on Avalon",
+            "Prop Hunt Royale 24v24 on Rebirth Island"
+          ],
+          "hotWeapons": [
+            "MK35 ISR (long-range AR - absolute meta)",
+            "VST (SMG - close range)",
+            "Razor 9mm (SMG - close quarters)"
+          ],
+          "communityBuzz": "<cite index=\"31-2\">Season 3 Reloaded is generating hype with new game modes like Hot Pursuit across Avalon and Prop Hunt Royale in Rebirth Island</cite>. <cite index=\"45-4,45-5\">The April 21 patch rebalancing of AK-27 and MK35 with loot economy changes has shifted meta strategy discussions</cite>."
+        },
+        "competitors": []
+      },
+      {
         "id": 1776748955724,
         "runDate": "2026-04-21T05:21:28.552Z",
         "weekLabel": "Week of Apr 21 – Apr 25, 2026",
@@ -9277,7 +9394,7 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-04-21T05:21:28.552Z"
+    "lastRun": "2026-04-25T17:06:40.893Z"
   },
   "followerSnapshots": [
     {
