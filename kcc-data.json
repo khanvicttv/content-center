@@ -3368,7 +3368,9 @@
           ],
           "full": "warzone headshot so clean it felt illegal | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-04-26T16:17:59.874Z"
     },
     {
       "id": 1776725222513,
@@ -7564,7 +7566,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": -1,
   "engagements": [
     {
       "id": 1774928290584,
