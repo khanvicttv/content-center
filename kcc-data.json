@@ -4880,15 +4880,6 @@
       "timingVariance": 600
     },
     {
-      "id": 1776871450904.5469,
-      "clipId": 1776724749957,
-      "clipName": "More kills than me",
-      "platform": "tt",
-      "date": "2026-04-25",
-      "time": "19:00",
-      "posted": false
-    },
-    {
       "id": 1776871458297.723,
       "clipId": 1776725222513,
       "clipName": "Fearless with the crossbow",
@@ -7564,7 +7555,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
