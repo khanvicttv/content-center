@@ -9156,6 +9156,122 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1777305334111,
+        "runDate": "2026-04-27T15:54:22.803Z",
+        "weekLabel": "Week of Apr 28 – May 2, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "MK35 ISR post-patch recoil control guide",
+                "type": "tutorial",
+                "why": "Patch 1.0.8 changed recoil patterns for dominant weapons. Players need updated guidance on controlling the still-meta MK35 ISR.",
+                "streamFocus": "Record side-by-side recoil pattern comparisons pre/post patch, demonstrate exact pull-down technique with text overlays showing timing",
+                "captionDirection": "mk35 recoil changed but still manageable if you know the pattern"
+              },
+              {
+                "priority": 2,
+                "title": "Launch Pad POI rotation strategy for Verdansk",
+                "type": "strategy",
+                "why": "New Verdansk Launch Pad POI is trending with Season 3 Reloaded hype building. Early strategy content will capture search interest.",
+                "streamFocus": "Drop Launch Pad multiple games, show optimal loot routes, rotation paths, and high ground positions with overlay callouts",
+                "captionDirection": "launch pad rotations everyone is sleeping on"
+              },
+              {
+                "priority": 3,
+                "title": "VST SMG attachments for close-range dominance",
+                "type": "loadout",
+                "why": "VST leads SMG meta currently. Loadout content consistently outperforms pure gameplay for his channel.",
+                "streamFocus": "Test VST builds in-game, capture damage comparisons, show effective range with different attachment combos",
+                "captionDirection": "vst build that melts in 0.7 seconds"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Season 3 Reloaded prep: what's actually changing April 30",
+                "type": "news",
+                "why": "Season 3 Reloaded launches April 30 with new modes. Breaking down confirmed changes will capture pre-launch search traffic.",
+                "streamFocus": "React to official patch notes, highlight Hot Pursuit on Avalon and Prop Hunt Royale modes with gameplay predictions",
+                "captionDirection": "season 3 reloaded changes you need to know before april 30"
+              },
+              {
+                "priority": 2,
+                "title": "Bunny hop movement tech tutorial",
+                "type": "tutorial",
+                "why": "Movement tech with bunny hop returns is trending. Tutorial content aligns with his strengths and audience preferences.",
+                "streamFocus": "Demonstrate bunny hop timing, show before/after movement speed, practice in different scenarios with clear input overlays",
+                "captionDirection": "bunny hop is back and most players are doing it wrong"
+              },
+              {
+                "priority": 3,
+                "title": "Razor 9mm vs VST SMG damage comparison",
+                "type": "strategy",
+                "why": "Both SMGs are meta-tier. Direct comparisons help viewers make informed loadout choices, matching his data-driven content style.",
+                "streamFocus": "Test both SMGs in identical scenarios, record TTK differences, show optimal ranges for each weapon",
+                "captionDirection": "razor vs vst damage test, results surprised me"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Launch Squad LTM codes strategy guide",
+                "type": "strategy",
+                "why": "Launch Codes mechanic in new LTM is generating buzz. Strategy content around new mechanics typically performs well.",
+                "streamFocus": "Play Launch Squad mode, demonstrate code collection routes, show team coordination for launch sequence activation",
+                "captionDirection": "launch codes strategy that wins games consistently"
+              },
+              {
+                "priority": 2,
+                "title": "Post-patch long range engagement positioning",
+                "type": "tips",
+                "why": "Patch 1.0.8 shifted long-range meta significantly. Players need updated positioning advice for new engagement ranges.",
+                "streamFocus": "Show optimal long-range positions on current map, demonstrate new effective ranges, highlight cover usage",
+                "captionDirection": "long range positioning after patch 1.0.8 changes everything"
+              },
+              {
+                "priority": 3,
+                "title": "1v4 gas play clutch techniques",
+                "type": "highlight",
+                "why": "Gas play clutches are viral format trending currently. His best post was tactical gameplay, this combines strategy with highlight potential.",
+                "streamFocus": "Actively seek 1v4+ situations in gas, record decision-making process, capture successful clutches with strategic overlay explanations",
+                "captionDirection": "gas clutch positioning they never expect"
+              }
+            ]
+          }
+        ],
+        "trends": {
+          "metaShifts": "<cite index=\"11-1,11-4\">Patch 1.0.8 (April 21, 2026) fundamentally shifted the loot economy and long-range engagement meta with significant recoil adjustments to the dominant AK-27 and MK35 platforms.</cite> <cite index=\"12-1,12-2\">MK35 ISR dominates as S-tier assault rifle, with VST and Razor 9mm leading SMG class.</cite>",
+          "patchNotes": "<cite index=\"2-1\">Patch 1.0.8 released April 21, 2026</cite>; <cite index=\"10-1\">Season 03 Reloaded arriving April 30, 2026</cite>",
+          "viralFormats": [
+            "Gas play clutches (1v4/1v5)",
+            "META loadout guides (top 5 AR builds)",
+            "Movement tech (bunny hop returns)"
+          ],
+          "risingTopics": [
+            "Season 3 Reloaded content (April 30)",
+            "Launch Squad LTM with Launch Codes mechanic",
+            "Verdansk Launch Pad POI",
+            "Siren energy weapon & Katana melee incoming"
+          ],
+          "hotWeapons": [
+            "MK35 ISR",
+            "VST (SMG)",
+            "Razor 9mm"
+          ],
+          "communityBuzz": "<cite index=\"31-2,31-5\">Players excited for Season 03 Reloaded launching April 30 with Hot Pursuit on Avalon, Prop Hunt Royale on Rebirth Island, and new competitive modes.</cite> <cite index=\"28-3\">TikTok trending with meta AR loadout guides and rebirth island gameplay content.</cite>"
+        },
+        "competitors": []
+      },
+      {
         "id": 1777136867669,
         "runDate": "2026-04-25T17:06:40.893Z",
         "weekLabel": "Week of Apr 28 – Apr 25, 2026",
@@ -9697,7 +9813,7 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-04-25T17:06:40.893Z"
+    "lastRun": "2026-04-27T15:54:22.803Z"
   },
   "followerSnapshots": [
     {
