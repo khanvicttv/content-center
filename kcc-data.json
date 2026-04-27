@@ -4848,7 +4848,7 @@
       "clipId": 1776727129266,
       "clipName": "Having fun getting it done",
       "platform": "tt",
-      "date": "2026-04-25",
+      "date": "2026-04-24",
       "time": "19:00",
       "posted": true,
       "actualTime": "01:00",
@@ -7570,7 +7570,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
