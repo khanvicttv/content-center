@@ -3701,7 +3701,9 @@
           ],
           "full": "just me and my duo, cleaning up warzone like it's nothing\n\n#warzone #cod #callofduty #duoquad #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-04-27T03:47:26.439Z"
     },
     {
       "id": 1776875400403,
@@ -7568,7 +7570,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": -1,
   "engagements": [
     {
       "id": 1774928290584,
