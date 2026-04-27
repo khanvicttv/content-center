@@ -3927,7 +3927,9 @@
           ],
           "full": "people say im lucky but nah thats pure skill right there\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-04-27T15:49:01.077Z"
     },
     {
       "id": 1776874252792,
@@ -4955,7 +4957,10 @@
       "platform": "ig",
       "date": "2026-04-27",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-04-27T15:49:01.076Z",
+      "timingVariance": 0
     },
     {
       "id": 1776876850484.095,
