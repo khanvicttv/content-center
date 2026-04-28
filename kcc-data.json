@@ -5011,7 +5011,10 @@
       "platform": "tt",
       "date": "2026-04-28",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:25",
+      "postedAt": "2026-04-28T18:33:56.003Z",
+      "timingVariance": 25
     }
   ],
   "checklist": {
