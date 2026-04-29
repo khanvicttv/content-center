@@ -4099,21 +4099,6 @@
       "fromScan": true
     },
     {
-      "id": 1777307477547,
-      "name": "MXR17 Build",
-      "filename": "MXR17 Build.mp4",
-      "duration": "0:12",
-      "size_mb": 16.8,
-      "desc": "",
-      "game": "",
-      "platforms": [
-        "tt",
-        "ig"
-      ],
-      "addedAt": "2026-04-27T11:31:17",
-      "fromScan": true
-    },
-    {
       "id": 1777306253402,
       "name": "Execute",
       "filename": "Execute.mp4",
@@ -7735,38 +7720,6 @@
       ]
     },
     "1777307809861": {
-      "tt": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "ig": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "yt": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    "1777307477547": {
       "tt": [
         false,
         false,
