@@ -4147,7 +4147,48 @@
         "ig"
       ],
       "addedAt": "2026-04-29T18:13:57",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this man has no business being near a casino",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this man has no business being near a casino\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "this man cannot be trusted near a casino, straight up liability",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this man cannot be trusted near a casino, straight up liability\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "this guy loses everything near the casino warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this guy loses everything near the casino warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777504310485,
@@ -4237,7 +4278,48 @@
         "ig"
       ],
       "addedAt": "2026-04-29T17:31:08",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "married guys know exactly what this clip is about, no cap",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "married guys know exactly what this clip is about, no cap\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "married guys know this struggle is too real, catch me live on twitch",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "married guys know this struggle is too real, catch me live on twitch\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "married guys know this warzone struggle is too real",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "married guys know this warzone struggle is too real\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -5256,6 +5338,24 @@
       "platform": "tt",
       "date": "2026-04-30",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1777504678423.7456,
+      "clipId": 1777504437960,
+      "clipName": "Hit the jackpot",
+      "platform": "tt",
+      "date": "2026-04-30",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1777504682704.1958,
+      "clipId": 1777501868473,
+      "clipName": "Who else can relate",
+      "platform": "tt",
+      "date": "2026-05-01",
+      "time": "09:00",
       "posted": false
     }
   ],
