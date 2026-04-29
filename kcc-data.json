@@ -4259,7 +4259,22 @@
         "ig"
       ],
       "addedAt": "2026-04-29T17:50:14",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "warzone needs a new map, this one is mid",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#fps"
+          ],
+          "full": "warzone needs a new map, this one is mid\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
+        }
+      }
     },
     {
       "id": 1777502740801,
@@ -5406,6 +5421,15 @@
       "platform": "tt",
       "date": "2026-05-01",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1777504697257.2092,
+      "clipId": 1777503014139,
+      "clipName": "Dont like havens hollow",
+      "platform": "tt",
+      "date": "2026-05-01",
+      "time": "19:00",
       "posted": false
     }
   ],
