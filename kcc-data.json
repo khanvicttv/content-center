@@ -4315,7 +4315,48 @@
         "ig"
       ],
       "addedAt": "2026-04-29T17:45:40",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "two bodies dropped, nothing crazy just cleaning up",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "two bodies dropped, nothing crazy just cleaning up\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "two piece combo, nothing crazy just another day in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "two piece combo, nothing crazy just another day in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "quick 2 piece, clean and simple | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "quick 2 piece, clean and simple | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777502592169,
@@ -4386,7 +4427,48 @@
         "ig"
       ],
       "addedAt": "2026-04-29T17:37:18",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "keeping it clean out here, no need for all that",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "keeping it clean out here, no need for all that\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "keeping it clean out here, no need for all that noise",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "keeping it clean out here, no need for all that noise\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "kept it clean, no trash talk needed here",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "kept it clean, no trash talk needed here\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777501868473,
@@ -5506,6 +5588,24 @@
       "platform": "tt",
       "date": "2026-05-02",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1777504710219.4087,
+      "clipId": 1777502740801,
+      "clipName": "Quick 2 piece",
+      "platform": "tt",
+      "date": "2026-05-02",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1777504714387.9028,
+      "clipId": 1777502238358,
+      "clipName": "Dont bring it around me",
+      "platform": "tt",
+      "date": "2026-05-02",
+      "time": "19:00",
       "posted": false
     }
   ],
