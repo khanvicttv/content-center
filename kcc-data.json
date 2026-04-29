@@ -4330,7 +4330,48 @@
         "ig"
       ],
       "addedAt": "2026-04-29T17:43:12",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "heard him change his mag, knew exactly where he was",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "heard him change his mag, knew exactly where he was\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "caught him mid reload, thats when you push. watch live on twitch for more positioning tips",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "caught him mid reload, thats when you push. watch live on twitch for more positioning tips\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "heard him change his mag, knew exactly where he was",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "heard him change his mag, knew exactly where he was\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777502238358,
@@ -5456,6 +5497,15 @@
       "platform": "tt",
       "date": "2026-05-01",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1777504704666.7446,
+      "clipId": 1777502592169,
+      "clipName": "Great audio",
+      "platform": "tt",
+      "date": "2026-05-02",
+      "time": "09:00",
       "posted": false
     }
   ],
