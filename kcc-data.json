@@ -5019,7 +5019,10 @@
       "platform": "tt",
       "date": "2026-04-28",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-04-29T22:18:19.515Z",
+      "timingVariance": 0
     },
     {
       "id": 1776876843979.6938,
@@ -5100,7 +5103,10 @@
       "platform": "tt",
       "date": "2026-04-29",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-04-29T22:18:21.771Z",
+      "timingVariance": 0
     },
     {
       "id": 1777501075032.0378,
@@ -5127,6 +5133,15 @@
       "platform": "tt",
       "date": "2026-04-30",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1777501095514.1816,
+      "clipId": 1777306253402,
+      "clipName": "Execute",
+      "platform": "tt",
+      "date": "2026-04-30",
+      "time": "13:00",
       "posted": false
     }
   ],
