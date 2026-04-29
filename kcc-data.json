@@ -3761,7 +3761,9 @@
           ],
           "full": "fearless hitting crossbow shots in rocket league now\n\n#rocketleague #crossbow #gaming #clips #khanvicttv #skillcheck #esports"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-04-29T22:18:28.436Z"
     },
     {
       "id": 1776875044416,
@@ -4096,7 +4098,9 @@
         "ig"
       ],
       "addedAt": "2026-04-27T11:36:49",
-      "fromScan": true
+      "fromScan": true,
+      "archived": true,
+      "archivedAt": "2026-04-29T22:18:31.452Z"
     },
     {
       "id": 1777306253402,
@@ -5115,7 +5119,10 @@
       "platform": "tt",
       "date": "2026-04-29",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-04-29T22:18:23.307Z",
+      "timingVariance": 0
     },
     {
       "id": 1777501085945.613,
