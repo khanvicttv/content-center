@@ -4068,7 +4068,9 @@
         "ig"
       ],
       "addedAt": "2026-04-27T11:57:21",
-      "fromScan": true
+      "fromScan": true,
+      "archived": true,
+      "archivedAt": "2026-04-29T22:19:20.314Z"
     },
     {
       "id": 1777308466195,
