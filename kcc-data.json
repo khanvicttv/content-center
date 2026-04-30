@@ -11185,63 +11185,74 @@
   "followerSnapshots": [
     {
       "date": "2026-04-08",
-      "count": 3280,
-      "platform": "tt",
+      "tt": 3280,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-08T18:18:53.555Z"
     },
     {
       "date": "2026-04-09",
-      "count": 3280,
-      "platform": "tt",
+      "tt": 3280,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-09T16:44:52.941Z"
     },
     {
       "date": "2026-04-10",
-      "count": 3284,
-      "platform": "tt",
+      "tt": 3284,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-10T21:03:57.529Z"
     },
     {
       "date": "2026-04-13",
-      "count": 3293,
-      "platform": "tt",
+      "tt": 3293,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-14T01:43:16.850Z"
     },
     {
       "date": "2026-04-15",
-      "count": 3295,
-      "platform": "tt",
+      "tt": 3295,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-16T02:56:26.025Z"
     },
     {
       "date": "2026-04-20",
-      "count": 3305,
-      "platform": "tt",
+      "tt": 3305,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-20T06:08:54.349Z"
     },
     {
       "date": "2026-04-22",
-      "count": 3306,
-      "platform": "tt",
+      "tt": 3306,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-22T15:27:48.777Z"
     },
     {
       "date": "2026-04-25",
-      "count": 3314,
-      "platform": "tt",
+      "tt": 3314,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-25T18:29:22.904Z"
     },
     {
       "date": "2026-04-26",
-      "count": 3331,
-      "platform": "tt",
+      "tt": 3331,
+      "ig": null,
+      "yt": null,
       "loggedAt": "2026-04-26T16:22:02.892Z"
     },
     {
       "date": "2026-04-30",
-      "count": 3340,
-      "platform": "tt",
-      "loggedAt": "2026-04-30T19:10:30.179Z"
+      "tt": 3340,
+      "ig": 303,
+      "yt": 453,
+      "loggedAt": "2026-04-30T19:10:30.179Z",
+      "updatedAt": "2026-04-30T20:39:52.889Z"
     }
   ]
 }
