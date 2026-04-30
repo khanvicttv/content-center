@@ -669,6 +669,43 @@
       <!-- Overview cards -->
       <div id="analytics-overview" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:14px;"></div>
 
+      <!-- Follower Growth Tracker -->
+      <div class="card" style="margin-bottom:14px;">
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>📈 Follower Growth</span>
+          <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fg-input-row').style.display = document.getElementById('fg-input-row').style.display === 'none' ? 'flex' : 'none'">+ Log today</button>
+        </div>
+        <!-- Input row -->
+        <div id="fg-input-row" style="display:none;flex-wrap:wrap;align-items:flex-end;gap:10px;margin-bottom:16px;padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);">
+          <div class="field" style="margin:0;flex:0 0 120px;">
+            <label>Date</label>
+            <input type="date" id="fg-date">
+          </div>
+          <div class="field" style="margin:0;flex:0 0 100px;">
+            <label style="color:var(--tiktok);">TikTok</label>
+            <input type="text" id="fg-tt" placeholder="e.g. 3280" inputmode="numeric">
+          </div>
+          <div class="field" style="margin:0;flex:0 0 100px;">
+            <label style="color:var(--ig);">Instagram</label>
+            <input type="text" id="fg-ig" placeholder="e.g. 920" inputmode="numeric">
+          </div>
+          <div class="field" style="margin:0;flex:0 0 100px;">
+            <label style="color:var(--yt);">YouTube</label>
+            <input type="text" id="fg-yt" placeholder="e.g. 148" inputmode="numeric">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="addFollowerSnapshot()" style="flex-shrink:0;margin-bottom:14px;">Save</button>
+        </div>
+        <!-- Platform tabs -->
+        <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:14px;">
+          <button class="fg-tab active" id="fgtab-overall" onclick="switchFgTab('overall')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--text);border-bottom:2px solid var(--accent);margin-bottom:-1px;">Overall</button>
+          <button class="fg-tab" id="fgtab-tt" onclick="switchFgTab('tt')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;">TikTok</button>
+          <button class="fg-tab" id="fgtab-ig" onclick="switchFgTab('ig')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;">Instagram</button>
+          <button class="fg-tab" id="fgtab-yt" onclick="switchFgTab('yt')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;">YouTube</button>
+        </div>
+        <div id="fg-chart-area"></div>
+        <div id="fg-log-area" style="max-height:220px;overflow-y:auto;margin-top:10px;"></div>
+      </div>
+
       <!-- AI Insights -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
@@ -724,7 +761,7 @@
       <!-- Hashtag performance -->
       <div class="card" style="margin-bottom:14px;">
         <div class="card-title">Hashtag performance</div>
-        <div id="hashtag-perf-list"><div style="color:var(--muted);font-size:13px;padding:12px 0;">No hashtag data yet.</div></div>
+        <div id="hashtag-perf-list" style="max-height:320px;overflow-y:auto;padding-right:4px;"><div style="color:var(--muted);font-size:13px;padding:12px 0;">No hashtag data yet.</div></div>
       </div>
 
       <!-- Timing adherence -->
@@ -735,8 +772,11 @@
 
       <!-- Engagement log -->
       <div class="card">
-        <div class="card-title">Engagement log</div>
-        <div id="engage-log-list"><div style="color:var(--muted);font-size:13px;padding:12px 0;">No engagement logged yet.</div></div>
+        <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>Engagement log</span>
+          <span id="engage-log-count" style="font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:0;text-transform:none;font-weight:400;"></span>
+        </div>
+        <div id="engage-log-list" style="max-height:420px;overflow-y:auto;padding-right:4px;"><div style="color:var(--muted);font-size:13px;padding:12px 0;">No engagement logged yet.</div></div>
       </div>
     </div>
 
@@ -895,7 +935,7 @@
     </div>
     <div class="grid2">
       <div class="field"><label>Comments</label><input type="number" id="eng-comments" placeholder="e.g. 28" min="0"></div>
-      <div class="field"><label>New followers</label><input type="number" id="eng-followers" placeholder="e.g. 12" min="0"></div>
+      <div class="field"><label>Bookmarks</label><input type="number" id="eng-bookmarks" placeholder="e.g. 47" min="0"></div>
     </div>
     <div class="field">
       <label>Hashtags used <span style="color:var(--accent2);font-size:9px;">(comma separated)</span></label>
@@ -999,7 +1039,8 @@ let state = {
   slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)),
   weekOffset: 0,
   engagements: [],
-  contentIntel: { briefs: [], lastRun: null }
+  contentIntel: { briefs: [], lastRun: null },
+  followerSnapshots: []   // [{ date:'YYYY-MM-DD', tt:null, ig:null, yt:null, loggedAt:ISO }]
 };
 
 const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
@@ -1230,15 +1271,13 @@ function isClipFullyPosted(clip) {
 }
 
 function autoArchiveClips() {
-  let changed = false;
+  // Mutates state only — caller is responsible for save()
   state.clips.forEach(clip => {
     if (!clip.archived && isClipFullyPosted(clip)) {
       clip.archived = true;
       clip.archivedAt = new Date().toISOString();
-      changed = true;
     }
   });
-  if (changed) save();
 }
 
 function renderClipList() {
@@ -1620,11 +1659,11 @@ function markPosted(postId) {
   const post = state.posts.find(p => String(p.id) === String(postId));
   if (post) {
     post.posted = !post.posted;
-    save();
     autoArchiveClips();
+    save();
     renderToday();
     updateSidebar();
-    if (document.getElementById('panel-clips').classList.contains('active')) renderClipList();
+    renderClipList();
   }
 }
 
@@ -2032,8 +2071,8 @@ function confirmMarkPosted() {
       delete post.timingVariance;
     }
 
+    autoArchiveClips(); // must run before save so archive state is persisted in same write
     save();
-    autoArchiveClips();
     renderWeek();
     renderToday();
     updateSidebar();
@@ -2316,9 +2355,27 @@ async function analyseCaption() {
     new Promise(resolve => setTimeout(() => resolve(null), 8000))
   ]);
 
+  // Build own top hashtags from engagement data — min 3 posts required for reliability
+  const ownTagData = {};
+  state.engagements.forEach(e => {
+    (e.hashtags || []).forEach(tag => {
+      if (!ownTagData[tag]) ownTagData[tag] = { views: 0, count: 0 };
+      ownTagData[tag].views += e.views || 0;
+      ownTagData[tag].count++;
+    });
+  });
+  const ownTopTags = Object.entries(ownTagData)
+    .filter(([, d]) => d.count >= 3)  // min 3 posts — single-post data is unreliable
+    .sort((a, b) => (b[1].views / b[1].count) - (a[1].views / a[1].count))
+    .slice(0, 5)
+    .map(([tag, d]) => `${tag} (avg ${Math.round(d.views / d.count).toLocaleString()} views, ${d.count} posts)`);
+  const ownDataContext = ownTopTags.length
+    ? `HIS OWN TOP-PERFORMING HASHTAGS (from real post data, min 3 posts each):\n${ownTopTags.join('\n')}\nPrioritize these proven tags when they fit — they outperform generic ones for his specific audience.`
+    : `No own hashtag performance data yet — use trending tags as primary guide.`;
+
   const trendingContext = trending
-    ? `Currently trending hashtags for ${game} on TikTok: ${[...(trending.always_include||[]), ...(trending.trending||[])].join(', ')}\nRising tags: ${(trending.rising||[]).join(', ')}`
-    : `Use these proven hashtags: #warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv`;
+    ? `CURRENTLY TRENDING on TikTok for ${game}: ${[...(trending.always_include||[]), ...(trending.trending||[])].join(', ')}\nRising tags: ${(trending.rising||[]).join(', ')}`
+    : `CORE TAGS (always include): #warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv`;
 
   const prompt = `You are the caption coach for Khanvict TV — a Warzone/FPS streamer. His best captions are short, lowercase, matter-of-fact with occasional dry humor. No emojis, no hype words.
 
@@ -2332,12 +2389,14 @@ His top performing captions for reference:
 CAPTION HE WROTE: "${ttCaption}"
 GAME: ${game}
 
+${ownDataContext}
+
 ${trendingContext}
 
 Your job:
 1. Voice check — does this sound like him? Score it 1-10 and explain briefly (1-2 sentences max)
-2. Build the BEST hashtag set for TikTok using the trending tags above — 6-7 tags, always include #warzone #cod #callofduty, add trending ones, end with #khanvicttv
-3. Build hashtag set for Instagram (similar but can swap 1-2 tags)
+2. Build the BEST hashtag set for TikTok — 6-7 tags. Strategy: always include #warzone #cod #callofduty, prioritize his proven top performers above, add 1-2 trending tags, end with #khanvicttv
+3. Build hashtag set for Instagram (same strategy, can swap 1 tag for platform relevance)
 4. Build hashtag set for YouTube (add #shorts, keep 5-6 tags)
 5. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
 
@@ -2346,9 +2405,9 @@ Return ONLY raw JSON:
   "voice_score": 8,
   "voice_note": "one sentence feedback",
   "alt_caption": "only if genuinely better, else empty string",
-  "tt_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
-  "ig_hashtags": ["#warzone","#cod","#callofduty","#bo6","#tag","#tag","#khanvicttv"],
-  "yt_hashtags": ["#warzone","#cod","#callofduty","#shorts","#tag","#khanvicttv"]
+  "tt_hashtags": ["#warzone","#cod","#callofduty","#proventag","#trendingtag","#khanvicttv"],
+  "ig_hashtags": ["#warzone","#cod","#callofduty","#proventag","#trendingtag","#khanvicttv"],
+  "yt_hashtags": ["#warzone","#cod","#callofduty","#shorts","#proventag","#khanvicttv"]
 }`;
 
   try {
@@ -2886,6 +2945,7 @@ async function pullFromGithub() {
     if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
     if (!state.engagements) state.engagements = [];
     if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+    if (!state.followerSnapshots) state.followerSnapshots = [];
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
     return true;
@@ -2947,6 +3007,7 @@ function load() {
       if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
       if (!state.engagements) state.engagements = [];
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+    if (!state.followerSnapshots) state.followerSnapshots = [];
     }
   } catch(e) {}
 }
@@ -2972,6 +3033,7 @@ function importData(e) {
       if (!state.posts)       state.posts       = [];
       if (!state.checklist)   state.checklist   = {};
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+    if (!state.followerSnapshots) state.followerSnapshots = [];
       save();
       renderClipList();
       refreshAllSelects();
@@ -2986,7 +3048,7 @@ function importData(e) {
 
 function clearAll() {
   if (!confirm('Clear ALL data? This cannot be undone.')) return;
-  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null } };
+  state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null }, followerSnapshots: [] };
   save();
   renderClipList();
   refreshAllSelects();
@@ -2999,6 +3061,7 @@ function clearAll() {
 
 function renderAnalytics() {
   renderOverviewCards();
+  renderFollowerGrowth();
   renderViewsChart();
   renderPlatformComparison();
   renderDayOfWeekChart();
@@ -3007,6 +3070,329 @@ function renderAnalytics() {
   renderHashtagPerf();
   renderTimingAdherence();
   renderEngageLog();
+}
+
+// ── FOLLOWER GROWTH TRACKER ───────────────────────────────────────────────
+
+let currentFgTab = 'overall';
+
+function switchFgTab(tab) {
+  currentFgTab = tab;
+  const tabs = ['overall','tt','ig','yt'];
+  const colors = { overall: 'var(--accent)', tt: 'var(--tiktok)', ig: 'var(--ig)', yt: 'var(--yt)' };
+  tabs.forEach(t => {
+    const el = document.getElementById('fgtab-' + t);
+    if (!el) return;
+    if (t === tab) {
+      el.style.color = 'var(--text)';
+      el.style.borderBottomColor = colors[t];
+    } else {
+      el.style.color = 'var(--muted)';
+      el.style.borderBottomColor = 'transparent';
+    }
+  });
+  renderFollowerGrowth();
+}
+
+function addFollowerSnapshot() {
+  const dateInput = document.getElementById('fg-date');
+  const date = dateInput.value;
+  if (!date) { alert('Pick a date.'); return; }
+
+  const ttVal = document.getElementById('fg-tt').value.replace(/,/g, '');
+  const igVal = document.getElementById('fg-ig').value.replace(/,/g, '');
+  const ytVal = document.getElementById('fg-yt').value.replace(/,/g, '');
+
+  const tt = ttVal ? parseInt(ttVal, 10) : null;
+  const ig = igVal ? parseInt(igVal, 10) : null;
+  const yt = ytVal ? parseInt(ytVal, 10) : null;
+
+  if (tt === null && ig === null && yt === null) {
+    alert('Enter at least one platform count.'); return;
+  }
+
+  if (!state.followerSnapshots) state.followerSnapshots = [];
+
+  const existing = state.followerSnapshots.find(s => s.date === date);
+  if (existing) {
+    if (!confirm(`Update ${date}? This will overwrite the existing entry.`)) return;
+    if (tt !== null) existing.tt = tt;
+    if (ig !== null) existing.ig = ig;
+    if (yt !== null) existing.yt = yt;
+    existing.updatedAt = new Date().toISOString();
+  } else {
+    state.followerSnapshots.push({ date, tt, ig, yt, loggedAt: new Date().toISOString() });
+  }
+
+  state.followerSnapshots.sort((a, b) => a.date.localeCompare(b.date));
+  save();
+
+  // Clear inputs
+  document.getElementById('fg-tt').value = '';
+  document.getElementById('fg-ig').value = '';
+  document.getElementById('fg-yt').value = '';
+  document.getElementById('fg-input-row').style.display = 'none';
+  renderFollowerGrowth();
+}
+
+function deleteFollowerSnapshot(date) {
+  if (!confirm('Remove entry for ' + date + '?')) return;
+  state.followerSnapshots = state.followerSnapshots.filter(s => s.date !== date);
+  save();
+  renderFollowerGrowth();
+}
+
+function renderFollowerGrowth() {
+  // Pre-fill date input to today
+  const dateInput = document.getElementById('fg-date');
+  if (dateInput && !dateInput.value) {
+    const now = new Date();
+    dateInput.value = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  }
+
+  const snaps = (state.followerSnapshots || []).slice().sort((a,b) => a.date.localeCompare(b.date));
+  const chartEl = document.getElementById('fg-chart-area');
+  const logEl = document.getElementById('fg-log-area');
+  if (!chartEl) return;
+
+  const PLAT_CFG = {
+    tt: { label: 'TikTok',    color: 'var(--tiktok)', hex: '#ff2d55' },
+    ig: { label: 'Instagram', color: 'var(--ig)',     hex: '#e1306c' },
+    yt: { label: 'YouTube',   color: 'var(--yt)',     hex: '#ff6060' }
+  };
+
+  if (!snaps.length) {
+    chartEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No data yet. Hit <strong>+ Log today</strong> to record your follower counts.</div>';
+    if (logEl) logEl.innerHTML = '';
+    return;
+  }
+
+  if (currentFgTab === 'overall') {
+    renderFgOverallChart(snaps, chartEl, PLAT_CFG);
+  } else {
+    renderFgSingleChart(snaps, chartEl, currentFgTab, PLAT_CFG[currentFgTab]);
+  }
+
+  if (logEl) renderFgLog(snaps, logEl, currentFgTab, PLAT_CFG);
+}
+
+function renderFgOverallChart(snaps, chartEl, PLAT_CFG) {
+  const plats = ['tt','ig','yt'];
+
+  // Summary row — latest value per platform
+  const latest = snaps[snaps.length - 1];
+  const summaryHtml = `
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+      ${plats.map(p => {
+        const val = latest[p];
+        if (val === null || val === undefined) return '';
+        // week change
+        const weekAgoDate = new Date(); weekAgoDate.setDate(weekAgoDate.getDate() - 7);
+        const weekAgoStr = weekAgoDate.toISOString().split('T')[0];
+        const weekSnap = snaps.filter(s => s.date <= weekAgoStr && s[p] !== null).pop();
+        const weekChange = weekSnap ? val - weekSnap[p] : null;
+        const wc = weekChange !== null ? (weekChange >= 0 ? `+${weekChange}` : `${weekChange}`) : '';
+        const wcColor = weekChange > 0 ? 'var(--green)' : weekChange < 0 ? 'var(--red)' : 'var(--muted)';
+        return `<div style="flex:1;min-width:80px;background:var(--bg3);border:1px solid var(--border);border-top:2px solid ${PLAT_CFG[p].color};border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:9px;font-family:var(--mono);color:${PLAT_CFG[p].color};letter-spacing:1px;margin-bottom:4px;">${PLAT_CFG[p].label.toUpperCase()}</div>
+          <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--text);">${val.toLocaleString()}</div>
+          ${wc ? `<div style="font-size:10px;color:${wcColor};margin-top:2px;">${wc} this week</div>` : ''}
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  // Multi-line chart — separate Y axis per platform (normalize 0–100%)
+  const chartW = 560; const chartH = 140;
+  const padTop = 10; const padBottom = 28; const padLeft = 32;
+  const innerH = chartH - padTop - padBottom;
+  const innerW = chartW - padLeft;
+
+  // Only dates that have at least one platform value
+  const dates = snaps.map(s => s.date);
+  if (dates.length < 2) {
+    chartEl.innerHTML = summaryHtml + '<div style="color:var(--muted);font-size:12px;">Log at least 2 days to see the trend chart.</div>';
+    return;
+  }
+
+  // Build polylines per platform — normalize each independently
+  const lines = plats.map(p => {
+    const pts = snaps.filter(s => s[p] !== null && s[p] !== undefined);
+    if (pts.length < 2) return null;
+    const vals = pts.map(s => s[p]);
+    const minV = Math.min(...vals); const maxV = Math.max(...vals);
+    const range = maxV - minV || 1;
+    return {
+      p,
+      pts: pts.map(s => {
+        const di = dates.indexOf(s.date);
+        const x = padLeft + (di / (dates.length - 1)) * innerW;
+        const y = padTop + innerH - ((s[p] - minV) / range) * innerH;
+        return { x, y, val: s[p], date: s.date };
+      }),
+      hex: PLAT_CFG[p].hex,
+      color: PLAT_CFG[p].color,
+      label: PLAT_CFG[p].label,
+      minV, maxV
+    };
+  }).filter(Boolean);
+
+  // X axis labels (up to 6)
+  const step = Math.max(1, Math.floor(dates.length / 6));
+  const xLabels = dates.filter((_, i) => i % step === 0 || i === dates.length - 1).map(d => {
+    const di = dates.indexOf(d);
+    const x = padLeft + (di / (dates.length - 1)) * innerW;
+    const lbl = new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    return `<text x="${x}" y="${chartH - 2}" fill="var(--muted)" font-size="8" font-family="var(--mono)" text-anchor="middle">${lbl}</text>`;
+  }).join('');
+
+  // Grid lines
+  const gridLines = [0, 0.5, 1].map(pct => {
+    const y = padTop + innerH - pct * innerH;
+    return `<line x1="${padLeft}" x2="${chartW}" y1="${y}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
+  }).join('');
+
+  // Legend
+  const legend = lines.map(l =>
+    `<text x="${padLeft}" y="0" fill="${l.hex}" font-size="8" font-family="var(--mono)">${l.label}: ${l.minV.toLocaleString()}–${l.maxV.toLocaleString()}</text>`
+  );
+  // Place legend inline below chart instead
+
+  const svgLines = lines.map(l => {
+    const polyline = l.pts.map(p => `${p.x},${p.y}`).join(' ');
+    const dots = l.pts.map(p =>
+      `<circle cx="${p.x}" cy="${p.y}" r="3" fill="${l.hex}" stroke="var(--bg2)" stroke-width="1.5"><title>${new Date(p.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}: ${p.val.toLocaleString()}</title></circle>`
+    ).join('');
+    return `<polyline points="${polyline}" fill="none" stroke="${l.hex}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>${dots}`;
+  }).join('');
+
+  const svg = `<svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%;height:auto;max-height:180px;" xmlns="http://www.w3.org/2000/svg">
+    ${gridLines}
+    ${svgLines}
+    ${xLabels}
+  </svg>`;
+
+  const legendHtml = `<div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;margin-bottom:4px;">
+    ${lines.map(l => `<div style="display:flex;align-items:center;gap:5px;font-size:10px;font-family:var(--mono);color:${l.color};">
+      <div style="width:12px;height:3px;background:${l.hex};border-radius:2px;"></div>${l.label} (${l.minV.toLocaleString()}–${l.maxV.toLocaleString()})
+    </div>`).join('')}
+    <span style="font-size:9px;color:var(--muted);margin-left:auto;">Each line normalized to its own scale</span>
+  </div>`;
+
+  chartEl.innerHTML = summaryHtml + svg + legendHtml;
+}
+
+function renderFgSingleChart(snaps, chartEl, plat, cfg) {
+  const pts = snaps.filter(s => s[plat] !== null && s[plat] !== undefined);
+
+  if (!pts.length) {
+    chartEl.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:12px 0;">No ${cfg.label} data yet. Hit <strong>+ Log today</strong> and fill in the ${cfg.label} count.</div>`;
+    return;
+  }
+
+  const latest = pts[pts.length - 1];
+  const earliest = pts[0];
+  const totalChange = latest[plat] - earliest[plat];
+  const changeSign = totalChange >= 0 ? '+' : '';
+  const changeColor = totalChange >= 0 ? 'var(--green)' : 'var(--red)';
+
+  const weekAgoDate = new Date(); weekAgoDate.setDate(weekAgoDate.getDate() - 7);
+  const weekSnap = pts.filter(s => s.date <= weekAgoDate.toISOString().split('T')[0]).pop();
+  const weekChange = weekSnap ? latest[plat] - weekSnap[plat] : null;
+
+  const summaryHtml = `
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
+      <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--text);">${latest[plat].toLocaleString()}</div>
+      <div style="font-size:12px;color:${changeColor};font-family:var(--mono);">${changeSign}${totalChange.toLocaleString()} total</div>
+      ${weekChange !== null ? `<div style="font-size:11px;color:${weekChange >= 0 ? 'var(--green)' : 'var(--red)'};">${weekChange >= 0 ? '+' : ''}${weekChange} last 7d</div>` : ''}
+      <div style="font-size:10px;color:var(--muted);margin-left:auto;">as of ${new Date(latest.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</div>
+    </div>`;
+
+  if (pts.length < 2) {
+    chartEl.innerHTML = summaryHtml + '<div style="color:var(--muted);font-size:12px;">Log at least 2 days to see the trend chart.</div>';
+    return;
+  }
+
+  const vals = pts.map(s => s[plat]);
+  const minV = Math.min(...vals); const maxV = Math.max(...vals);
+  const range = maxV - minV || 1;
+  const chartW = 560; const chartH = 120;
+  const padTop = 10; const padBottom = 28;
+  const innerH = chartH - padTop - padBottom;
+
+  const points = pts.map((s, i) => {
+    const x = pts.length === 1 ? chartW/2 : (i / (pts.length - 1)) * (chartW - 20) + 10;
+    const y = padTop + innerH - ((s[plat] - minV) / range) * innerH;
+    return { x, y, val: s[plat], date: s.date };
+  });
+
+  const polyline = points.map(p => `${p.x},${p.y}`).join(' ');
+  const areaPath = `M${points[0].x},${padTop+innerH} ` + points.map(p=>`L${p.x},${p.y}`).join(' ') + ` L${points[points.length-1].x},${padTop+innerH} Z`;
+
+  const step = Math.max(1, Math.floor(pts.length / 6));
+  const xLabels = points.filter((_, i) => i % step === 0 || i === points.length - 1).map(p => {
+    const lbl = new Date(p.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return `<text x="${p.x}" y="${chartH - 2}" fill="var(--muted)" font-size="8" font-family="var(--mono)" text-anchor="middle">${lbl}</text>`;
+  }).join('');
+
+  const yLabels = [minV, Math.round((minV+maxV)/2), maxV].map(v => {
+    const y = padTop + innerH - ((v - minV) / range) * innerH;
+    return `<text x="0" y="${y+3}" fill="var(--muted)" font-size="8" font-family="var(--mono)">${v>=1000?(v/1000).toFixed(1)+'k':v}</text>
+            <line x1="30" x2="${chartW}" y1="${y}" y2="${y}" stroke="var(--border)" stroke-dasharray="3,3"/>`;
+  }).join('');
+
+  const dots = points.map(p =>
+    `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="${cfg.hex}" stroke="var(--bg2)" stroke-width="1.5"><title>${new Date(p.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})}: ${p.val.toLocaleString()}</title></circle>`
+  ).join('');
+
+  const svg = `<svg viewBox="0 0 ${chartW} ${chartH}" style="width:100%;height:auto;max-height:160px;" xmlns="http://www.w3.org/2000/svg">
+    ${yLabels}
+    <path d="${areaPath}" fill="${cfg.hex}18"/>
+    <polyline points="${polyline}" fill="none" stroke="${cfg.hex}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}
+    ${xLabels}
+  </svg>`;
+
+  chartEl.innerHTML = summaryHtml + svg;
+}
+
+function renderFgLog(snaps, logEl, tab, PLAT_CFG) {
+  const plats = tab === 'overall' ? ['tt','ig','yt'] : [tab];
+  const recent = snaps.slice().reverse().slice(0, 30);
+
+  if (!recent.length) { logEl.innerHTML = ''; return; }
+
+  const rows = recent.map(s => {
+    const dt = new Date(s.date + 'T12:00:00');
+    const lbl = dt.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+    // Sort chronologically to compute delta
+    const allSorted = (state.followerSnapshots || []).slice().sort((a,b) => a.date.localeCompare(b.date));
+    const idx = allSorted.findIndex(x => x.date === s.date);
+
+    const cols = plats.map(p => {
+      const val = s[p];
+      if (val === null || val === undefined) return `<span style="color:var(--muted);font-size:11px;min-width:80px;">—</span>`;
+      let deltaHtml = '';
+      if (idx > 0) {
+        const prev = allSorted[idx - 1];
+        if (prev && prev[p] !== null && prev[p] !== undefined) {
+          const diff = val - prev[p];
+          const sign = diff >= 0 ? '+' : '';
+          const col = diff > 0 ? 'var(--green)' : diff < 0 ? 'var(--red)' : 'var(--muted)';
+          deltaHtml = `<span style="font-size:10px;color:${col};margin-left:4px;">${sign}${diff}</span>`;
+        }
+      }
+      const pColor = PLAT_CFG[p].color;
+      return `<span style="font-size:11px;font-family:var(--mono);min-width:80px;"><span style="color:${pColor};font-size:9px;">${PLAT_CFG[p].label.toUpperCase().slice(0,2)} </span><strong>${val.toLocaleString()}</strong>${deltaHtml}</span>`;
+    }).join('');
+
+    return `<div style="display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">
+      <span style="color:var(--muted);font-size:11px;min-width:100px;">${lbl}</span>
+      <div style="display:flex;gap:12px;flex:1;flex-wrap:wrap;">${cols}</div>
+      <button onclick="deleteFollowerSnapshot('${s.date}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;padding:2px 6px;opacity:0.5;" title="Delete">✕</button>
+    </div>`;
+  }).join('');
+
+  logEl.innerHTML = `<div style="font-size:10px;font-family:var(--mono);color:var(--muted);letter-spacing:1px;margin-bottom:6px;padding-top:8px;">RECENT ENTRIES</div>${rows}`;
 }
 
 // ── OVERVIEW CARDS ────────────────────────────────────────────────────────
@@ -3021,7 +3407,7 @@ function renderOverviewCards() {
   const totalViews     = eng.reduce((s,e) => s + (e.views||0), 0);
   const totalLikes     = eng.reduce((s,e) => s + (e.likes||0), 0);
   const totalComments  = eng.reduce((s,e) => s + (e.comments||0), 0);
-  const totalFollowers = eng.reduce((s,e) => s + (e.followers||0), 0);
+  const totalBookmarks = eng.reduce((s,e) => s + (e.bookmarks||0), 0);
   const avgViews       = Math.round(totalViews / eng.length);
   const engRate        = totalViews > 0 ? ((totalLikes + totalComments) / totalViews * 100).toFixed(1) : '0.0';
 
@@ -3032,11 +3418,11 @@ function renderOverviewCards() {
   const recentAvg   = recent.length ? Math.round(recentViews / recent.length) : 0;
 
   const cards = [
-    { label: 'Total views',     val: totalViews.toLocaleString(),    sub: `${recent.length} posts logged`,        color: 'var(--accent2)' },
-    { label: 'Avg views/post',  val: avgViews.toLocaleString(),       sub: `${recentAvg.toLocaleString()} last 30d`, color: 'var(--green)' },
-    { label: 'Total likes',     val: totalLikes.toLocaleString(),     sub: `${totalComments} comments`,            color: 'var(--tiktok)' },
-    { label: 'Followers gained',val: '+' + totalFollowers,            sub: 'from logged posts',                    color: 'var(--ig)' },
-    { label: 'Engagement rate', val: engRate + '%',                   sub: '(likes+comments)÷views',               color: 'var(--amber)' },
+    { label: 'Total views',    val: totalViews.toLocaleString(),  sub: `${recent.length} posts logged`,        color: 'var(--accent2)' },
+    { label: 'Avg views/post', val: avgViews.toLocaleString(),    sub: `${recentAvg.toLocaleString()} last 30d`, color: 'var(--green)' },
+    { label: 'Total likes',    val: totalLikes.toLocaleString(),  sub: `${totalComments} comments`,            color: 'var(--tiktok)' },
+    { label: 'Bookmarks',      val: totalBookmarks.toLocaleString(), sub: 'total saves logged',               color: 'var(--ig)' },
+    { label: 'Engagement rate',val: engRate + '%',                sub: '(likes+comments)÷views',               color: 'var(--amber)' },
   ];
 
   document.getElementById('analytics-overview').innerHTML = cards.map(c => `
@@ -3106,9 +3492,9 @@ function renderPlatformComparison() {
     }
 
     const avgViews = Math.round(platEng.reduce((s,e) => s+(e.views||0),0) / platEng.length);
-    const avgLikes = Math.round(platEng.reduce((s,e) => s+(e.likes||0),0) / platEng.length);
-    const engRate  = avgViews > 0 ? ((platEng.reduce((s,e)=>s+(e.likes||0)+(e.comments||0),0)/platEng.length) / avgViews * 100).toFixed(1) : '0.0';
-    const totFollow= platEng.reduce((s,e)=>s+(e.followers||0),0);
+    const avgLikes    = Math.round(platEng.reduce((s,e) => s+(e.likes||0),0) / platEng.length);
+    const engRate     = avgViews > 0 ? ((platEng.reduce((s,e)=>s+(e.likes||0)+(e.comments||0),0)/platEng.length) / avgViews * 100).toFixed(1) : '0.0';
+    const totBookmarks= platEng.reduce((s,e)=>s+(e.bookmarks||0),0);
 
     return `<div style="background:var(--bg3);border:1px solid var(--border);border-left:3px solid ${PC[plat]};border-radius:8px;padding:12px;">
       <div style="font-size:10px;font-family:var(--mono);color:${PC[plat]};letter-spacing:1px;margin-bottom:10px;">${PL[plat].toUpperCase()} · ${platEng.length} posts</div>
@@ -3126,8 +3512,8 @@ function renderPlatformComparison() {
           <span style="font-family:var(--mono);font-size:12px;color:var(--amber);">${engRate}%</span>
         </div>
         <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:11px;color:var(--muted);">Followers</span>
-          <span style="font-family:var(--mono);font-size:12px;color:var(--green);">+${totFollow}</span>
+          <span style="font-size:11px;color:var(--muted);">Bookmarks</span>
+          <span style="font-family:var(--mono);font-size:12px;color:var(--ig);">${totBookmarks}</span>
         </div>
       </div>
     </div>`;
@@ -3444,10 +3830,13 @@ function renderHashtagPerf() {
 // ── ENGAGEMENT LOG ───────────────────────────────────────────────────────
 function renderEngageLog() {
   const container = document.getElementById('engage-log-list');
+  const countEl = document.getElementById('engage-log-count');
   if (!state.engagements.length) {
     container.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No engagement logged yet. After posting, tap "+ Log engagement" to record your stats.</div>';
+    if (countEl) countEl.textContent = '';
     return;
   }
+  if (countEl) countEl.textContent = `${state.engagements.length} entries`;
 
   const PL = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
   const PC = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
@@ -3470,7 +3859,7 @@ function renderEngageLog() {
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.views||0).toLocaleString()} <span style="color:var(--muted);">views</span></span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.likes||0).toLocaleString()} <span style="color:var(--muted);">likes</span></span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.comments||0).toLocaleString()} <span style="color:var(--muted);">comments</span></span>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--green);">+${(e.followers||0)} <span style="color:var(--muted);">followers</span></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--ig);">${(e.bookmarks||0)} <span style="color:var(--muted);">bookmarks</span></span>
       </div>
       ${e.hashtags && e.hashtags.length ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">${e.hashtags.map(h=>`<span style="background:rgba(124,92,252,0.1);color:var(--accent2);border:1px solid rgba(124,92,252,0.2);border-radius:4px;padding:2px 6px;font-family:var(--mono);font-size:10px;">${h}</span>`).join('')}</div>` : ''}
       ${e.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:5px;">${e.notes}</div>` : ''}
@@ -3494,7 +3883,7 @@ function editEngagement(id) {
   document.getElementById('eng-views').value     = e.views     || '';
   document.getElementById('eng-likes').value     = e.likes     || '';
   document.getElementById('eng-comments').value  = e.comments  || '';
-  document.getElementById('eng-followers').value = e.followers || '';
+  document.getElementById('eng-bookmarks').value = e.bookmarks || '';
   document.getElementById('eng-hashtags').value  = e.hashtags  ? e.hashtags.join(', ') : '';
   document.getElementById('eng-notes').value     = e.notes     || '';
 
@@ -3532,7 +3921,7 @@ function openEngageModal() {
   document.getElementById('eng-views').value = '';
   document.getElementById('eng-likes').value = '';
   document.getElementById('eng-comments').value = '';
-  document.getElementById('eng-followers').value = '';
+  document.getElementById('eng-bookmarks').value = '';
   document.getElementById('eng-notes').value = '';
   document.getElementById('eng-hashtags').value = '';
 
@@ -3572,7 +3961,7 @@ function saveEngagement() {
     views:     parseInt(document.getElementById('eng-views').value)     || 0,
     likes:     parseInt(document.getElementById('eng-likes').value)     || 0,
     comments:  parseInt(document.getElementById('eng-comments').value)  || 0,
-    followers: parseInt(document.getElementById('eng-followers').value) || 0,
+    bookmarks: parseInt(document.getElementById('eng-bookmarks').value) || 0,
     hashtags,
     notes:     document.getElementById('eng-notes').value.trim(),
   };
@@ -4117,6 +4506,7 @@ Return ONLY this JSON:
 
     // Save to state
     if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
+    if (!state.followerSnapshots) state.followerSnapshots = [];
     state.contentIntel.briefs.unshift(brief);
     // Keep max 12 briefs
     if (state.contentIntel.briefs.length > 12) state.contentIntel.briefs = state.contentIntel.briefs.slice(0, 12);
@@ -4153,7 +4543,7 @@ async function intelCooldown(seconds, progressElId, msg) {
 
 async function intelApiCall(apiKey, prompt, useWebSearch, maxTokens, model) {
   const body = {
-    model: model || 'claude-sonnet-4-6',
+    model: model || 'claude-sonnet-4-20250514',
     max_tokens: maxTokens || 1200,
     messages: [{ role: 'user', content: prompt }]
   };
