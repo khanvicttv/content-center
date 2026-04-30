@@ -10407,6 +10407,122 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1777576777455,
+        "runDate": "2026-04-30T19:18:27.260Z",
+        "weekLabel": "Week of May 5 – May 2, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "MK35 ISR post-nerf loadout that still dominates",
+                "type": "loadout",
+                "why": "MK35 ISR just got nerfed in Season 3 Reloaded patch yesterday - viewers need updated builds. Loadout content is his top performer.",
+                "streamFocus": "Build optimized MK35 ISR loadout accounting for damage range nerfs, test in multiple engagements, show damage numbers and compare to pre-nerf performance",
+                "captionDirection": "mk35 still viable after nerf, this build hits different"
+              },
+              {
+                "priority": 2,
+                "title": "Hot Pursuit vehicle rotation strategy for easy wins",
+                "type": "strategy",
+                "why": "Hot Pursuit LTM just launched with vehicle focus - new mode means viewers want winning strategies early.",
+                "streamFocus": "Play Hot Pursuit focusing on vehicle selection, rotation timing, and positioning. Capture successful rotations and explain decision-making",
+                "captionDirection": "vehicle priority in hot pursuit, most people get this wrong"
+              },
+              {
+                "priority": 3,
+                "title": "New Siren special weapon first impressions",
+                "type": "tips",
+                "why": "Siren Special Weapon arrived with Season 3 Reloaded yesterday - fresh content on new equipment performs well.",
+                "streamFocus": "Find and use Siren special weapon multiple times, test effectiveness in different scenarios, note spawn locations",
+                "captionDirection": "siren weapon is actually broken, here's why"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "VST vs Razor 9mm SMG comparison for Season 3 Reloaded",
+                "type": "loadout",
+                "why": "Both SMGs are current meta and viewers need guidance choosing between them. His loadout videos consistently outperform highlights.",
+                "streamFocus": "Build optimal loadouts for both VST and Razor 9mm, test side-by-side in similar engagements, show TTK and mobility differences",
+                "captionDirection": "vst vs razor comparison, one clearly wins"
+              },
+              {
+                "priority": 2,
+                "title": "Prop Hunt Royale on Rebirth movement tricks",
+                "type": "tutorial",
+                "why": "Prop Hunt Royale on Rebirth is trending and movement tutorials are viral format. Combines two hot topics.",
+                "streamFocus": "Play Prop Hunt Royale focusing on advanced movement as props and hunters, demonstrate bunny hop and slide cancel techniques specific to mode",
+                "captionDirection": "prop hunt movement nobody talks about"
+              },
+              {
+                "priority": 3,
+                "title": "Avalon vs Verdansk map rotation positioning guide",
+                "type": "strategy",
+                "why": "Battle Royale Casual now rotates between these maps - players need updated positioning for both environments.",
+                "streamFocus": "Play both maps when they rotate, focus on key positioning differences, late-game rotations, and terrain advantages unique to each",
+                "captionDirection": "avalon positioning hits different than verdansk"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Ranked Play Event 50-player leaderboard climbing tips",
+                "type": "strategy",
+                "why": "Ranked Play Event with 50-player leaderboards is current and competitive content drives engagement from serious players.",
+                "streamFocus": "Focus entirely on ranked gameplay, demonstrate point optimization, positioning for placement vs kills, and consistent performance strategies",
+                "captionDirection": "ranked climbing strategy that actually works"
+              },
+              {
+                "priority": 2,
+                "title": "New Katana melee weapon in clutch situations",
+                "type": "tips",
+                "why": "Katana arrived with Season 3 Reloaded and clutch plays are a viral format. Combines new content with trending format.",
+                "streamFocus": "Use Katana in close-quarters clutch situations, demonstrate timing and positioning for melee plays, capture successful clutches",
+                "captionDirection": "katana clutches are legit overpowered"
+              },
+              {
+                "priority": 3,
+                "title": "Season 3 Reloaded audio settings for better enemy detection",
+                "type": "settings",
+                "why": "Major patch often changes audio balance and his 'grapples are loud' post was his best performer - audio tips resonate.",
+                "streamFocus": "Test different audio settings throughout gameplay, demonstrate sound detection differences, focus on footsteps and ability audio cues",
+                "captionDirection": "audio settings everyone should change after update"
+              }
+            ]
+          }
+        ],
+        "trends": {
+          "metaShifts": "<cite index=\"11-2\">The MK35 ISR leads as the dominant assault rifle, followed by the VST and Razor 9mm as top SMGs.</cite> <cite index=\"8-4,8-5\">The MK35 ISR was dominant in Season 3 and received nerfs to damage range in Season 3 Reloaded.</cite>",
+          "patchNotes": "<cite index=\"2-4\">Season 03 Reloaded Patch Notes - April 29, 2026.</cite> <cite index=\"7-1\">Major weapon tuning to meta guns MPC-25, and several gameplay improvements including map rotation for Battle Royale Casual.</cite>",
+          "viralFormats": [
+            "Clutch plays/gas end scenarios",
+            "Movement tutorials (bunny hop, slide cancel)",
+            "1v4+ team wipes and solo squad wins"
+          ],
+          "risingTopics": [
+            "Hot Pursuit LTM (new vehicle-focused mode)",
+            "Prop Hunt Royale on Rebirth Island",
+            "Season 3 Reloaded weapon balance (MK35 ISR nerfs)",
+            "Ranked Play Event with 50-player leaderboards"
+          ],
+          "hotWeapons": [
+            "MK35 ISR (Assault Rifle)",
+            "VST (SMG)",
+            "Razor 9mm (SMG)"
+          ],
+          "communityBuzz": "<cite index=\"7-3,7-4\">Battle Royale Casual now features map rotation between Avalon and Verdansk, while Hot Pursuit takes over the Black Ops Royale playlist with fast-paced vehicle-focused gameplay.</cite> <cite index=\"36-29,36-30\">New Siren Special Weapon and Katana Melee Weapon arrived with Season 3 Reloaded.</cite>"
+        },
+        "competitors": []
+      },
+      {
         "id": 1777305334111,
         "runDate": "2026-04-27T15:54:22.803Z",
         "weekLabel": "Week of Apr 28 – May 2, 2026",
@@ -11064,7 +11180,7 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-04-27T15:54:22.803Z"
+    "lastRun": "2026-04-30T19:18:27.260Z"
   },
   "followerSnapshots": [
     {
