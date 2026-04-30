@@ -5553,7 +5553,10 @@
       "platform": "tt",
       "date": "2026-04-30",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-04-30T19:07:20.215Z",
+      "timingVariance": 0
     },
     {
       "id": 1777504678423.7456,
