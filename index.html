@@ -2946,6 +2946,7 @@ async function pullFromGithub() {
     if (!state.engagements) state.engagements = [];
     if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
     if (!state.followerSnapshots) state.followerSnapshots = [];
+    migrateFollowerSnapshots();
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
     return true;
@@ -2998,6 +2999,34 @@ function save() {
   }
 }
 
+// ── FOLLOWER SNAPSHOT MIGRATION ───────────────────────────────────────────
+// Old shape: [{ date, count, platform, loggedAt }]  (one entry per platform per day)
+// New shape: [{ date, tt, ig, yt, loggedAt }]       (one entry per day, all platforms)
+function migrateFollowerSnapshots() {
+  if (!state.followerSnapshots || !state.followerSnapshots.length) return;
+  // Detect if any entry uses old shape (has 'count' + 'platform' keys)
+  const needsMigration = state.followerSnapshots.some(s => s.count !== undefined && s.platform !== undefined);
+  if (!needsMigration) return;
+
+  // Group old entries by date, merge platforms into new shape
+  const byDate = {};
+  state.followerSnapshots.forEach(s => {
+    if (s.count !== undefined && s.platform !== undefined) {
+      // Old format
+      if (!byDate[s.date]) byDate[s.date] = { date: s.date, tt: null, ig: null, yt: null, loggedAt: s.loggedAt };
+      byDate[s.date][s.platform] = s.count;
+      // Keep earliest loggedAt
+      if (s.loggedAt < byDate[s.date].loggedAt) byDate[s.date].loggedAt = s.loggedAt;
+    } else {
+      // Already new format — preserve as-is
+      if (!byDate[s.date]) byDate[s.date] = s;
+    }
+  });
+
+  state.followerSnapshots = Object.values(byDate).sort((a, b) => a.date.localeCompare(b.date));
+  console.log('[KCC] Migrated followerSnapshots to multi-platform format:', state.followerSnapshots.length, 'entries');
+}
+
 function load() {
   try {
     const raw = localStorage.getItem('ccc_state');
@@ -3008,6 +3037,7 @@ function load() {
       if (!state.engagements) state.engagements = [];
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
     if (!state.followerSnapshots) state.followerSnapshots = [];
+    migrateFollowerSnapshots();
     }
   } catch(e) {}
 }
@@ -3034,6 +3064,7 @@ function importData(e) {
       if (!state.checklist)   state.checklist   = {};
       if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
     if (!state.followerSnapshots) state.followerSnapshots = [];
+      migrateFollowerSnapshots();
       save();
       renderClipList();
       refreshAllSelects();
