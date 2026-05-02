@@ -5607,7 +5607,10 @@
       "platform": "tt",
       "date": "2026-05-01",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-05-02T14:13:38.548Z",
+      "timingVariance": 0
     },
     {
       "id": 1777504704666.7446,
