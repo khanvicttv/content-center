@@ -4709,7 +4709,48 @@
         "ig"
       ],
       "addedAt": "2026-05-02T23:07:51",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "new AR is cracked, if you sleeping on it you trippin",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "new AR is cracked, if you sleeping on it you trippin\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "new AR meta just dropped, if you aint using this you're falling off",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "new AR meta just dropped, if you aint using this you're falling off\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "new meta AR build just dropped and its actually cracked",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "new meta AR build just dropped and its actually cracked\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -5822,6 +5863,15 @@
       "actualTime": "21:45",
       "postedAt": "2026-05-03T03:02:08.389Z",
       "timingVariance": 165
+    },
+    {
+      "id": 1777785228278.3215,
+      "clipId": 1777781271779,
+      "clipName": "DS20 Loadout",
+      "platform": "tt",
+      "date": "2026-05-03",
+      "time": "09:00",
+      "posted": false
     }
   ],
   "checklist": {
