@@ -5649,7 +5649,10 @@
       "platform": "tt",
       "date": "2026-05-02",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "21:45",
+      "postedAt": "2026-05-03T03:02:08.389Z",
+      "timingVariance": 165
     }
   ],
   "checklist": {
