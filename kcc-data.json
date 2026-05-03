@@ -6283,7 +6283,10 @@
       "platform": "tt",
       "date": "2026-05-03",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "10:40",
+      "postedAt": "2026-05-03T15:42:38.248Z",
+      "timingVariance": 100
     },
     {
       "id": 1777785235615.6191,
