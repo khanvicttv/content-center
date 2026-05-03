@@ -4841,7 +4841,48 @@
         "ig"
       ],
       "addedAt": "2026-05-02T23:40:39",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "he had one job and completely fumbled it",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "he had one job and completely fumbled it\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "he had one job and fumbled it, now hes mad",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "he had one job and fumbled it, now hes mad\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "he had one job and completely blew it",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "he had one job and completely blew it\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777782959463,
@@ -6359,6 +6400,15 @@
       "platform": "ig",
       "date": "2026-05-06",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1777785317472.5017,
+      "clipId": 1777783239572,
+      "clipName": "He sold",
+      "platform": "tt",
+      "date": "2026-05-06",
+      "time": "13:00",
       "posted": false
     }
   ],
