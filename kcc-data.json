@@ -4574,7 +4574,48 @@
         "ig"
       ],
       "addedAt": "2026-05-03T00:06:03",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "good audio will literally make people think you're cheating in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "good audio will literally make people think you're cheating in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "good headset will have people thinking you're actually cracked at the game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "good headset will have people thinking you're actually cracked at the game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "good audio literally makes people think youre cheating in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "good audio literally makes people think youre cheating in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777784030213,
@@ -5998,6 +6039,15 @@
       "platform": "ig",
       "date": "2026-05-05",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1777785264730.6033,
+      "clipId": 1777784763254,
+      "clipName": "9n9 zoro",
+      "platform": "tt",
+      "date": "2026-05-03",
+      "time": "13:00",
       "posted": false
     }
   ],
