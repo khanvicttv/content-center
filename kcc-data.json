@@ -4679,7 +4679,48 @@
         "ig"
       ],
       "addedAt": "2026-05-02T23:18:34",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "when someone says you're actually cracked at the game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "when someone says you're actually cracked at the game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "when someone says you're cracked at warzone, thats the only W that matters",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "when someone says you're cracked at warzone, thats the only W that matters\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "best compliment you can get in warzone, no cap",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "best compliment you can get in warzone, no cap\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777781585606,
@@ -5938,6 +5979,24 @@
       "clipName": "DS20 Loadout",
       "platform": "ig",
       "date": "2026-05-03",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1777785255737.303,
+      "clipId": 1777781914106,
+      "clipName": "Best compliment",
+      "platform": "tt",
+      "date": "2026-05-05",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1777785255737.4373,
+      "clipId": 1777781914106,
+      "clipName": "Best compliment",
+      "platform": "ig",
+      "date": "2026-05-05",
       "time": "09:00",
       "posted": false
     }
