@@ -4856,7 +4856,48 @@
         "ig"
       ],
       "addedAt": "2026-05-02T23:35:59",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this is literally the only way you win warzone games",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this is literally the only way you win warzone games\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "this is literally the only strat that works, stop playing dumb",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this is literally the only strat that works, stop playing dumb\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "this is literally how you win every warzone game | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this is literally how you win every warzone game | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777782288480,
@@ -6300,6 +6341,24 @@
       "platform": "tt",
       "date": "2026-05-05",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1777785310855.5671,
+      "clipId": 1777782959463,
+      "clipName": "How did we win",
+      "platform": "tt",
+      "date": "2026-05-06",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1777785310855.6018,
+      "clipId": 1777782959463,
+      "clipName": "How did we win",
+      "platform": "ig",
+      "date": "2026-05-06",
+      "time": "09:00",
       "posted": false
     }
   ],
