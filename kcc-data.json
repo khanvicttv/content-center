@@ -4673,7 +4673,48 @@
         "ig"
       ],
       "addedAt": "2026-05-02T23:53:50",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "honestly no clue how that went our way but ill take it",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "honestly no clue how that went our way but ill take it\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "honestly no clue how that worked out, we just kept moving",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "honestly no clue how that worked out, we just kept moving\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "somehow pulled off the dumbest win ever, still counting it",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "somehow pulled off the dumbest win ever, still counting it\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777783823849,
@@ -6200,6 +6241,15 @@
       "platform": "tt",
       "date": "2026-05-04",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1777785300310.0352,
+      "clipId": 1777784030213,
+      "clipName": "Nope this is a loss",
+      "platform": "tt",
+      "date": "2026-05-05",
+      "time": "13:00",
       "posted": false
     }
   ],
