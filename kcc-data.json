@@ -5162,7 +5162,9 @@
           ],
           "full": "new meta AR build just dropped and its actually cracked\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-03T15:42:49.649Z"
     }
   ],
   "posts": [
@@ -6313,7 +6315,10 @@
       "platform": "ig",
       "date": "2026-05-03",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "10:40",
+      "postedAt": "2026-05-03T15:42:49.649Z",
+      "timingVariance": 100
     },
     {
       "id": 1777785255737.303,
