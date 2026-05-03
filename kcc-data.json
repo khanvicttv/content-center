@@ -4660,7 +4660,48 @@
         "ig"
       ],
       "addedAt": "2026-05-02T23:46:40",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "tell me im wrong but this loadout is just different",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "tell me im wrong but this loadout is just different\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro tell me im wrong, this loadout is absolutely cracked right now",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#fpsstreamer"
+          ],
+          "full": "bro tell me im wrong, this loadout is absolutely cracked right now\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fpsstreamer"
+        },
+        "yt": {
+          "caption": "this snipe was cleaner than my apartment",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this snipe was cleaner than my apartment\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777783239572,
@@ -6048,6 +6089,15 @@
       "platform": "tt",
       "date": "2026-05-03",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1777785274635.621,
+      "clipId": 1777783600514,
+      "clipName": "They dont make music",
+      "platform": "tt",
+      "date": "2026-05-03",
+      "time": "19:00",
       "posted": false
     }
   ],
