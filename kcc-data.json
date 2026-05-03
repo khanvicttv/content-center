@@ -4559,7 +4559,50 @@
         "ig"
       ],
       "addedAt": "2026-05-03T00:08:12",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "start of stream, we got a gameplan ready to go",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "start of stream, we got a gameplan ready to go\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "this is how we start the stream, locked in with a game plan",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#fps",
+            "#gaming"
+          ],
+          "full": "this is how we start the stream, locked in with a game plan\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv #fps #gaming"
+        },
+        "yt": {
+          "caption": "starting the stream with a solid game plan, lets go",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "starting the stream with a solid game plan, lets go\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1777784763254,
@@ -6098,6 +6141,15 @@
       "platform": "tt",
       "date": "2026-05-03",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1777785282348.0054,
+      "clipId": 1777784892741,
+      "clipName": "Welcome to the steam",
+      "platform": "tt",
+      "date": "2026-05-04",
+      "time": "13:00",
       "posted": false
     }
   ],
