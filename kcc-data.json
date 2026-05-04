@@ -5107,7 +5107,9 @@
           ],
           "full": "new SMG meta just dropped, this thing is absolutely broken right now\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-04T15:29:21.421Z"
     },
     {
       "id": 1777781271779,
@@ -6310,7 +6312,10 @@
       "platform": "ig",
       "date": "2026-05-04",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "10:00",
+      "postedAt": "2026-05-04T15:29:21.420Z",
+      "timingVariance": 60
     },
     {
       "id": 1777785250512.7175,
