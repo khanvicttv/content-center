@@ -5051,7 +5051,9 @@
           ],
           "full": "best compliment you can get in warzone, no cap\n\n#warzone #cod #callofduty #shorts #bo6 #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-05T14:05:11.115Z"
     },
     {
       "id": 1777781585606,
@@ -6336,7 +6338,10 @@
       "platform": "tt",
       "date": "2026-05-05",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-05-05T14:05:09.783Z",
+      "timingVariance": 0
     },
     {
       "id": 1777785255737.4373,
@@ -6345,7 +6350,10 @@
       "platform": "ig",
       "date": "2026-05-05",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-05-05T14:05:11.114Z",
+      "timingVariance": 0
     },
     {
       "id": 1777785264730.6033,
