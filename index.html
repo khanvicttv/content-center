@@ -938,8 +938,8 @@
       <div class="field"><label>Bookmarks</label><input type="number" id="eng-bookmarks" placeholder="e.g. 47" min="0"></div>
     </div>
     <div class="field">
-      <label>Hashtags used <span style="color:var(--accent2);font-size:9px;">(comma separated)</span></label>
-      <input type="text" id="eng-hashtags" placeholder="e.g. #gaming, #warzone, #clutch">
+      <label>Hashtags used <span style="color:var(--accent2);font-size:9px;">(separate with #)</span></label>
+      <input type="text" id="eng-hashtags" placeholder="e.g. #gaming #warzone #clutch">
     </div>
     <div class="field">
       <label>Notes (optional)</label>
@@ -2496,11 +2496,11 @@ function renderCapResult(plat, caption, hashtags, tip, clipId) {
   document.getElementById('cap-' + plat).innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
       <span style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;">${PLAT_LABEL[plat].toUpperCase()} CAPTION</span>
-      <button class="copy-btn" onclick="copyText('${encoded}',this)">COPY ALL</button>
+      <button class="copy-btn" data-copy="${encoded}">COPY ALL</button>
     </div>
     <div class="caption-box">${caption}</div>
     <div class="tag-row">
-      ${hashtags.map(h=>`<div class="tag" onclick="copyText('${encodeURIComponent(h)}',this)">${h}</div>`).join('')}
+      ${hashtags.map(h=>`<div class="tag" data-copy="${encodeURIComponent(h)}">${h}</div>`).join('')}
     </div>
     <div class="tip-box"><span class="tip-label">PLATFORM TIP</span>${tip}</div>`;
 
@@ -2516,10 +2516,26 @@ function renderCapResult(plat, caption, hashtags, tip, clipId) {
 }
 
 function copyText(encoded, btn) {
-  navigator.clipboard.writeText(decodeURIComponent(encoded)).catch(()=>{});
+  const text = decodeURIComponent(encoded);
   const orig = btn.textContent;
-  btn.textContent = '✓ COPIED';
-  setTimeout(()=>btn.textContent=orig, 1600);
+  const confirm = () => { btn.textContent = '✓ COPIED'; setTimeout(()=>btn.textContent=orig, 1600); };
+  const fallback = () => {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      confirm();
+    } catch(e) {}
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(confirm).catch(fallback);
+  } else {
+    fallback();
+  }
 }
 
 function applyAltCaption(btn) {
@@ -3187,9 +3203,9 @@ function renderFollowerGrowth() {
   if (!chartEl) return;
 
   const PLAT_CFG = {
-    tt: { label: 'TikTok',    color: 'var(--tiktok)', hex: '#ff2d55' },
-    ig: { label: 'Instagram', color: 'var(--ig)',     hex: '#e1306c' },
-    yt: { label: 'YouTube',   color: 'var(--yt)',     hex: '#ff6060' }
+    tt: { label: 'TikTok',    color: '#aaaaaa', hex: '#aaaaaa' },
+    ig: { label: 'Instagram', color: '#e1306c', hex: '#e1306c' },
+    yt: { label: 'YouTube',   color: '#cc1414', hex: '#cc1414' }
   };
 
   if (!snaps.length) {
@@ -3474,34 +3490,52 @@ function renderViewsChart() {
     return;
   }
 
-  // Group by date+platform — take max views per day per platform for display
+  const PLATS = ['tt','ig','yt'];
+  const PC = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
+  const PL = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
+
+  // Group by date+platform
   const byDate = {};
   eng.forEach(e => {
-    if (!byDate[e.date]) byDate[e.date] = { tt:0, ig:0, yt:0, total:0 };
+    if (!byDate[e.date]) byDate[e.date] = { tt:0, ig:0, yt:0 };
     byDate[e.date][e.platform] = Math.max(byDate[e.date][e.platform], e.views||0);
-    byDate[e.date].total += e.views||0;
   });
 
   const dates  = Object.keys(byDate).sort();
-  const maxVal = Math.max(...dates.map(d => byDate[d].total), 1);
-  const barW   = Math.max(24, Math.min(40, Math.floor(560 / dates.length)));
+  const maxVal = Math.max(...dates.flatMap(d => PLATS.map(p => byDate[d][p])), 1);
   const chartH = 120;
+  const groupW = Math.max(36, Math.min(60, Math.floor(520 / dates.length)));
+  const barW   = Math.floor((groupW - 4) / 3);
+
+  const legend = PLATS.map(p =>
+    `<span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-family:var(--mono);color:var(--muted);">
+      <span style="width:8px;height:8px;border-radius:2px;background:${PC[p]};display:inline-block;"></span>${PL[p]}
+    </span>`
+  ).join('');
 
   const bars = dates.map(d => {
     const data = byDate[d];
-    const h    = Math.round((data.total / maxVal) * chartH);
-    const dt   = new Date(d + 'T12:00:00');
-    const lbl  = dt.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    const dt  = new Date(d + 'T12:00:00');
+    const lbl = dt.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    const platBars = PLATS.map(p => {
+      const v = data[p] || 0;
+      const h = Math.max(v > 0 ? 3 : 0, Math.round((v / maxVal) * chartH));
+      const label = v >= 1000 ? (v/1000).toFixed(1)+'k' : v > 0 ? v : '';
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:1px;width:${barW}px;" title="${PL[p]}: ${v.toLocaleString()} views">
+        <div style="font-size:8px;color:var(--muted);font-family:var(--mono);min-height:10px;">${label}</div>
+        <div style="width:${barW-1}px;height:${h}px;background:${PC[p]};border-radius:2px 2px 0 0;min-height:${v>0?3:0}px;"></div>
+      </div>`;
+    }).join('');
     return `
-      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;width:${barW}px;" title="${lbl}: ${data.total.toLocaleString()} views">
-        <div style="font-size:9px;color:var(--muted);font-family:var(--mono);">${data.total >= 1000 ? (data.total/1000).toFixed(1)+'k' : data.total}</div>
-        <div style="width:${barW-6}px;height:${h}px;background:var(--accent);border-radius:3px 3px 0 0;min-height:3px;"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex-shrink:0;width:${groupW}px;">
+        <div style="display:flex;align-items:flex-end;gap:1px;height:${chartH+10}px;">${platBars}</div>
         <div style="font-size:8px;color:var(--muted);transform:rotate(-35deg);transform-origin:top left;margin-top:4px;white-space:nowrap;">${lbl}</div>
       </div>`;
   }).join('');
 
   container.innerHTML = `
-    <div style="display:flex;align-items:flex-end;gap:3px;padding:8px 0 32px;overflow-x:auto;min-height:${chartH+60}px;">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;">${legend}</div>
+    <div style="display:flex;align-items:flex-end;gap:4px;padding:8px 0 32px;overflow-x:auto;min-height:${chartH+60}px;">
       ${bars}
     </div>`;
 }
@@ -3979,8 +4013,8 @@ function saveEngagement() {
   const post = state.posts.find(p => String(p.id) === postIdStr);
 
   const rawTags  = document.getElementById('eng-hashtags').value;
-  const hashtags = rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0)
-    .map(t => t.startsWith('#') ? t : '#' + t);
+  const hashtags = rawTags.split('#').map(t => t.trim()).filter(t => t.length > 0)
+    .map(t => '#' + t);
 
   const values = {
     postId:    post.id,
@@ -4660,6 +4694,24 @@ setInterval(checkUpcomingPosts, 60000);
       setSyncStatus('No cloud data yet — will push on next change.', 'amber');
     }
   }
+})();
+
+// Delegated copy handler — covers dynamically rendered copy-btn and tag elements
+// Uses touchend for reliable mobile tap response (bypasses 300ms delay + iframe issues)
+(function attachCopyDelegation() {
+  const panes = ['cap-tt','cap-ig','cap-yt'];
+  panes.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const handler = function(e) {
+      const target = e.target.closest('[data-copy]');
+      if (!target) return;
+      e.preventDefault();
+      copyText(target.dataset.copy, target);
+    };
+    el.addEventListener('touchend', handler, { passive: false });
+    el.addEventListener('click', handler);
+  });
 })();
 
 if ('serviceWorker' in navigator) {
