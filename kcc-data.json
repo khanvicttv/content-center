@@ -6380,7 +6380,10 @@
       "platform": "tt",
       "date": "2026-05-04",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-05T03:36:45.307Z",
+      "timingVariance": 0
     },
     {
       "id": 1777785288989.601,
