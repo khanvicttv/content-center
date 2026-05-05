@@ -5246,7 +5246,48 @@
         "ig"
       ],
       "addedAt": "2026-05-05T15:31:23",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "bro really thought he was different, got humbled real quick",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro really thought he was different, got humbled real quick\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "this guy really thought he was the one, got humbled real quick",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this guy really thought he was the one, got humbled real quick\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone: this guy thought he was him, got completely humbled",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone: this guy thought he was him, got completely humbled\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778012443926,
@@ -6639,6 +6680,24 @@
       "platform": "tt",
       "date": "2026-05-06",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778018404109.2527,
+      "clipId": 1778013083501,
+      "clipName": "Im sorry sasuke",
+      "platform": "tt",
+      "date": "2026-05-07",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778018404109.5728,
+      "clipId": 1778013083501,
+      "clipName": "Im sorry sasuke",
+      "platform": "ig",
+      "date": "2026-05-07",
+      "time": "13:00",
       "posted": false
     }
   ],
