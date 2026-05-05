@@ -5302,7 +5302,22 @@
         "ig"
       ],
       "addedAt": "2026-05-05T15:20:43",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "streams going crazy, chat asking questions like i got all the answers",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "streams going crazy, chat asking questions like i got all the answers\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778011431520,
@@ -5373,7 +5388,48 @@
         "ig"
       ],
       "addedAt": "2026-05-05T14:56:13",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "patience wins fights, rushing gets you clapped every time",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "patience wins fights, rushing gets you clapped every time\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "patience wins games, sometimes you just gotta wait for them to slip up",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "patience wins games, sometimes you just gotta wait for them to slip up\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "sometimes patience wins the fight in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "sometimes patience wins the fight in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -6698,6 +6754,42 @@
       "platform": "ig",
       "date": "2026-05-07",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778018411334.0193,
+      "clipId": 1778010973893,
+      "clipName": "Wait for it",
+      "platform": "tt",
+      "date": "2026-05-07",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778018411334.836,
+      "clipId": 1778010973893,
+      "clipName": "Wait for it",
+      "platform": "ig",
+      "date": "2026-05-07",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778018414734.0295,
+      "clipId": 1778012443926,
+      "clipName": "Hows cod going for you",
+      "platform": "tt",
+      "date": "2026-05-08",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778018414734.8298,
+      "clipId": 1778012443926,
+      "clipName": "Hows cod going for you",
+      "platform": "ig",
+      "date": "2026-05-08",
+      "time": "09:00",
       "posted": false
     }
   ],
