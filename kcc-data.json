@@ -5401,7 +5401,9 @@
           ],
           "full": "mk78 is cracked this season, literally melts everything\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-06T14:58:10.892Z"
     },
     {
       "id": 1778010973893,
@@ -6761,7 +6763,10 @@
       "platform": "ig",
       "date": "2026-05-06",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:56",
+      "postedAt": "2026-05-06T14:58:10.892Z",
+      "timingVariance": 56
     },
     {
       "id": 1778018393124.7192,
