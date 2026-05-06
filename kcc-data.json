@@ -4891,7 +4891,9 @@
           ],
           "full": "he had one job and completely blew it\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-06T18:54:24.338Z"
     },
     {
       "id": 1777782959463,
@@ -6853,7 +6855,10 @@
       "platform": "ig",
       "date": "2026-05-06",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:54",
+      "postedAt": "2026-05-06T18:54:24.337Z",
+      "timingVariance": 54
     },
     {
       "id": 1778018434624.4636,
