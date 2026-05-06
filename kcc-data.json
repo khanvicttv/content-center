@@ -4775,7 +4775,9 @@
           ],
           "full": "warzone | when your squad forgets you exist\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-06T04:50:21.618Z"
     },
     {
       "id": 1777783600514,
@@ -6828,7 +6830,10 @@
       "platform": "ig",
       "date": "2026-05-05",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "23:00",
+      "postedAt": "2026-05-06T04:50:21.617Z",
+      "timingVariance": 240
     },
     {
       "id": 1778018429128.8696,
