@@ -4949,7 +4949,9 @@
           ],
           "full": "this is literally how you win every warzone game | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-07T13:48:19.086Z"
     },
     {
       "id": 1777782288480,
@@ -6740,7 +6742,10 @@
       "platform": "ig",
       "date": "2026-05-07",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "08:48",
+      "postedAt": "2026-05-07T13:48:19.085Z",
+      "timingVariance": -12
     },
     {
       "id": 1777785317472.5017,
