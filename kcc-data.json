@@ -5235,7 +5235,9 @@
           ],
           "full": "mk78 with 75 rounds is nasty for 1v4s no cap\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-07T03:46:51.773Z"
     },
     {
       "id": 1778013083501,
@@ -6870,7 +6872,10 @@
       "platform": "ig",
       "date": "2026-05-06",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-05-07T03:46:51.773Z",
+      "timingVariance": 0
     }
   ],
   "checklist": {
