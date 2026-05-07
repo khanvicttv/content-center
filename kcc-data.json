@@ -5295,7 +5295,9 @@
           ],
           "full": "warzone: this guy thought he was him, got completely humbled\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-07T18:22:59.643Z"
     },
     {
       "id": 1778012443926,
@@ -6814,7 +6816,10 @@
       "platform": "ig",
       "date": "2026-05-07",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:22",
+      "postedAt": "2026-05-07T18:22:59.643Z",
+      "timingVariance": 22
     },
     {
       "id": 1778018411334.0193,
