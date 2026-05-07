@@ -5594,7 +5594,48 @@
         "ig"
       ],
       "addedAt": "2026-05-07T17:51:22",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "two players holding hands through the map, pure chemistry",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "two players holding hands through the map, pure chemistry\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "two players holding hands through the storm, pure chaos",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "two players holding hands through the storm, pure chaos\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone duo holding hands through the storm like it's nothing",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone duo holding hands through the storm like it's nothing\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778191958300,
@@ -5665,7 +5706,48 @@
         "ig"
       ],
       "addedAt": "2026-05-07T17:01:39",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "higher sens movement feels different but way cleaner honestly",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "higher sens movement feels different but way cleaner honestly\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "higher sens is actually different, way more control on movement",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "higher sens is actually different, way more control on movement\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "higher sensitivity movement is different, way more control",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#sensitivity",
+            "#movement",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "higher sensitivity movement is different, way more control\n\n#warzone #cod #callofduty #sensitivity #movement #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778191080855,
@@ -5792,7 +5874,35 @@
         "ig"
       ],
       "addedAt": "2026-05-07T16:47:42",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "people just cant accept that some players are actually just better",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "people just cant accept that some players are actually just better\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "when your aim is just different, everyone thinks you're cheating. come watch live on twitch",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "when your aim is just different, everyone thinks you're cheating. come watch live on twitch\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -7305,6 +7415,60 @@
       "clipName": "How he get behind me",
       "platform": "ig",
       "date": "2026-05-09",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778195334293.0693,
+      "clipId": 1778194282778,
+      "clipName": "One body multiplying",
+      "platform": "tt",
+      "date": "2026-05-10",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778195334293.7915,
+      "clipId": 1778194282778,
+      "clipName": "One body multiplying",
+      "platform": "ig",
+      "date": "2026-05-10",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778195337981.0156,
+      "clipId": 1778191299316,
+      "clipName": "Liking high sens",
+      "platform": "tt",
+      "date": "2026-05-10",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778195337981.4446,
+      "clipId": 1778191299316,
+      "clipName": "Liking high sens",
+      "platform": "ig",
+      "date": "2026-05-10",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778195341366.986,
+      "clipId": 1778190462923,
+      "clipName": "Accused of cheating",
+      "platform": "tt",
+      "date": "2026-05-10",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778195341366.846,
+      "clipId": 1778190462923,
+      "clipName": "Accused of cheating",
+      "platform": "ig",
+      "date": "2026-05-10",
       "time": "19:00",
       "posted": false
     }
