@@ -5538,7 +5538,48 @@
         "ig"
       ],
       "addedAt": "2026-05-07T18:00:11",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "people still not listening to the fundamentals, man",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "people still not listening to the fundamentals, man\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro keeps asking the same questions, just watch the vods on twitch",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro keeps asking the same questions, just watch the vods on twitch\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "stop ignoring the same advice every single game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "stop ignoring the same advice every single game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778194282778,
@@ -5695,7 +5736,48 @@
         "ig"
       ],
       "addedAt": "2026-05-07T16:53:19",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "randoms needed the dub, had to step up and deliver",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "randoms needed the dub, had to step up and deliver\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "randoms counting on you to close it out, no pressure",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "randoms counting on you to close it out, no pressure\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "clutching the dub for the randos in warzone, no pressure",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#clutch",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "clutching the dub for the randos in warzone, no pressure\n\n#warzone #cod #callofduty #clutch #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778190462923,
@@ -7188,6 +7270,42 @@
       "platform": "ig",
       "date": "2026-05-09",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778195318275.5986,
+      "clipId": 1778194811888,
+      "clipName": "Dont chase people",
+      "platform": "tt",
+      "date": "2026-05-09",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778195318275.102,
+      "clipId": 1778194811888,
+      "clipName": "Dont chase people",
+      "platform": "ig",
+      "date": "2026-05-09",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778195324964.756,
+      "clipId": 1778190799718,
+      "clipName": "How he get behind me",
+      "platform": "tt",
+      "date": "2026-05-09",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778195324964.7974,
+      "clipId": 1778190799718,
+      "clipName": "How he get behind me",
+      "platform": "ig",
+      "date": "2026-05-09",
+      "time": "19:00",
       "posted": false
     }
   ],
@@ -10922,7 +11040,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
