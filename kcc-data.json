@@ -5353,7 +5353,9 @@
           ],
           "full": "streams going crazy when chat starts asking questions lol\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-08T14:33:54.650Z"
     },
     {
       "id": 1778011431520,
@@ -7314,7 +7316,10 @@
       "platform": "ig",
       "date": "2026-05-08",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-05-08T14:33:54.650Z",
+      "timingVariance": 0
     },
     {
       "id": 1778018422679.2073,
