@@ -5807,7 +5807,9 @@
           ],
           "full": "got completely flanked, didnt even hear him coming\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-08T19:32:00.524Z"
     },
     {
       "id": 1778190799718,
@@ -7376,7 +7378,10 @@
       "platform": "ig",
       "date": "2026-05-08",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:35",
+      "postedAt": "2026-05-08T19:32:00.523Z",
+      "timingVariance": 35
     },
     {
       "id": 1778195287816.6072,
