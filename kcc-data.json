@@ -5467,7 +5467,9 @@
           ],
           "full": "sometimes patience wins the fight in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-08T01:43:15.877Z"
     },
     {
       "id": 1778195056677,
@@ -7288,7 +7290,10 @@
       "platform": "ig",
       "date": "2026-05-07",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "20:00",
+      "postedAt": "2026-05-08T01:43:15.877Z",
+      "timingVariance": 60
     },
     {
       "id": 1778018414734.0295,
