@@ -5527,7 +5527,9 @@
           ],
           "full": "knew better, did it anyway. got absolutely punished for it\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-09T06:03:05.642Z"
     },
     {
       "id": 1778194811888,
@@ -7402,7 +7404,10 @@
       "platform": "ig",
       "date": "2026-05-08",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-05-09T06:03:05.642Z",
+      "timingVariance": 0
     },
     {
       "id": 1778195298049.0503,
