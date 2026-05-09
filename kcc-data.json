@@ -5955,7 +5955,48 @@
         "ig"
       ],
       "addedAt": "2026-05-09T13:20:46",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "teaching randos how to actually win a game of warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "teaching randos how to actually win a game of warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "teaching randoms how to actually win in warzone, watch live on twitch",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "teaching randoms how to actually win in warzone, watch live on twitch\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "teaching randos how to actually win in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "teaching randos how to actually win in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778350510301,
@@ -5970,7 +6011,22 @@
         "ig"
       ],
       "addedAt": "2026-05-09T13:15:10",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "not a sniper but that shot was actually clean",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "not a sniper but that shot was actually clean\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778350390772,
@@ -7673,6 +7729,42 @@
       "platform": "ig",
       "date": "2026-05-10",
       "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778351268545.739,
+      "clipId": 1778350846731,
+      "clipName": "Clutch for the randos",
+      "platform": "tt",
+      "date": "2026-05-11",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778351268545.1902,
+      "clipId": 1778350846731,
+      "clipName": "Clutch for the randos",
+      "platform": "ig",
+      "date": "2026-05-11",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778351273889.171,
+      "clipId": 1778350510301,
+      "clipName": "That snipe was clean",
+      "platform": "tt",
+      "date": "2026-05-11",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778351273889.4136,
+      "clipId": 1778350510301,
+      "clipName": "That snipe was clean",
+      "platform": "ig",
+      "date": "2026-05-11",
+      "time": "13:00",
       "posted": false
     }
   ],
@@ -11727,7 +11819,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
