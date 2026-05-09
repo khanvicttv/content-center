@@ -5940,7 +5940,48 @@
         "ig"
       ],
       "addedAt": "2026-05-09T13:22:48",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "factory is mine, this spot is locked down",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "factory is mine, this spot is locked down\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "factory is my territory, you're just visiting",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "factory is my territory, you're just visiting\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "factory is mine, that spot stays locked down",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "factory is mine, that spot stays locked down\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778350846731,
@@ -6066,7 +6107,48 @@
         "ig"
       ],
       "addedAt": "2026-05-09T13:13:10",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "literally hunting you down, nowhere to hide in this match",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "literally hunting you down, nowhere to hide in this match\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "i'm definitely coming for you, watch your back on rebirth",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "i'm definitely coming for you, watch your back on rebirth\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "when he realizes youre coming for him in warzone",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "when he realizes youre coming for him in warzone\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778350200619,
@@ -6388,6 +6470,19 @@
             "#khanvicttv"
           ],
           "full": "bro was just spraying into the void, no clue where his shots went\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "this man was just spraying everywhere, no aim whatsoever",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this man was just spraying everywhere, no aim whatsoever\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     }
@@ -8131,6 +8226,42 @@
       "platform": "ig",
       "date": "2026-05-13",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778351310437.311,
+      "clipId": 1778350968810,
+      "clipName": "Youre in my spot",
+      "platform": "tt",
+      "date": "2026-05-13",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778351310437.9736,
+      "clipId": 1778350968810,
+      "clipName": "Youre in my spot",
+      "platform": "ig",
+      "date": "2026-05-13",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778351313470.3372,
+      "clipId": 1778350390772,
+      "clipName": "Keep campin and snipin",
+      "platform": "tt",
+      "date": "2026-05-14",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778351313470.543,
+      "clipId": 1778350390772,
+      "clipName": "Keep campin and snipin",
+      "platform": "ig",
+      "date": "2026-05-14",
+      "time": "09:00",
       "posted": false
     }
   ],
