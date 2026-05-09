@@ -6361,7 +6361,35 @@
         "ig"
       ],
       "addedAt": "2026-05-09T12:54:26",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "bro was just spraying at the sky hoping something would happen",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro was just spraying at the sky hoping something would happen\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro was just spraying into the void, no clue where his shots went",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro was just spraying into the void, no clue where his shots went\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -8085,6 +8113,24 @@
       "platform": "ig",
       "date": "2026-05-13",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778351305741.3582,
+      "clipId": 1778349266551,
+      "clipName": "What just happened",
+      "platform": "tt",
+      "date": "2026-05-13",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778351305741.566,
+      "clipId": 1778349266551,
+      "clipName": "What just happened",
+      "platform": "ig",
+      "date": "2026-05-13",
+      "time": "13:00",
       "posted": false
     }
   ],
