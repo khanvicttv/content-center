@@ -5585,7 +5585,9 @@
           ],
           "full": "stop ignoring the same advice every single game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-09T23:50:40.373Z"
     },
     {
       "id": 1778194282778,
@@ -8013,7 +8015,10 @@
       "platform": "ig",
       "date": "2026-05-09",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-09T23:50:40.372Z",
+      "timingVariance": 0
     },
     {
       "id": 1778195324964.756,
