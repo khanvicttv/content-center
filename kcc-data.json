@@ -8001,7 +8001,10 @@
       "platform": "tt",
       "date": "2026-05-09",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-09T23:50:38.657Z",
+      "timingVariance": 0
     },
     {
       "id": 1778195318275.102,
