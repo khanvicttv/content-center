@@ -5871,7 +5871,9 @@
           ],
           "full": "clutching the dub for the randos in warzone, no pressure\n\n#warzone #cod #callofduty #clutch #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-10T16:09:17.217Z"
     },
     {
       "id": 1778190462923,
@@ -8039,7 +8041,10 @@
       "platform": "ig",
       "date": "2026-05-09",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "22:00",
+      "postedAt": "2026-05-10T16:09:17.216Z",
+      "timingVariance": 180
     },
     {
       "id": 1778195334293.0693,
