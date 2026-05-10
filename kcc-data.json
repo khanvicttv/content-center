@@ -8027,7 +8027,10 @@
       "platform": "tt",
       "date": "2026-05-09",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-05-10T16:09:12.509Z",
+      "timingVariance": 0
     },
     {
       "id": 1778195324964.7974,
@@ -12324,7 +12327,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 1,
+  "weekOffset": -1,
   "engagements": [
     {
       "id": 1774928290584,
