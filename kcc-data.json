@@ -5643,7 +5643,9 @@
           ],
           "full": "warzone duo holding hands through the storm like it's nothing\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-10T16:15:26.758Z"
     },
     {
       "id": 1778191958300,
@@ -8065,7 +8067,10 @@
       "platform": "ig",
       "date": "2026-05-10",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "11:15",
+      "postedAt": "2026-05-10T16:15:26.757Z",
+      "timingVariance": 135
     },
     {
       "id": 1778195337981.0156,
