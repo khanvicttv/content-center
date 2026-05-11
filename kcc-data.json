@@ -8079,7 +8079,10 @@
       "platform": "tt",
       "date": "2026-05-10",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-11T14:31:59.453Z",
+      "timingVariance": 0
     },
     {
       "id": 1778195337981.4446,
