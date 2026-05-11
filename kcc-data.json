@@ -5759,7 +5759,9 @@
           ],
           "full": "higher sensitivity movement is different, way more control\n\n#warzone #cod #callofduty #sensitivity #movement #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-11T14:32:12.088Z"
     },
     {
       "id": 1778191080855,
@@ -8091,7 +8093,10 @@
       "platform": "ig",
       "date": "2026-05-10",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-11T14:32:12.088Z",
+      "timingVariance": 0
     },
     {
       "id": 1778195341366.986,
