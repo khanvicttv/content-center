@@ -925,6 +925,11 @@
   <div class="modal">
     <div class="modal-title">LOG ENGAGEMENT</div>
     <div class="alert-info" style="margin-bottom:14px;">Log stats from your post after 24–48 hours for the most accurate data.</div>
+    <div id="eng-plat-filter" style="display:flex;gap:6px;margin-bottom:12px;">
+      <button id="eng-pill-tt" onclick="setEngagePlatform('tt')" style="flex:1;padding:6px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;">TIKTOK</button>
+      <button id="eng-pill-ig" onclick="setEngagePlatform('ig')" style="flex:1;padding:6px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;">INSTAGRAM</button>
+      <button id="eng-pill-yt" onclick="setEngagePlatform('yt')" style="flex:1;padding:6px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;">YOUTUBE</button>
+    </div>
     <div class="field">
       <label>Post / clip</label>
       <select id="eng-post-sel"></select>
@@ -3950,6 +3955,9 @@ function editEngagement(id) {
   if (!e) return;
   editingEngagementId = id;
 
+  // Hide platform pills — platform is fixed when editing
+  document.getElementById('eng-plat-filter').style.display = 'none';
+
   const posted = [...state.posts.filter(p => p.posted)].sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
   const sel = document.getElementById('eng-post-sel');
   sel.innerHTML = posted.length
@@ -3960,7 +3968,7 @@ function editEngagement(id) {
   document.getElementById('eng-likes').value     = e.likes     || '';
   document.getElementById('eng-comments').value  = e.comments  || '';
   document.getElementById('eng-bookmarks').value = e.bookmarks || '';
-  document.getElementById('eng-hashtags').value  = e.hashtags  ? e.hashtags.join(', ') : '';
+  document.getElementById('eng-hashtags').value  = e.hashtags  ? e.hashtags.join(' ') : '';
   document.getElementById('eng-notes').value     = e.notes     || '';
 
   document.querySelector('#modal-engage .modal-title').textContent = 'EDIT ENGAGEMENT';
@@ -3974,47 +3982,71 @@ function deleteEngagement(id) {
   renderAnalytics();
 }
 
-function openEngageModal() {
-  editingEngagementId = null;
-  document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
+let engagePlatformFilter = 'tt';
 
-  // Exclude posts that already have an engagement entry
+function setEngagePlatform(plat) {
+  engagePlatformFilter = plat;
+  // Update pill styles
+  ['tt','ig','yt'].forEach(p => {
+    const pill = document.getElementById('eng-pill-' + p);
+    if (!pill) return;
+    const active = p === plat;
+    pill.style.background  = active ? PLAT_COLOR[p] : 'var(--surface2)';
+    pill.style.color       = active ? '#fff' : 'var(--text)';
+    pill.style.borderColor = active ? PLAT_COLOR[p] : 'var(--border)';
+    pill.style.fontWeight  = active ? '700' : '400';
+  });
+  populateEngageDropdown();
+}
+
+function populateEngageDropdown() {
   const loggedPostIds = new Set(state.engagements.map(e => String(e.postId)));
-  const posted = [...state.posts.filter(p => p.posted && !loggedPostIds.has(String(p.id)))]
-    .sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time)); // most recent first for logging
-  const sel = document.getElementById('eng-post-sel');
+  const posted = [...state.posts.filter(p =>
+    p.posted &&
+    !loggedPostIds.has(String(p.id)) &&
+    p.platform === engagePlatformFilter
+  )].sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
 
+  const sel = document.getElementById('eng-post-sel');
   if (!posted.length) {
-    const allPosted = state.posts.filter(p => p.posted);
-    sel.innerHTML = allPosted.length
-      ? '<option value="">All posted clips are already logged</option>'
-      : '<option value="">No posted clips yet</option>';
+    const anyPosted = state.posts.filter(p => p.posted && p.platform === engagePlatformFilter);
+    sel.innerHTML = anyPosted.length
+      ? '<option value="">All ' + PLAT_LABEL[engagePlatformFilter] + ' posts are already logged</option>'
+      : '<option value="">No ' + PLAT_LABEL[engagePlatformFilter] + ' posts yet</option>';
   } else {
     sel.innerHTML = '<option value="">— select a post —</option>' +
-      posted.map(p => `<option value="${p.id}">${p.clipName} — ${PLAT_LABEL[p.platform]} (${p.date})</option>`).join('');
+      posted.map(p => `<option value="${p.id}">${p.clipName} (${p.date})</option>`).join('');
   }
 
-  document.getElementById('eng-views').value = '';
-  document.getElementById('eng-likes').value = '';
-  document.getElementById('eng-comments').value = '';
-  document.getElementById('eng-bookmarks').value = '';
-  document.getElementById('eng-notes').value = '';
-  document.getElementById('eng-hashtags').value = '';
-
-  // Pre-fill hashtags when a post is selected — use string comparison to avoid float precision issues
   sel.onchange = function() {
     const postIdStr = this.value;
     const post = state.posts.find(p => String(p.id) === postIdStr);
     if (!post) return;
     const clip = state.clips.find(c => c.id === post.clipId);
     if (clip && clip.lastHashtags && clip.lastHashtags[post.platform]) {
-      document.getElementById('eng-hashtags').value = clip.lastHashtags[post.platform].join(', ');
+      document.getElementById('eng-hashtags').value = clip.lastHashtags[post.platform].join(' ');
     } else {
       document.getElementById('eng-hashtags').value = '';
     }
   };
 
   if (posted.length) sel.onchange.call(sel);
+}
+
+function openEngageModal() {
+  editingEngagementId = null;
+  document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
+  document.getElementById('eng-plat-filter').style.display = 'flex';
+
+  // Reset fields
+  document.getElementById('eng-views').value    = '';
+  document.getElementById('eng-likes').value    = '';
+  document.getElementById('eng-comments').value = '';
+  document.getElementById('eng-bookmarks').value= '';
+  document.getElementById('eng-notes').value    = '';
+  document.getElementById('eng-hashtags').value = '';
+
+  setEngagePlatform(engagePlatformFilter); // apply active pill + populate dropdown
   document.getElementById('modal-engage').classList.add('open');
 }
 
