@@ -6527,7 +6527,35 @@
         "ig"
       ],
       "addedAt": "2026-05-11T23:25:55",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "i had more kills than his whole squad combined that game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "i had more kills than his whole squad combined that game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "out here single handedly clearing squads, their whole team combined couldn't match my body count",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "out here single handedly clearing squads, their whole team combined couldn't match my body count\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778559933396,
@@ -6556,6 +6584,32 @@
             "#khanvicttv"
           ],
           "full": "bro said he was solo then pulls up with a full squad\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro said he was going solo then pulls up with a full squad. that's different",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro said he was going solo then pulls up with a full squad. that's different\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "bro said he was going solo then pulls up with the whole squad",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro said he was going solo then pulls up with the whole squad\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     },
@@ -8578,6 +8632,24 @@
       "clipName": "Craziest interaction pt3",
       "platform": "ig",
       "date": "2026-05-17",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778560610506.8506,
+      "clipId": 1778559955315,
+      "clipName": "Craziest interaction pt4",
+      "platform": "tt",
+      "date": "2026-05-18",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778560610506.177,
+      "clipId": 1778559955315,
+      "clipName": "Craziest interaction pt4",
+      "platform": "ig",
+      "date": "2026-05-18",
       "time": "09:00",
       "posted": false
     }
@@ -12921,7 +12993,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
