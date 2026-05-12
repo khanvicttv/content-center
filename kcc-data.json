@@ -6542,7 +6542,22 @@
         "ig"
       ],
       "addedAt": "2026-05-11T23:25:33",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "bro said he was solo then pulls up with a full squad",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro said he was solo then pulls up with a full squad\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778559911201,
@@ -8545,6 +8560,24 @@
       "clipName": "Craziest interaction pt2",
       "platform": "ig",
       "date": "2026-05-16",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778560606673.1433,
+      "clipId": 1778559933396,
+      "clipName": "Craziest interaction pt3",
+      "platform": "tt",
+      "date": "2026-05-17",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778560606673.4946,
+      "clipId": 1778559933396,
+      "clipName": "Craziest interaction pt3",
+      "platform": "ig",
+      "date": "2026-05-17",
       "time": "09:00",
       "posted": false
     }
