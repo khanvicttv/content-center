@@ -8132,7 +8132,10 @@
       "platform": "tt",
       "date": "2026-05-11",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "21:00",
+      "postedAt": "2026-05-12T03:35:13.149Z",
+      "timingVariance": 480
     },
     {
       "id": 1778351273889.4136,
