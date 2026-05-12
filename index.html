@@ -577,16 +577,12 @@
       <!-- Analysis result -->
       <div id="cap-analysis-result"></div>
 
-      <!-- Per-platform results -->
-      <div class="cap-tabs" style="margin-top:8px;">
-        <button class="cap-tab tt active" onclick="switchCapTab(this,'tt')">TikTok</button>
-        <button class="cap-tab ig" onclick="switchCapTab(this,'ig')">Instagram</button>
-        <button class="cap-tab yt" onclick="switchCapTab(this,'yt')">YouTube</button>
+      <!-- Per-platform results — stacked, always visible after analyse -->
+      <div id="cap-results-wrap" style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+        <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
+        <div id="cap-ig" class="cap-pane" style="display:none;"></div>
+        <div id="cap-yt" class="cap-pane" style="display:none;"></div>
       </div>
-
-      <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
-      <div id="cap-ig" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
-      <div id="cap-yt" class="cap-pane" style="display:none;"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
     </div>
 
     <!-- CONTENT INTEL -->
@@ -1421,8 +1417,15 @@ function restoreClip(id) {
 }
 
 function updateClipDesc(id, desc) {
-  const clip = state.clips.find(c => c.id === id);
-  if (clip) { clip.desc = desc.trim(); save(); renderClipList(); }
+  const clip = state.clips.find(c => String(c.id) === String(id));
+  if (!clip) return;
+  clip.desc = desc.trim();
+  save();
+  renderClipList();
+  // Auto-generate captions in background if API key exists and desc is substantial
+  if (clip.desc.length > 10 && loadApiKey()) {
+    autoGenerateCaptions(clip);
+  }
 }
 
 function scheduleFromClip(id) {
@@ -1478,6 +1481,15 @@ function importFromScan(e) {
       updateSidebar();
       renderDaysBanner();
 
+      // Auto-generate captions in background for imported clips that have descriptions
+      if (loadApiKey()) {
+        const clipsNeedingCaptions = state.clips.filter(c =>
+          !c.archived && c.desc && c.desc.trim().length > 10 &&
+          (!c.captions || Object.keys(c.captions).length < 3)
+        );
+        clipsNeedingCaptions.forEach(clip => autoGenerateCaptions(clip));
+      }
+
       // Show result banner
       const banner = document.getElementById('scan-banner');
       const scannedAt = data.scannedAt ? new Date(data.scannedAt).toLocaleString() : 'unknown time';
@@ -1487,7 +1499,7 @@ function importFromScan(e) {
         <strong style="color:var(--green);">✓ Import complete</strong> — 
         ${added} clip${added!==1?'s':''} added${skipped ? `, ${skipped} skipped (already in library)` : ''}.
         Scanned at ${scannedAt}.<br>
-        <span style="color:var(--muted);font-size:12px;">Now add a one-line description to each clip, then generate captions.</span>`;
+        <span style="color:var(--muted);font-size:12px;">${loadApiKey() ? 'Captions are generating in the background — Copy buttons will appear on Today shortly.' : 'Add an API key in Settings to auto-generate captions.'}</span>`;
 
       // Reset the file input so the same file can be re-imported if needed
       e.target.value = '';
@@ -1497,6 +1509,77 @@ function importFromScan(e) {
     }
   };
   reader.readAsText(file);
+}
+
+// Generate caption for a single post inline on Today — no navigation away
+async function inlineGenCaption(btn) {
+  const clipId = btn.dataset.clipid;
+  const postId = btn.dataset.postid;
+  const plat   = btn.dataset.plat;
+  const clip   = state.clips.find(c => String(c.id) === String(clipId));
+  if (!clip || !clip.desc) return;
+
+  const apiKey = loadApiKey();
+  if (!apiKey) {
+    // No API key — fall back to navigate to captions panel
+    captionFromClip(clipId);
+    return;
+  }
+
+  // Swap button to loading state
+  const origText = btn.textContent;
+  btn.textContent = 'Generating...';
+  btn.disabled = true;
+
+  const platRules = {
+    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.',
+    ig: 'Same voice, 1-2 sentences. Can mention live on Twitch/Kick/TikTok.',
+    yt: 'Title format 40-70 chars, searchable, game name + action. End with | Khanvict TV.'
+  };
+  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
+
+  const prompt = `You write captions for Khanvict TV — a Warzone/FPS streamer.
+Style: very short (5-16 words), no emojis, lowercase casual, matter-of-fact.
+Examples: "The dude was lost, broke every bone in his body" / "AK74 is meta right now for close range" / "legit OP, if you dont have it, you are doing yourself injustice"
+CLIP: ${clip.desc}
+GAME: ${clip.game || 'Warzone'}
+PLATFORM: ${platNames[plat]}
+RULES: ${platRules[plat]}
+Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#rebirthisland","#warzoneclips","#khanvicttv"]}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    const raw  = data.content.map(b => b.text || '').join('');
+    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    const full = parsed.caption + '\n\n' + parsed.hashtags.join(' ');
+
+    if (!clip.captions) clip.captions = {};
+    clip.captions[plat] = { caption: parsed.caption, hashtags: parsed.hashtags, full };
+    save();
+
+    // Swap button to Copy without re-rendering the whole panel
+    const capKey = `today_${String(postId)}`;
+    window._capCache[capKey] = full;
+    btn.textContent = `Copy ${PLAT_LABEL[plat]} caption`;
+    btn.className = 'btn btn-primary btn-sm';
+    btn.style.fontSize = '10px';
+    btn.disabled = false;
+    btn.removeAttribute('data-clipid');
+    btn.removeAttribute('data-postid');
+    btn.removeAttribute('data-plat');
+    btn.onclick = function() { copyTodayCaption(capKey, this); };
+
+  } catch(e) {
+    btn.textContent = origText;
+    btn.disabled = false;
+    showToast('Caption generation failed. Check your API key.', 'red');
+  }
 }
 
 function copyTodayCaption(key, btn) {
@@ -1515,10 +1598,18 @@ function copyTodayCaption(key, btn) {
 
 function captionFromClip(id) {
   nav('captions');
-  refreshAllSelects(); // ensure the dropdown is populated before we set a value
+  refreshAllSelects();
   setTimeout(() => {
     document.getElementById('cap-clip').value = String(id);
     onCapClipChange();
+    // Auto-focus the TikTok input so user can start typing immediately
+    const ttInput = document.getElementById('cap-tt-input');
+    if (ttInput) {
+      ttInput.focus();
+      // Place cursor at end if there's existing text
+      const len = ttInput.value.length;
+      ttInput.setSelectionRange(len, len);
+    }
   }, 50);
 }
 
@@ -1608,65 +1699,64 @@ async function batchGenerateCaptions() {
 
 async function autoGenerateCaptions(clip) {
   const apiKey = loadApiKey();
-  if (!apiKey) return; // silently skip if no API key
+  if (!apiKey) return;
 
   const desc = clip.desc;
+  if (!desc || !desc.trim()) return;
   const game = clip.game || 'Warzone';
-  const tone = 'clutch'; // default tone for auto-generation
-  const clipId = clip.id;
-
-  const toneGuide = {
-    clutch: 'Matter-of-fact about something that was clearly not matter-of-fact. Understated. "broke every bone in his body" energy.'
-  };
-
-  const PLATS = [
-    { key: 'tt', name: 'TikTok' },
-    { key: 'ig', name: 'Instagram Reels' },
-    { key: 'yt', name: 'YouTube Shorts' }
-  ];
 
   const platRules = {
     tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.',
     ig: 'Same voice, 1-2 sentences. Can mention live on Twitch/Kick/TikTok.',
     yt: 'Title format 40-70 chars, searchable, game name + action. End with | Khanvict TV.'
   };
+  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
 
-  for (const plat of PLATS) {
-    // Skip if already have caption for this platform
-    if (clip.captions && clip.captions[plat.key]) continue;
+  // Only generate platforms still missing captions
+  const platsToDo = ['tt', 'ig', 'yt'].filter(k => !(clip.captions && clip.captions[k]));
+  if (!platsToDo.length) return;
 
-    const prompt = `You write TikTok captions for Khanvict TV — a Warzone/FPS streamer.
-
+  const buildPrompt = (platKey) => `You write captions for Khanvict TV — a Warzone/FPS streamer.
 Style: very short (5-16 words), no emojis, lowercase casual, matter-of-fact.
 Examples: "The dude was lost, broke every bone in his body" / "AK74 is meta right now for close range" / "legit OP, if you dont have it, you are doing yourself injustice"
-
 CLIP: ${desc}
 GAME: ${game}
-PLATFORM: ${plat.name}
-RULES: ${platRules[plat.key]}
+PLATFORM: ${platNames[platKey]}
+RULES: ${platRules[platKey]}
+Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#rebirthisland","#warzoneclips","#khanvicttv"]}`;
 
-Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#rebirthisland","#warzoneclips","#khanvicttv"],"tip":"..."}`;
+  const fetchCap = async (platKey) => {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, messages: [{ role: 'user', content: buildPrompt(platKey) }] })
+    });
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
+    const raw = data.content.map(b => b.text || '').join('');
+    return { platKey, parsed: JSON.parse(raw.replace(/```json|```/g, '').trim()) };
+  };
 
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-        body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 400, messages: [{ role: 'user', content: prompt }] })
-      });
-      if (!res.ok) continue;
-      const data = await res.json();
-      const raw = data.content.map(b => b.text || '').join('');
-      const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
-      const full = parsed.caption + '\n\n' + parsed.hashtags.join(' ');
+  // Run all platforms in parallel
+  const results = await Promise.allSettled(platsToDo.map(k => fetchCap(k)));
 
-      // Save directly to clip — no UI rendering needed
+  let anyNew = false;
+  results.forEach(result => {
+    if (result.status === 'fulfilled') {
+      const { platKey, parsed } = result.value;
       if (!clip.captions) clip.captions = {};
-      clip.captions[plat.key] = { caption: parsed.caption, hashtags: parsed.hashtags, full };
-      save();
-      renderToday(); // refresh Today screen so Copy button appears
-    } catch(e) {
-      // Silently fail per platform — user can still generate manually
+      clip.captions[platKey] = {
+        caption: parsed.caption,
+        hashtags: parsed.hashtags,
+        full: parsed.caption + '\n\n' + parsed.hashtags.join(' ')
+      };
+      anyNew = true;
     }
+  });
+
+  if (anyNew) {
+    save();
+    renderToday();
   }
 }
 
@@ -1785,8 +1875,10 @@ function renderToday() {
         </div>
         <div class="flex" style="flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
           ${hasCaption
-            ? `<button class="btn btn-primary btn-sm" onclick="copyTodayCaption('${capKey}',this)" style="font-size:10px;">Copy caption</button>`
-            : `<button class="btn btn-ghost btn-sm" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="font-size:10px;">Get caption</button>`
+            ? `<button class="btn btn-primary btn-sm" onclick="copyTodayCaption('${capKey}',this)" style="font-size:10px;">Copy ${PLAT_LABEL[p.platform]} caption</button>`
+            : clip && clip.desc
+              ? `<button class="btn btn-ghost btn-sm" data-clipid="${p.clipId}" data-postid="${p.id}" data-plat="${p.platform}" onclick="inlineGenCaption(this)" style="font-size:10px;">⚡ Get caption</button>`
+              : `<button class="btn btn-ghost btn-sm" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="font-size:10px;">Add description first</button>`
           }
           <button class="btn btn-ghost btn-sm" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">${p.posted?'Undo':'Mark posted'}</button>
         </div>
@@ -2218,6 +2310,13 @@ function processDroppedClips(files) {
   updateSidebar();
   renderDaysBanner();
 
+  // Auto-gen captions for any dropped clips that already have a description
+  if (loadApiKey()) {
+    state.clips.filter(c => c.fromDrop && c.desc && c.desc.trim().length > 10 &&
+      (!c.captions || Object.keys(c.captions).length < 3)
+    ).forEach(clip => autoGenerateCaptions(clip));
+  }
+
   // Show result in the drop zone briefly
   const zone = document.getElementById('clip-drop-zone');
   const orig = zone.innerHTML;
@@ -2246,13 +2345,8 @@ function onCapClipChange() {
   }
 }
 
-function switchCapTab(el, tab) {
-  document.querySelectorAll('.cap-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.cap-pane').forEach(p => p.style.display = 'none');
-  document.getElementById('cap-' + tab).style.display = 'block';
-  currentCapTab = tab;
-}
+// switchCapTab retained as no-op — tabs removed in v37, stacked layout now used
+function switchCapTab(el, tab) { currentCapTab = tab; }
 
 // ── CAPTION ASSISTANT ─────────────────────────────────────────────────────
 
@@ -2518,20 +2612,26 @@ function renderCapFromTemplate(plat, desc, game, tone, clipId) {
 
 function renderCapResult(plat, caption, hashtags, tip, clipId) {
   const full = caption + '\n\n' + hashtags.join(' ');
-  // Use cache to avoid apostrophe-breaking inline onclick strings
   const capKey = `cap_${plat}_${Date.now()}`;
   window._capCache[capKey] = full;
   hashtags.forEach((h, i) => { window._capCache[`tag_${plat}_${i}_${capKey}`] = h; });
-  document.getElementById('cap-' + plat).innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-      <span style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;">${PLAT_LABEL[plat].toUpperCase()} CAPTION</span>
-      <button class="copy-btn" onclick="copyText('${capKey}',this)">COPY ALL</button>
-    </div>
-    <div class="caption-box">${caption}</div>
-    <div class="tag-row">
-      ${hashtags.map((h,i)=>`<div class="tag" onclick="copyText('tag_${plat}_${i}_${capKey}',this)">${h}</div>`).join('')}
-    </div>
-    <div class="tip-box"><span class="tip-label">PLATFORM TIP</span>${tip}</div>`;
+
+  const platColor = PLAT_COLOR[plat];
+  const pane = document.getElementById('cap-' + plat);
+  pane.style.display = 'block'; // always show once results arrive
+
+  pane.innerHTML = `
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;border-top:2px solid ${platColor};">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-family:var(--mono);font-size:10px;color:${platColor};letter-spacing:1.5px;">${PLAT_LABEL[plat].toUpperCase()}</span>
+        <button class="btn btn-primary btn-sm" onclick="copyText('${capKey}',this)" style="font-size:11px;padding:6px 14px;">Copy all</button>
+      </div>
+      <div class="caption-box" style="font-size:14px;margin-bottom:10px;">${sanitize(caption)}</div>
+      <div class="tag-row">
+        ${hashtags.map((h,i)=>`<div class="tag" onclick="copyText('tag_${plat}_${i}_${capKey}',this)">${sanitize(h)}</div>`).join('')}
+      </div>
+      ${tip ? `<div class="tip-box" style="margin-top:10px;"><span class="tip-label">TIP</span>${sanitize(tip)}</div>` : ''}
+    </div>`;
 
   // Save caption to clip for use in Today screen copy button
   if (clipId) {
@@ -2540,6 +2640,7 @@ function renderCapResult(plat, caption, hashtags, tip, clipId) {
       if (!clip.captions) clip.captions = {};
       clip.captions[plat] = { caption, hashtags, full };
       save();
+      renderToday(); // refresh Today so Copy buttons appear
     }
   }
 }
