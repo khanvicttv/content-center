@@ -950,9 +950,12 @@
       <label>Notes (optional)</label>
       <textarea id="eng-notes" rows="2" placeholder="e.g. Posted at 7pm, first 30 min replies boosted reach..."></textarea>
     </div>
-    <div class="flex flex-end" style="gap:10px;margin-top:6px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-engage')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveEngagement()">Save</button>
+      <div class="flex" style="gap:8px;">
+        <button class="btn btn-ghost" id="eng-save-close-btn" onclick="saveEngagement(false)" style="display:none;">Save & Close</button>
+        <button class="btn btn-primary" id="eng-save-next-btn" onclick="saveEngagement(true)">Save & Next →</button>
+      </div>
     </div>
   </div>
 </div>
@@ -4047,10 +4050,19 @@ function openEngageModal() {
   document.getElementById('eng-hashtags').value = '';
 
   setEngagePlatform(engagePlatformFilter); // apply active pill + populate dropdown
+
+  // Reset buttons to default state
+  const nextBtn = document.getElementById('eng-save-next-btn');
+  nextBtn.textContent = 'Save & Next →';
+  nextBtn.style.background = '';
+  nextBtn.style.display = '';
+  nextBtn.onclick = () => saveEngagement(true);
+  document.getElementById('eng-save-close-btn').style.display = 'none';
+
   document.getElementById('modal-engage').classList.add('open');
 }
 
-function saveEngagement() {
+function saveEngagement(keepOpen) {
   const postIdStr = document.getElementById('eng-post-sel').value;
   if (!postIdStr) { alert('Please select a post.'); return; }
   const post = state.posts.find(p => String(p.id) === postIdStr);
@@ -4095,9 +4107,47 @@ function saveEngagement() {
   }
 
   save();
-  closeModal('modal-engage');
   renderAnalytics();
   renderStreak();
+
+  if (!keepOpen) {
+    closeModal('modal-engage');
+    return;
+  }
+
+  // Stay open — clear fields and load next unlogged post
+  document.getElementById('eng-views').value    = '';
+  document.getElementById('eng-likes').value    = '';
+  document.getElementById('eng-comments').value = '';
+  document.getElementById('eng-bookmarks').value= '';
+  document.getElementById('eng-notes').value    = '';
+  document.getElementById('eng-hashtags').value = '';
+
+  // Flash confirmation on the save button
+  const btn = document.getElementById('eng-save-next-btn');
+  const prevText = btn.textContent;
+  btn.textContent = '✓ Saved';
+  btn.style.background = 'var(--green)';
+  setTimeout(() => {
+    btn.textContent = prevText;
+    btn.style.background = '';
+  }, 1000);
+
+  // Refresh dropdown — next unlogged post auto-selected
+  populateEngageDropdown();
+  // Auto-fill hashtags for the newly selected post
+  const sel = document.getElementById('eng-post-sel');
+  if (sel.onchange) sel.onchange.call(sel);
+
+  // Check if any posts remain — if not, swap button labels
+  const hasMore = sel.value !== '';
+  document.getElementById('eng-save-next-btn').style.display = hasMore ? '' : 'none';
+  document.getElementById('eng-save-close-btn').style.display = hasMore ? '' : '';
+  if (!hasMore) {
+    document.getElementById('eng-save-next-btn').textContent = 'Save & Close';
+    document.getElementById('eng-save-next-btn').onclick = () => saveEngagement(false);
+    document.getElementById('eng-save-next-btn').style.display = '';
+  }
 }
 
 // ── TIMING ADHERENCE ─────────────────────────────────────────────────────
