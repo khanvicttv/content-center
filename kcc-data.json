@@ -8144,7 +8144,10 @@
       "platform": "ig",
       "date": "2026-05-11",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "22:00",
+      "postedAt": "2026-05-12T03:35:18.310Z",
+      "timingVariance": 540
     },
     {
       "id": 1778351283866.9583,
