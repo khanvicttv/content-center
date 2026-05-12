@@ -1033,6 +1033,16 @@
 </div>
 
 <script>
+// ── SANITIZE ─────────────────────────────────────────────────────────────
+// Escapes user-supplied strings before injecting into innerHTML.
+// Use for any data that came from user input, API responses, or imported files.
+function sanitize(str) {
+  if (str === null || str === undefined) return '';
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+
 // ── STATE ────────────────────────────────────────────────────────────────
 const DEFAULT_SLOTS = [
   { time: '09:00', label: 'Morning', reach: 'HIGH' },
@@ -1154,10 +1164,7 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-const today = new Date();
-document.getElementById('today-date').textContent =
-  today.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' }).toUpperCase();
-
+// today-date header is updated in renderToday() each time the panel is shown
 // ── NAV ──────────────────────────────────────────────────────────────────
 function nav(id) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -1246,8 +1253,8 @@ function addClip() {
 
 function deleteClip(id) {
   if (!confirm('Delete this clip and all its scheduled posts?')) return;
-  state.clips = state.clips.filter(c => c.id !== id);
-  state.posts = state.posts.filter(p => p.clipId !== id);
+  state.clips = state.clips.filter(c => String(c.id) !== String(id));
+  state.posts = state.posts.filter(p => String(p.clipId) !== String(id));
   delete state.checklist[id];
   save();
   renderClipList();
@@ -1342,8 +1349,8 @@ function renderClipList() {
 function buildClipRow(clip, isArchived) {
   const postedCount = state.posts.filter(p => p.clipId === clip.id && p.posted).length;
   const totalSched  = state.posts.filter(p => p.clipId === clip.id).length;
-  const game = clip.game || 'Gaming';
-  const dur  = clip.duration ? ' · ' + clip.duration : '';
+  const game = sanitize(clip.game || 'Gaming');
+  const dur  = clip.duration ? ' · ' + sanitize(clip.duration) : '';
   const noDesc = !clip.desc;
 
   // Find next scheduled post
@@ -1362,10 +1369,10 @@ function buildClipRow(clip, isArchived) {
     ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
          <input type="text" placeholder="Add a description for captions..."
            style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.3);"
-           onchange="updateClipDesc(${clip.id}, this.value)" value="${clip.desc||''}">
+           data-id="${clip.id}" onchange="updateClipDesc(this.dataset.id, this.value)" value="${sanitize(clip.desc||'')}">
        </div>`
     : clip.desc
-      ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${clip.desc.substring(0,80)}${clip.desc.length>80?'…':''}</div>`
+      ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${sanitize(clip.desc.substring(0,80))}${clip.desc.length>80?'…':''}</div>`
       : '';
 
   const archivedMeta = isArchived && clip.archivedAt
@@ -1374,14 +1381,14 @@ function buildClipRow(clip, isArchived) {
 
   const actionBtns = isArchived
     ? `<div class="flex">
-        <button class="btn btn-ghost btn-sm" onclick="restoreClip(${clip.id})" title="Restore to active">Restore</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteClip(${clip.id})">✕</button>
+        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="restoreClip(this.dataset.id)" title="Restore to active">Restore</button>
+        <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
        </div>`
     : `<div class="flex">
-        <button class="btn btn-ghost btn-sm" onclick="scheduleFromClip(${clip.id})">Schedule</button>
-        <button class="btn btn-ghost btn-sm" onclick="captionFromClip(${clip.id})">Captions</button>
-        <button class="btn btn-ghost btn-sm" onclick="archiveClip(${clip.id})" title="Archive manually">Archive</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteClip(${clip.id})">✕</button>
+        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="scheduleFromClip(this.dataset.id)">Schedule</button>
+        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="captionFromClip(this.dataset.id)">Captions</button>
+        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="archiveClip(this.dataset.id)" title="Archive manually">Archive</button>
+        <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
        </div>`;
 
   const rowStyle = isArchived ? 'opacity:0.6;' : '';
@@ -1389,7 +1396,7 @@ function buildClipRow(clip, isArchived) {
   return `
   <div class="clip-row" id="cliprow-${clip.id}" style="${rowStyle}">
     <div style="min-width:0;">
-      <div class="clip-name">${clip.name}${isArchived ? ' <span style="font-size:10px;font-family:var(--mono);color:var(--green);background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">DONE</span>' : ''}</div>
+      <div class="clip-name">${sanitize(clip.name)}${isArchived ? ' <span style="font-size:10px;font-family:var(--mono);color:var(--green);background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">DONE</span>' : ''}</div>
       <div class="clip-meta">${game}${dur} · Added ${addedDate} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
       ${!isArchived ? `<div class="clip-meta" style="margin-top:2px;">${nextScheduled}</div>` : ''}
       ${descWarning}
@@ -1404,12 +1411,12 @@ function buildClipRow(clip, isArchived) {
 }
 
 function archiveClip(id) {
-  const clip = state.clips.find(c => c.id === id);
+  const clip = state.clips.find(c => String(c.id) === String(id));
   if (clip) { clip.archived = true; clip.archivedAt = new Date().toISOString(); save(); renderClipList(); updateSidebar(); renderDaysBanner(); }
 }
 
 function restoreClip(id) {
-  const clip = state.clips.find(c => c.id === id);
+  const clip = state.clips.find(c => String(c.id) === String(id));
   if (clip) { clip.archived = false; delete clip.archivedAt; save(); renderClipList(); updateSidebar(); renderDaysBanner(); }
 }
 
@@ -1491,10 +1498,6 @@ function importFromScan(e) {
   };
   reader.readAsText(file);
 }
-
-
-// Caption cache — avoids apostrophe-breaking inline onclick strings
-window._capCache = {};
 
 function copyTodayCaption(key, btn) {
   const text = window._capCache[key] || '';
@@ -1700,6 +1703,12 @@ function localDateStr(d) {
 
 // ── TODAY ────────────────────────────────────────────────────────────────
 function renderToday() {
+  // Refresh date header — always use current date in case app was left open overnight
+  const nowDate = new Date();
+  const todayDateEl = document.getElementById('today-date');
+  if (todayDateEl) {
+    todayDateEl.textContent = nowDate.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric', year:'numeric' }).toUpperCase();
+  }
   const todayStr = localDateStr();
   const todayPosts = state.posts.filter(p => p.date === todayStr).sort((a,b) => a.time.localeCompare(b.time));
   const posted  = todayPosts.filter(p => p.posted).length;
@@ -1761,7 +1770,7 @@ function renderToday() {
       // Store caption in cache map to avoid apostrophe-breaking inline onclick strings
       const capKey = `today_${String(p.id)}`;
       if (hasCaption) window._capCache[capKey] = clip.captions[p.platform].full;
-      const filename = clip && clip.filename ? `<div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;" title="${clip.filename}">${clip.filename}</div>` : '';
+      const filename = clip && clip.filename ? `<div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;" title="${sanitize(clip.filename)}">${sanitize(clip.filename)}</div>` : '';
 
       return `
       <div class="today-slot-card ${p.posted?'done':''}" style="border-left:3px solid ${color};">
@@ -1770,16 +1779,16 @@ function renderToday() {
         </div>
         <div style="min-width:0;flex:1;">
           <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:3px;">${PLAT_LABEL[p.platform].toUpperCase()}</div>
-          <div style="font-size:13px;font-weight:500;">${p.clipName}</div>
+          <div style="font-size:13px;font-weight:500;">${sanitize(p.clipName)}</div>
           ${filename}
           <div style="margin-top:5px;">${p.posted ? '<span class="posted-badge">✓ POSTED</span>' : '<span class="pending-badge">PENDING</span>'}</div>
         </div>
         <div class="flex" style="flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
           ${hasCaption
             ? `<button class="btn btn-primary btn-sm" onclick="copyTodayCaption('${capKey}',this)" style="font-size:10px;">Copy caption</button>`
-            : `<button class="btn btn-ghost btn-sm" onclick="captionFromClip(${p.clipId})" style="font-size:10px;">Get caption</button>`
+            : `<button class="btn btn-ghost btn-sm" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="font-size:10px;">Get caption</button>`
           }
-          <button class="btn btn-ghost btn-sm" onclick="openConfirmPost(${p.id})">${p.posted?'Undo':'Mark posted'}</button>
+          <button class="btn btn-ghost btn-sm" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">${p.posted?'Undo':'Mark posted'}</button>
         </div>
       </div>`;
     }).join('');
@@ -1875,12 +1884,13 @@ function renderWeek() {
           const short = p.clipName.length > 13 ? p.clipName.substring(0,11)+'…' : p.clipName;
           html += `<div class="post-slot ${p.platform} ${p.posted?'slot-posted':''}"
             draggable="true"
-            ondragstart="onDragStart(event,${p.id})"
+            data-id="${p.id}"
+            ondragstart="onDragStart(event,this.dataset.id)"
             ondragend="onDragEnd(event)"
-            ontouchstart="onTouchStart(event,${p.id})"
+            ontouchstart="onTouchStart(event,this.dataset.id)"
             ontouchmove="onTouchMove(event)"
             ontouchend="onTouchEnd(event)"
-            onclick="openConfirmPost(${p.id})"
+            onclick="openConfirmPost(this.dataset.id)"
             title="Click to confirm posted · Drag to reschedule">
             <div class="slot-plat">${PLAT_LABEL[p.platform]}</div>
             <div class="slot-clip-name">${short}</div>
@@ -1922,7 +1932,7 @@ function onDropSlot(e, date, time) {
   e.preventDefault();
   e.currentTarget.classList.remove('drag-over');
   if (!dragPostId) return;
-  const post = state.posts.find(p => p.id === dragPostId);
+  const post = state.posts.find(p => String(p.id) === String(dragPostId));
   if (!post) return;
   if (post.date === date && post.time === time) return;
   post.date = date;
@@ -1992,7 +2002,7 @@ function onTouchEnd(e) {
     if (zone && dragPostId) {
       const date = zone.dataset.date;
       const time = zone.dataset.time;
-      const post = state.posts.find(p => p.id === dragPostId);
+      const post = state.posts.find(p => String(p.id) === String(dragPostId));
       if (post && !(post.date === date && post.time === time)) {
         post.date = date;
         post.time = time;
@@ -2028,7 +2038,7 @@ function openConfirmPost(postId) {
       <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">This post is already marked as posted.</div>
       <div style="background:var(--bg3);border-radius:8px;padding:12px 14px;">
         <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:4px;">${PLAT_LABEL[post.platform].toUpperCase()}</div>
-        <div style="font-size:14px;font-weight:500;color:var(--text);">${post.clipName}</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);">${sanitize(post.clipName)}</div>
         <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · ${fmtTime(post.time)}</div>
       </div>`;
     document.getElementById('confirm-post-btn').textContent = 'Undo posted';
@@ -2037,7 +2047,7 @@ function openConfirmPost(postId) {
       <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">Have you posted this clip?</div>
       <div style="background:var(--bg3);border-radius:8px;padding:12px 14px;">
         <div style="font-size:10px;font-family:var(--mono);color:${color};letter-spacing:1px;margin-bottom:4px;">${PLAT_LABEL[post.platform].toUpperCase()}</div>
-        <div style="font-size:14px;font-weight:500;color:var(--text);">${post.clipName}</div>
+        <div style="font-size:14px;font-weight:500;color:var(--text);">${sanitize(post.clipName)}</div>
         <div style="font-size:11px;color:var(--muted);margin-top:4px;">${post.date} · Scheduled ${fmtTime(post.time)}</div>
       </div>`;
     document.getElementById('confirm-post-btn').textContent = 'Yes, posted ✓';
@@ -2842,6 +2852,16 @@ function refreshPostClipSelect() {
   document.getElementById('mp-clip').innerHTML = '<option value="">— select a clip —</option>' + opts;
 }
 
+// ── TOAST ────────────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  const color = type === 'green' ? 'var(--green)' : type === 'red' ? 'var(--red)' : type === 'amber' ? 'var(--amber)' : 'var(--accent2)';
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:8px;padding:10px 18px;font-family:var(--mono);font-size:12px;color:${color};z-index:500;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;transition:opacity 0.4s;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2400);
+}
+
 // ── HELPERS ──────────────────────────────────────────────────────────────
 function fmtTime(t) {
   const [h,m] = t.split(':');
@@ -3013,13 +3033,65 @@ function refreshAll() {
 // ── PERSIST ──────────────────────────────────────────────────────────────
 function save() {
   // Always save locally first (instant)
-  try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
+  try {
+    localStorage.setItem('ccc_state', JSON.stringify(state));
+  } catch(e) {
+    if (e instanceof DOMException && (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED')) {
+      showStorageWarning();
+    }
+  }
   // Debounce GitHub push — wait 1.5s after last change before pushing
   const cfg = loadGithubConfig();
   if (cfg.user && cfg.repo && cfg.token) {
     clearTimeout(syncDebounceTimer);
     syncDebounceTimer = setTimeout(() => { pushToGithub(); }, 1500);
   }
+}
+
+function showStorageWarning() {
+  // Don't stack duplicate banners
+  if (document.getElementById('storage-warning-banner')) return;
+  const archivedCount = state.clips.filter(c => c.archived).length;
+  const intelCount = state.contentIntel?.briefs?.length || 0;
+  const banner = document.createElement('div');
+  banner.id = 'storage-warning-banner';
+  banner.style.cssText = 'position:fixed;top:52px;left:0;right:0;z-index:400;background:#2d1a1a;border-bottom:2px solid var(--red);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;';
+  banner.innerHTML = `
+    <div style="font-family:var(--mono);font-size:12px;color:#f87171;">
+      ⚠ Storage full — last save may not have completed.
+      <span style="color:var(--muted);margin-left:6px;">${archivedCount} archived clips · ${intelCount} intel briefs stored</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      ${archivedCount > 0 ? `<button class="btn btn-ghost btn-sm" onclick="pruneArchivedClips()" style="font-size:11px;color:var(--amber);">Prune ${archivedCount} archived clips</button>` : ''}
+      ${intelCount > 4 ? `<button class="btn btn-ghost btn-sm" onclick="pruneIntelBriefs()" style="font-size:11px;color:var(--amber);">Prune old intel briefs</button>` : ''}
+      <button class="btn btn-ghost btn-sm" onclick="this.closest('#storage-warning-banner').remove()" style="font-size:11px;">Dismiss</button>
+    </div>`;
+  document.body.appendChild(banner);
+}
+
+function pruneArchivedClips() {
+  const count = state.clips.filter(c => c.archived).length;
+  if (!count) return;
+  state.clips = state.clips.filter(c => !c.archived);
+  // Clean up orphaned checklists
+  Object.keys(state.checklist).forEach(id => {
+    if (!state.clips.some(c => String(c.id) === id)) delete state.checklist[id];
+  });
+  save();
+  renderClipList();
+  updateSidebar();
+  const b = document.getElementById('storage-warning-banner');
+  if (b) b.remove();
+  showToast(`Pruned ${count} archived clip${count !== 1 ? 's' : ''}. Storage freed.`, 'green');
+}
+
+function pruneIntelBriefs() {
+  const before = state.contentIntel?.briefs?.length || 0;
+  if (state.contentIntel?.briefs) state.contentIntel.briefs = state.contentIntel.briefs.slice(0, 4);
+  save();
+  const b = document.getElementById('storage-warning-banner');
+  if (b) b.remove();
+  showToast(`Kept 4 most recent intel briefs, removed ${before - 4}.`, 'green');
 }
 
 // ── FOLLOWER SNAPSHOT MIGRATION ───────────────────────────────────────────
@@ -3738,9 +3810,9 @@ Return ONLY the JSON array, no markdown, no explanation.`;
 
     document.getElementById('ai-insights-body').innerHTML = insights.map((ins, i) => `
       <div style="padding:12px 0;border-bottom:0.5px solid var(--border);${i===insights.length-1?'border-bottom:none;':''}">
-        <div style="font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:4px;">${ins.title}</div>
-        <div style="font-size:12px;color:var(--text);margin-bottom:6px;line-height:1.6;">${ins.insight}</div>
-        <div style="font-size:11px;color:var(--green);font-family:var(--mono);background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:4px;padding:6px 10px;">→ ${ins.action}</div>
+        <div style="font-size:12px;font-weight:600;color:var(--accent2);margin-bottom:4px;">${sanitize(ins.title)}</div>
+        <div style="font-size:12px;color:var(--text);margin-bottom:6px;line-height:1.6;">${sanitize(ins.insight)}</div>
+        <div style="font-size:11px;color:var(--green);font-family:var(--mono);background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);border-radius:4px;padding:6px 10px;">→ ${sanitize(ins.action)}</div>
       </div>`).join('');
   } catch(e) {
     document.getElementById('ai-insights-body').innerHTML =
@@ -3932,11 +4004,11 @@ function renderEngageLog() {
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;gap:8px;flex-wrap:wrap;">
         <div>
           <span style="font-size:10px;font-family:var(--mono);color:${PC[e.platform]};letter-spacing:1px;">${PL[e.platform]}</span>
-          <span style="font-size:13px;font-weight:500;color:var(--text);margin-left:8px;">${e.clipName}</span>
+          <span style="font-size:13px;font-weight:500;color:var(--text);margin-left:8px;">${sanitize(e.clipName)}</span>
         </div>
         <div style="display:flex;gap:6px;flex-shrink:0;">
-          <button class="btn btn-ghost btn-sm" onclick="editEngagement(${e.id})" style="font-size:10px;padding:3px 8px;">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteEngagement(${e.id})" style="font-size:10px;padding:3px 8px;">✕</button>
+          <button class="btn btn-ghost btn-sm" data-id="${e.id}" onclick="editEngagement(this.dataset.id)" style="font-size:10px;padding:3px 8px;">Edit</button>
+          <button class="btn btn-danger btn-sm" data-id="${e.id}" onclick="deleteEngagement(this.dataset.id)" style="font-size:10px;padding:3px 8px;">✕</button>
         </div>
       </div>
       <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:4px;">
@@ -3954,7 +4026,7 @@ function renderEngageLog() {
 let editingEngagementId = null;
 
 function editEngagement(id) {
-  const e = state.engagements.find(x => x.id === id);
+  const e = state.engagements.find(x => String(x.id) === String(id));
   if (!e) return;
   editingEngagementId = id;
 
@@ -3980,7 +4052,7 @@ function editEngagement(id) {
 
 function deleteEngagement(id) {
   if (!confirm('Delete this engagement entry? This will affect your analytics.')) return;
-  state.engagements = state.engagements.filter(e => e.id !== id);
+  state.engagements = state.engagements.filter(e => String(e.id) !== String(id));
   save();
   renderAnalytics();
 }
@@ -4265,7 +4337,7 @@ function checkUpcomingPosts() {
           <div class="alert-sub">Due ${timeStr} · ${fmtTime(post.time)} slot</div>
         </div>
       </div>
-      <button class="btn btn-ghost btn-sm" onclick="markPosted(${post.id});checkUpcomingPosts();">Mark posted</button>
+      <button class="btn btn-ghost btn-sm" data-id="${post.id}" onclick="markPosted(this.dataset.id);checkUpcomingPosts();">Mark posted</button>
     </div>`;
   }).join('');
 }
