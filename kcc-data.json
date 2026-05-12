@@ -6443,7 +6443,9 @@
           ],
           "full": "proxy chat got him talking crazy, had to humble him real quick\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-12T17:22:05.318Z"
     },
     {
       "id": 1778349266551,
@@ -8705,7 +8707,10 @@
       "platform": "tt",
       "date": "2026-05-12",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-12T17:22:03.287Z",
+      "timingVariance": 0
     },
     {
       "id": 1778351291891.391,
@@ -8714,7 +8719,10 @@
       "platform": "ig",
       "date": "2026-05-12",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-12T17:22:05.318Z",
+      "timingVariance": 0
     },
     {
       "id": 1778351294747.7004,
@@ -14808,8 +14816,7 @@
       "followers": 0,
       "hashtags": [
         "#warzon",
-        "#e",
-        "#cod",
+        "#e #cod",
         "#callofduty",
         "#warzoneclips",
         "#khanvicttv"
@@ -15688,11 +15695,7 @@
       "comments": 0,
       "bookmarks": 5,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:39:10.779Z"
@@ -15710,11 +15713,7 @@
       "comments": 0,
       "bookmarks": 2,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:39:42.366Z"
@@ -15732,11 +15731,7 @@
       "comments": 0,
       "bookmarks": 0,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:40:08.737Z"
@@ -15754,11 +15749,7 @@
       "comments": 0,
       "bookmarks": 0,
       "hashtags": [
-        "#tiktoklive",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#tiktoklive #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:40:45.397Z"
@@ -15776,11 +15767,7 @@
       "comments": 0,
       "bookmarks": 0,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:41:13.225Z"
@@ -15798,11 +15785,7 @@
       "comments": 1,
       "bookmarks": 0,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:42:16.080Z",
@@ -15821,11 +15804,7 @@
       "comments": 0,
       "bookmarks": 0,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:42:41.739Z",
@@ -15844,11 +15823,7 @@
       "comments": 0,
       "bookmarks": 0,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:43:11.456Z"
@@ -15866,11 +15841,7 @@
       "comments": 0,
       "bookmarks": 0,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:43:42.850Z"
@@ -15888,184 +15859,10 @@
       "comments": 0,
       "bookmarks": 0,
       "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
       ],
       "notes": "",
       "loggedAt": "2026-05-12T04:44:11.886Z"
-    },
-    {
-      "id": 1778597415530,
-      "postId": 1778018404109.2527,
-      "clipId": 1778013083501,
-      "clipName": "Im sorry sasuke",
-      "platform": "tt",
-      "date": "2026-05-07",
-      "time": "13:00",
-      "views": 324,
-      "likes": 13,
-      "comments": 0,
-      "bookmarks": 0,
-      "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
-      ],
-      "notes": "",
-      "loggedAt": "2026-05-12T14:50:15.530Z"
-    },
-    {
-      "id": 1778597452182,
-      "postId": 1778018411334.0193,
-      "clipId": 1778010973893,
-      "clipName": "Wait for it",
-      "platform": "tt",
-      "date": "2026-05-07",
-      "time": "19:00",
-      "views": 252,
-      "likes": 6,
-      "comments": 0,
-      "bookmarks": 0,
-      "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
-      ],
-      "notes": "",
-      "loggedAt": "2026-05-12T14:50:52.182Z"
-    },
-    {
-      "id": 1778597820641,
-      "postId": 1778018414734.0295,
-      "clipId": 1778012443926,
-      "clipName": "Hows cod going for you",
-      "platform": "tt",
-      "date": "2026-05-08",
-      "time": "09:00",
-      "views": 482,
-      "likes": 15,
-      "comments": 4,
-      "bookmarks": 0,
-      "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
-      ],
-      "notes": "",
-      "loggedAt": "2026-05-12T14:57:00.641Z"
-    },
-    {
-      "id": 1778597850836,
-      "postId": 1778195280079.0056,
-      "clipId": 1778191080855,
-      "clipName": "Blame the audio",
-      "platform": "tt",
-      "date": "2026-05-08",
-      "time": "13:00",
-      "views": 306,
-      "likes": 8,
-      "comments": 2,
-      "bookmarks": 0,
-      "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
-      ],
-      "notes": "",
-      "loggedAt": "2026-05-12T14:57:30.836Z"
-    },
-    {
-      "id": 1778597873639,
-      "postId": 1778195287816.6072,
-      "clipId": 1778195056677,
-      "clipName": "Chased anyway",
-      "platform": "tt",
-      "date": "2026-05-08",
-      "time": "19:00",
-      "views": 308,
-      "likes": 7,
-      "comments": 0,
-      "bookmarks": 0,
-      "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
-      ],
-      "notes": "",
-      "loggedAt": "2026-05-12T14:57:53.639Z"
-    },
-    {
-      "id": 1778599297240,
-      "postId": 1778018414734.8298,
-      "clipId": 1778012443926,
-      "clipName": "Hows cod going for you",
-      "platform": "ig",
-      "date": "2026-05-08",
-      "time": "09:00",
-      "views": 189,
-      "likes": 1,
-      "comments": 0,
-      "bookmarks": 0,
-      "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
-      ],
-      "notes": "",
-      "loggedAt": "2026-05-12T15:21:37.240Z"
-    },
-    {
-      "id": 1778599332716,
-      "postId": 1778195280079.6362,
-      "clipId": 1778191080855,
-      "clipName": "Blame the audio",
-      "platform": "ig",
-      "date": "2026-05-08",
-      "time": "13:00",
-      "views": 195,
-      "likes": 3,
-      "comments": 0,
-      "bookmarks": 0,
-      "hashtags": [
-        "#warzone",
-        "#cod",
-        "#callofduty",
-        "#bo6",
-        "#rebirthisland"
-      ],
-      "notes": "",
-      "loggedAt": "2026-05-12T15:22:12.716Z"
-    },
-    {
-      "id": 1778599375032,
-      "postId": 1778195287816.8413,
-      "clipId": 1778195056677,
-      "clipName": "Chased anyway",
-      "platform": "ig",
-      "date": "2026-05-08",
-      "time": "19:00",
-      "views": 0,
-      "likes": 0,
-      "comments": 0,
-      "bookmarks": 0,
-      "hashtags": [],
-      "notes": "",
-      "loggedAt": "2026-05-12T15:22:55.032Z"
     }
   ],
   "contentIntel": {
