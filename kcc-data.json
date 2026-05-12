@@ -6834,6 +6834,19 @@
             "#khanvicttv"
           ],
           "full": "bro landed on us thinking he was different, got humbled real quick\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone: don't land near us anymore | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone: don't land near us anymore | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
       }
     },
@@ -6850,7 +6863,22 @@
         "ig"
       ],
       "addedAt": "2026-05-11T22:45:11",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "tomahawk elimination is just different, no cap",
+          "hashtags": [
+            "#rocketleague",
+            "#gaming",
+            "#esports",
+            "#clips",
+            "#gameplay",
+            "#khanvicttv",
+            "#fpsstreamer"
+          ],
+          "full": "tomahawk elimination is just different, no cap\n\n#rocketleague #gaming #esports #clips #gameplay #khanvicttv #fpsstreamer"
+        }
+      }
     },
     {
       "id": 1778557302392,
@@ -6865,7 +6893,48 @@
         "ig"
       ],
       "addedAt": "2026-05-11T22:41:42",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "had to get him, there was no other option really",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "had to get him, there was no other option really\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "had to get him, there was literally no other option in that situation",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "had to get him, there was literally no other option in that situation\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "had to take him out, no choice in the matter",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "had to take him out, no choice in the matter\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
@@ -8768,6 +8837,42 @@
       "clipName": "Making teams relocate",
       "platform": "ig",
       "date": "2026-05-15",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778560629436.2964,
+      "clipId": 1778557302392,
+      "clipName": "Talked a lot of smack",
+      "platform": "tt",
+      "date": "2026-05-15",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778560629436.4307,
+      "clipId": 1778557302392,
+      "clipName": "Talked a lot of smack",
+      "platform": "ig",
+      "date": "2026-05-15",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778560633093.2168,
+      "clipId": 1778557511921,
+      "clipName": "Fearless with the tomahawk",
+      "platform": "tt",
+      "date": "2026-05-16",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778560633093.924,
+      "clipId": 1778557511921,
+      "clipName": "Fearless with the tomahawk",
+      "platform": "ig",
+      "date": "2026-05-16",
       "time": "13:00",
       "posted": false
     }
