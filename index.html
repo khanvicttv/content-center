@@ -930,16 +930,16 @@
       <select id="eng-post-sel"></select>
     </div>
     <div class="grid2">
-      <div class="field"><label>Views</label><input type="number" id="eng-views" placeholder="e.g. 4500" min="0"></div>
-      <div class="field"><label>Likes</label><input type="number" id="eng-likes" placeholder="e.g. 320" min="0"></div>
+      <div class="field"><label>Views</label><input type="text" inputmode="numeric" id="eng-views" placeholder="e.g. 4,500" autocomplete="off"></div>
+      <div class="field"><label>Likes</label><input type="text" inputmode="numeric" id="eng-likes" placeholder="e.g. 320" autocomplete="off"></div>
     </div>
     <div class="grid2">
-      <div class="field"><label>Comments</label><input type="number" id="eng-comments" placeholder="e.g. 28" min="0"></div>
-      <div class="field"><label>Bookmarks</label><input type="number" id="eng-bookmarks" placeholder="e.g. 47" min="0"></div>
+      <div class="field"><label>Comments</label><input type="text" inputmode="numeric" id="eng-comments" placeholder="e.g. 28" autocomplete="off"></div>
+      <div class="field"><label>Bookmarks</label><input type="text" inputmode="numeric" id="eng-bookmarks" placeholder="e.g. 47" autocomplete="off"></div>
     </div>
     <div class="field">
-      <label>Hashtags used <span style="color:var(--accent2);font-size:9px;">(comma separated)</span></label>
-      <input type="text" id="eng-hashtags" placeholder="e.g. #gaming, #warzone, #clutch">
+      <label>Hashtags used <span style="color:var(--accent2);font-size:9px;">(space or comma separated)</span></label>
+      <input type="text" id="eng-hashtags" placeholder="e.g. #warzone #cod #callofduty">
     </div>
     <div class="field">
       <label>Notes (optional)</label>
@@ -1485,8 +1485,12 @@ function importFromScan(e) {
 }
 
 
-function copyTodayCaption(encoded, btn) {
-  navigator.clipboard.writeText(decodeURIComponent(encoded)).catch(() => {});
+// Caption cache — avoids apostrophe-breaking inline onclick strings
+window._capCache = {};
+
+function copyTodayCaption(key, btn) {
+  const text = window._capCache[key] || '';
+  navigator.clipboard.writeText(text).catch(() => {});
   const orig = btn.textContent;
   btn.textContent = 'Copied!';
   btn.style.background = 'var(--green)';
@@ -1746,7 +1750,9 @@ function renderToday() {
       // Get stored caption for this platform
       const clip = state.clips.find(c => String(c.id) === String(p.clipId));
       const hasCaption = clip && clip.captions && clip.captions[p.platform];
-      const captionEncoded = hasCaption ? encodeURIComponent(clip.captions[p.platform].full) : '';
+      // Store caption in cache map to avoid apostrophe-breaking inline onclick strings
+      const capKey = `today_${String(p.id)}`;
+      if (hasCaption) window._capCache[capKey] = clip.captions[p.platform].full;
       const filename = clip && clip.filename ? `<div style="font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;" title="${clip.filename}">${clip.filename}</div>` : '';
 
       return `
@@ -1762,7 +1768,7 @@ function renderToday() {
         </div>
         <div class="flex" style="flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
           ${hasCaption
-            ? `<button class="btn btn-primary btn-sm" onclick="copyTodayCaption('${captionEncoded}',this)" style="font-size:10px;">Copy caption</button>`
+            ? `<button class="btn btn-primary btn-sm" onclick="copyTodayCaption('${capKey}',this)" style="font-size:10px;">Copy caption</button>`
             : `<button class="btn btn-ghost btn-sm" onclick="captionFromClip(${p.clipId})" style="font-size:10px;">Get caption</button>`
           }
           <button class="btn btn-ghost btn-sm" onclick="openConfirmPost(${p.id})">${p.posted?'Undo':'Mark posted'}</button>
@@ -2311,7 +2317,9 @@ function renderTrendingStrip(data) {
     const border = isCore ? 'rgba(204,20,20,0.3)' : isRising ? 'rgba(34,197,94,0.25)' : 'rgba(124,92,252,0.2)';
     const color = isCore ? 'var(--red)' : isRising ? 'var(--green)' : 'var(--accent2)';
     const label = isRising ? tag + ' ↑' : tag;
-    return `<span style="background:${bg};border:1px solid ${border};color:${color};border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:10px;cursor:pointer;" onclick="copyText('${encodeURIComponent(tag)}',this)" title="Click to copy">${label}</span>`;
+    const tagKey = `htag_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    window._capCache[tagKey] = tag;
+    return `<span style="background:${bg};border:1px solid ${border};color:${color};border-radius:4px;padding:3px 8px;font-family:var(--mono);font-size:10px;cursor:pointer;" onclick="copyText('${tagKey}',this)" title="Click to copy">${label}</span>`;
   }).join('');
 
   if (data.source_note) {
@@ -2492,15 +2500,18 @@ function renderCapFromTemplate(plat, desc, game, tone, clipId) {
 
 function renderCapResult(plat, caption, hashtags, tip, clipId) {
   const full = caption + '\n\n' + hashtags.join(' ');
-  const encoded = encodeURIComponent(full);
+  // Use cache to avoid apostrophe-breaking inline onclick strings
+  const capKey = `cap_${plat}_${Date.now()}`;
+  window._capCache[capKey] = full;
+  hashtags.forEach((h, i) => { window._capCache[`tag_${plat}_${i}_${capKey}`] = h; });
   document.getElementById('cap-' + plat).innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
       <span style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;">${PLAT_LABEL[plat].toUpperCase()} CAPTION</span>
-      <button class="copy-btn" onclick="copyText('${encoded}',this)">COPY ALL</button>
+      <button class="copy-btn" onclick="copyText('${capKey}',this)">COPY ALL</button>
     </div>
     <div class="caption-box">${caption}</div>
     <div class="tag-row">
-      ${hashtags.map(h=>`<div class="tag" onclick="copyText('${encodeURIComponent(h)}',this)">${h}</div>`).join('')}
+      ${hashtags.map((h,i)=>`<div class="tag" onclick="copyText('tag_${plat}_${i}_${capKey}',this)">${h}</div>`).join('')}
     </div>
     <div class="tip-box"><span class="tip-label">PLATFORM TIP</span>${tip}</div>`;
 
@@ -2515,8 +2526,12 @@ function renderCapResult(plat, caption, hashtags, tip, clipId) {
   }
 }
 
-function copyText(encoded, btn) {
-  navigator.clipboard.writeText(decodeURIComponent(encoded)).catch(()=>{});
+function copyText(keyOrEncoded, btn) {
+  // Support both new cache-key format and legacy encodeURIComponent format
+  const text = window._capCache[keyOrEncoded] !== undefined
+    ? window._capCache[keyOrEncoded]
+    : decodeURIComponent(keyOrEncoded);
+  navigator.clipboard.writeText(text).catch(()=>{});
   const orig = btn.textContent;
   btn.textContent = '✓ COPIED';
   setTimeout(()=>btn.textContent=orig, 1600);
@@ -4009,7 +4024,7 @@ function saveEngagement() {
   const post = state.posts.find(p => String(p.id) === postIdStr);
 
   const rawTags  = document.getElementById('eng-hashtags').value;
-  const hashtags = rawTags.split(',').map(t => t.trim()).filter(t => t.length > 0)
+  const hashtags = rawTags.split(/[\s,]+/).map(t => t.trim()).filter(t => t.length > 0)
     .map(t => t.startsWith('#') ? t : '#' + t);
 
   const values = {
@@ -4019,10 +4034,10 @@ function saveEngagement() {
     platform:  post.platform,
     date:      post.date,
     time:      post.time,
-    views:     parseInt(document.getElementById('eng-views').value)     || 0,
-    likes:     parseInt(document.getElementById('eng-likes').value)     || 0,
-    comments:  parseInt(document.getElementById('eng-comments').value)  || 0,
-    bookmarks: parseInt(document.getElementById('eng-bookmarks').value) || 0,
+    views:     parseInt((document.getElementById('eng-views').value     || '').replace(/,/g,''))  || 0,
+    likes:     parseInt((document.getElementById('eng-likes').value     || '').replace(/,/g,''))  || 0,
+    comments:  parseInt((document.getElementById('eng-comments').value  || '').replace(/,/g,''))  || 0,
+    bookmarks: parseInt((document.getElementById('eng-bookmarks').value || '').replace(/,/g,''))  || 0,
     hashtags,
     notes:     document.getElementById('eng-notes').value.trim(),
   };
