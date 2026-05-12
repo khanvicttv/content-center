@@ -6217,7 +6217,9 @@
           ],
           "full": "factory is locked down, dont even think about pushing\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
         }
-      }
+      },
+      "archived": true,
+      "archivedAt": "2026-05-12T14:00:46.448Z"
     },
     {
       "id": 1778349895789,
@@ -8691,7 +8693,10 @@
       "platform": "ig",
       "date": "2026-05-12",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-05-12T14:00:46.448Z",
+      "timingVariance": 0
     },
     {
       "id": 1778351291891.7236,
