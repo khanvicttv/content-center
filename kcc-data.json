@@ -6792,7 +6792,48 @@
         "ig"
       ],
       "addedAt": "2026-05-11T22:59:58",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "factory got locked down, whole squad trapped inside",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "factory got locked down, whole squad trapped inside\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "factory got shut down, nobody getting loot there anymore",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "factory got shut down, nobody getting loot there anymore\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "factory is literally a death trap, got caught lacking",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#fps"
+          ],
+          "full": "factory is literally a death trap, got caught lacking\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
+        }
+      }
     },
     {
       "id": 1778557848507,
@@ -6890,6 +6931,18 @@
             "#insane"
           ],
           "full": "rocket league hitting different when you got that tomahawk energy\n\n#rocketleague #gaming #clips #khanvicttv #esports #tomahawk #insane"
+        },
+        "yt": {
+          "caption": "rocket league tomahawk goal is just different",
+          "hashtags": [
+            "#rocketleague",
+            "#esports",
+            "#gaming",
+            "#goals",
+            "#highlights",
+            "#khanvicttv"
+          ],
+          "full": "rocket league tomahawk goal is just different\n\n#rocketleague #esports #gaming #goals #highlights #khanvicttv"
         }
       }
     },
@@ -8887,6 +8940,24 @@
       "platform": "ig",
       "date": "2026-05-16",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1778560636797.8477,
+      "clipId": 1778558398245,
+      "clipName": "Holdin' it down",
+      "platform": "tt",
+      "date": "2026-05-16",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778560636797.537,
+      "clipId": 1778558398245,
+      "clipName": "Holdin' it down",
+      "platform": "ig",
+      "date": "2026-05-16",
+      "time": "19:00",
       "posted": false
     }
   ],
