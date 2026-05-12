@@ -6512,7 +6512,48 @@
         "ig"
       ],
       "addedAt": "2026-05-11T23:32:47",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "sometimes you just need that one dub to feel alive again",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "sometimes you just need that one dub to feel alive again\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "sometimes you just need that dub to feel alive again",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "sometimes you just need that dub to feel alive again\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone dub hits different when you need it most",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone dub hits different when you need it most\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778559955315,
@@ -8664,6 +8705,24 @@
       "platform": "ig",
       "date": "2026-05-18",
       "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778560617747.2932,
+      "clipId": 1778560367146,
+      "clipName": "Gettin randos a dub",
+      "platform": "tt",
+      "date": "2026-05-14",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1778560617747.0745,
+      "clipId": 1778560367146,
+      "clipName": "Gettin randos a dub",
+      "platform": "ig",
+      "date": "2026-05-14",
+      "time": "19:00",
       "posted": false
     }
   ],
