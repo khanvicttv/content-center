@@ -6557,7 +6557,22 @@
         "ig"
       ],
       "addedAt": "2026-05-11T23:25:11",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "finally calming down, think we actually got this one",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "finally calming down, think we actually got this one\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1778559862295,
@@ -8486,6 +8501,24 @@
       "clipName": "Craziest interaction pt1",
       "platform": "ig",
       "date": "2026-05-15",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778560599673.844,
+      "clipId": 1778559911201,
+      "clipName": "Craziest interaction pt2",
+      "platform": "tt",
+      "date": "2026-05-16",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1778560599673.156,
+      "clipId": 1778559911201,
+      "clipName": "Craziest interaction pt2",
+      "platform": "ig",
+      "date": "2026-05-16",
       "time": "09:00",
       "posted": false
     }
@@ -12829,7 +12862,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
