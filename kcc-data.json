@@ -8679,7 +8679,10 @@
       "platform": "tt",
       "date": "2026-05-12",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-05-12T14:00:43.466Z",
+      "timingVariance": 0
     },
     {
       "id": 1778351288483.5305,
