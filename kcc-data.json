@@ -15787,9 +15787,12 @@
       "likes": 3,
       "comments": 0,
       "bookmarks": 0,
-      "hashtags": [],
+      "hashtags": [
+        "#warzone #cod #callofduty #bo6 #rebirthisland"
+      ],
       "notes": "",
-      "loggedAt": "2026-05-12T04:42:41.739Z"
+      "loggedAt": "2026-05-12T04:42:41.739Z",
+      "updatedAt": "2026-05-12T04:44:48.882Z"
     },
     {
       "id": 1778560991456,
