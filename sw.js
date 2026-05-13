@@ -1,10 +1,10 @@
-const CACHE = 'kcc-v39';
+const CACHE = 'kcc-v40';
 const ASSETS = [
   '/content-center/',
   '/content-center/index.html',
   '/content-center/manifest.json',
-  '/content-center/icon-192.png',
-  '/content-center/icon-512.png'
+  '/content-center/icon192.png',
+  '/content-center/icon512.png'
 ];
 
 self.addEventListener('install', e => {
