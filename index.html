@@ -436,7 +436,7 @@
 
   <!-- TOPBAR -->
   <header class="topbar">
-    <img src="icon-192.png" alt="KCC" style="height:34px;width:34px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+    <img src="icon192.png" alt="KCC" style="height:34px;width:34px;border-radius:8px;object-fit:cover;flex-shrink:0;">
     <div style="display:flex;flex-direction:column;gap:1px;">
       <div class="logo" style="font-size:12px;letter-spacing:1.5px;">KHANVICT</div>
       <div style="font-size:9px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;">COMMAND CENTER</div>
@@ -480,7 +480,7 @@
     <!-- TODAY -->
     <div class="panel active" id="panel-today">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border);">
-        <img src="icon-512.png" alt="Khanvict Command Center" style="height:64px;width:64px;border-radius:14px;object-fit:cover;flex-shrink:0;">
+        <img src="icon512.png" alt="Khanvict Command Center" style="height:64px;width:64px;border-radius:14px;object-fit:cover;flex-shrink:0;">
         <div>
           <div style="font-family:var(--mono);font-size:17px;font-weight:700;letter-spacing:1.5px;color:var(--text);">KHANVICT</div>
           <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--red);">COMMAND CENTER</div>
@@ -1101,6 +1101,11 @@
 </div>
 
 <script>
+// ── CAPTION CACHE ─────────────────────────────────────────────────────────
+// Must be initialised before any render function runs — renderToday writes to
+// this on first load and will throw if it's undefined.
+window._capCache = {};
+
 // ── SANITIZE ─────────────────────────────────────────────────────────────
 // Escapes user-supplied strings before injecting into innerHTML.
 // Use for any data that came from user input, API responses, or imported files.
@@ -1305,7 +1310,7 @@ function addClip() {
   }
 
   const clip = {
-    id: Date.now(),
+    id: Date.now() + Math.random(),
     name,
     desc: document.getElementById('nc-desc').value.trim(),
     game: document.getElementById('nc-game').value.trim() || 'Gaming',
@@ -2597,6 +2602,7 @@ async function analyseCaption() {
   const trendingPromise = apiKey ? fetchTrendingHashtags(game, false) : Promise.resolve(null);
 
   if (!apiKey) {
+    inFlightAnalyse = false;
     renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
     resultEl.innerHTML = '<div style="color:var(--amber);font-size:12px;padding:8px 0;">No API key — add one in Settings to get voice analysis and trending hashtags.</div>';
     return;
@@ -2926,7 +2932,15 @@ async function rescheduleAllNotifications() {
 
 // ── API KEY MANAGEMENT ───────────────────────────────────────────────────
 function loadApiKey() {
-  try { return localStorage.getItem('ccc_api_key') || ''; } catch(e) { return ''; }
+  try {
+    // Primary: dedicated localStorage key
+    let key = localStorage.getItem('ccc_api_key') || '';
+    // Fallback 1: sessionStorage mirror (survives iOS PWA localStorage wipes within same session)
+    if (!key) { try { key = sessionStorage.getItem('ccc_api_key') || ''; } catch(e) {} }
+    // Fallback 2: embedded in state (survives GitHub pull re-hydration)
+    if (!key && state._apiKey) key = state._apiKey;
+    return key;
+  } catch(e) { return ''; }
 }
 
 function saveApiKey() {
@@ -2937,6 +2951,10 @@ function saveApiKey() {
     return;
   }
   try { localStorage.setItem('ccc_api_key', key); } catch(e) {}
+  try { sessionStorage.setItem('ccc_api_key', key); } catch(e) {}
+  // Also embed in state so it round-trips through GitHub sync and survives iOS wipes
+  state._apiKey = key;
+  save();
   document.getElementById('api-key-input').value = '';
   updateApiPill();
   document.getElementById('api-key-status').innerHTML =
@@ -2947,6 +2965,9 @@ async function clearApiKey() {
   const ok = await kccConfirm('This will remove your saved API key. You\'ll need to re-enter it to use AI features.', 'Remove API key', 'Remove', 'danger');
   if (!ok) return;
   try { localStorage.removeItem('ccc_api_key'); } catch(e) {}
+  try { sessionStorage.removeItem('ccc_api_key'); } catch(e) {}
+  delete state._apiKey;
+  save();
   document.getElementById('api-key-input').value = '';
   updateApiPill();
   document.getElementById('api-key-status').innerHTML =
@@ -3211,7 +3232,7 @@ function renderMobileDayList() {
       ? posts.map(p => {
           const color = PLAT_COLOR[p.platform];
           const posted = p.posted;
-          return `<div class="mobile-post-card" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">
+          return `<div class="mobile-post-card" data-id="${p.id}" onclick="openConfirmPost(this.closest('[data-id]').dataset.id)">
             <div class="mobile-post-plat-bar" style="background:${color};"></div>
             <div class="mobile-post-info">
               <div class="mobile-post-name">${sanitize(p.clipName)}</div>
@@ -3279,11 +3300,18 @@ let isSyncing = false;
 
 function loadGithubConfig() {
   try {
-    return {
-      user:  localStorage.getItem('gh_user')  || '',
-      repo:  localStorage.getItem('gh_repo')  || '',
-      token: localStorage.getItem('gh_token') || ''
-    };
+    let user  = localStorage.getItem('gh_user')  || '';
+    let repo  = localStorage.getItem('gh_repo')  || '';
+    let token = localStorage.getItem('gh_token') || '';
+    // Fallback 1: sessionStorage mirror
+    if (!user)  { try { user  = sessionStorage.getItem('gh_user')  || ''; } catch(e) {} }
+    if (!repo)  { try { repo  = sessionStorage.getItem('gh_repo')  || ''; } catch(e) {} }
+    if (!token) { try { token = sessionStorage.getItem('gh_token') || ''; } catch(e) {} }
+    // Fallback 2: embedded in state (survives GitHub round-trips)
+    if (!user  && state._ghUser)  user  = state._ghUser;
+    if (!repo  && state._ghRepo)  repo  = state._ghRepo;
+    if (!token && state._ghToken) token = state._ghToken;
+    return { user, repo, token };
   } catch(e) { return { user:'', repo:'', token:'' }; }
 }
 
@@ -3300,6 +3328,15 @@ function saveGithubConfig() {
     localStorage.setItem('gh_repo', repo);
     localStorage.setItem('gh_token', token);
   } catch(e) {}
+  try {
+    sessionStorage.setItem('gh_user', user);
+    sessionStorage.setItem('gh_repo', repo);
+    sessionStorage.setItem('gh_token', token);
+  } catch(e) {}
+  // Also embed in state so credentials survive iOS localStorage wipes
+  state._ghUser  = user;
+  state._ghRepo  = repo;
+  state._ghToken = token;
   document.getElementById('gh-token').value = '';
   updateSyncPill();
   setSyncStatus('Connecting...', 'muted');
@@ -3309,7 +3346,12 @@ function saveGithubConfig() {
 async function clearGithubConfig() {
   const ok = await kccConfirm('This will disconnect GitHub sync. Your local data is not affected.', 'Disconnect GitHub', 'Disconnect', 'danger');
   if (!ok) return;
-  ['gh_user','gh_repo','gh_token'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
+  ['gh_user','gh_repo','gh_token'].forEach(k => {
+    try { localStorage.removeItem(k); } catch(e){}
+    try { sessionStorage.removeItem(k); } catch(e){}
+  });
+  delete state._ghUser; delete state._ghRepo; delete state._ghToken;
+  save();
   document.getElementById('gh-user').value = '';
   document.getElementById('gh-repo').value = '';
   document.getElementById('gh-token').value = '';
@@ -3391,6 +3433,16 @@ async function pullFromGithub() {
     remote = migrate(remote);
     state = remote;
     migrateFollowerSnapshots();
+    // Re-hydrate credentials from embedded state → localStorage + sessionStorage
+    // This ensures iOS PWA never loses credentials after a GitHub pull
+    if (state._apiKey) {
+      try { localStorage.setItem('ccc_api_key', state._apiKey); } catch(e) {}
+      try { sessionStorage.setItem('ccc_api_key', state._apiKey); } catch(e) {}
+    }
+    if (state._ghUser && state._ghRepo && state._ghToken) {
+      try { localStorage.setItem('gh_user', state._ghUser); localStorage.setItem('gh_repo', state._ghRepo); localStorage.setItem('gh_token', state._ghToken); } catch(e) {}
+      try { sessionStorage.setItem('gh_user', state._ghUser); sessionStorage.setItem('gh_repo', state._ghRepo); sessionStorage.setItem('gh_token', state._ghToken); } catch(e) {}
+    }
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
     return true;
@@ -3426,6 +3478,8 @@ function refreshAll() {
   updateSidebar();
   renderToday();
   renderDaysBanner();
+  updateApiPill();
+  updateSyncPill();
   if (document.getElementById('panel-schedule').classList.contains('active')) renderWeek();
   if (document.getElementById('panel-analytics').classList.contains('active')) renderAnalytics();
   if (document.getElementById('panel-intel').classList.contains('active')) renderIntel();
@@ -3574,6 +3628,16 @@ function load() {
       saved = migrate(saved);
       state = saved;
       migrateFollowerSnapshots();
+      // Re-hydrate any credentials embedded in state back to localStorage + sessionStorage
+      // Handles the case where iOS PWA wiped the individual credential keys but state survived
+      if (state._apiKey && !localStorage.getItem('ccc_api_key')) {
+        try { localStorage.setItem('ccc_api_key', state._apiKey); } catch(e) {}
+        try { sessionStorage.setItem('ccc_api_key', state._apiKey); } catch(e) {}
+      }
+      if (state._ghUser && !localStorage.getItem('gh_user')) {
+        try { localStorage.setItem('gh_user', state._ghUser); localStorage.setItem('gh_repo', state._ghRepo || ''); localStorage.setItem('gh_token', state._ghToken || ''); } catch(e) {}
+        try { sessionStorage.setItem('gh_user', state._ghUser); sessionStorage.setItem('gh_repo', state._ghRepo || ''); sessionStorage.setItem('gh_token', state._ghToken || ''); } catch(e) {}
+      }
     }
   } catch(e) {
     console.warn('KCC: load() failed, using defaults.', e);
@@ -4996,10 +5060,11 @@ function viewPastBrief(id) {
 function checkIntelAutoRun() {
   const ci = state.contentIntel || { briefs: [], lastRun: null };
   const now = new Date();
-  // Only auto-run on Sundays after 6 PM CST
-  if (now.getDay() !== 0) return;
-  const hour = now.getHours();
-  if (hour < 18) return;
+  // Only auto-run on Sundays after 6 PM CST — use CST offset (UTC-6) regardless of device timezone
+  const cstOffset = -6 * 60; // CST is UTC-6
+  const cstNow = new Date(now.getTime() + (cstOffset - (-now.getTimezoneOffset())) * 60000);
+  if (cstNow.getDay() !== 0) return;
+  if (cstNow.getHours() < 18) return;
   // Check if lastRun is >6 days ago
   if (ci.lastRun) {
     const lastRun = new Date(ci.lastRun);
