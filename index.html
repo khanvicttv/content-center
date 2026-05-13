@@ -156,13 +156,8 @@
 
   @media (max-width: 768px) {
     .analytics-half-grid { grid-template-columns: 1fr !important; }
-    .week-grid { grid-template-columns: 44px repeat(7,1fr); }
-    .week-cell { padding: 3px; max-height: 120px; overflow-y: auto; }
-    .post-slot { min-height: 36px; padding: 3px 4px; font-size: 10px; }
-    .slot-plat { font-size: 7px; }
-    .slot-clip-name { font-size: 9px; }
-    .slot-empty { height: 36px; }
-    .slot-add-more { height: 16px; }
+    /* Hide desktop week grid on mobile — replaced by day-list */
+    .week-grid { display: none; }
   }
   .post-slot { border-radius: 4px; padding: 5px 7px; margin-bottom: 3px; cursor: grab; font-size: 11px; line-height: 1.3; transition: opacity 0.15s; min-height: 50px; user-select: none; }
   .post-slot:hover { opacity: 0.8; }
@@ -251,6 +246,60 @@
   .modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 24px; width: 500px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
   .modal-title { font-family: var(--mono); font-size: 13px; letter-spacing: 1px; margin-bottom: 20px; color: var(--text); }
 
+  /* MOBILE DAY-LIST SCHEDULE */
+  .mobile-day-list { display: none; }
+  @media (max-width: 768px) {
+    .mobile-day-list { display: block; }
+  }
+  .mobile-day-nav { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .mobile-day-nav button { flex-shrink: 0; }
+  .mobile-day-label { flex: 1; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--text); font-weight: 600; }
+  .mobile-day-label span { display: block; font-size: 10px; color: var(--muted); font-weight: 400; margin-top: 1px; }
+  .mobile-slot-group { margin-bottom: 10px; }
+  .mobile-slot-time { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; padding: 6px 0 4px; border-bottom: 1px solid var(--border); margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+  .mobile-slot-reach { font-size: 9px; letter-spacing: 0.5px; }
+  .mobile-slot-empty { border: 1px dashed rgba(255,255,255,0.08); border-radius: 8px; padding: 12px; text-align: center; color: var(--muted); font-size: 12px; cursor: pointer; transition: all 0.15s; }
+  .mobile-slot-empty:active { border-color: var(--accent); color: var(--accent); }
+  .mobile-post-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: border-color 0.15s; }
+  .mobile-post-card:active { border-color: var(--border2); }
+  .mobile-post-plat-bar { width: 3px; border-radius: 2px; align-self: stretch; min-height: 36px; flex-shrink: 0; }
+  .mobile-post-info { flex: 1; min-width: 0; }
+  .mobile-post-name { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mobile-post-meta { font-size: 10px; color: var(--muted); font-family: var(--mono); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
+  .mobile-post-badge { font-size: 9px; padding: 1px 5px; border-radius: 3px; }
+  .mobile-week-dots { display: flex; gap: 3px; justify-content: center; margin-bottom: 16px; }
+  .mobile-week-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); cursor: pointer; transition: background 0.15s; flex-shrink: 0; }
+  .mobile-week-dot.active { background: var(--accent); }
+  .mobile-week-dot.has-posts { background: var(--accent2); opacity: 0.6; }
+  .mobile-week-dot.active { background: var(--accent); opacity: 1; }
+
+  /* CUSTOM CONFIRM DIALOG */
+  .kcc-confirm-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 600; align-items: flex-end; justify-content: center; padding-bottom: env(safe-area-inset-bottom, 0); }
+  .kcc-confirm-overlay.open { display: flex; }
+  @media (min-width: 769px) { .kcc-confirm-overlay { align-items: center; } }
+  .kcc-confirm-sheet { background: var(--bg2); border: 1px solid var(--border2); border-radius: 16px 16px 0 0; padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0)); width: 100%; max-width: 480px; }
+  @media (min-width: 769px) { .kcc-confirm-sheet { border-radius: 12px; padding: 24px; } }
+  .kcc-confirm-title { font-family: var(--mono); font-size: 12px; letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
+  .kcc-confirm-msg { font-size: 14px; color: var(--text); line-height: 1.5; margin-bottom: 20px; }
+  .kcc-confirm-actions { display: flex; gap: 10px; }
+  .kcc-confirm-actions .btn { flex: 1; justify-content: center; text-align: center; }
+
+  /* INLINE FIELD ERROR */
+  .field-error { font-size: 11px; color: var(--red); font-family: var(--mono); margin-top: 4px; display: none; }
+  .field-error.show { display: block; }
+  input.input-error, select.input-error, textarea.input-error { border-color: var(--red) !important; }
+
+  /* TODAY SLOT ACTIONS */
+  .slot-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+  .slot-copy-btn { font-size: 10px !important; white-space: nowrap; }
+  .slot-mark-btn { font-size: 10px !important; white-space: nowrap; }
+  @media (max-width: 768px) {
+    .today-slot-card { grid-template-columns: 56px 1fr; gap: 10px; padding: 12px; }
+    .slot-actions { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 8px; }
+    .slot-copy-btn { flex: 1; text-align: center; justify-content: center; font-size: 12px !important; padding: 9px 12px !important; }
+    .slot-mark-btn { flex-shrink: 0; font-size: 11px !important; }
+  }
+
   /* MOBILE */
   @media (max-width: 768px) {
     .shell { grid-template-columns: 1fr; grid-template-rows: 48px 1fr 60px; }
@@ -265,7 +314,6 @@
     .grid2 { grid-template-columns: 1fr; gap: 10px; }
     .grid3 { grid-template-columns: 1fr; gap: 10px; }
     .today-slot-card { grid-template-columns: 56px 1fr; gap: 10px; padding: 12px; }
-    .today-slot-card > div:last-child { grid-column: 1/-1; display: flex; gap: 8px; }
     .week-grid { grid-template-columns: 44px repeat(7,1fr); font-size: 10px; }
     .week-cell { padding: 3px; min-height: 32px; }
     .week-header { padding: 5px 3px; }
@@ -471,8 +519,23 @@
           <button class="btn btn-primary btn-sm" onclick="openPostModal()">+ Post</button>
         </div>
       </div>
+      <!-- Desktop: 7-day grid -->
       <div class="week-grid" id="week-grid"></div>
-      <div class="alert-info">💡 Click any empty slot to schedule a post there. Click a scheduled post to mark it posted.</div>
+      <!-- Mobile: day-by-day list -->
+      <div class="mobile-day-list" id="mobile-day-list">
+        <div class="mobile-week-dots" id="mobile-week-dots"></div>
+        <div class="mobile-day-nav">
+          <button class="btn btn-ghost btn-sm" onclick="mobilePrevDay()">←</button>
+          <div class="mobile-day-label" id="mobile-day-label">
+            <span id="mobile-day-name">Monday</span>
+            <span id="mobile-day-date"></span>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="mobileNextDay()">→</button>
+        </div>
+        <div id="mobile-day-slots"></div>
+        <button class="btn btn-ghost btn-sm" onclick="openPostModal(mobileCurrentDateStr())" style="width:100%;margin-top:8px;font-size:12px;">+ Add post this day</button>
+      </div>
+      <div class="alert-info" style="margin-top:12px;">💡 <span class="desktop-hint">Click any empty slot to schedule. Click a post to mark it done.</span><span class="mobile-hint" style="display:none;">Tap a post to mark it done. Tap an empty slot to add one.</span></div>
     </div>
 
     <!-- CLIPS -->
@@ -963,7 +1026,11 @@
     <div class="alert-info" style="margin-bottom:16px;">
       Watch your clip in DaVinci Resolve, then fill this in. The description is what powers caption generation — be specific about what happens.
     </div>
-    <div class="field"><label>Clip title / name</label><input type="text" id="nc-name" placeholder="e.g. Insane 1v3 clutch — Nov 12"></div>
+    <div class="field">
+      <label>Clip title / name</label>
+      <input type="text" id="nc-name" placeholder="e.g. Insane 1v3 clutch — Nov 12">
+      <div class="field-error" id="nc-name-error"></div>
+    </div>
     <div class="field">
       <label>What happens in this clip? <span style="color:var(--accent2);font-size:9px;">(the more detail, the better)</span></label>
       <textarea id="nc-desc" rows="3" placeholder="e.g. Won a 1v3 clutch in final circle on Warzone. Two sniper kills and finished the squad with a pistol. Teammates were dead, full HP enemies."></textarea>
@@ -985,6 +1052,7 @@
           <input type="checkbox" id="nc-yt" style="width:auto;"> YouTube
         </label>
       </div>
+      <div class="field-error" id="nc-plat-error"></div>
     </div>
     <div class="flex flex-end" style="gap:10px;margin-top:6px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-clip')">Cancel</button>
@@ -1018,8 +1086,12 @@
     <div class="grid2">
       <div class="field"><label>Date</label><input type="date" id="mp-date"></div>
       <div class="field"><label>Time slot</label>
-        <select id="mp-time"></select>
+        <select id="mp-time" onchange="document.getElementById('mp-custom-time-row').style.display=this.value==='custom'?'block':'none'"></select>
       </div>
+    </div>
+    <div class="field" id="mp-custom-time-row" style="display:none;">
+      <label>Custom time <span style="color:var(--muted);font-size:9px;">24hr format — e.g. 18:30</span></label>
+      <input type="time" id="mp-custom-time" placeholder="18:30">
     </div>
     <div class="flex flex-end" style="gap:10px;margin-top:6px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-post')">Cancel</button>
@@ -1215,13 +1287,22 @@ function refreshPostTimeSelect(preselect) {
 
 // ── CLIPS ────────────────────────────────────────────────────────────────
 function addClip() {
-  const name = document.getElementById('nc-name').value.trim();
-  if (!name) { alert('Please enter a clip name.'); return; }
+  clearFieldErrors('nc-name', 'nc-plat');
+  const nameEl = document.getElementById('nc-name');
+  const name = nameEl.value.trim();
+  if (!name) {
+    showFieldError('nc-name', 'nc-name-error', 'Enter a clip name to continue.');
+    nameEl.focus();
+    return;
+  }
   const platforms = [];
   if (document.getElementById('nc-tt').checked) platforms.push('tt');
   if (document.getElementById('nc-ig').checked) platforms.push('ig');
   if (document.getElementById('nc-yt').checked) platforms.push('yt');
-  if (!platforms.length) { alert('Select at least one platform.'); return; }
+  if (!platforms.length) {
+    showFieldError('nc-plat', 'nc-plat-error', 'Select at least one platform.');
+    return;
+  }
 
   const clip = {
     id: Date.now(),
@@ -1247,8 +1328,9 @@ function addClip() {
   renderDaysBanner();
 }
 
-function deleteClip(id) {
-  if (!confirm('Delete this clip and all its scheduled posts?')) return;
+async function deleteClip(id) {
+  const ok = await kccConfirm('This will remove the clip and all its scheduled posts.', 'Delete clip', 'Delete', 'danger');
+  if (!ok) return;
   state.clips = state.clips.filter(c => String(c.id) !== String(id));
   state.posts = state.posts.filter(p => String(p.clipId) !== String(id));
   delete state.checklist[id];
@@ -1505,7 +1587,7 @@ function importFromScan(e) {
       e.target.value = '';
 
     } catch(err) {
-      alert('Could not read the scan file. Make sure you selected the clips_scan.json file generated by scan_clips.py.');
+      showToast('Could not read scan file — make sure it\'s the clips_scan.json from scan_clips.py.', 'red');
     }
   };
   reader.readAsText(file);
@@ -1619,24 +1701,38 @@ function schedulePost() {
   const date   = document.getElementById('mp-date').value;
   let time     = document.getElementById('mp-time').value;
 
-  if (!clipIdStr || !date) { alert('Please select a clip and date.'); return; }
+  if (!clipIdStr) { showToast('Select a clip first.', 'amber'); return; }
+  if (!date)      { showToast('Pick a date.', 'amber'); return; }
 
   const platforms = [];
   if (document.getElementById('mp-tt').checked) platforms.push('tt');
   if (document.getElementById('mp-ig').checked) platforms.push('ig');
   if (document.getElementById('mp-yt').checked) platforms.push('yt');
-  if (!platforms.length) { alert('Please select at least one platform.'); return; }
+  if (!platforms.length) { showToast('Select at least one platform.', 'amber'); return; }
 
   if (time === 'custom') {
-    time = prompt('Enter time (HH:MM, 24hr format):', '18:00') || '18:00';
-    if (!/^\d{1,2}:\d{2}$/.test(time)) { alert('Invalid time format. Use HH:MM (e.g. 18:00).'); return; }
-    const [hh, mm] = time.split(':').map(Number);
-    if (hh > 23 || mm > 59) { alert('Invalid time. Hours must be 0–23, minutes 0–59.'); return; }
+    // Show the inline custom time input instead of prompt()
+    const customRow = document.getElementById('mp-custom-time-row');
+    if (customRow) {
+      customRow.style.display = 'block';
+      document.getElementById('mp-custom-time').focus();
+    }
+    return; // Wait for user to fill in and re-submit
+  }
+
+  // Check if custom time row is visible and use its value
+  const customRow = document.getElementById('mp-custom-time-row');
+  if (customRow && customRow.style.display === 'block') {
+    const customVal = document.getElementById('mp-custom-time').value;
+    if (!customVal) { showToast('Enter a custom time.', 'amber'); return; }
+    if (!/^\d{1,2}:\d{2}$/.test(customVal)) { showToast('Use HH:MM format, e.g. 18:00', 'amber'); return; }
+    const [hh, mm] = customVal.split(':').map(Number);
+    if (hh > 23 || mm > 59) { showToast('Invalid time — hours 0–23, minutes 0–59.', 'amber'); return; }
     time = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
   }
 
   const clip = state.clips.find(c => String(c.id) === clipIdStr);
-  if (!clip) { alert('Could not find that clip. Please try again.'); return; }
+  if (!clip) { showToast('Could not find that clip.', 'red'); return; }
 
   const newPosts = [];
   platforms.forEach(plat => {
@@ -1646,6 +1742,8 @@ function schedulePost() {
   });
 
   closeModal('modal-post');
+  // Hide custom time row for next open
+  if (customRow) customRow.style.display = 'none';
   save();
   renderToday();
   updateSidebar();
@@ -1672,16 +1770,20 @@ async function batchGenerateCaptions() {
   );
 
   if (!clipsNeedingCaptions.length) {
-    alert('All clips with descriptions already have captions generated.');
+    showToast('All clips with descriptions already have captions.', 'green');
     return;
   }
 
   if (!apiKey) {
-    alert(`Found ${clipsNeedingCaptions.length} clips needing captions, but no API key is set. Add your Anthropic API key in Settings.`);
+    showToast(`${clipsNeedingCaptions.length} clips need captions — add an API key in Settings.`, 'amber');
     return;
   }
 
-  if (!confirm(`Generate captions for ${clipsNeedingCaptions.length} clip${clipsNeedingCaptions.length !== 1 ? 's' : ''}? This runs in the background — you can keep using the app.`)) return;
+  const ok = await kccConfirm(
+    `Generate captions for ${clipsNeedingCaptions.length} clip${clipsNeedingCaptions.length !== 1 ? 's' : ''}? Runs in the background — you can keep using the app.`,
+    'Auto-generate captions', 'Generate', 'primary'
+  );
+  if (!ok) return;
 
   if (btn) { btn.textContent = `⚡ 0/${clipsNeedingCaptions.length}`; btn.disabled = true; }
 
@@ -1694,7 +1796,7 @@ async function batchGenerateCaptions() {
 
   if (btn) { btn.textContent = '⚡ Auto-gen all'; btn.disabled = false; }
   renderToday();
-  alert(`Done! Captions generated for ${done} clip${done !== 1 ? 's' : ''}. Copy buttons now appear on your Today screen.`);
+  showToast(`Captions generated for ${done} clip${done !== 1 ? 's' : ''}.`, 'green');
 }
 
 async function autoGenerateCaptions(clip) {
@@ -1873,14 +1975,14 @@ function renderToday() {
           ${filename}
           <div style="margin-top:5px;">${p.posted ? '<span class="posted-badge">✓ POSTED</span>' : '<span class="pending-badge">PENDING</span>'}</div>
         </div>
-        <div class="flex" style="flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+        <div class="slot-actions">
           ${hasCaption
-            ? `<button class="btn btn-primary btn-sm" onclick="copyTodayCaption('${capKey}',this)" style="font-size:10px;">Copy ${PLAT_LABEL[p.platform]} caption</button>`
+            ? `<button class="btn btn-primary btn-sm slot-copy-btn" onclick="copyTodayCaption('${capKey}',this)">Copy ${PLAT_LABEL[p.platform]} caption</button>`
             : clip && clip.desc
-              ? `<button class="btn btn-ghost btn-sm" data-clipid="${p.clipId}" data-postid="${p.id}" data-plat="${p.platform}" onclick="inlineGenCaption(this)" style="font-size:10px;">⚡ Get caption</button>`
-              : `<button class="btn btn-ghost btn-sm" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="font-size:10px;">Add description first</button>`
+              ? `<button class="btn btn-ghost btn-sm slot-copy-btn" data-clipid="${p.clipId}" data-postid="${p.id}" data-plat="${p.platform}" onclick="inlineGenCaption(this)">⚡ Get caption</button>`
+              : `<button class="btn btn-ghost btn-sm slot-copy-btn" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="opacity:0.6;">+ Add description</button>`
           }
-          <button class="btn btn-ghost btn-sm" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">${p.posted?'Undo':'Mark posted'}</button>
+          <button class="btn btn-ghost btn-sm slot-mark-btn" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">${p.posted?'↩ Undo':'✓ Mark posted'}</button>
         </div>
       </div>`;
     }).join('');
@@ -1999,6 +2101,9 @@ function renderWeek() {
   });
 
   grid.innerHTML = html;
+
+  // Render mobile day-list view in parallel
+  renderMobileDayList();
 }
 
 // ── DRAG AND DROP (desktop + mobile touch) ───────────────────────────────
@@ -2222,7 +2327,7 @@ function onClipDrop(e) {
   e.stopPropagation();
   onClipDragLeave(e);
   const files = [...e.dataTransfer.files].filter(f => f.type.startsWith('video/') || /\.(mp4|mov|avi|mkv|webm)$/i.test(f.name));
-  if (!files.length) { alert('No video files detected. Drop .mp4, .mov, .avi, or .mkv files.'); return; }
+  if (!files.length) { showToast('No video files detected. Drop .mp4, .mov, .avi, or .mkv files.', 'amber'); return; }
   processDroppedClips(files);
 }
 
@@ -2447,7 +2552,8 @@ async function analyseCaption() {
   const clipId    = document.getElementById('cap-clip').value; // keep as string to match float IDs
 
   if (!ttCaption) {
-    alert('Write your TikTok caption first — even a rough draft is fine.');
+    showToast('Write your TikTok caption first — even a rough draft is fine.', 'amber');
+    document.getElementById('cap-tt-input').focus();
     return;
   }
 
@@ -2668,7 +2774,7 @@ function loadNtfyChannel() {
 
 function saveNtfyChannel() {
   const ch = document.getElementById('ntfy-channel').value.trim().toLowerCase().replace(/\s+/g, '-');
-  if (!ch) { alert('Please enter a channel name.'); return; }
+  if (!ch) { showToast('Enter a channel name first.', 'amber'); return; }
   try { localStorage.setItem('ntfy_channel', ch); } catch(e) {}
   document.getElementById('ntfy-channel').value = ch;
   setNtfyStatus('✓ Channel saved: ' + ch, 'green');
@@ -2792,9 +2898,9 @@ function loadApiKey() {
 
 function saveApiKey() {
   const key = document.getElementById('api-key-input').value.trim();
-  if (!key) { alert('Please paste your API key first.'); return; }
+  if (!key) { showToast('Paste your API key first.', 'amber'); return; }
   if (!key.startsWith('sk-ant-')) {
-    alert('That doesn\'t look right — Anthropic API keys start with "sk-ant-". Double-check you copied the full key.');
+    showToast('Key should start with sk-ant- — double-check you copied it fully.', 'amber');
     return;
   }
   try { localStorage.setItem('ccc_api_key', key); } catch(e) {}
@@ -2804,8 +2910,9 @@ function saveApiKey() {
     '<span style="color:var(--green);">✓ Key saved. AI captions are now active.</span>';
 }
 
-function clearApiKey() {
-  if (!confirm('Remove the saved API key?')) return;
+async function clearApiKey() {
+  const ok = await kccConfirm('This will remove your saved API key. You\'ll need to re-enter it to use AI features.', 'Remove API key', 'Remove', 'danger');
+  if (!ok) return;
   try { localStorage.removeItem('ccc_api_key'); } catch(e) {}
   document.getElementById('api-key-input').value = '';
   updateApiPill();
@@ -2873,7 +2980,7 @@ function saveSlots() {
     reach: document.getElementById('slot-reach-'+i).value
   }));
   save();
-  alert('Posting times saved!');
+  showToast('Posting times saved.', 'green');
 }
 
 // ── SIDEBAR STATS ────────────────────────────────────────────────────────
@@ -2963,6 +3070,168 @@ function showToast(msg, type) {
   setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2400);
 }
 
+// ── CUSTOM CONFIRM ────────────────────────────────────────────────────────
+// Replaces native confirm() — returns a Promise<boolean>
+// Usage: if (await kccConfirm('Are you sure?', 'Delete clip', 'Delete', 'danger')) { ... }
+let _confirmResolve = null;
+function kccConfirm(msg, title, okLabel, okStyle) {
+  return new Promise(resolve => {
+    _confirmResolve = resolve;
+    document.getElementById('kcc-confirm-msg').textContent = msg;
+    document.getElementById('kcc-confirm-title').textContent = (title || 'CONFIRM').toUpperCase();
+    const okBtn = document.getElementById('kcc-confirm-ok');
+    okBtn.textContent = okLabel || 'Confirm';
+    okBtn.className = 'btn ' + (okStyle === 'primary' ? 'btn-primary' : 'btn-danger');
+    document.getElementById('kcc-confirm-overlay').classList.add('open');
+  });
+}
+function _confirmAccept() {
+  document.getElementById('kcc-confirm-overlay').classList.remove('open');
+  if (_confirmResolve) { _confirmResolve(true); _confirmResolve = null; }
+}
+function _confirmReject() {
+  document.getElementById('kcc-confirm-overlay').classList.remove('open');
+  if (_confirmResolve) { _confirmResolve(false); _confirmResolve = null; }
+}
+
+// ── INLINE FIELD ERROR ────────────────────────────────────────────────────
+function showFieldError(inputId, errorId, msg) {
+  const input = document.getElementById(inputId);
+  const err   = document.getElementById(errorId);
+  if (input)  input.classList.add('input-error');
+  if (err)    { err.textContent = msg; err.classList.add('show'); }
+}
+function clearFieldErrors(...inputIds) {
+  inputIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.remove('input-error'); }
+    const errEl = document.getElementById(id + '-error');
+    if (errEl) errEl.classList.remove('show');
+  });
+}
+
+// ── MOBILE SCHEDULE ───────────────────────────────────────────────────────
+let mobileScheduleDayIndex = 0; // 0-6 within current week
+
+function isMobile() { return window.innerWidth <= 768; }
+
+function mobileCurrentDateStr() {
+  const days = getWeekDates(state.weekOffset);
+  return localDateStr(days[mobileScheduleDayIndex]);
+}
+
+function renderMobileDayList() {
+  if (!isMobile()) return;
+  const days = getWeekDates(state.weekOffset);
+  const todayStr = localDateStr();
+  const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const FULL_DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+  // Clamp index
+  mobileScheduleDayIndex = Math.max(0, Math.min(6, mobileScheduleDayIndex));
+
+  // Auto-jump to today if in current week
+  if (state.weekOffset === 0) {
+    const todayIdx = days.findIndex(d => localDateStr(d) === todayStr);
+    if (todayIdx >= 0 && mobileScheduleDayIndex === 0) mobileScheduleDayIndex = todayIdx;
+  }
+
+  const day = days[mobileScheduleDayIndex];
+  const dStr = localDateStr(day);
+  const isToday = dStr === todayStr;
+
+  // Week dots
+  const dotsEl = document.getElementById('mobile-week-dots');
+  if (dotsEl) {
+    dotsEl.innerHTML = days.map((d, i) => {
+      const ds = localDateStr(d);
+      const hasPosts = state.posts.some(p => p.date === ds);
+      const isActive = i === mobileScheduleDayIndex;
+      const isTod = ds === todayStr;
+      return `<div class="mobile-week-dot ${isActive ? 'active' : hasPosts ? 'has-posts' : ''}"
+        onclick="mobileGoToDay(${i})" title="${DAY_NAMES[i]} ${d.getDate()}${isTod?' (today)':''}"></div>`;
+    }).join('');
+  }
+
+  // Day label
+  const nameEl = document.getElementById('mobile-day-name');
+  const dateEl = document.getElementById('mobile-day-date');
+  if (nameEl) nameEl.textContent = FULL_DAYS[day.getDay()] + (isToday ? ' — Today' : '');
+  if (dateEl) dateEl.textContent = day.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+  // Hint text
+  const desktopHint = document.querySelector('.desktop-hint');
+  const mobileHint = document.querySelector('.mobile-hint');
+  if (desktopHint) desktopHint.style.display = 'none';
+  if (mobileHint) mobileHint.style.display = 'inline';
+
+  // Slots
+  const slotsEl = document.getElementById('mobile-day-slots');
+  if (!slotsEl) return;
+
+  slotsEl.innerHTML = state.slots.map(slot => {
+    const posts = state.posts.filter(p => p.date === dStr && p.time === slot.time);
+    const reachColor = slot.reach === 'PEAK' ? 'var(--accent2)' : slot.reach === 'HIGH' ? 'var(--green)' : 'var(--amber)';
+    const timeDisp = fmtTime(slot.time);
+
+    const postCards = posts.length
+      ? posts.map(p => {
+          const color = PLAT_COLOR[p.platform];
+          const posted = p.posted;
+          return `<div class="mobile-post-card" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">
+            <div class="mobile-post-plat-bar" style="background:${color};"></div>
+            <div class="mobile-post-info">
+              <div class="mobile-post-name">${sanitize(p.clipName)}</div>
+              <div class="mobile-post-meta">
+                <span style="color:${color};">${PLAT_LABEL[p.platform]}</span>
+                ${posted
+                  ? '<span class="mobile-post-badge posted-badge">✓ POSTED</span>'
+                  : '<span class="mobile-post-badge pending-badge">PENDING</span>'}
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);flex-shrink:0;">›</div>
+          </div>`;
+        }).join('')
+        + `<div class="mobile-slot-empty" onclick="openPostModal('${dStr}','${slot.time}')" style="font-size:11px;padding:8px;">+ Add another</div>`
+      : `<div class="mobile-slot-empty" onclick="openPostModal('${dStr}','${slot.time}')">Tap to schedule a post</div>`;
+
+    return `<div class="mobile-slot-group">
+      <div class="mobile-slot-time">
+        <span>${timeDisp} — ${slot.label}</span>
+        <span class="mobile-slot-reach" style="color:${reachColor};">${slot.reach} REACH</span>
+      </div>
+      ${postCards}
+    </div>`;
+  }).join('');
+}
+
+function mobileGoToDay(idx) {
+  mobileScheduleDayIndex = idx;
+  renderMobileDayList();
+}
+function mobilePrevDay() {
+  if (mobileScheduleDayIndex > 0) {
+    mobileScheduleDayIndex--;
+    renderMobileDayList();
+  } else {
+    // Go to previous week, land on Saturday
+    state.weekOffset--;
+    mobileScheduleDayIndex = 6;
+    renderWeek();
+  }
+}
+function mobileNextDay() {
+  if (mobileScheduleDayIndex < 6) {
+    mobileScheduleDayIndex++;
+    renderMobileDayList();
+  } else {
+    // Go to next week, land on Sunday
+    state.weekOffset++;
+    mobileScheduleDayIndex = 0;
+    renderWeek();
+  }
+}
+
 // ── HELPERS ──────────────────────────────────────────────────────────────
 function fmtTime(t) {
   const [h,m] = t.split(':');
@@ -2989,9 +3258,9 @@ function saveGithubConfig() {
   const user  = document.getElementById('gh-user').value.trim();
   const repo  = document.getElementById('gh-repo').value.trim();
   const token = document.getElementById('gh-token').value.trim();
-  if (!user || !repo || !token) { alert('Please fill in all three fields.'); return; }
+  if (!user || !repo || !token) { showToast('Fill in all three fields — username, repo, and token.', 'amber'); return; }
   if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
-    alert('That doesn\'t look like a valid token — it should start with ghp_ or github_pat_'); return;
+    showToast('Token should start with ghp_ or github_pat_ — check it\'s a classic or fine-grained PAT.', 'amber'); return;
   }
   try {
     localStorage.setItem('gh_user', user);
@@ -3004,8 +3273,9 @@ function saveGithubConfig() {
   syncNow();
 }
 
-function clearGithubConfig() {
-  if (!confirm('Disconnect GitHub sync?')) return;
+async function clearGithubConfig() {
+  const ok = await kccConfirm('This will disconnect GitHub sync. Your local data is not affected.', 'Disconnect GitHub', 'Disconnect', 'danger');
+  if (!ok) return;
   ['gh_user','gh_repo','gh_token'].forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
   document.getElementById('gh-user').value = '';
   document.getElementById('gh-repo').value = '';
@@ -3267,14 +3537,15 @@ function importData(e) {
       updateSidebar();
       renderToday();
       renderDaysBanner();
-      alert('Data imported successfully!');
-    } catch(err) { alert('Invalid file.'); }
+      showToast('Data imported successfully.', 'green');
+    } catch(err) { showToast('Invalid file — could not import.', 'red'); }
   };
   reader.readAsText(file);
 }
 
-function clearAll() {
-  if (!confirm('Clear ALL data? This cannot be undone.')) return;
+async function clearAll() {
+  const ok = await kccConfirm('This will permanently delete all clips, posts, and engagement data. This cannot be undone.', 'Clear all data', 'Delete everything', 'danger');
+  if (!ok) return;
   state = { clips: [], posts: [], checklist: {}, slots: JSON.parse(JSON.stringify(DEFAULT_SLOTS)), weekOffset: 0, engagements: [], contentIntel: { briefs: [], lastRun: null }, followerSnapshots: [] };
   save();
   renderClipList();
@@ -3324,7 +3595,7 @@ function switchFgTab(tab) {
 function addFollowerSnapshot() {
   const dateInput = document.getElementById('fg-date');
   const date = dateInput.value;
-  if (!date) { alert('Pick a date.'); return; }
+  if (!date) { showToast('Pick a date first.', 'amber'); return; }
 
   const ttVal = document.getElementById('fg-tt').value.replace(/,/g, '');
   const igVal = document.getElementById('fg-ig').value.replace(/,/g, '');
@@ -3335,18 +3606,18 @@ function addFollowerSnapshot() {
   const yt = ytVal ? parseInt(ytVal, 10) : null;
 
   if (tt === null && ig === null && yt === null) {
-    alert('Enter at least one platform count.'); return;
+    showToast('Enter at least one platform follower count.', 'amber'); return;
   }
 
   if (!state.followerSnapshots) state.followerSnapshots = [];
 
   const existing = state.followerSnapshots.find(s => s.date === date);
   if (existing) {
-    if (!confirm(`Update ${date}? This will overwrite the existing entry.`)) return;
     if (tt !== null) existing.tt = tt;
     if (ig !== null) existing.ig = ig;
     if (yt !== null) existing.yt = yt;
     existing.updatedAt = new Date().toISOString();
+    showToast('Entry updated for ' + date, 'green');
   } else {
     state.followerSnapshots.push({ date, tt, ig, yt, loggedAt: new Date().toISOString() });
   }
@@ -3354,7 +3625,6 @@ function addFollowerSnapshot() {
   state.followerSnapshots.sort((a, b) => a.date.localeCompare(b.date));
   save();
 
-  // Clear inputs
   document.getElementById('fg-tt').value = '';
   document.getElementById('fg-ig').value = '';
   document.getElementById('fg-yt').value = '';
@@ -3362,8 +3632,9 @@ function addFollowerSnapshot() {
   renderFollowerGrowth();
 }
 
-function deleteFollowerSnapshot(date) {
-  if (!confirm('Remove entry for ' + date + '?')) return;
+async function deleteFollowerSnapshot(date) {
+  const ok = await kccConfirm(`Remove follower entry for ${date}?`, 'Remove entry', 'Remove', 'danger');
+  if (!ok) return;
   state.followerSnapshots = state.followerSnapshots.filter(s => s.date !== date);
   save();
   renderFollowerGrowth();
@@ -4151,8 +4422,9 @@ function editEngagement(id) {
   document.getElementById('modal-engage').classList.add('open');
 }
 
-function deleteEngagement(id) {
-  if (!confirm('Delete this engagement entry? This will affect your analytics.')) return;
+async function deleteEngagement(id) {
+  const ok = await kccConfirm('This will remove the engagement entry and affect your analytics.', 'Delete engagement', 'Delete', 'danger');
+  if (!ok) return;
   state.engagements = state.engagements.filter(e => String(e.id) !== String(id));
   save();
   renderAnalytics();
@@ -4237,7 +4509,7 @@ function openEngageModal() {
 
 function saveEngagement(keepOpen) {
   const postIdStr = document.getElementById('eng-post-sel').value;
-  if (!postIdStr) { alert('Please select a post.'); return; }
+  if (!postIdStr) { showToast('Select a post first.', 'amber'); return; }
   const post = state.posts.find(p => String(p.id) === postIdStr);
 
   const rawTags  = document.getElementById('eng-hashtags').value;
@@ -4677,7 +4949,7 @@ function checkIntelAutoRun() {
 async function runContentIntel() {
   const apiKey = loadApiKey();
   if (!apiKey) {
-    alert('Add your Anthropic API key in Settings first.');
+    showToast('Add your Anthropic API key in Settings first.', 'amber');
     return;
   }
 
@@ -4987,5 +5259,17 @@ function applyUpdate() {
   window.location.reload(true);
 }
 </script>
+
+<!-- CUSTOM CONFIRM DIALOG -->
+<div class="kcc-confirm-overlay" id="kcc-confirm-overlay" onclick="if(event.target===this)_confirmReject()">
+  <div class="kcc-confirm-sheet">
+    <div class="kcc-confirm-title" id="kcc-confirm-title">CONFIRM</div>
+    <div class="kcc-confirm-msg" id="kcc-confirm-msg"></div>
+    <div class="kcc-confirm-actions">
+      <button class="btn btn-ghost" onclick="_confirmReject()" id="kcc-confirm-cancel">Cancel</button>
+      <button class="btn btn-danger" onclick="_confirmAccept()" id="kcc-confirm-ok">Confirm</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
