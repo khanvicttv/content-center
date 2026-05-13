@@ -16538,6 +16538,102 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1778703242395,
+        "runDate": "2026-05-13T20:12:50.048Z",
+        "weekLabel": "Week of May 19 – May 16, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "FOV settings that pros actually use in ranked",
+                "type": "settings",
+                "why": "Settings content consistently performs well for his audience, and FOV debates are always active in the Warzone community.",
+                "streamFocus": "Test different FOV settings live, show before/after gameplay clips, explain the trade-offs between visibility and target size",
+                "captionDirection": "this fov change actually made me better, most people get this wrong"
+              },
+              {
+                "priority": 2,
+                "title": "How to win more 1v3 clutches using audio cues",
+                "type": "strategy",
+                "why": "Strategy content outperforms kill clips for his audience, and clutch situations are universally relatable content.",
+                "streamFocus": "Play for 1v3 situations, narrate audio decisions live, capture clean clutch wins with audio explanation overlay",
+                "captionDirection": "if you listen for this sound, 1v3s become easy"
+              },
+              {
+                "priority": 3,
+                "title": "Best long-range AR build for Urzikstan rotations",
+                "type": "loadout",
+                "why": "Loadout videos are his top-performing content type, and map-specific builds provide actionable value.",
+                "streamFocus": "Showcase the AR build in long-range fights across different Urzikstan zones, emphasize rotation advantages",
+                "captionDirection": "this AR setup for rotations is actually broken"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Movement technique to avoid getting beamed in open areas",
+                "type": "tutorial",
+                "why": "Tutorial content provides clear value and his audience responds well to actionable tips that improve gameplay.",
+                "streamFocus": "Demonstrate specific movement patterns in open areas, show bad vs good examples, get multiple clean examples of avoiding damage",
+                "captionDirection": "learn this movement and stop getting beamed crossing open ground"
+              },
+              {
+                "priority": 2,
+                "title": "SMG loadout that actually competes with meta builds",
+                "type": "loadout",
+                "why": "Meta alternatives perform well since they give viewers an edge, and SMG content is always relevant for close-range fights.",
+                "streamFocus": "Use the SMG build in close-range fights, compare damage/TTK against popular meta weapons, show win rate improvement",
+                "captionDirection": "everyone sleeping on this smg, it actually beats the meta"
+              },
+              {
+                "priority": 3,
+                "title": "Why you're losing gunfights you should win",
+                "type": "tips",
+                "why": "Problem-solving content resonates with players looking to improve, and the direct addressing style matches his successful captions.",
+                "streamFocus": "Analyze failed gunfights live, point out common mistakes, demonstrate correct positioning and timing",
+                "captionDirection": "you lose these fights because you do this one thing wrong"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "Ranked positioning strategy for final circles",
+                "type": "strategy",
+                "why": "End-game strategy is high-value content that directly impacts win rates, which his strategy-focused audience values.",
+                "streamFocus": "Focus on final circle positioning, narrate decision-making process, capture multiple end-game wins with good positioning",
+                "captionDirection": "position here in final circle and your win rate goes up"
+              },
+              {
+                "priority": 2,
+                "title": "Sniper loadout for picking teams before they rotate",
+                "type": "loadout",
+                "why": "Sniper builds remain popular content, and focusing on the tactical advantage appeals to his strategy-minded audience.",
+                "streamFocus": "Use sniper build to pick enemies during rotations, show damage numbers and down potential, emphasize timing",
+                "captionDirection": "this sniper build stops teams from rotating, legit unfair"
+              },
+              {
+                "priority": 3,
+                "title": "How to actually improve your aim without aim trainers",
+                "type": "tips",
+                "why": "Aim improvement content has broad appeal and his practical approach to tips resonates well with his audience.",
+                "streamFocus": "Demonstrate in-game aim improvement techniques, show before/after tracking, explain practical drills during gameplay",
+                "captionDirection": "forget aim trainers, do this in warzone and your aim gets better"
+              }
+            ]
+          }
+        ],
+        "trends": null,
+        "competitors": []
+      },
+      {
         "id": 1777576777455,
         "runDate": "2026-04-30T19:18:27.260Z",
         "weekLabel": "Week of May 5 – May 2, 2026",
@@ -17311,7 +17407,7 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-04-30T19:18:27.260Z"
+    "lastRun": "2026-05-13T20:12:50.048Z"
   },
   "followerSnapshots": [
     {
