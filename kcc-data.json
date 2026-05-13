@@ -9430,7 +9430,10 @@
       "platform": "tt",
       "date": "2026-05-13",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "15:00",
+      "postedAt": "2026-05-13T20:12:20.776Z",
+      "timingVariance": 120
     },
     {
       "id": 1778351305741.566,
