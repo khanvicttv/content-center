@@ -2455,10 +2455,30 @@ function switchCapTab(el, tab) { currentCapTab = tab; }
 
 // ── CAPTION ASSISTANT ─────────────────────────────────────────────────────
 
-// Cache trending hashtags so we don't search every single time
+// Trending hashtag cache — persisted to localStorage so it survives page reloads
+const TRENDING_CACHE_MS = 60 * 60 * 1000; // 1 hour
+const TRENDING_CACHE_KEY = 'kcc_trending_cache';
+
+// Load cache from localStorage on startup
 let trendingHashtagsCache = null;
 let trendingCacheTime = null;
-const TRENDING_CACHE_MS = 60 * 60 * 1000; // 1 hour
+(function restoreTrendingCache() {
+  try {
+    const raw = localStorage.getItem(TRENDING_CACHE_KEY);
+    if (raw) {
+      const stored = JSON.parse(raw);
+      if (stored && stored.data && stored.fetchedAt) {
+        const age = Date.now() - stored.fetchedAt;
+        if (age < TRENDING_CACHE_MS) {
+          trendingHashtagsCache = stored.data;
+          trendingCacheTime = stored.fetchedAt;
+        } else {
+          localStorage.removeItem(TRENDING_CACHE_KEY); // expired — clean up
+        }
+      }
+    }
+  } catch(e) {}
+})();
 
 async function refreshTrendingHashtags() {
   const btn = document.getElementById('trending-refresh-btn');
@@ -2511,6 +2531,10 @@ All tags lowercase. No spaces in tags.`;
     const parsed = JSON.parse(text.replace(/```json|```/g, '').trim());
     trendingHashtagsCache = parsed;
     trendingCacheTime = Date.now();
+    // Persist to localStorage so next session within 1hr skips the API call
+    try {
+      localStorage.setItem(TRENDING_CACHE_KEY, JSON.stringify({ data: parsed, fetchedAt: trendingCacheTime }));
+    } catch(e) {} // quota errors are non-fatal here
     renderTrendingStrip(parsed);
     return parsed;
   } catch(e) {
@@ -2544,7 +2568,13 @@ function renderTrendingStrip(data) {
   }
 }
 
+let inFlightAnalyse = false;
+
 async function analyseCaption() {
+  if (inFlightAnalyse) {
+    showToast('Analysis already running — please wait.', 'amber');
+    return;
+  }
   const ttCaption = document.getElementById('cap-tt-input').value.trim();
   const igCaption = document.getElementById('cap-ig-input').value.trim();
   const ytCaption = document.getElementById('cap-yt-input').value.trim();
@@ -2560,6 +2590,7 @@ async function analyseCaption() {
   const apiKey = loadApiKey();
   const resultEl = document.getElementById('cap-analysis-result');
 
+  inFlightAnalyse = true;
   resultEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;padding:12px 0;color:var(--muted);font-size:12px;font-family:var(--mono);"><div style="width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Analysing your caption & fetching trending hashtags...</div>';
 
   // Run trending fetch and caption analysis in parallel — analysis doesn't wait for trending
@@ -2684,6 +2715,8 @@ Return ONLY raw JSON:
       : 'Check your API key in Settings and try again.';
     resultEl.innerHTML = `<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed: ${errMsg}<br><br>${hint}</div>`;
     renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
+  } finally {
+    inFlightAnalyse = false;
   }
 }
 
@@ -3354,12 +3387,9 @@ async function pullFromGithub() {
     const file = await ghRequest('GET', GH_DATA_PATH);
     if (!file || !file.content) return false;
     const decoded = decodeURIComponent(escape(atob(file.content.replace(/\n/g, ''))));
-    const remote = JSON.parse(decoded);
-    state = { ...state, ...remote };
-    if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
-    if (!state.engagements) state.engagements = [];
-    if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
-    if (!state.followerSnapshots) state.followerSnapshots = [];
+    let remote = JSON.parse(decoded);
+    remote = migrate(remote);
+    state = remote;
     migrateFollowerSnapshots();
     // Also save locally
     try { localStorage.setItem('ccc_state', JSON.stringify(state)); } catch(e) {}
@@ -3493,19 +3523,61 @@ function migrateFollowerSnapshots() {
   console.log('[KCC] Migrated followerSnapshots to multi-platform format:', state.followerSnapshots.length, 'entries');
 }
 
+// ── STATE VERSION + MIGRATION ─────────────────────────────────────────────
+// Bump this any time the state shape changes (new fields, renamed fields, etc.)
+// migrate() backfills defaults so old localStorage data always upgrades cleanly.
+const STATE_VERSION = 2;
+
+function migrate(saved) {
+  // Ensure every top-level field exists with the correct type
+  if (!saved.clips        || !Array.isArray(saved.clips))        saved.clips        = [];
+  if (!saved.posts        || !Array.isArray(saved.posts))        saved.posts        = [];
+  if (!saved.engagements  || !Array.isArray(saved.engagements))  saved.engagements  = [];
+  if (!saved.followerSnapshots || !Array.isArray(saved.followerSnapshots)) saved.followerSnapshots = [];
+  if (!saved.checklist    || typeof saved.checklist !== 'object') saved.checklist   = {};
+  if (!saved.slots        || !Array.isArray(saved.slots) || !saved.slots.length)
+                                                                  saved.slots        = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
+  if (typeof saved.weekOffset !== 'number')                       saved.weekOffset   = 0;
+  if (!saved.contentIntel || typeof saved.contentIntel !== 'object') {
+    saved.contentIntel = { briefs: [], lastRun: null };
+  } else {
+    if (!Array.isArray(saved.contentIntel.briefs)) saved.contentIntel.briefs = [];
+    if (!('lastRun' in saved.contentIntel))        saved.contentIntel.lastRun = null;
+  }
+
+  // v2: ensure every clip has the captions field shape
+  saved.clips.forEach(clip => {
+    if (!clip.captions) clip.captions = {};
+    if (!clip.lastHashtags) clip.lastHashtags = { tt: [], ig: [], yt: [] };
+    if (!clip.platforms || !Array.isArray(clip.platforms)) clip.platforms = ['tt', 'ig'];
+    if (typeof clip.archived !== 'boolean') clip.archived = false;
+    if (!clip.addedAt) clip.addedAt = new Date().toISOString();
+  });
+
+  // v2: ensure every post has required fields
+  saved.posts.forEach(post => {
+    if (typeof post.posted !== 'boolean') post.posted = false;
+    if (!post.platform) post.platform = 'tt';
+  });
+
+  // Stamp the version
+  saved._version = STATE_VERSION;
+
+  return saved;
+}
+
 function load() {
   try {
     const raw = localStorage.getItem('ccc_state');
     if (raw) {
-      const saved = JSON.parse(raw);
-      state = { ...state, ...saved };
-      if (!state.slots || !state.slots.length) state.slots = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
-      if (!state.engagements) state.engagements = [];
-      if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
-    if (!state.followerSnapshots) state.followerSnapshots = [];
-    migrateFollowerSnapshots();
+      let saved = JSON.parse(raw);
+      saved = migrate(saved);
+      state = saved;
+      migrateFollowerSnapshots();
     }
-  } catch(e) {}
+  } catch(e) {
+    console.warn('KCC: load() failed, using defaults.', e);
+  }
 }
 
 function exportData() {
@@ -3522,14 +3594,9 @@ function importData(e) {
   const reader = new FileReader();
   reader.onload = ev => {
     try {
-      state = JSON.parse(ev.target.result);
-      if (!state.slots)       state.slots       = JSON.parse(JSON.stringify(DEFAULT_SLOTS));
-      if (!state.engagements) state.engagements = [];
-      if (!state.clips)       state.clips       = [];
-      if (!state.posts)       state.posts       = [];
-      if (!state.checklist)   state.checklist   = {};
-      if (!state.contentIntel) state.contentIntel = { briefs: [], lastRun: null };
-    if (!state.followerSnapshots) state.followerSnapshots = [];
+      let imported = JSON.parse(ev.target.result);
+      imported = migrate(imported);
+      state = imported;
       migrateFollowerSnapshots();
       save();
       renderClipList();
@@ -4946,12 +5013,20 @@ function checkIntelAutoRun() {
   runContentIntel();
 }
 
+let inFlightIntel = false;
+
 async function runContentIntel() {
+  if (inFlightIntel) {
+    showToast('Research already in progress — please wait.', 'amber');
+    return;
+  }
   const apiKey = loadApiKey();
   if (!apiKey) {
     showToast('Add your Anthropic API key in Settings first.', 'amber');
     return;
   }
+
+  inFlightIntel = true;
 
   const btn = document.getElementById('intel-run-btn');
   btn.textContent = 'Researching...';
@@ -5130,6 +5205,8 @@ Return ONLY this JSON:
       Research failed: ${e.message || 'Unknown error'}<br>
       <span style="color:var(--muted);font-size:11px;">Check your API key and try again.</span>
     </div>`;
+  } finally {
+    inFlightIntel = false;
   }
 
   btn.textContent = '⚡ Research now';
@@ -5217,6 +5294,8 @@ updateApiPill();
 updateSyncPill();
 checkUpcomingPosts();
 setInterval(checkUpcomingPosts, 60000);
+// Always check intel auto-run on open — not just when navigating to Intel panel
+checkIntelAutoRun();
 
 // Pull from GitHub on startup if configured
 (async () => {
