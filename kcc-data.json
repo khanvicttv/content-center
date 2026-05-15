@@ -9512,7 +9512,10 @@
       "platform": "tt",
       "date": "2026-05-15",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "10:00",
+      "postedAt": "2026-05-15T17:24:06.731Z",
+      "timingVariance": 60
     },
     {
       "id": 1778560592256.3135,
