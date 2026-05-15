@@ -7549,7 +7549,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-15T22:00:46.532Z"
     },
     {
       "id": 1778557511921,
@@ -9603,7 +9604,10 @@
       "platform": "ig",
       "date": "2026-05-15",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "17:00",
+      "postedAt": "2026-05-15T22:00:46.532Z",
+      "timingVariance": 240
     },
     {
       "id": 1778560629436.2964,
