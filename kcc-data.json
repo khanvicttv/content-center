@@ -7853,14 +7853,55 @@
       "filename": "When you hold hands.mp4",
       "duration": "0:16",
       "size_mb": 65.1,
-      "desc": "",
+      "desc": "Squad wipe served to whoever holds hands",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-17T18:40:02",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "squad got wiped for holding hands, that's what you get",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "squad got wiped for holding hands, that's what you get\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "squad got wiped holding hands, thats what you get for playing together",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "squad got wiped holding hands, thats what you get for playing together\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone squad wipe, teamwork makes the dream work | khanvict tv",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#squadwipe",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#fps"
+          ],
+          "full": "warzone squad wipe, teamwork makes the dream work | khanvict tv\n\n#warzone #cod #callofduty #squadwipe #warzoneclips #khanvicttv #fps"
+        }
+      }
     }
   ],
   "posts": [
