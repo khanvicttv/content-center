@@ -7741,14 +7741,55 @@
       "filename": "toyin with um.mp4",
       "duration": "0:29",
       "size_mb": 98.6,
-      "desc": "",
+      "desc": "Just messing with this team here",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-17T18:46:05",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "just running through this team like they weren't even there",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "just running through this team like they weren't even there\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "just running circles around this whole team, they never saw it coming",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "just running circles around this whole team, they never saw it coming\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone: trolling this squad with crazy plays | khanvict tv",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone: trolling this squad with crazy plays | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1779061384531,
