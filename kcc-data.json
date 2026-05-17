@@ -9559,24 +9559,6 @@
       "timingVariance": 60
     },
     {
-      "id": 1778560606673.1433,
-      "clipId": 1778559933396,
-      "clipName": "Craziest interaction pt3",
-      "platform": "tt",
-      "date": "2026-05-17",
-      "time": "09:00",
-      "posted": false
-    },
-    {
-      "id": 1778560606673.4946,
-      "clipId": 1778559933396,
-      "clipName": "Craziest interaction pt3",
-      "platform": "ig",
-      "date": "2026-05-17",
-      "time": "09:00",
-      "posted": false
-    },
-    {
       "id": 1778560610506.8506,
       "clipId": 1778559955315,
       "clipName": "Craziest interaction pt4",
@@ -14024,7 +14006,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
