@@ -7797,14 +7797,55 @@
       "filename": "Fearless getting the dub.mp4",
       "duration": "0:25",
       "size_mb": 75.9,
-      "desc": "",
+      "desc": "Fearless showin' viewers how to get a dub",
       "game": "Rocket League",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-17T18:43:04",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "fearless breaking down the fundamentals, that's how you actually get the dub",
+          "hashtags": [
+            "#rocketleague",
+            "#esports",
+            "#gaming",
+            "#clips",
+            "#khanvicttv",
+            "#competitive",
+            "#gameplay"
+          ],
+          "full": "fearless breaking down the fundamentals, that's how you actually get the dub\n\n#rocketleague #esports #gaming #clips #khanvicttv #competitive #gameplay"
+        },
+        "ig": {
+          "caption": "fearless breaking down how to actually secure the dub in rocket league, watch live on twitch",
+          "hashtags": [
+            "#rocketleague",
+            "#esports",
+            "#gaming",
+            "#clips",
+            "#khanvicttv",
+            "#twitch",
+            "#clutch"
+          ],
+          "full": "fearless breaking down how to actually secure the dub in rocket league, watch live on twitch\n\n#rocketleague #esports #gaming #clips #khanvicttv #twitch #clutch"
+        },
+        "yt": {
+          "caption": "rocket league: fearless showing the formula to grab dubs | Khanvict TV",
+          "hashtags": [
+            "#rocketleague",
+            "#gaming",
+            "#esports",
+            "#clips",
+            "#khanvicttv",
+            "#gameplay",
+            "#competitive"
+          ],
+          "full": "rocket league: fearless showing the formula to grab dubs | Khanvict TV\n\n#rocketleague #gaming #esports #clips #khanvicttv #gameplay #competitive"
+        }
+      }
     },
     {
       "id": 1779061202924,
