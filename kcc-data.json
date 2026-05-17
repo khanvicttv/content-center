@@ -9625,30 +9625,6 @@
       "timingVariance": 214
     },
     {
-      "id": 1778560633093.2168,
-      "clipId": 1778557511921,
-      "clipName": "Fearless with the tomahawk",
-      "platform": "tt",
-      "date": "2026-05-16",
-      "time": "13:00",
-      "posted": true,
-      "actualTime": "13:00",
-      "postedAt": "2026-05-17T13:34:03.771Z",
-      "timingVariance": 0
-    },
-    {
-      "id": 1778560633093.924,
-      "clipId": 1778557511921,
-      "clipName": "Fearless with the tomahawk",
-      "platform": "ig",
-      "date": "2026-05-16",
-      "time": "13:00",
-      "posted": true,
-      "actualTime": "13:00",
-      "postedAt": "2026-05-17T13:34:05.471Z",
-      "timingVariance": 0
-    },
-    {
       "id": 1778853444197.8909,
       "clipId": 1778560367146,
       "clipName": "Gettin randos a dub",
@@ -14006,7 +13982,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
