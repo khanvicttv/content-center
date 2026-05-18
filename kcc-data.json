@@ -7733,7 +7733,13 @@
           ],
           "full": "real ones keep it 100 with you always\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779061565986,
@@ -7789,7 +7795,13 @@
           ],
           "full": "warzone: trolling this squad with crazy plays | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779061384531,
@@ -7845,7 +7857,13 @@
           ],
           "full": "rocket league: fearless showing the formula to grab dubs | Khanvict TV\n\n#rocketleague #gaming #esports #clips #khanvicttv #gameplay #competitive"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779061202924,
@@ -7901,7 +7919,13 @@
           ],
           "full": "warzone squad wipe, teamwork makes the dream work | khanvict tv\n\n#warzone #cod #callofduty #squadwipe #warzoneclips #khanvicttv #fps"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     }
   ],
   "posts": [
@@ -9790,7 +9814,10 @@
       "platform": "tt",
       "date": "2026-05-18",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "10:32",
+      "postedAt": "2026-05-18T15:30:46.404Z",
+      "timingVariance": 92
     },
     {
       "id": 1778560610506.177,
