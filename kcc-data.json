@@ -17636,6 +17636,102 @@
   "contentIntel": {
     "briefs": [
       {
+        "id": 1779208344033,
+        "runDate": "2026-05-19T16:31:16.642Z",
+        "weekLabel": "Week of May 19 – May 23, 2026",
+        "days": [
+          {
+            "day": "Tuesday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "best audio settings for footstep detection in season 4",
+                "type": "settings",
+                "why": "Settings content performs well and new season audio changes always generate high engagement from competitive players seeking advantages",
+                "streamFocus": "Show exact audio settings menu, demonstrate before/after footstep clarity in different scenarios, test in real matches",
+                "captionDirection": "if you cant hear enemies coming you are already dead"
+              },
+              {
+                "priority": 2,
+                "title": "why everyone is running suppressed LR builds now",
+                "type": "strategy",
+                "why": "Meta shift content captures viewers wanting to understand current trends, strategy posts outperform pure gameplay",
+                "streamFocus": "Demonstrate suppressed long-range gameplay, show radar advantages, compare damage profiles vs unsuppressed",
+                "captionDirection": "this is why you keep getting third partied"
+              },
+              {
+                "priority": 3,
+                "title": "season 4 ranked rotation positioning guide",
+                "type": "tips",
+                "why": "New season map rotations create demand for positioning guides, tips content is proven to outperform highlights",
+                "streamFocus": "Show optimal positioning for each circle on current ranked maps, explain rotation timing and common mistakes",
+                "captionDirection": "positioning beats aim every time"
+              }
+            ]
+          },
+          {
+            "day": "Thursday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "broken SMG attachment combo that pros are using",
+                "type": "loadout",
+                "why": "Loadout content is his strongest performer, 'broken' and 'pros are using' creates urgency and authority",
+                "streamFocus": "Build the SMG setup on stream, show damage comparisons, demonstrate in close-range fights",
+                "captionDirection": "legit broken in close range, everyone will be running this soon"
+              },
+              {
+                "priority": 2,
+                "title": "how to counter the new redeploy meta",
+                "type": "strategy",
+                "why": "Counter-strategies to popular tactics always perform well as players seek competitive edges",
+                "streamFocus": "Show different redeploy scenarios and how to punish them, positioning and timing demonstrations",
+                "captionDirection": "stop letting teams get free rotations on you"
+              },
+              {
+                "priority": 3,
+                "title": "slide cancel bind that changed everything",
+                "type": "tutorial",
+                "why": "Movement tutorials generate consistent engagement, specific keybind changes appeal to competitive audience",
+                "streamFocus": "Demonstrate the bind setup, show movement comparisons, practice the technique live",
+                "captionDirection": "your movement will never be the same"
+              }
+            ]
+          },
+          {
+            "day": "Saturday",
+            "topics": [
+              {
+                "priority": 1,
+                "title": "why this AR build is replacing every meta gun",
+                "type": "loadout",
+                "why": "Meta-shifting loadout content performs best, creates FOMO and positions him as ahead of trends",
+                "streamFocus": "Build the AR configuration, compare stats to current meta weapons, showcase versatility in matches",
+                "captionDirection": "this will be the only gun you need next week"
+              },
+              {
+                "priority": 2,
+                "title": "advanced circle reading for season 4 maps",
+                "type": "tips",
+                "why": "Advanced tips content appeals to his experienced audience and season 4 map changes create fresh demand",
+                "streamFocus": "Analyze circle patterns during matches, predict final zones, explain positioning logic",
+                "captionDirection": "read circles like this and you will never be caught rotating late"
+              },
+              {
+                "priority": 3,
+                "title": "insane 1v4 clutch with new movement tech",
+                "type": "highlight",
+                "why": "Weekend highlight to showcase skills, but tied to educational element (movement tech) to maintain his proven strategy focus",
+                "streamFocus": "Capture clutch moments while demonstrating advanced movement techniques, focus on decision-making",
+                "captionDirection": "movement tech made this possible"
+              }
+            ]
+          }
+        ],
+        "trends": null,
+        "competitors": []
+      },
+      {
         "id": 1778703242395,
         "runDate": "2026-05-13T20:12:50.048Z",
         "weekLabel": "Week of May 19 – May 16, 2026",
@@ -18505,7 +18601,7 @@
         "competitors": []
       }
     ],
-    "lastRun": "2026-05-13T20:12:50.048Z"
+    "lastRun": "2026-05-19T16:31:16.642Z"
   },
   "followerSnapshots": [
     {
