@@ -7867,7 +7867,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-20T17:24:32.952Z"
     },
     {
       "id": 1779061202924,
@@ -7929,7 +7930,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-20T17:24:33.817Z"
     }
   ],
   "posts": [
