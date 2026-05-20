@@ -8275,14 +8275,55 @@
       "filename": "we movin.mp4",
       "duration": "0:30",
       "size_mb": 135.8,
-      "desc": "",
+      "desc": "Just moving through teams",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-20T13:21:47",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "just running through teams like they weren't even there",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "just running through teams like they weren't even there\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "just running through squads like they aint even there, moving different",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "just running through squads like they aint even there, moving different\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone | moving through teams like they weren't even there | khanvict tv",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone | moving through teams like they weren't even there | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1779207066396,
