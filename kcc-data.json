@@ -7939,14 +7939,55 @@
       "filename": "watch your six.mp4",
       "duration": "0:09",
       "size_mb": 48.2,
-      "desc": "",
+      "desc": "Look behind you if you're holding a corner",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-20T16:18:01",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "holding a corner and not checking your six is how you get clapped",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "holding a corner and not checking your six is how you get clapped\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "always check your six when you're posted up, this dude learned the hard way",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "always check your six when you're posted up, this dude learned the hard way\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone corner hold goes wrong when enemy flanks | khanvict tv",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#fps"
+          ],
+          "full": "warzone corner hold goes wrong when enemy flanks | khanvict tv\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
+        }
+      }
     },
     {
       "id": 1779311338294,
