@@ -8331,14 +8331,55 @@
       "filename": "our language.mp4",
       "duration": "0:33",
       "size_mb": 68.5,
-      "desc": "",
+      "desc": "Its funny man",
       "game": "Rocket League",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-19T11:11:06",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "rocket league hits different when youre just vibing and things go crazy",
+          "hashtags": [
+            "#rocketleague",
+            "#gaming",
+            "#clips",
+            "#funny",
+            "#esports",
+            "#streamclips",
+            "#khanvicttv"
+          ],
+          "full": "rocket league hits different when youre just vibing and things go crazy\n\n#rocketleague #gaming #clips #funny #esports #streamclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro really thought he could air dribble his way out of this one, nah",
+          "hashtags": [
+            "#rocketleague",
+            "#gaming",
+            "#esports",
+            "#clips",
+            "#khanvicttv",
+            "#funny",
+            "#fail"
+          ],
+          "full": "bro really thought he could air dribble his way out of this one, nah\n\n#rocketleague #gaming #esports #clips #khanvicttv #funny #fail"
+        },
+        "yt": {
+          "caption": "rocket league is actually hilarious when you're just vibing | Khanvict TV",
+          "hashtags": [
+            "#rocketleague",
+            "#funny",
+            "#gaming",
+            "#clips",
+            "#esports",
+            "#khanvicttv",
+            "#streamclips"
+          ],
+          "full": "rocket league is actually hilarious when you're just vibing | Khanvict TV\n\n#rocketleague #funny #gaming #clips #esports #khanvicttv #streamclips"
+        }
+      }
     },
     {
       "id": 1779206805871,
