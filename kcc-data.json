@@ -8387,14 +8387,55 @@
       "filename": "Are you not entertained.mp4",
       "duration": "0:20",
       "size_mb": 31.9,
-      "desc": "",
+      "desc": "Fearless entertaining the chat is gold",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-19T11:06:45",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "fearless just keeps the chat entertained while dropping bodies, thats the wave",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "fearless just keeps the chat entertained while dropping bodies, thats the wave\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "fearless keeping chat entertained while dropping bodies, that's the vibe",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "fearless keeping chat entertained while dropping bodies, that's the vibe\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone | fearless keeping chat entertained while dropping bodies | khanvict tv",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone | fearless keeping chat entertained while dropping bodies | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1779206412462,
