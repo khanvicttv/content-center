@@ -7987,7 +7987,13 @@
           ],
           "full": "warzone corner hold goes wrong when enemy flanks | khanvict tv\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779311338294,
@@ -8043,7 +8049,13 @@
           ],
           "full": "talking mad game but cant back it up in warzone | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779311190043,
@@ -8099,7 +8111,13 @@
           ],
           "full": "warzone appreciation moment, you guys made my day fr | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779307137907,
@@ -8155,7 +8173,13 @@
           ],
           "full": "warzone is genuinely the most fun fps right now | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779307020287,
@@ -8211,7 +8235,13 @@
           ],
           "full": "appreciating the real ones who stick around | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779301728838,
@@ -8267,7 +8297,13 @@
           ],
           "full": "warzone: marine corps operator is absolutely cracked | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779301307073,
@@ -8323,7 +8359,13 @@
           ],
           "full": "warzone | moving through teams like they weren't even there | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779207066396,
@@ -8379,7 +8421,13 @@
           ],
           "full": "rocket league is actually hilarious when you're just vibing | Khanvict TV\n\n#rocketleague #funny #gaming #clips #esports #khanvicttv #streamclips"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779206805871,
@@ -8435,7 +8483,13 @@
           ],
           "full": "warzone | fearless keeping chat entertained while dropping bodies | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779206412462,
@@ -8491,7 +8545,13 @@
           ],
           "full": "warzone | need more kills than fearless to stay competitive | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779205943129,
@@ -8547,7 +8607,13 @@
           ],
           "full": "warzone: terrible decision making in final circle | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     }
   ],
   "posts": [
@@ -10661,6 +10727,24 @@
       "platform": "ig",
       "date": "2026-05-20",
       "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1779313254255.417,
+      "clipId": 1779311881123,
+      "clipName": "Watch your six",
+      "platform": "tt",
+      "date": "2026-05-20",
+      "time": "19:00",
+      "posted": false
+    },
+    {
+      "id": 1779313254255.0796,
+      "clipId": 1779311881123,
+      "clipName": "Watch your six",
+      "platform": "ig",
+      "date": "2026-05-20",
+      "time": "19:00",
       "posted": false
     }
   ],
