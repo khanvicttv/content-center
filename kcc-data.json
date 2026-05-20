@@ -10908,6 +10908,24 @@
       "date": "2026-05-23",
       "time": "13:00",
       "posted": false
+    },
+    {
+      "id": 1779313364851.2422,
+      "clipId": 1779205943129,
+      "clipName": "Why shake your head",
+      "platform": "tt",
+      "date": "2026-05-24",
+      "time": "09:00",
+      "posted": false
+    },
+    {
+      "id": 1779313364851.608,
+      "clipId": 1779205943129,
+      "clipName": "Why shake your head",
+      "platform": "ig",
+      "date": "2026-05-24",
+      "time": "09:00",
+      "posted": false
     }
   ],
   "checklist": {
@@ -15729,7 +15747,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
