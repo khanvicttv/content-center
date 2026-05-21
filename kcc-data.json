@@ -11207,6 +11207,24 @@
       "date": "2026-05-24",
       "time": "09:00",
       "posted": false
+    },
+    {
+      "id": 1779394526889.4321,
+      "clipId": 1779390838958,
+      "clipName": "Dont talk smack",
+      "platform": "tt",
+      "date": "2026-05-24",
+      "time": "13:00",
+      "posted": false
+    },
+    {
+      "id": 1779394526889.733,
+      "clipId": 1779390838958,
+      "clipName": "Dont talk smack",
+      "platform": "ig",
+      "date": "2026-05-24",
+      "time": "13:00",
+      "posted": false
     }
   ],
   "checklist": {
@@ -16188,7 +16206,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
