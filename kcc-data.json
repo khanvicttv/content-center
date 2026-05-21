@@ -8735,14 +8735,42 @@
       "filename": "we get excited on here.mp4",
       "duration": "0:28",
       "size_mb": 70.2,
-      "desc": "",
+      "desc": "This is what you can expect to see on stream",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-21T14:36:15",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "ig": {
+          "caption": "this loadout is absolutely cracked, been running it all week",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this loadout is absolutely cracked, been running it all week\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone | got them boxed in, no way out of this one | khanvict tv",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone | got them boxed in, no way out of this one | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1779391255385,
