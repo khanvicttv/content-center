@@ -8680,14 +8680,54 @@
       "filename": "thats pretty cool.mp4",
       "duration": "0:11",
       "size_mb": 29,
-      "desc": "",
+      "desc": "Nice little feature they got in COD",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-21T14:42:38",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "cod really stepped up their game with this feature ngl",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "cod really stepped up their game with this feature ngl\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "cod really thought they did something with this feature, ngl its pretty clean",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "cod really thought they did something with this feature, ngl its pretty clean\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "warzone got some clean features you probably never noticed | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "warzone got some clean features you probably never noticed | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1779392175164,
