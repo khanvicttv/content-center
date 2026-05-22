@@ -8672,7 +8672,13 @@
           ],
           "full": "warzone tips: just relax and you'll survive longer | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779392558134,
@@ -8727,7 +8733,13 @@
           ],
           "full": "warzone got some clean features you probably never noticed | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779392175164,
@@ -8770,7 +8782,13 @@
           ],
           "full": "warzone | got them boxed in, no way out of this one | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779391255385,
@@ -8826,7 +8844,13 @@
           ],
           "full": "fearless said i sound like this, he actually right tho | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1779390838958,
@@ -8882,7 +8906,13 @@
           ],
           "full": "talk smack then get absolutely destroyed in warzone | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     }
   ],
   "posts": [
@@ -11065,7 +11095,10 @@
       "platform": "tt",
       "date": "2026-05-21",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "23:00",
+      "postedAt": "2026-05-22T04:28:46.375Z",
+      "timingVariance": 240
     },
     {
       "id": 1779313267784.8757,
