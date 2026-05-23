@@ -8369,7 +8369,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-23T02:06:39.394Z"
     },
     {
       "id": 1779207066396,
@@ -11163,7 +11164,10 @@
       "platform": "tt",
       "date": "2026-05-22",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-23T02:06:38.211Z",
+      "timingVariance": 0
     },
     {
       "id": 1779313288362.7014,
@@ -11172,7 +11176,10 @@
       "platform": "ig",
       "date": "2026-05-22",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-05-23T02:06:39.394Z",
+      "timingVariance": 0
     },
     {
       "id": 1779313303236.4163,
