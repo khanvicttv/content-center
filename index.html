@@ -5338,7 +5338,7 @@ CRITICAL RULES:
 - If results are sparse or old, say so honestly in the relevant field.
 
 Return ONLY this JSON (no markdown, no explanation):
-{"metaShifts":"specific current meta description with weapon names — or 'no recent data found'","patchNotes":"most recent patch description with date — or 'no recent patch found'","viralFormats":["specific viral format 1","specific viral format 2","specific viral format 3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["specific weapon 1","specific weapon 2","specific weapon 3"],"communityBuzz":"what players are actually discussing right now — or 'no recent community data found'"}`, true, 2000, 'claude-sonnet-4-6');
+{"metaShifts":"specific current meta description with weapon names — or 'no recent data found'","patchNotes":"most recent patch description with date — or 'no recent patch found'","viralFormats":["specific viral format 1","specific viral format 2","specific viral format 3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["specific weapon 1","specific weapon 2","specific weapon 3"],"communityBuzz":"what players are actually discussing right now — or 'no recent community data found'"}`, true, 2000, 'claude-haiku-4-5-20251001');
 
     // Wait 15 seconds before next call to stay safe on rate limits
     await intelCooldown(15, 'intel-progress', 'Step 1 done — cooling down before competitor scan');
@@ -5361,7 +5361,7 @@ For each creator report:
 Do NOT fabricate — only report what you actually found in search results.
 
 Return ONLY this JSON:
-{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"specific recent content type and topic — or 'only found older content'","takeaway":"one actionable lesson"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"patterns across all 4 — or 'insufficient recent data'"}`, true, 2000, 'claude-sonnet-4-6');
+{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"specific recent content type and topic — or 'only found older content'","takeaway":"one actionable lesson"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"patterns across all 4 — or 'insufficient recent data'"}`, true, 2000, 'claude-haiku-4-5-20251001');
 
     // Wait 15 seconds before next call
     await intelCooldown(15, 'intel-progress', 'Step 2 done — cooling down before building plan');
