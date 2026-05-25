@@ -979,22 +979,11 @@
             <label style="color:var(--tiktok);">TikTok</label>
             <input type="text" id="fg-tt" placeholder="e.g. 3280" inputmode="numeric">
           </div>
-          <div class="field" style="margin:0;flex:0 0 100px;">
-            <label style="color:var(--ig);">Instagram</label>
-            <input type="text" id="fg-ig" placeholder="e.g. 920" inputmode="numeric">
-          </div>
-          <div class="field" style="margin:0;flex:0 0 100px;">
-            <label style="color:var(--yt);">YouTube</label>
-            <input type="text" id="fg-yt" placeholder="e.g. 148" inputmode="numeric">
-          </div>
           <button class="btn btn-primary btn-sm" onclick="addFollowerSnapshot()" style="flex-shrink:0;margin-bottom:14px;">Save</button>
         </div>
         <!-- Platform tabs -->
         <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:14px;">
-          <button class="fg-tab active" id="fgtab-overall" onclick="switchFgTab('overall')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--text);border-bottom:2px solid var(--accent);margin-bottom:-1px;">Overall</button>
-          <button class="fg-tab" id="fgtab-tt" onclick="switchFgTab('tt')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;">TikTok</button>
-          <button class="fg-tab" id="fgtab-ig" onclick="switchFgTab('ig')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;">Instagram</button>
-          <button class="fg-tab" id="fgtab-yt" onclick="switchFgTab('yt')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;">YouTube</button>
+          <button class="fg-tab active" id="fgtab-tt" onclick="switchFgTab('tt')" style="padding:7px 14px;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;background:none;color:var(--text);border-bottom:2px solid var(--tiktok);margin-bottom:-1px;">TikTok</button>
         </div>
         <div id="fg-chart-area"></div>
         <div id="fg-log-area" style="max-height:220px;overflow-y:auto;margin-top:10px;"></div>
@@ -1220,9 +1209,7 @@
     <div class="modal-title">LOG ENGAGEMENT</div>
     <div class="alert-info" style="margin-bottom:14px;">Log stats from your post after 24–48 hours for the most accurate data.</div>
     <div id="eng-plat-filter" style="display:flex;gap:6px;margin-bottom:12px;">
-      <button id="eng-pill-tt" onclick="setEngagePlatform('tt')" style="flex:1;padding:6px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;">TIKTOK</button>
-      <button id="eng-pill-ig" onclick="setEngagePlatform('ig')" style="flex:1;padding:6px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;">INSTAGRAM</button>
-      <button id="eng-pill-yt" onclick="setEngagePlatform('yt')" style="flex:1;padding:6px 0;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;">YOUTUBE</button>
+      <button id="eng-pill-tt" onclick="setEngagePlatform('tt')" style="flex:1;padding:6px 0;border-radius:6px;border:1px solid var(--tiktok);background:var(--tiktok);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:1px;cursor:pointer;font-weight:700;">TIKTOK</button>
     </div>
     <div class="field">
       <label>Post / clip</label>
@@ -3938,23 +3925,10 @@ function renderAnalytics() {
 
 // ── FOLLOWER GROWTH TRACKER ───────────────────────────────────────────────
 
-let currentFgTab = 'overall';
+let currentFgTab = 'tt';
 
 function switchFgTab(tab) {
   currentFgTab = tab;
-  const tabs = ['overall','tt','ig','yt'];
-  const colors = { overall: 'var(--accent)', tt: 'var(--tiktok)', ig: 'var(--ig)', yt: 'var(--yt)' };
-  tabs.forEach(t => {
-    const el = document.getElementById('fgtab-' + t);
-    if (!el) return;
-    if (t === tab) {
-      el.style.color = 'var(--text)';
-      el.style.borderBottomColor = colors[t];
-    } else {
-      el.style.color = 'var(--muted)';
-      el.style.borderBottomColor = 'transparent';
-    }
-  });
   renderFollowerGrowth();
 }
 
@@ -3964,36 +3938,27 @@ function addFollowerSnapshot() {
   if (!date) { showToast('Pick a date first.', 'amber'); return; }
 
   const ttVal = document.getElementById('fg-tt').value.replace(/,/g, '');
-  const igVal = document.getElementById('fg-ig').value.replace(/,/g, '');
-  const ytVal = document.getElementById('fg-yt').value.replace(/,/g, '');
-
   const tt = ttVal ? parseInt(ttVal, 10) : null;
-  const ig = igVal ? parseInt(igVal, 10) : null;
-  const yt = ytVal ? parseInt(ytVal, 10) : null;
 
-  if (tt === null && ig === null && yt === null) {
-    showToast('Enter at least one platform follower count.', 'amber'); return;
+  if (tt === null) {
+    showToast('Enter your TikTok follower count.', 'amber'); return;
   }
 
   if (!state.followerSnapshots) state.followerSnapshots = [];
 
   const existing = state.followerSnapshots.find(s => s.date === date);
   if (existing) {
-    if (tt !== null) existing.tt = tt;
-    if (ig !== null) existing.ig = ig;
-    if (yt !== null) existing.yt = yt;
+    existing.tt = tt;
     existing.updatedAt = new Date().toISOString();
     showToast('Entry updated for ' + date, 'green');
   } else {
-    state.followerSnapshots.push({ date, tt, ig, yt, loggedAt: new Date().toISOString() });
+    state.followerSnapshots.push({ date, tt, ig: null, yt: null, loggedAt: new Date().toISOString() });
   }
 
   state.followerSnapshots.sort((a, b) => a.date.localeCompare(b.date));
   save();
 
   document.getElementById('fg-tt').value = '';
-  document.getElementById('fg-ig').value = '';
-  document.getElementById('fg-yt').value = '';
   document.getElementById('fg-input-row').style.display = 'none';
   renderFollowerGrowth();
 }
@@ -4020,24 +3985,19 @@ function renderFollowerGrowth() {
   if (!chartEl) return;
 
   const PLAT_CFG = {
-    tt: { label: 'TikTok',    color: 'var(--tiktok)', hex: '#ff2d55' },
-    ig: { label: 'Instagram', color: 'var(--ig)',     hex: '#e1306c' },
-    yt: { label: 'YouTube',   color: 'var(--yt)',     hex: '#ff6060' }
+    tt: { label: 'TikTok', color: 'var(--tiktok)', hex: '#ff2d55' },
+    ig: { label: 'Instagram', color: 'var(--ig)', hex: '#e1306c' },
+    yt: { label: 'YouTube',   color: 'var(--yt)', hex: '#ff6060' }
   };
 
   if (!snaps.length) {
-    chartEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No data yet. Hit <strong>+ Log today</strong> to record your follower counts.</div>';
+    chartEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:12px 0;">No data yet. Hit <strong>+ Log today</strong> to record your TikTok follower count.</div>';
     if (logEl) logEl.innerHTML = '';
     return;
   }
 
-  if (currentFgTab === 'overall') {
-    renderFgOverallChart(snaps, chartEl, PLAT_CFG);
-  } else {
-    renderFgSingleChart(snaps, chartEl, currentFgTab, PLAT_CFG[currentFgTab]);
-  }
-
-  if (logEl) renderFgLog(snaps, logEl, currentFgTab, PLAT_CFG);
+  renderFgSingleChart(snaps, chartEl, 'tt', PLAT_CFG['tt']);
+  if (logEl) renderFgLog(snaps, logEl, 'tt', PLAT_CFG);
 }
 
 function renderFgOverallChart(snaps, chartEl, PLAT_CFG) {
@@ -4321,10 +4281,8 @@ function renderViewsChart() {
   const barW   = Math.max(24, Math.min(40, Math.floor(560 / dates.length)));
 
   const TABS = [
-    { key: 'all', label: 'All',       color: 'var(--accent2)', barColor: 'var(--accent2)' },
-    { key: 'tt',  label: 'TikTok',    color: '#aaa',           barColor: '#888' },
-    { key: 'ig',  label: 'Instagram', color: 'var(--ig)',      barColor: 'var(--ig)' },
-    { key: 'yt',  label: 'YouTube',   color: 'var(--yt)',      barColor: 'var(--yt)' }
+    { key: 'all', label: 'All',    color: 'var(--accent2)', barColor: 'var(--accent2)' },
+    { key: 'tt',  label: 'TikTok', color: 'var(--tiktok)',  barColor: 'var(--tiktok)' }
   ];
 
   function getVal(d, tab) {
@@ -4372,46 +4330,62 @@ function renderViewsChart() {
 // ── PLATFORM COMPARISON ───────────────────────────────────────────────────
 function renderPlatformComparison() {
   const container = document.getElementById('platform-comparison');
-  const PLATS = ['tt','ig','yt'];
-  const PL    = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
-  const PC    = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
+  container.style.gridTemplateColumns = '1fr';
 
-  container.innerHTML = PLATS.map(plat => {
-    const platEng = state.engagements.filter(e => e.platform === plat);
-    if (!platEng.length) {
-      return `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
-        <div style="font-size:10px;font-family:var(--mono);color:${PC[plat]};letter-spacing:1px;margin-bottom:8px;">${PL[plat].toUpperCase()}</div>
-        <div style="font-size:12px;color:var(--muted);">No data yet</div>
-      </div>`;
-    }
-
-    const avgViews = Math.round(platEng.reduce((s,e) => s+(e.views||0),0) / platEng.length);
-    const avgLikes    = Math.round(platEng.reduce((s,e) => s+(e.likes||0),0) / platEng.length);
-    const engRate     = avgViews > 0 ? ((platEng.reduce((s,e)=>s+(e.likes||0)+(e.comments||0),0)/platEng.length) / avgViews * 100).toFixed(1) : '0.0';
-    const totBookmarks= platEng.reduce((s,e)=>s+(e.bookmarks||0),0);
-
-    return `<div style="background:var(--bg3);border:1px solid var(--border);border-left:3px solid ${PC[plat]};border-radius:8px;padding:12px;">
-      <div style="font-size:10px;font-family:var(--mono);color:${PC[plat]};letter-spacing:1px;margin-bottom:10px;">${PL[plat].toUpperCase()} · ${platEng.length} posts</div>
-      <div style="display:flex;flex-direction:column;gap:6px;">
-        <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:11px;color:var(--muted);">Avg views</span>
-          <span style="font-family:var(--mono);font-size:12px;color:var(--text);">${avgViews.toLocaleString()}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:11px;color:var(--muted);">Avg likes</span>
-          <span style="font-family:var(--mono);font-size:12px;color:var(--text);">${avgLikes.toLocaleString()}</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:11px;color:var(--muted);">Eng. rate</span>
-          <span style="font-family:var(--mono);font-size:12px;color:var(--amber);">${engRate}%</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:11px;color:var(--muted);">Bookmarks</span>
-          <span style="font-family:var(--mono);font-size:12px;color:var(--ig);">${totBookmarks}</span>
-        </div>
-      </div>
+  const platEng = state.engagements.filter(e => e.platform === 'tt');
+  if (!platEng.length) {
+    container.innerHTML = `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-size:10px;font-family:var(--mono);color:var(--tiktok);letter-spacing:1px;margin-bottom:8px;">TIKTOK</div>
+      <div style="font-size:12px;color:var(--muted);">No data yet — log TikTok engagement to see stats</div>
     </div>`;
-  }).join('');
+    return;
+  }
+
+  const avgViews   = Math.round(platEng.reduce((s,e) => s+(e.views||0),0) / platEng.length);
+  const avgLikes   = Math.round(platEng.reduce((s,e) => s+(e.likes||0),0) / platEng.length);
+  const avgComments= Math.round(platEng.reduce((s,e) => s+(e.comments||0),0) / platEng.length);
+  const totalBkm   = platEng.reduce((s,e)=>s+(e.bookmarks||0),0);
+  const engRate    = avgViews > 0 ? ((platEng.reduce((s,e)=>s+(e.likes||0)+(e.comments||0),0)/platEng.length) / avgViews * 100).toFixed(1) : '0.0';
+
+  const recent30 = platEng.filter(e => { const d=new Date(e.loggedAt); const cut=new Date(); cut.setDate(cut.getDate()-30); return d>=cut; });
+  const recent30Avg = recent30.length ? Math.round(recent30.reduce((s,e)=>s+(e.views||0),0)/recent30.length) : 0;
+
+  // Best day of week
+  const dowV = {};
+  const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  platEng.forEach(e => {
+    const dow = new Date(e.date+'T12:00:00').getDay();
+    if (!dowV[dow]) dowV[dow] = { v:0, c:0 };
+    dowV[dow].v += e.views||0; dowV[dow].c++;
+  });
+  const bestDow = Object.entries(dowV).sort((a,b)=>(b[1].v/b[1].c)-(a[1].v/a[1].c))[0];
+  const bestDayStr = bestDow ? `${DAYS[bestDow[0]]} (avg ${Math.round(bestDow[1].v/bestDow[1].c).toLocaleString()} views)` : '—';
+
+  container.innerHTML = `<div style="background:var(--bg3);border:1px solid var(--border);border-left:3px solid var(--tiktok);border-radius:8px;padding:16px;">
+    <div style="font-size:10px;font-family:var(--mono);color:var(--tiktok);letter-spacing:1px;margin-bottom:14px;">TIKTOK · ${platEng.length} posts logged</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;">
+      <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--text);">${avgViews.toLocaleString()}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px;">avg views / post</div>
+        <div style="font-size:9px;color:var(--accent2);margin-top:2px;">${recent30Avg.toLocaleString()} last 30d</div>
+      </div>
+      <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--tiktok);">${avgLikes.toLocaleString()}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px;">avg likes / post</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:2px;">${avgComments} avg comments</div>
+      </div>
+      <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--amber);">${engRate}%</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px;">engagement rate</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:2px;">(likes+comments)÷views</div>
+      </div>
+      <div style="background:var(--bg4);border-radius:8px;padding:12px;text-align:center;">
+        <div style="font-family:var(--mono);font-size:22px;font-weight:700;color:var(--green);">${totalBkm.toLocaleString()}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px;">total bookmarks</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:2px;">best day: ${bestDayStr}</div>
+      </div>
+    </div>
+  </div>`;
 }
 
 // ── DAY OF WEEK CHART ─────────────────────────────────────────────────────
@@ -4636,40 +4610,32 @@ function renderStreak() {
 // ── BEST TIMES ───────────────────────────────────────────────────────────
 function renderBestTimes() {
   const grid = document.getElementById('best-times-grid');
-  const PLATS = ['tt','ig','yt'];
-  const PL = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
-  const PC = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
+  grid.style.gridTemplateColumns = '1fr';
 
-  // Aggregate: for each platform+time slot, average views
-  const perf = {}; // key: plat_time → {totalViews, count}
-  state.engagements.forEach(e => {
-    const key = `${e.platform}_${e.time}`;
+  // Aggregate TikTok only: for each time slot, average views
+  const perf = {};
+  state.engagements.filter(e => e.platform === 'tt').forEach(e => {
+    const key = e.time;
     if (!perf[key]) perf[key] = { views: 0, count: 0 };
     perf[key].views += e.views || 0;
     perf[key].count++;
   });
 
-  grid.innerHTML = PLATS.map(plat => {
-    // Find best slot for this platform
-    let bestSlot = null, bestAvg = 0;
-    state.slots.forEach(s => {
-      const key = `${plat}_${s.time}`;
-      if (perf[key] && perf[key].count > 0) {
-        const avg = perf[key].views / perf[key].count;
-        if (avg > bestAvg) { bestAvg = avg; bestSlot = s; }
-      }
-    });
+  const hasData = state.engagements.filter(e => e.platform === 'tt').length >= 3;
 
-    const hasData = state.engagements.filter(e => e.platform === plat).length >= 3;
-    const slotDisplay = bestSlot ? fmtTime(bestSlot.time) : '—';
-    const subtext = !hasData
-      ? 'Need 3+ posts logged'
-      : bestSlot ? `Avg ${Math.round(bestAvg).toLocaleString()} views` : 'No clear winner yet';
-
-    return `<div style="background:var(--bg3);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border);">
-      <div style="font-size:10px;font-family:var(--mono);color:${PC[plat]};letter-spacing:1px;margin-bottom:6px;">${PL[plat].toUpperCase()}</div>
-      <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);">${slotDisplay}</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:4px;">${subtext}</div>
+  grid.innerHTML = state.slots.map(s => {
+    const d = perf[s.time];
+    const avg = d && d.count > 0 ? Math.round(d.views / d.count) : 0;
+    const hasSlotData = d && d.count >= 1;
+    const subtext = !hasData ? 'Need 3+ TikTok posts' : hasSlotData ? `Avg ${avg.toLocaleString()} views · ${d.count} posts` : 'No data yet';
+    const highlight = hasSlotData && hasData && avg === Math.max(...state.slots.map(x => (perf[x.time]?.views||0)/(perf[x.time]?.count||1)));
+    return `<div style="background:var(--bg3);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;border:1px solid ${highlight?'var(--green)':'var(--border)'};">
+      <div>
+        <div style="font-size:10px;font-family:var(--mono);color:var(--tiktok);letter-spacing:1px;margin-bottom:4px;">TIKTOK · ${fmtTime(s.time)}</div>
+        <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);">${hasSlotData ? avg.toLocaleString() : '—'}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px;">${subtext}</div>
+      </div>
+      ${highlight ? '<div style="font-size:18px;">🏆</div>' : ''}
     </div>`;
   }).join('');
 }
@@ -4800,16 +4766,6 @@ let engagePlatformFilter = 'tt';
 
 function setEngagePlatform(plat) {
   engagePlatformFilter = plat;
-  // Update pill styles
-  ['tt','ig','yt'].forEach(p => {
-    const pill = document.getElementById('eng-pill-' + p);
-    if (!pill) return;
-    const active = p === plat;
-    pill.style.background  = active ? PLAT_COLOR[p] : 'var(--surface2)';
-    pill.style.color       = active ? '#fff' : 'var(--text)';
-    pill.style.borderColor = active ? PLAT_COLOR[p] : 'var(--border)';
-    pill.style.fontWeight  = active ? '700' : '400';
-  });
   populateEngageDropdown();
 }
 
@@ -4822,14 +4778,20 @@ function populateEngageDropdown() {
   )].sort((a, b) => b.date.localeCompare(a.date) || b.time.localeCompare(a.time));
 
   const sel = document.getElementById('eng-post-sel');
-  if (!posted.length) {
-    const anyPosted = state.posts.filter(p => p.posted && p.platform === engagePlatformFilter);
-    sel.innerHTML = anyPosted.length
-      ? '<option value="">All ' + PLAT_LABEL[engagePlatformFilter] + ' posts are already logged</option>'
-      : '<option value="">No ' + PLAT_LABEL[engagePlatformFilter] + ' posts yet</option>';
-  } else {
+
+  if (posted.length) {
     sel.innerHTML = '<option value="">— select a post —</option>' +
       posted.map(p => `<option value="${p.id}">${p.clipName} (${p.date})</option>`).join('');
+  } else {
+    // No unlogged posted TT posts — show all posted TT posts (allow re-logging / editing)
+    const allPosted = state.posts.filter(p => p.posted && p.platform === engagePlatformFilter)
+      .sort((a,b) => b.date.localeCompare(a.date));
+    if (allPosted.length) {
+      sel.innerHTML = '<option value="">— all logged, select to re-log —</option>' +
+        allPosted.map(p => `<option value="${p.id}">${p.clipName} (${p.date})</option>`).join('');
+    } else {
+      sel.innerHTML = `<option value="">No TikTok posts marked as posted yet</option>`;
+    }
   }
 
   sel.onchange = function() {
@@ -4860,7 +4822,7 @@ function openEngageModal() {
   document.getElementById('eng-notes').value    = '';
   document.getElementById('eng-hashtags').value = '';
 
-  setEngagePlatform(engagePlatformFilter); // apply active pill + populate dropdown
+  setEngagePlatform('tt'); // always TikTok — platform pills removed
 
   // Reset buttons to default state
   const nextBtn = document.getElementById('eng-save-next-btn');
@@ -4923,6 +4885,7 @@ function saveEngagement(keepOpen) {
 
   if (!keepOpen) {
     closeModal('modal-engage');
+    showToast('Engagement saved.', 'green');
     return;
   }
 
@@ -4936,11 +4899,10 @@ function saveEngagement(keepOpen) {
 
   // Flash confirmation on the save button
   const btn = document.getElementById('eng-save-next-btn');
-  const prevText = btn.textContent;
-  btn.textContent = '✓ Saved';
+  btn.textContent = '✓ Saved!';
   btn.style.background = 'var(--green)';
   setTimeout(() => {
-    btn.textContent = prevText;
+    btn.textContent = 'Save & Next →';
     btn.style.background = '';
   }, 1000);
 
@@ -4950,14 +4912,15 @@ function saveEngagement(keepOpen) {
   const sel = document.getElementById('eng-post-sel');
   if (sel.onchange) sel.onchange.call(sel);
 
-  // Check if any posts remain — if not, swap button labels
-  const hasMore = sel.value !== '';
+  // If no more unlogged posts remain, show "Done" button
+  const hasMore = sel.value !== '' && !sel.options[0]?.text?.includes('already logged') && !sel.options[0]?.text?.includes('No TikTok');
   document.getElementById('eng-save-next-btn').style.display = hasMore ? '' : 'none';
-  document.getElementById('eng-save-close-btn').style.display = hasMore ? '' : '';
+  const closeBtn = document.getElementById('eng-save-close-btn');
   if (!hasMore) {
-    document.getElementById('eng-save-next-btn').textContent = 'Save & Close';
-    document.getElementById('eng-save-next-btn').onclick = () => saveEngagement(false);
-    document.getElementById('eng-save-next-btn').style.display = '';
+    closeBtn.style.display = '';
+    closeBtn.textContent = '✓ All done — Close';
+  } else {
+    closeBtn.style.display = 'none';
   }
 }
 
@@ -5358,43 +5321,50 @@ async function runContentIntel() {
   try {
     // ── STEP 1: Trend Research ──────────────────────────────────────────
     document.getElementById('intel-progress').innerHTML = 'Step 1/3 — Scanning Warzone trends &amp; meta...';
-    const trendsResult = await intelApiCall(apiKey, `You are a gaming content research agent. Today is ${shortDate}. ONLY report information from the last 2 weeks. Anything older is USELESS — discard it.
+    const trendsResult = await intelApiCall(apiKey, `You are a gaming content research agent. Today is ${shortDate}. You MUST search the web for current information.
 
-Do these web searches:
-1. "Warzone patch notes ${monthYear}" — find the most recent update
-2. "Warzone best loadout ${monthYear}" OR "Warzone meta ${monthYear}" — find what guns are currently dominant RIGHT NOW
-3. "Warzone TikTok trending ${monthYear}" — find viral Warzone content formats
-4. "Call of Duty Warzone news this week" — latest community news
-5. "Warzone reddit ${monthYear}" — what players are talking about right now
+Search for these queries one by one:
+1. Warzone patch notes ${monthYear}
+2. Warzone best loadout ${monthYear}
+3. Warzone meta weapons ${monthYear}
+4. Warzone TikTok viral clips ${monthYear}
+5. Call of Duty Warzone community news ${monthYear}
 
-CRITICAL: If search results are from ${now.getFullYear() - 1} or earlier, IGNORE THEM. Only include weapons, loadouts, and meta info that is current as of ${shortDate}. If you are unsure whether something is current, do NOT include it.
+CRITICAL RULES:
+- Today is ${shortDate}. Only report facts confirmed by search results dated within the last 14 days.
+- If you find results from ${now.getFullYear() - 1} or earlier, EXPLICITLY IGNORE THEM and say "no recent data found" for that field.
+- Name specific weapon names (e.g. "MCW", "HRM-9") — do NOT use vague terms like "assault rifles".
+- Do NOT fabricate or guess — only report what you actually found in search results.
+- If results are sparse or old, say so honestly in the relevant field.
 
-Return ONLY JSON:
-{"metaShifts":"2-3 sentences on the CURRENT meta as of ${shortDate} — name specific weapons","patchNotes":"most recent patch/update — include date if found","viralFormats":["format1","format2","format3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["weapon1","weapon2","weapon3"],"communityBuzz":"1-2 sentences on what players are discussing THIS week"}`, true, 1200, 'claude-haiku-4-5-20251001');
+Return ONLY this JSON (no markdown, no explanation):
+{"metaShifts":"specific current meta description with weapon names — or 'no recent data found'","patchNotes":"most recent patch description with date — or 'no recent patch found'","viralFormats":["specific viral format 1","specific viral format 2","specific viral format 3"],"risingTopics":["topic1","topic2","topic3","topic4"],"hotWeapons":["specific weapon 1","specific weapon 2","specific weapon 3"],"communityBuzz":"what players are actually discussing right now — or 'no recent community data found'"}`, true, 2000, 'claude-sonnet-4-6');
 
-    // Wait 10 seconds before next call to stay safe on rate limits
-    await intelCooldown(10, 'intel-progress', 'Step 1 done — cooling down before competitor scan');
+    // Wait 15 seconds before next call to stay safe on rate limits
+    await intelCooldown(15, 'intel-progress', 'Step 1 done — cooling down before competitor scan');
 
     // ── STEP 2: Competitor Research ─────────────────────────────────────
     document.getElementById('intel-progress').innerHTML = 'Step 2/3 — Checking what competitors are posting...';
-    const compResult = await intelApiCall(apiKey, `You are a gaming content research agent. Today is ${shortDate}. Search for the MOST RECENT content from these Warzone creators.
+    const compResult = await intelApiCall(apiKey, `You are a gaming content research agent. Today is ${shortDate}. Search for the MOST RECENT TikTok content from these Warzone creators.
 
-Do these web searches:
-1. "Lucky Chamu" tiktok OR youtube — find their latest videos
-2. "Galaxywz" warzone tiktok OR youtube — find their latest videos
-3. "MPX" warzone cod tiktok — find their latest content
-4. "Camy" warzone tiktok — find their latest content
+Search for each creator:
+1. Lucky Chamu TikTok Warzone ${monthYear}
+2. Galaxywz TikTok Warzone ${monthYear}
+3. MPX TikTok Call of Duty ${monthYear}
+4. Camy TikTok Warzone ${monthYear}
 
-For each creator, report:
-- What type of content they posted MOST RECENTLY (loadout guides, tips, highlights, tutorials, funny moments, etc.)
-- What seems to be getting the most engagement
-- ONLY include content from the last 30 days. If you can only find older content, say so honestly.
+For each creator report:
+- The specific TYPE of content they posted most recently (e.g. "loadout guide", "1v3 clutch highlight", "ranked tips", "settings video")
+- What topics or mechanics they focused on
+- Only include content from the last 30 days. If you can only find older content, explicitly say "only found older content — [date range]".
 
-Return ONLY JSON:
-{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"what they posted recently and what worked — be specific about video topics","takeaway":"one thing to learn from them"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"1-2 sentences about patterns across all 4 creators"}`, true, 1200, 'claude-haiku-4-5-20251001');
+Do NOT fabricate — only report what you actually found in search results.
 
-    // Wait 10 seconds before next call to stay safe on rate limits
-    await intelCooldown(10, 'intel-progress', 'Step 2 done — cooling down before building plan');
+Return ONLY this JSON:
+{"competitors":[{"name":"Lucky Chamu","platform":"TikTok","insight":"specific recent content type and topic — or 'only found older content'","takeaway":"one actionable lesson"},{"name":"Galaxywz","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"MPX","platform":"TikTok","insight":"...","takeaway":"..."},{"name":"Camy","platform":"TikTok","insight":"...","takeaway":"..."}],"commonThemes":"patterns across all 4 — or 'insufficient recent data'"}`, true, 2000, 'claude-sonnet-4-6');
+
+    // Wait 15 seconds before next call
+    await intelCooldown(15, 'intel-progress', 'Step 2 done — cooling down before building plan');
 
     // ── STEP 3: Synthesize Content Brief ─────────────────────────────────
     document.getElementById('intel-progress').innerHTML = 'Step 3/3 — Building your weekly content plan...';
@@ -5560,25 +5530,14 @@ function getNextDayOfWeek(dayNum) {
 }
 
 function buildEngagementContext() {
-  const eng = state.engagements || [];
-  if (eng.length < 3) return 'Not enough engagement data yet to inform recommendations.';
+  const eng = (state.engagements || []).filter(e => e.platform === 'tt');
+  if (eng.length < 3) return 'Not enough TikTok engagement data yet to inform recommendations.';
 
-  // Content type performance from past captions (infer from engagement notes/hashtags)
   const totalViews = eng.reduce((s, e) => s + (e.views || 0), 0);
   const avgViews = Math.round(totalViews / eng.length);
   const bestPost = eng.reduce((best, e) => (e.views || 0) > (best.views || 0) ? e : best, eng[0]);
 
-  // Platform performance
-  const PLATS = ['tt', 'ig', 'yt'];
-  const PL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
-  const platStats = PLATS.map(p => {
-    const e = eng.filter(x => x.platform === p);
-    if (!e.length) return null;
-    const avgV = Math.round(e.reduce((s, x) => s + (x.views || 0), 0) / e.length);
-    return `${PL[p]}: ${e.length} posts, avg ${avgV} views`;
-  }).filter(Boolean).join(', ');
-
-  return `ENGAGEMENT DATA (${eng.length} logged posts):\nAvg views: ${avgViews} | Best post: ${bestPost.clipName || 'unknown'} (${(bestPost.views||0).toLocaleString()} views)\nPlatform breakdown: ${platStats}`;
+  return `TIKTOK ENGAGEMENT DATA (${eng.length} logged posts):\nAvg views: ${avgViews} | Best post: ${bestPost.clipName || 'unknown'} (${(bestPost.views||0).toLocaleString()} views)`;
 }
 
 // ── INIT ─────────────────────────────────────────────────────────────────
