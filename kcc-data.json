@@ -8689,67 +8689,6 @@
       "archivedAt": "2026-05-25T16:34:34.162Z"
     },
     {
-      "id": 1779392558134,
-      "name": "Thats pretty cool",
-      "filename": "thats pretty cool.mp4",
-      "duration": "0:11",
-      "size_mb": 29,
-      "desc": "Nice little feature they got in COD",
-      "game": "",
-      "platforms": [
-        "tt",
-        "ig"
-      ],
-      "addedAt": "2026-05-21T14:42:38",
-      "fromScan": true,
-      "captions": {
-        "tt": {
-          "caption": "cod really stepped up their game with this feature ngl",
-          "hashtags": [
-            "#warzone",
-            "#cod",
-            "#callofduty",
-            "#bo6",
-            "#rebirthisland",
-            "#warzoneclips",
-            "#khanvicttv"
-          ],
-          "full": "cod really stepped up their game with this feature ngl\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
-        },
-        "ig": {
-          "caption": "cod really thought they did something with this feature, ngl its pretty clean",
-          "hashtags": [
-            "#warzone",
-            "#cod",
-            "#callofduty",
-            "#bo6",
-            "#rebirthisland",
-            "#warzoneclips",
-            "#khanvicttv"
-          ],
-          "full": "cod really thought they did something with this feature, ngl its pretty clean\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
-        },
-        "yt": {
-          "caption": "warzone got some clean features you probably never noticed | Khanvict TV",
-          "hashtags": [
-            "#warzone",
-            "#cod",
-            "#callofduty",
-            "#bo6",
-            "#warzoneclips",
-            "#khanvicttv"
-          ],
-          "full": "warzone got some clean features you probably never noticed | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv"
-        }
-      },
-      "lastHashtags": {
-        "tt": [],
-        "ig": [],
-        "yt": []
-      },
-      "archived": false
-    },
-    {
       "id": 1779392175164,
       "name": "We get excited on here",
       "filename": "we get excited on here.mp4",
@@ -11412,24 +11351,6 @@
       "actualTime": "13:00",
       "postedAt": "2026-05-24T17:42:50.912Z",
       "timingVariance": 0
-    },
-    {
-      "id": 1779394533625.7173,
-      "clipId": 1779392558134,
-      "clipName": "Thats pretty cool",
-      "platform": "tt",
-      "date": "2026-05-24",
-      "time": "19:00",
-      "posted": false
-    },
-    {
-      "id": 1779394533625.7793,
-      "clipId": 1779392558134,
-      "clipName": "Thats pretty cool",
-      "platform": "ig",
-      "date": "2026-05-24",
-      "time": "19:00",
-      "posted": false
     },
     {
       "id": 1779394537434.5935,
@@ -16279,38 +16200,6 @@
       ]
     },
     "1779394344710": {
-      "tt": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "ig": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ],
-      "yt": [
-        false,
-        false,
-        false,
-        false,
-        false,
-        false,
-        false
-      ]
-    },
-    "1779392558134": {
       "tt": [
         false,
         false,
