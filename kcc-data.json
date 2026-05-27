@@ -8935,7 +8935,7 @@
       "filename": "You are old when.mp4",
       "duration": "0:23",
       "size_mb": 59.3,
-      "desc": "",
+      "desc": "Did he really say what I think he said?",
       "game": "",
       "platforms": [
         "tt",
@@ -8943,7 +8943,21 @@
       ],
       "addedAt": "2026-05-26T16:00:01",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "bro really said that out loud, no filter whatsoever",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro really said that out loud, no filter whatsoever\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
