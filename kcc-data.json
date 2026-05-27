@@ -8861,7 +8861,7 @@
       "filename": "Funny Hot Mic.mp4",
       "duration": "0:11",
       "size_mb": 37.5,
-      "desc": "",
+      "desc": "Time to time, these hot mics make me laugh",
       "game": "",
       "platforms": [
         "tt",
@@ -8869,7 +8869,21 @@
       ],
       "addedAt": "2026-05-26T18:05:44",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "hot mics hitting different, these moments just hit different",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "hot mics hitting different, these moments just hit different\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
