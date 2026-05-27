@@ -8623,7 +8623,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-27T23:43:59.936Z"
     },
     {
       "id": 1779394344710,
@@ -8902,7 +8903,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-27T23:44:01.370Z"
     },
     {
       "id": 1779830757479,
