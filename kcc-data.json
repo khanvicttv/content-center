@@ -9011,7 +9011,7 @@
       "filename": "Pinpointing People.mp4",
       "duration": "0:23",
       "size_mb": 94.8,
-      "desc": "",
+      "desc": "Don't worry, they will ruin this audio with the next update",
       "game": "",
       "platforms": [
         "tt",
@@ -9019,7 +9019,21 @@
       ],
       "addedAt": "2026-05-26T15:49:00",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "they gonna ruin this audio with the next update guaranteed",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "they gonna ruin this audio with the next update guaranteed\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
