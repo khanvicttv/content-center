@@ -9031,7 +9031,7 @@
       "filename": "xenns and art.mp4",
       "duration": "0:44",
       "size_mb": 185.4,
-      "desc": "",
+      "desc": "Get the right tools if you need to know where exactly your opponent is",
       "game": "",
       "platforms": [
         "tt",
@@ -9039,7 +9039,21 @@
       ],
       "addedAt": "2026-05-26T15:34:26",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "get the right tools if you need to know where your opponent is",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "get the right tools if you need to know where your opponent is\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
