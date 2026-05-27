@@ -8909,7 +8909,7 @@
       "filename": "Gas got me.mp4",
       "duration": "1:11",
       "size_mb": 241.9,
-      "desc": "",
+      "desc": "Running through this team and the gas finally got me",
       "game": "",
       "platforms": [
         "tt",
@@ -8917,7 +8917,21 @@
       ],
       "addedAt": "2026-05-26T16:25:57",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "ran through the whole team and the gas finished me off",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "ran through the whole team and the gas finished me off\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
