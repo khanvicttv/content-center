@@ -8929,7 +8929,7 @@
       "filename": "when randos are your ppls.mp4",
       "duration": "0:32",
       "size_mb": 170.7,
-      "desc": "",
+      "desc": "What are the odds of that happening?",
       "game": "",
       "platforms": [
         "tt",
@@ -8937,7 +8937,21 @@
       ],
       "addedAt": "2026-05-26T16:03:40",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "that was literally one in a million, no cap",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "that was literally one in a million, no cap\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
