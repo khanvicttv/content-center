@@ -8867,7 +8867,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-27T17:15:04.002Z"
     },
     {
       "id": 1779836744029,
