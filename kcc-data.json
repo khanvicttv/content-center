@@ -9181,7 +9181,7 @@
       "filename": "Runnin this team.mp4",
       "duration": "0:25",
       "size_mb": 94,
-      "desc": "",
+      "desc": "Making it look too easy",
       "game": "",
       "platforms": [
         "tt",
@@ -9189,7 +9189,21 @@
       ],
       "addedAt": "2026-05-25T23:58:51",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "making it look way too easy out here, legit different breed",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "making it look way too easy out here, legit different breed\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
