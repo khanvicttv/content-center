@@ -9037,7 +9037,7 @@
       "filename": "start panic.mp4",
       "duration": "0:21",
       "size_mb": 65.1,
-      "desc": "",
+      "desc": "Why did I start going insane at the buy station?",
       "game": "",
       "platforms": [
         "tt",
@@ -9045,7 +9045,21 @@
       ],
       "addedAt": "2026-05-26T15:20:15",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "dude was out of money and losing his mind at buy station",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "dude was out of money and losing his mind at buy station\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
