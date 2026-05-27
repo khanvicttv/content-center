@@ -1303,7 +1303,7 @@ function sanitize(str) {
 
 // ── STATE ────────────────────────────────────────────────────────────────
 const DEFAULT_SLOTS = [
-  { time: '09:00', label: 'Morning', reach: 'HIGH' },
+  { time: '08:00', label: 'Morning', reach: 'PEAK' },
   { time: '13:00', label: 'Lunch',   reach: 'MEDIUM' },
   { time: '19:00', label: 'Evening', reach: 'PEAK' }
 ];
@@ -1577,15 +1577,13 @@ function buildClipRow(clip, isArchived) {
 
   const addedDate = new Date(clip.addedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 
-  const descWarning = noDesc && clip.fromScan && !isArchived
-    ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
-         <input type="text" placeholder="Add a description for captions..."
-           style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.3);"
-           data-id="${clip.id}" onchange="updateClipDesc(this.dataset.id, this.value)" value="${sanitize(clip.desc||'')}">
-       </div>`
-    : clip.desc
-      ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${sanitize(clip.desc.substring(0,80))}${clip.desc.length>80?'…':''}</div>`
-      : '';
+  const descWarning = !isArchived
+    ? (noDesc
+        ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="text" placeholder="Add description for AI captions..." style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.35);border-radius:4px;color:var(--text);" data-id="${clip.id}" onchange="updateClipDesc(this.dataset.id, this.value, true)" value=""></div>`
+        : `<div class="clip-meta" style="margin-top:3px;overflow:hidden;text-overflow:ellipsis;max-width:380px;cursor:text;display:flex;align-items:center;gap:6px;" title="Click to edit" onclick="startEditDesc(this,'${clip.id}')"><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize((clip.desc||'').substring(0,80))}${(clip.desc||'').length>80?'…':''}</span><span style="color:var(--muted);font-size:9px;flex-shrink:0;">✎</span></div>`)
+    : (clip.desc
+        ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${sanitize((clip.desc||'').substring(0,80))}${(clip.desc||'').length>80?'…':''}</div>`
+        : '');
 
   const archivedMeta = isArchived && clip.archivedAt
     ? ` · archived ${new Date(clip.archivedAt).toLocaleDateString()}`
@@ -1596,12 +1594,19 @@ function buildClipRow(clip, isArchived) {
         <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="restoreClip(this.dataset.id)" title="Restore to active">Restore</button>
         <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
        </div>`
-    : `<div class="flex">
-        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="scheduleFromClip(this.dataset.id)">Schedule</button>
-        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="captionFromClip(this.dataset.id)">Captions</button>
-        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="archiveClip(this.dataset.id)" title="Archive manually">Archive</button>
-        <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
-       </div>`;
+    : (() => {
+        const allSched = clip.platforms.every(p =>
+          state.posts.some(post => String(post.clipId) === String(clip.id) && post.platform === p)
+        );
+        return `<div class="flex">
+          ${allSched
+            ? `<span style="font-family:var(--mono);font-size:9px;color:var(--green);padding:4px 8px;letter-spacing:1px;align-self:center;">✓ SCHEDULED</span>`
+            : `<button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="scheduleFromClip(this.dataset.id)">Schedule</button>`}
+          <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="captionFromClip(this.dataset.id)">Captions</button>
+          <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="archiveClip(this.dataset.id)" title="Archive manually">Archive</button>
+          <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
+        </div>`;
+      })();
 
   const rowStyle = isArchived ? 'opacity:0.6;' : '';
 
@@ -1609,7 +1614,7 @@ function buildClipRow(clip, isArchived) {
   <div class="clip-row" id="cliprow-${clip.id}" style="${rowStyle}">
     <div style="min-width:0;">
       <div class="clip-name">${sanitize(clip.name)}${isArchived ? ' <span style="font-size:10px;font-family:var(--mono);color:var(--green);background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">DONE</span>' : ''}</div>
-      <div class="clip-meta">${game}${dur} · Added ${addedDate} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
+      <div class="clip-meta">${game}${dur} · Added ${addedDate} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
       ${!isArchived ? `<div class="clip-meta" style="margin-top:2px;">${nextScheduled}</div>` : ''}
       ${descWarning}
     </div>
@@ -1630,12 +1635,39 @@ function restoreClip(id) {
   if (clip) { clip.archived = false; delete clip.archivedAt; save(); renderClipList(); updateSidebar(); renderDaysBanner(); }
 }
 
-function updateClipDesc(id, desc) {
+function startEditDesc(el, clipId) {
+  const clip = state.clips.find(c => String(c.id) === String(clipId));
+  if (!clip) return;
+  const current = clip.desc || '';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = current;
+  input.style.cssText = 'width:100%;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid var(--accent);border-radius:4px;color:var(--text);font-family:inherit;outline:none;';
+  const parent = el.parentElement;
+  parent.replaceChild(input, el);
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+
+  const save = () => {
+    const newDesc = input.value.trim();
+    updateClipDesc(clipId, newDesc, newDesc !== current && newDesc.length > 0);
+  };
+  input.addEventListener('blur', save);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+    if (e.key === 'Escape') { input.removeEventListener('blur', save); parent.replaceChild(el, input); }
+  });
+}
+
+function updateClipDesc(id, desc, forceRegen) {
   const clip = state.clips.find(c => String(c.id) === String(id));
   if (!clip) return;
   clip.desc = desc.trim();
+  // Clear stale captions when description changes so they regenerate fresh
+  if (forceRegen && clip.captions) { delete clip.captions.tt; }
   save();
   renderClipList();
+  refreshAllSelects();
   // Auto-generate captions in background if API key exists and desc is substantial
   if (clip.desc.length > 10 && loadApiKey()) {
     autoGenerateCaptions(clip);
@@ -1699,7 +1731,7 @@ function importFromScan(e) {
       if (loadApiKey()) {
         const clipsNeedingCaptions = state.clips.filter(c =>
           !c.archived && c.desc && c.desc.trim().length > 10 &&
-          (!c.captions || Object.keys(c.captions).length < 3)
+          (!c.captions || !c.captions.tt)
         );
         clipsNeedingCaptions.forEach(clip => autoGenerateCaptions(clip));
       }
@@ -1862,6 +1894,15 @@ function schedulePost() {
   const clip = state.clips.find(c => String(c.id) === clipIdStr);
   if (!clip) { showToast('Could not find that clip.', 'red'); return; }
 
+  // Block duplicate: same clip + platform + date already scheduled
+  const dupes = platforms.filter(plat =>
+    state.posts.some(p => String(p.clipId) === clipIdStr && p.platform === plat && p.date === date && !p.posted)
+  );
+  if (dupes.length) {
+    showToast(`${clip.name} is already scheduled for TikTok on ${date}.`, 'amber');
+    return;
+  }
+
   const newPosts = [];
   platforms.forEach(plat => {
     const post = { id: Date.now() + Math.random(), clipId: clip.id, clipName: clip.name, platform: plat, date, time, posted: false };
@@ -1881,7 +1922,7 @@ function schedulePost() {
   newPosts.forEach(p => scheduleNtfyNotification(p));
 
   // Auto-generate captions in background if clip has a description and no captions yet
-  if (clip && clip.desc && (!clip.captions || Object.keys(clip.captions).length === 0)) {
+  if (clip && clip.desc && (!clip.captions || !clip.captions.tt)) {
     autoGenerateCaptions(clip);
   }
 }
@@ -1894,7 +1935,7 @@ async function batchGenerateCaptions() {
     !c.archived &&
     c.desc &&
     c.desc.trim() &&
-    (!c.captions || Object.keys(c.captions).length < 3)
+    (!c.captions || !c.captions.tt)
   );
 
   if (!clipsNeedingCaptions.length) {
@@ -2102,11 +2143,13 @@ function renderToday() {
           <div style="margin-top:5px;">${p.posted ? '<span class="posted-badge">✓ POSTED</span>' : '<span class="pending-badge">PENDING</span>'}</div>
         </div>
         <div class="slot-actions">
-          ${hasCaption
-            ? `<button class="btn btn-primary btn-sm slot-copy-btn" onclick="copyTodayCaption('${capKey}',this)">Copy ${PLAT_LABEL[p.platform]} caption</button>`
-            : clip && clip.desc
-              ? `<button class="btn btn-ghost btn-sm slot-copy-btn" data-clipid="${p.clipId}" data-postid="${p.id}" data-plat="${p.platform}" onclick="inlineGenCaption(this)">⚡ Get caption</button>`
-              : `<button class="btn btn-ghost btn-sm slot-copy-btn" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="opacity:0.6;">+ Add description</button>`
+          ${p.posted
+            ? `<button class="btn btn-ghost btn-sm slot-copy-btn" onclick="quickLogEngagement('${String(p.id)}')" style="color:var(--green);border-color:rgba(34,197,94,0.3);">📊 Log engagement</button>`
+            : hasCaption
+              ? `<button class="btn btn-primary btn-sm slot-copy-btn" onclick="copyTodayCaption('${capKey}',this)">Copy ${PLAT_LABEL[p.platform]} caption</button>`
+              : clip && clip.desc
+                ? `<button class="btn btn-ghost btn-sm slot-copy-btn" data-clipid="${p.clipId}" data-postid="${p.id}" data-plat="${p.platform}" onclick="inlineGenCaption(this)">⚡ Get caption</button>`
+                : `<button class="btn btn-ghost btn-sm slot-copy-btn" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="opacity:0.6;">+ Add description</button>`
           }
           <button class="btn btn-ghost btn-sm slot-mark-btn" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">${p.posted?'↩ Undo':'✓ Mark posted'}</button>
         </div>
@@ -2123,39 +2166,46 @@ function renderDaysBanner() {
   const activeClips = state.clips.filter(c => !c.archived);
   if (!activeClips.length) { banner.innerHTML = ''; return; }
 
-  // Simple calculation: total active clips ÷ 3 (posting 3x per day)
-  const totalClips  = activeClips.length;
-  const displayDays = Math.floor(totalClips / 3);
+  const todayStr = localDateStr();
+  const futurePosts = state.posts.filter(p => !p.posted && p.date >= todayStr);
+  const scheduledClipIds = new Set(futurePosts.map(p => String(p.clipId)));
+  const unscheduledClips = activeClips.filter(c => !scheduledClipIds.has(String(c.id)));
+
+  let displayDays, subMsg, mode;
+  if (futurePosts.length > 0) {
+    const lastDate = futurePosts.reduce((max, p) => p.date > max ? p.date : max, todayStr);
+    const msLeft = new Date(lastDate + 'T12:00:00') - new Date(todayStr + 'T12:00:00');
+    displayDays = Math.max(0, Math.round(msLeft / 86400000));
+    mode = 'scheduled';
+    subMsg = unscheduledClips.length
+      ? unscheduledClips.length + ' clip' + (unscheduledClips.length > 1 ? 's' : '') + ' not yet scheduled'
+      : 'All clips scheduled';
+  } else {
+    displayDays = Math.floor(activeClips.length / 3);
+    mode = 'estimated';
+    subMsg = activeClips.length + ' clips ÷ 3 per day (estimated)';
+  }
 
   const cls = displayDays >= 7 ? 'healthy' : displayDays >= 3 ? 'low' : 'critical';
   const msg = displayDays >= 7
     ? "You're well stocked. Keep streaming and editing."
     : displayDays >= 3
-    ? 'Running a bit low. Time to edit more clips soon.'
-    : 'Almost out of content! Edit more clips after your next stream.';
+    ? 'Running low — schedule more clips soon.'
+    : displayDays === 0
+    ? 'No posts scheduled! Add clips to the schedule.'
+    : 'Almost out — edit more clips after your next stream.';
 
-  banner.innerHTML = `
-  <div class="days-banner ${cls}">
-    <div>
-      <div class="days-num">${displayDays}</div>
-      <div class="days-label">days of content remaining</div>
-      <div class="days-sub">${msg} (${totalClips} clips ÷ 3 per day)</div>
-    </div>
-    <div class="days-breakdown">
-      <div class="days-plat">
-        <div class="days-plat-num" style="color:var(--text);">${totalClips}</div>
-        <div class="days-plat-lbl">total clips</div>
-      </div>
-      <div class="days-plat">
-        <div class="days-plat-num" style="color:var(--accent2);">3</div>
-        <div class="days-plat-lbl">posts/day</div>
-      </div>
-      <div class="days-plat">
-        <div class="days-plat-num" style="color:${cls==='healthy'?'var(--green)':cls==='low'?'var(--amber)':'var(--red)'};">${displayDays}</div>
-        <div class="days-plat-lbl">days left</div>
-      </div>
-    </div>
-  </div>`;
+  banner.innerHTML = '<div class="days-banner ' + cls + '">'
+    + '<div>'
+    + '<div class="days-num">' + displayDays + '</div>'
+    + '<div class="days-label">days until last post</div>'
+    + '<div class="days-sub">' + msg + ' · ' + subMsg + '</div>'
+    + '</div>'
+    + '<div class="days-breakdown">'
+    + '<div class="days-plat"><div class="days-plat-num" style="color:var(--text);">' + activeClips.length + '</div><div class="days-plat-lbl">active clips</div></div>'
+    + '<div class="days-plat"><div class="days-plat-num" style="color:var(--accent2);">' + futurePosts.length + '</div><div class="days-plat-lbl">scheduled</div></div>'
+    + '<div class="days-plat"><div class="days-plat-num" style="color:' + (cls==='healthy'?'var(--green)':cls==='low'?'var(--amber)':'var(--red)') + ';">' + displayDays + '</div><div class="days-plat-lbl">days runway</div></div>'
+    + '</div></div>';
 }
 
 // ── WEEK GRID ────────────────────────────────────────────────────────────
@@ -2347,6 +2397,45 @@ function onTouchEnd(e) {
 
 // ── CONFIRM POSTED MODAL ──────────────────────────────────────────────────
 let confirmPostId = null;
+
+function openMobilePostSheet(postId) {
+  const post = state.posts.find(p => String(p.id) === String(postId));
+  if (!post) return;
+  const clip = state.clips.find(c => String(c.id) === String(post.clipId));
+  const color = PLAT_COLOR[post.platform];
+  const hasCaption = clip && clip.captions && clip.captions[post.platform];
+  const capKey = 'msheet_' + String(post.id);
+  if (hasCaption) window._capCache[capKey] = clip.captions[post.platform].full;
+
+  // Build bottom sheet
+  let existing = document.getElementById('mobile-post-sheet');
+  if (existing) existing.remove();
+
+  const sheet = document.createElement('div');
+  sheet.id = 'mobile-post-sheet';
+  sheet.style.cssText = 'position:fixed;inset:0;z-index:700;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.6);';
+  sheet.innerHTML = `
+    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px 16px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0));width:100%;max-width:480px;">
+      <div style="width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px;"></div>
+      <div style="font-family:var(--mono);font-size:10px;color:${color};letter-spacing:1.5px;margin-bottom:4px;">${PLAT_LABEL[post.platform].toUpperCase()} · ${post.date} ${fmtTime(post.time)}</div>
+      <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;">${sanitize(post.clipName)}</div>
+      ${clip && clip.filename ? `<div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:16px;">${sanitize(clip.filename)}</div>` : '<div style="margin-bottom:16px;"></div>'}
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        ${post.posted
+          ? `<button onclick="quickLogEngagement('${String(post.id)}');document.getElementById('mobile-post-sheet').remove();" style="width:100%;padding:14px;border-radius:8px;border:1px solid rgba(34,197,94,0.3);background:rgba(34,197,94,0.08);color:var(--green);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">📊 Log engagement</button>`
+          : hasCaption
+            ? `<button onclick="copyTodayCaption('${capKey}',this)" style="width:100%;padding:14px;border-radius:8px;border:none;background:var(--accent);color:white;font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">Copy TikTok caption</button>`
+            : clip && clip.desc
+              ? `<button onclick="inlineGenCaption(this);document.getElementById('mobile-post-sheet').remove();" data-clipid="${post.clipId}" data-postid="${post.id}" data-plat="${post.platform}" style="width:100%;padding:14px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">⚡ Generate caption</button>`
+              : `<button onclick="captionFromClip('${String(post.clipId)}');document.getElementById('mobile-post-sheet').remove();" style="width:100%;padding:14px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">+ Add description first</button>`
+        }
+        <button onclick="document.getElementById('mobile-post-sheet').remove();openConfirmPost('${String(post.id)}');" style="width:100%;padding:14px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">${post.posted ? '↩ Undo posted' : '✓ Mark as posted'}</button>
+        <button onclick="document.getElementById('mobile-post-sheet').remove();" style="width:100%;padding:12px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--mono);font-size:12px;cursor:pointer;">Cancel</button>
+      </div>
+    </div>`;
+  sheet.addEventListener('click', e => { if (e.target === sheet) sheet.remove(); });
+  document.body.appendChild(sheet);
+}
 
 function openConfirmPost(postId) {
   const post = state.posts.find(p => String(p.id) === String(postId));
@@ -2544,7 +2633,7 @@ function processDroppedClips(files) {
   // Auto-gen captions for any dropped clips that already have a description
   if (loadApiKey()) {
     state.clips.filter(c => c.fromDrop && c.desc && c.desc.trim().length > 10 &&
-      (!c.captions || Object.keys(c.captions).length < 3)
+      (!c.captions || !c.captions.tt)
     ).forEach(clip => autoGenerateCaptions(clip));
   }
 
@@ -2700,6 +2789,11 @@ async function analyseCaption() {
   const game      = document.getElementById('cap-game').value.trim() || 'Warzone';
   const clipId    = document.getElementById('cap-clip').value; // keep as string to match float IDs
 
+  if (!clipId) {
+    showToast('Select a clip first — captions need to be saved to a clip.', 'amber');
+    document.getElementById('cap-clip').focus();
+    return;
+  }
   if (!ttCaption) {
     showToast('Write your TikTok caption first — even a rough draft is fine.', 'amber');
     document.getElementById('cap-tt-input').focus();
@@ -3190,8 +3284,10 @@ function refreshPostClipSelect() {
   const todayStr = localDateStr();
   const availableClips = state.clips.filter(c => {
     if (c.archived) return false;
-    const futurePosts = state.posts.filter(p => String(p.clipId) === String(c.id) && p.date >= todayStr);
-    const scheduledPlats = [...new Set(futurePosts.map(p => p.platform))];
+    // All posts for this clip (past + future) to determine what's already scheduled
+    const allClipPosts = state.posts.filter(p => String(p.clipId) === String(c.id));
+    const scheduledPlats = [...new Set(allClipPosts.map(p => p.platform))];
+    // Show clip only if it still has at least one platform without any scheduled post
     return c.platforms.some(p => !scheduledPlats.includes(p));
   });
 
@@ -3213,13 +3309,13 @@ function refreshPostClipSelect() {
 }
 
 // ── TOAST ────────────────────────────────────────────────────────────────
-function showToast(msg, type) {
+function showToast(msg, type, duration) {
   const color = type === 'green' ? 'var(--green)' : type === 'red' ? 'var(--red)' : type === 'amber' ? 'var(--amber)' : 'var(--accent2)';
   const t = document.createElement('div');
-  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:8px;padding:10px 18px;font-family:var(--mono);font-size:12px;color:${color};z-index:500;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;transition:opacity 0.4s;`;
+  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:8px;padding:10px 18px;font-family:var(--mono);font-size:12px;color:${color};z-index:500;white-space:pre-wrap;max-width:340px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;transition:opacity 0.4s;`;
   t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2400);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, duration || 2400);
 }
 
 // ── CUSTOM CONFIRM ────────────────────────────────────────────────────────
@@ -3330,10 +3426,13 @@ function renderMobileDayList() {
       ? posts.map(p => {
           const color = PLAT_COLOR[p.platform];
           const posted = p.posted;
-          return `<div class="mobile-post-card" data-id="${p.id}" onclick="openConfirmPost(this.closest('[data-id]').dataset.id)">
+          const clip = state.clips.find(c => String(c.id) === String(p.clipId));
+          const fname = clip && clip.filename ? clip.filename : '';
+          return `<div class="mobile-post-card" data-id="${p.id}" onclick="openMobilePostSheet('${String(p.id)}')">
             <div class="mobile-post-plat-bar" style="background:${color};"></div>
             <div class="mobile-post-info">
               <div class="mobile-post-name">${sanitize(p.clipName)}</div>
+              ${fname ? `<div style="font-size:9px;color:var(--muted);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;">${sanitize(fname)}</div>` : ''}
               <div class="mobile-post-meta">
                 <span style="color:${color};">${PLAT_LABEL[p.platform]}</span>
                 ${posted
@@ -3785,6 +3884,31 @@ async function clearAll() {
 }
 
 // ── ANALYTICS ────────────────────────────────────────────────────────────
+
+function checkPeakSlotNudge() {
+  // Only nudge once, only if morning slot is still 09:00, and only with 5+ logs
+  if (localStorage.getItem('kcc_peak_nudge_dismissed')) return;
+  if (state.slots[0]?.time !== '09:00') return;
+  if (state.engagements.length < 5) return;
+
+  // Check if any posts were logged at 08:xx that outperformed 09:xx
+  const byHour = {};
+  state.engagements.forEach(e => {
+    const post = state.posts.find(p => String(p.id) === String(e.postId));
+    if (!post) return;
+    const hr = parseInt((post.actualTime || post.time).split(':')[0]);
+    if (!byHour[hr]) byHour[hr] = { views: 0, count: 0 };
+    byHour[hr].views += e.views || 0;
+    byHour[hr].count++;
+  });
+  const avg8  = byHour[8]  ? byHour[8].views  / byHour[8].count  : 0;
+  const avg9  = byHour[9]  ? byHour[9].views  / byHour[9].count  : 0;
+
+  if (avg8 > avg9 && byHour[8] && byHour[8].count >= 2) {
+    showToast('📊 Your 8 AM posts average ' + Math.round(avg8).toLocaleString() + ' views vs ' + Math.round(avg9).toLocaleString() + ' at 9 AM. Update your morning slot in Settings?', 'green', 8000);
+    localStorage.setItem('kcc_peak_nudge_dismissed', '1');
+  }
+}
 
 function renderAnalytics() {
   renderOverviewCards();
@@ -4267,6 +4391,7 @@ function renderDayOfWeekChart() {
   const container = document.getElementById('dow-chart');
   const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
+  checkPeakSlotNudge();
   if (!state.engagements.length) {
     container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">No data yet.</div>';
     return;
@@ -4683,6 +4808,56 @@ function populateEngageDropdown() {
   if (posted.length) sel.onchange.call(sel);
 }
 
+function quickLogEngagement(postId) {
+  // Pre-fill engagement modal from a specific posted post
+  const post = state.posts.find(p => String(p.id) === String(postId));
+  if (!post) { openEngageModal(); return; }
+
+  // Check if already logged
+  const existing = state.engagements.find(e => String(e.postId) === String(postId));
+  if (existing) {
+    // Open edit mode instead
+    editEngagement(existing.id);
+    return;
+  }
+
+  editingEngagementId = null;
+  document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
+  document.getElementById('eng-plat-filter').style.display = 'flex';
+
+  document.getElementById('eng-views').value    = '';
+  document.getElementById('eng-likes').value    = '';
+  document.getElementById('eng-comments').value = '';
+  document.getElementById('eng-bookmarks').value= '';
+  document.getElementById('eng-notes').value    = '';
+
+  setEngagePlatform(post.platform || 'tt');
+
+  // Pre-select this post in the dropdown
+  const nextBtn = document.getElementById('eng-save-next-btn');
+  nextBtn.textContent = 'Save & Close';
+  nextBtn.style.background = '';
+  nextBtn.style.display = '';
+  nextBtn.onclick = () => saveEngagement(false);
+  document.getElementById('eng-save-close-btn').style.display = 'none';
+
+  // Populate select and pre-fill this post after modal opens
+  document.getElementById('modal-engage').classList.add('open');
+  // After open, populate dropdown and select this post
+  setTimeout(() => {
+    const sel = document.getElementById('eng-post-sel');
+    populateEngageDropdown();
+    sel.value = String(postId);
+    // Trigger hashtag pre-fill
+    const clip = state.clips.find(c => String(c.id) === String(post.clipId));
+    if (clip && clip.lastHashtags && clip.lastHashtags[post.platform]) {
+      document.getElementById('eng-hashtags').value = clip.lastHashtags[post.platform].join(' ');
+    } else {
+      document.getElementById('eng-hashtags').value = '';
+    }
+  }, 50);
+}
+
 function openEngageModal() {
   editingEngagementId = null;
   document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
@@ -4984,14 +5159,22 @@ function renderBriefBody(brief) {
     'Saturday': 'var(--green)'
   };
 
+  const todayDayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
+
   el.innerHTML = days.map((day, di) => {
     const dayColor = dayColors[day.day] || 'var(--accent)';
     const topics = (day.topics || []).sort((a, b) => (a.priority || 99) - (b.priority || 99));
+    const isToday = day.day === todayDayName;
+    const todayBadge = isToday ? `<span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:${dayColor};color:white;padding:2px 8px;border-radius:3px;animation:pulse 2s infinite;">TODAY</span>` : '';
+    const wrapOpen  = isToday ? `<div style="border:2px solid ${dayColor};border-radius:10px;padding:14px;margin:-2px 0 0 0;">` : '';
+    const wrapClose = isToday ? '</div>' : '';
     return `
-    <div style="margin-bottom:${di < days.length - 1 ? '20px' : '0'};">
+    <div style="margin-bottom:${di < days.length - 1 ? '24px' : '0'};">
+      ${wrapOpen}
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid ${dayColor}30;">
         <div style="background:${dayColor};color:white;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;padding:4px 12px;border-radius:4px;font-weight:700;">${(day.day || '').toUpperCase()}</div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;">STREAM ${di + 1} — ${topics.length} TOPICS</div>
+        ${todayBadge}
       </div>
       ${topics.map((t, ti) => {
         const typeColor = typeColors[t.type?.toLowerCase()] || 'var(--accent2)';
@@ -5016,6 +5199,7 @@ function renderBriefBody(brief) {
         </div>
       </div>`;
       }).join('')}
+      ${wrapClose}
     </div>`;
   }).join('');
 }
