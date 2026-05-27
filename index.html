@@ -5632,27 +5632,58 @@ checkIntelAutoRun();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/content-center/sw.js').then(reg => {
-    // Check for updates every 60 seconds
+    // Force-check for a new SW immediately on every page load
+    reg.update();
+    // Also poll every 60 seconds (catches updates on long sessions)
     setInterval(() => reg.update(), 60000);
+
+    // If a new SW is already waiting (installed but not yet active), prompt immediately
+    if (reg.waiting) {
+      document.getElementById('update-banner').classList.add('show');
+      window._pendingReg = reg;
+    }
+
+    // Fires when a new SW finishes installing and moves to waiting
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      if (!newWorker) return;
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // New SW is waiting — show banner and store ref so applyUpdate can skip waiting
+          document.getElementById('update-banner').classList.add('show');
+          window._pendingReg = reg;
+        }
+      });
+    });
   }).catch(() => {});
 
-  // Listen for UPDATE_AVAILABLE message from the new service worker
+  // Fires when the SW actually takes control (after skipWaiting)
+  // — auto-reload so the new files are used immediately
+  let swRefreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (swRefreshing) return;
+    swRefreshing = true;
+    window.location.reload();
+  });
+
+  // Legacy message channel (belt-and-suspenders for older iOS)
   navigator.serviceWorker.addEventListener('message', e => {
     if (e.data && e.data.type === 'UPDATE_AVAILABLE') {
       document.getElementById('update-banner').classList.add('show');
     }
   });
-
-  // Also detect when a new SW takes control (handles iOS quirks)
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    document.getElementById('update-banner').classList.add('show');
-  });
 }
 
 function applyUpdate() {
-  // Save any pending state then reload fresh
-  save();
-  window.location.reload(true);
+  save(); // persist any unsaved state first
+  // Tell the waiting SW to skip waiting and take over — triggers controllerchange above
+  const reg = window._pendingReg;
+  if (reg && reg.waiting) {
+    reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+  } else {
+    // Fallback: hard reload
+    window.location.reload();
+  }
 }
 </script>
 
