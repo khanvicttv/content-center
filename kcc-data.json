@@ -8807,7 +8807,7 @@
       "filename": "New Generation.mp4",
       "duration": "0:40",
       "size_mb": 139.6,
-      "desc": "",
+      "desc": "This new generation want instant gratification",
       "game": "",
       "platforms": [
         "tt",
@@ -8815,7 +8815,21 @@
       ],
       "addedAt": "2026-05-26T18:50:09",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "new generation wants everything handed to them, no patience for the grind",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "new generation wants everything handed to them, no patience for the grind\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
