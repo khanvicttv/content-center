@@ -9105,7 +9105,7 @@
       "filename": "he shouldve won.mp4",
       "duration": "0:10",
       "size_mb": 43.2,
-      "desc": "",
+      "desc": "You are right sir, I don't know how I won that",
       "game": "",
       "platforms": [
         "tt",
@@ -9113,7 +9113,21 @@
       ],
       "addedAt": "2026-05-26T14:48:56",
       "fromScan": true,
-      "captions": {},
+      "captions": {
+        "tt": {
+          "caption": "honestly no clue how that worked out but ill take the dub",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "honestly no clue how that worked out but ill take the dub\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      },
       "lastHashtags": {
         "tt": []
       },
