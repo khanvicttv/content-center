@@ -9408,14 +9408,29 @@
       "filename": "Mood switch.mp4",
       "duration": "0:56",
       "size_mb": 224.7,
-      "desc": "",
+      "desc": "I'm a pretty happy guy until you piss me off",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-29T18:02:06",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "happy guy until you mess with him, then its over",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "happy guy until you mess with him, then its over\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780095298015,
