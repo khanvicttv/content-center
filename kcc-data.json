@@ -9588,14 +9588,29 @@
       "filename": "cant let is slide.mp4",
       "duration": "0:22",
       "size_mb": 97,
-      "desc": "",
+      "desc": "Can't trust nobody around here",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-29T17:14:10",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "your teammates will sell you out for a self revive, facts",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "your teammates will sell you out for a self revive, facts\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
