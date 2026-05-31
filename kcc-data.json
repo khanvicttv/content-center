@@ -9228,14 +9228,29 @@
       "filename": "he really wanted me.mp4",
       "duration": "0:32",
       "size_mb": 116.4,
-      "desc": "",
+      "desc": "Listen to those audio cues though, beautiful",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-31T13:25:36",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "audio cues hit different when you actually pay attention to them",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "audio cues hit different when you actually pay attention to them\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780251605084,
