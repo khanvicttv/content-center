@@ -8834,7 +8834,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:54.606Z"
     },
     {
       "id": 1779837832743,
@@ -8938,7 +8939,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:55.037Z"
     },
     {
       "id": 1779829420011,
@@ -8972,7 +8974,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:55.429Z"
     },
     {
       "id": 1779829201714,
@@ -9006,7 +9009,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:55.774Z"
     },
     {
       "id": 1779828540280,
@@ -9040,7 +9044,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:56.150Z"
     },
     {
       "id": 1779827666011,
@@ -9074,7 +9079,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:56.510Z"
     },
     {
       "id": 1779826815252,
@@ -9108,7 +9114,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:57.390Z"
     },
     {
       "id": 1779826080849,
@@ -9142,7 +9149,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:57.766Z"
     },
     {
       "id": 1779824936937,
@@ -9176,7 +9184,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:58.046Z"
     },
     {
       "id": 1779771531523,
@@ -9210,7 +9219,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T18:27:58.398Z"
     }
   ],
   "posts": [
