@@ -9318,14 +9318,29 @@
       "filename": "Good audio.mp4",
       "duration": "0:22",
       "size_mb": 63.5,
-      "desc": "",
+      "desc": "This is probably why COD keeps messing with the audio",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-31T13:06:05",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "audio in warzone is absolutely broken, thats why they keep changing it",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "audio in warzone is absolutely broken, thats why they keep changing it\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780250604224,
