@@ -9498,14 +9498,29 @@
       "filename": "did i hit him with it.mp4",
       "duration": "0:43",
       "size_mb": 170.8,
-      "desc": "",
+      "desc": "I thought it was a one shot, what happened here?",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-29T17:43:35",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "thought it was one shot, turns out you need two rounds",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "thought it was one shot, turns out you need two rounds\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780094313236,
