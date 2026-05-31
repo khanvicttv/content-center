@@ -9258,14 +9258,29 @@
       "filename": "likely cheating.mp4",
       "duration": "0:26",
       "size_mb": 93.4,
-      "desc": "",
+      "desc": "These kids said that I am likely cheating",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-31T13:20:05",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "kids really think everyone who's better is cheating, happens every game",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "kids really think everyone who's better is cheating, happens every game\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780251378418,
