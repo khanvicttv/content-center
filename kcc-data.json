@@ -9254,7 +9254,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-05-31T23:07:40.379Z"
     },
     {
       "id": 1780251605084,
