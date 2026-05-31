@@ -22,8 +22,13 @@ NTFY_CHANNEL = os.environ.get('NTFY_CHANNEL', '').strip()
 NTFY_BASE    = 'https://ntfy.sh'
 USER_TZ_NAME = os.environ.get('TIMEZONE', 'America/Chicago').strip()
 
-NOTIFY_MIN = 25
-NOTIFY_MAX = 65
+NOTIFY_30_MIN = 25
+NOTIFY_30_MAX = 65
+
+NOTIFY_5_MIN  = 3
+NOTIFY_5_MAX  = 10
+
+KCC_URL = 'https://khanvicttv.github.io/content-center'
 
 PLAT_LABELS = { 'tt': 'TikTok', 'ig': 'Instagram', 'yt': 'YouTube' }
 PLAT_TAGS   = { 'tt': 'musical_note', 'ig': 'camera', 'yt': 'movie_camera' }
@@ -65,7 +70,7 @@ def fmt_time(time_str):
     return f"{h12}:{m:02d} {ap}"
 
 
-def send_ntfy(channel, title, body, tags='bell', priority='high'):
+def send_ntfy(channel, title, body, tags='bell', priority='high', click_url=None):
     url = f"{NTFY_BASE}/{channel}"
     data = body.encode('utf-8')
     req = urllib.request.Request(url, data=data, method='POST')
@@ -73,6 +78,8 @@ def send_ntfy(channel, title, body, tags='bell', priority='high'):
     req.add_header('Tags', tags)
     req.add_header('Priority', priority)
     req.add_header('Content-Type', 'text/plain')
+    if click_url:
+        req.add_header('Click', click_url)
     try:
         with urllib.request.urlopen(req, timeout=10) as res:
             return res.status == 200
@@ -98,7 +105,8 @@ def main():
 
     print(f"  UTC time:   {now_utc.strftime('%Y-%m-%d %H:%M')}")
     print(f"  Local time: {now_local.strftime('%Y-%m-%d %H:%M')}")
-    print(f"  Window:     {NOTIFY_MIN}–{NOTIFY_MAX} min before post")
+    print(f"  Window 1:   {NOTIFY_30_MIN}–{NOTIFY_30_MAX} min before post (30-min heads up)")
+    print(f"  Window 2:   {NOTIFY_5_MIN}–{NOTIFY_5_MAX} min before post (5-min urgent alert)")
     print()
 
     with open(DATA_FILE, 'r') as f:
@@ -135,15 +143,27 @@ def main():
 
         print(f"  [{platform.upper()}] {clip_name} — {fmt_time(time_str)} local — {minutes_until:.0f} min away")
 
-        if NOTIFY_MIN <= minutes_until <= NOTIFY_MAX:
+        if NOTIFY_30_MIN <= minutes_until <= NOTIFY_30_MAX:
             plat_label = PLAT_LABELS.get(platform, platform.upper())
             plat_tag   = PLAT_TAGS.get(platform, 'bell')
 
-            title = f"Post to {plat_label} in ~{round(minutes_until)} min"
-            body  = f'"{clip_name}"\n{plat_label} · {fmt_time(time_str)}\n\nTime to get it ready!'
+            title = f"Post to {plat_label} in ~30 min"
+            body  = f'"{clip_name}"\n{plat_label} · {fmt_time(time_str)}\n\nGet it ready — open KCC to copy your caption.'
 
-            print(f"         → Sending: {title}")
-            ok = send_ntfy(NTFY_CHANNEL, title, body, tags=plat_tag, priority='high')
+            print(f"         → Sending 30-min alert: {title}")
+            ok = send_ntfy(NTFY_CHANNEL, title, body, tags=plat_tag, priority='high', click_url=KCC_URL)
+            print(f"         → {'✓ Sent' if ok else '✗ Failed'}")
+            notified += 1
+
+        elif NOTIFY_5_MIN <= minutes_until <= NOTIFY_5_MAX:
+            plat_label = PLAT_LABELS.get(platform, platform.upper())
+            plat_tag   = PLAT_TAGS.get(platform, 'bell')
+
+            title = f"🚨 Post NOW — {plat_label} in ~{round(minutes_until)} min"
+            body  = f'"{clip_name}"\n{plat_label} · {fmt_time(time_str)}\n\nOpen KCC → copy caption → post.'
+
+            print(f"         → Sending 5-min urgent alert: {title}")
+            ok = send_ntfy(NTFY_CHANNEL, title, body, tags=f'{plat_tag},rotating_light', priority='urgent', click_url=KCC_URL)
             print(f"         → {'✓ Sent' if ok else '✗ Failed'}")
             notified += 1
 
