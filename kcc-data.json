@@ -9558,14 +9558,29 @@
       "filename": "why did you listen to me.mp4",
       "duration": "0:30",
       "size_mb": 128.3,
-      "desc": "",
+      "desc": "Not sure why you are listening to the enemy, but thanks lol",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-29T17:17:51",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "listening to the enemy callouts and they literally just told us where they were",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "listening to the enemy callouts and they literally just told us where they were\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780092850636,
