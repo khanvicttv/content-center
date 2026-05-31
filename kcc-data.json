@@ -9438,14 +9438,29 @@
       "filename": "You wont do nothing.mp4",
       "duration": "0:32",
       "size_mb": 96.3,
-      "desc": "",
+      "desc": "Its always the worst players that talk the most smack",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-29T17:54:58",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "always the worst players that talk the most trash, facts",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "always the worst players that talk the most trash, facts\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780095014380,
