@@ -9288,14 +9288,29 @@
       "filename": "Feels good to hear.mp4",
       "duration": "0:38",
       "size_mb": 141.4,
-      "desc": "",
+      "desc": "I still dont know if he was lying but it felt good to hear",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-31T13:16:18",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "bro said something and i believed it, felt different that day",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro said something and i believed it, felt different that day\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780250765777,
