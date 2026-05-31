@@ -9348,14 +9348,29 @@
       "filename": "hes cheating is the default.mp4",
       "duration": "0:33",
       "size_mb": 48.7,
-      "desc": "",
+      "desc": "Why is that the go to for every reason you are eliminated",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-31T13:03:24",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "everyone blames the same gun when they get knocked, never their gameplay",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "everyone blames the same gun when they get knocked, never their gameplay\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780249941361,
