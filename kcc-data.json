@@ -9378,14 +9378,29 @@
       "filename": "heard the ladder.mp4",
       "duration": "0:09",
       "size_mb": 32.8,
-      "desc": "",
+      "desc": "Really happy with the art is war audio tune right now",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-05-31T12:52:21",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "art is war audio hitting different, sound design is actually clean right now",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "art is war audio hitting different, sound design is actually clean right now\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780095726694,
