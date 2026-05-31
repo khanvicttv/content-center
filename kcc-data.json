@@ -11771,7 +11771,10 @@
       "platform": "tt",
       "date": "2026-05-30",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-05-31T17:05:14.996Z",
+      "timingVariance": 0
     }
   ],
   "checklist": {
@@ -17073,7 +17076,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": -1,
+  "weekOffset": 0,
   "engagements": [
     {
       "id": 1774928290584,
