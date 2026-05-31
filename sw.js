@@ -1,4 +1,4 @@
-const CACHE = 'kcc-v45';
+const CACHE = 'kcc-v41';
 const ASSETS = [
   '/content-center/',
   '/content-center/index.html',
@@ -26,11 +26,6 @@ self.addEventListener('activate', e => {
     })
   );
   self.clients.claim();
-});
-
-// Allow the page to trigger skipWaiting via postMessage
-self.addEventListener('message', e => {
-  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('fetch', e => {

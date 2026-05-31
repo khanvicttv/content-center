@@ -32,6 +32,8 @@
     --amber: #f59e0b;
     --red: #ef4444;
     --tiktok: #ff2d55;
+    --ig: #e1306c;
+    --yt: #ff6060;
     --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
     --sans: 'Inter', 'IBM Plex Sans', system-ui, sans-serif;
   }
@@ -167,8 +169,12 @@
   .post-slot.slot-posted { opacity: 0.5; }
   .drop-zone.drag-over { background: rgba(124,92,252,0.12); outline: 1px dashed var(--accent); }
   .post-slot.tt { background: rgba(255,45,85,0.12); border-left: 2px solid var(--tiktok); }
+  .post-slot.ig { background: rgba(225,48,108,0.12); border-left: 2px solid var(--ig); }
+  .post-slot.yt { background: rgba(255,96,96,0.12); border-left: 2px solid var(--yt); }
   .slot-plat { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
   .post-slot.tt .slot-plat { color: var(--tiktok); }
+  .post-slot.ig .slot-plat { color: var(--ig); }
+  .post-slot.yt .slot-plat { color: var(--yt); }
   .slot-clip-name { color: var(--text); font-size: 10px; font-weight: 500; }
 
   /* CLIP LIST */
@@ -180,12 +186,16 @@
   .pdot { width: 8px; height: 8px; border-radius: 50%; opacity: 0.2; }
   .pdot.on { opacity: 1; }
   .pdot.tt { background: var(--tiktok); }
+  .pdot.ig { background: var(--ig); }
+  .pdot.yt { background: var(--yt); }
 
   /* CAPTIONS */
   .cap-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
   .cap-tab { padding: 10px 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: var(--muted); border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
   .cap-tab:hover { color: var(--text); }
   .cap-tab.tt.active { color: var(--tiktok); border-color: var(--tiktok); }
+  .cap-tab.ig.active { color: var(--ig); border-color: var(--ig); }
+  .cap-tab.yt.active { color: var(--yt); border-color: var(--yt); }
   .caption-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; min-height: 90px; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .tag { background: rgba(124,92,252,0.1); color: var(--accent2); border: 1px solid rgba(124,92,252,0.2); border-radius: 4px; padding: 3px 8px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s; }
@@ -584,6 +594,8 @@
   .time-label { font-family: var(--mono); font-size: 10px !important; color: var(--muted); background: var(--bg2) !important; padding: 10px 6px !important; }
   .post-slot { border-radius: 4px !important; min-height: 54px !important; }
   .post-slot.tt { background: linear-gradient(90deg, rgba(255,45,85,0.15), rgba(255,45,85,0.04)) !important; }
+  .post-slot.ig { background: linear-gradient(90deg, rgba(225,48,108,0.15), rgba(225,48,108,0.04)) !important; }
+  .post-slot.yt { background: linear-gradient(90deg, rgba(255,96,96,0.15), rgba(255,96,96,0.04)) !important; }
   .slot-plat { font-family: var(--mono); font-size: 8px !important; letter-spacing: 1.5px; }
   .slot-clip-name { color: var(--text); font-size: 11px; }
   .post-slot.slot-posted { opacity: 0.45; }
@@ -842,7 +854,14 @@
         <label>Your TikTok caption <span style="color:var(--accent2);font-size:9px;">write it yourself — short, lowercase, no emoji</span></label>
         <textarea id="cap-tt-input" rows="2" placeholder='e.g. "the dude was lost, broke every bone in his body"' style="font-size:14px;"></textarea>
       </div>
-
+      <div class="field" style="margin-bottom:8px;">
+        <label>Instagram caption <span style="color:var(--muted);font-size:9px;">(optional — leave blank to auto-adapt from TikTok)</span></label>
+        <textarea id="cap-ig-input" rows="2" placeholder="Can be slightly longer — mention live on Twitch, Kick & TikTok"></textarea>
+      </div>
+      <div class="field" style="margin-bottom:16px;">
+        <label>YouTube title <span style="color:var(--muted);font-size:9px;">(optional — leave blank to auto-adapt)</span></label>
+        <input type="text" id="cap-yt-input" placeholder="Warzone Clip - your title here | Khanvict TV">
+      </div>
 
       <button class="btn btn-primary" onclick="analyseCaption()" style="margin-bottom:20px;">✦ Analyse &amp; get hashtags</button>
 
@@ -859,7 +878,8 @@
       <!-- Per-platform results — stacked, always visible after analyse -->
       <div id="cap-results-wrap" style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
         <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
-
+        <div id="cap-ig" class="cap-pane" style="display:none;"></div>
+        <div id="cap-yt" class="cap-pane" style="display:none;"></div>
       </div>
     </div>
 
@@ -874,7 +894,7 @@
       </div>
 
       <div class="alert-info" style="margin-bottom:18px;">
-        Your AI content strategist. Researches trending Warzone topics, meta shifts, and what's performing on TikTok — then builds a weekly content plan with 3 priority-ordered topics for each stream day (Tue / Thu / Sat). 9 topics total, ready before you go live. Auto-runs Sunday nights.
+        Your AI content strategist. Researches trending Warzone topics, meta shifts, and what's performing on TikTok, IG Reels &amp; YouTube Shorts — then builds a weekly content plan with 3 priority-ordered topics for each stream day (Tue / Thu / Sat). 9 topics total, ready before you go live. Auto-runs Sunday nights.
       </div>
 
       <!-- Stream schedule reminder -->
@@ -1214,7 +1234,7 @@
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:6px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-engage')">Cancel</button>
       <div class="flex" style="gap:8px;">
-        <button class="btn btn-ghost" id="eng-save-close-btn" onclick="saveEngagement(false)" style="display:none;">Save & Close</button>
+        <button class="btn btn-ghost" id="eng-save-close-btn" onclick="saveEngagement(false)">Save & Close</button>
         <button class="btn btn-primary" id="eng-save-next-btn" onclick="saveEngagement(true)">Save & Next →</button>
       </div>
     </div>
@@ -1241,7 +1261,19 @@
       <div class="field"><label>Game</label><input type="text" id="nc-game" placeholder="e.g. Warzone, Fortnite..."></div>
       <div class="field"><label>Duration</label><input type="text" id="nc-dur" placeholder="e.g. 0:45"></div>
     </div>
-    <div class="field" style="display:none;">
+    <div class="field">
+      <label>Post to</label>
+      <div class="flex" style="gap:16px;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--tiktok);">
+          <input type="checkbox" id="nc-tt" checked style="width:auto;"> TikTok
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--ig);">
+          <input type="checkbox" id="nc-ig" checked style="width:auto;"> Instagram
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--yt);">
+          <input type="checkbox" id="nc-yt" style="width:auto;"> YouTube
+        </label>
+      </div>
       <div class="field-error" id="nc-plat-error"></div>
     </div>
     <div class="flex flex-end" style="gap:10px;margin-top:6px;">
@@ -1265,7 +1297,12 @@
         <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--tiktok);">
           <input type="checkbox" id="mp-tt" checked style="width:auto;accent-color:var(--tiktok);"> TikTok
         </label>
-
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--ig);">
+          <input type="checkbox" id="mp-ig" checked style="width:auto;accent-color:var(--ig);"> Instagram
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--yt);">
+          <input type="checkbox" id="mp-yt" style="width:auto;accent-color:var(--yt);"> YouTube
+        </label>
       </div>
     </div>
     <div class="grid2">
@@ -1303,7 +1340,7 @@ function sanitize(str) {
 
 // ── STATE ────────────────────────────────────────────────────────────────
 const DEFAULT_SLOTS = [
-  { time: '08:00', label: 'Morning', reach: 'PEAK' },
+  { time: '09:00', label: 'Morning', reach: 'HIGH' },
   { time: '13:00', label: 'Lunch',   reach: 'MEDIUM' },
   { time: '19:00', label: 'Evening', reach: 'PEAK' }
 ];
@@ -1316,11 +1353,11 @@ let state = {
   weekOffset: 0,
   engagements: [],
   contentIntel: { briefs: [], lastRun: null },
-  followerSnapshots: []   // [{ date:'YYYY-MM-DD', tt:null, loggedAt:ISO }]
+  followerSnapshots: []   // [{ date:'YYYY-MM-DD', tt:null, ig:null, yt:null, loggedAt:ISO }]
 };
 
-const PLAT_LABEL = { tt: 'TikTok' };
-const PLAT_COLOR = { tt: '#ff2d55' };
+const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
+const PLAT_COLOR = { tt: '#ff2d55', ig: '#e1306c', yt: '#ff6060' };
 
 const CHECKLIST_ITEMS = {
   tt: [
@@ -1333,6 +1370,25 @@ const CHECKLIST_ITEMS = {
     'Hashtags added (5–8 tags)',
     'Cover thumbnail frame selected',
     'Posted at scheduled time slot'
+  ],
+  ig: [
+    'Clip is 1080×1920 vertical',
+    'Duration under 90 seconds',
+    'Caption under 2,200 characters',
+    'Hashtags added (3–5 quality tags)',
+    'Share to Feed + Reels both enabled',
+    'Tagged any relevant accounts',
+    'Posted at scheduled time slot',
+    'Replied to early comments within 1hr'
+  ],
+  yt: [
+    'Title under 60 characters with keyword',
+    'Description written with timestamps',
+    'Custom thumbnail created',
+    'Added to gaming playlist',
+    'Scheduled publish time set in Studio',
+    'End screen elements added',
+    'Pinned a comment after going live'
   ]
 };
 
@@ -1345,6 +1401,20 @@ const CAPTION_TEMPLATES = {
     funny:       (d,g) => `${d.hook.toLowerCase()}, broke every expectation`,
     clutch:      (d,g) => `${d.hook.toLowerCase()}`,
     educational: (d,g) => `${d.shortDesc.toLowerCase()} in ${g}`
+  },
+  ig: {
+    hype:        (d,g) => `${d.hook.toLowerCase()} in ${g}. live on twitch, kick & tiktok`,
+    chill:       (d,g) => `${d.hook.toLowerCase()}. catch it live on twitch, kick & tiktok`,
+    funny:       (d,g) => `${d.hook.toLowerCase()}. this is ${g} for you`,
+    clutch:      (d,g) => `${d.hook.toLowerCase()} in ${g}. live on twitch, kick & tiktok`,
+    educational: (d,g) => `${d.shortDesc.toLowerCase()} — ${g} tip. live on twitch, kick & tiktok`
+  },
+  yt: {
+    hype:        (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
+    chill:       (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
+    funny:       (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
+    clutch:      (d,g) => `${g} Clutch - ${d.shortDesc} | Khanvict TV`,
+    educational: (d,g) => `${g} Tips - ${d.shortDesc} | Khanvict TV`
   }
 };
 
@@ -1358,11 +1428,27 @@ const HASHTAGS = {
     funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#funnymoments', '#warzonefunny', '#khanvicttv'],
     clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#rebirthisland', '#khanvicttv'],
     educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#bo6', '#warzonetips', '#khanvicttv']
+  },
+  ig: {
+    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#rebirthisland', '#warzoneclips', '#khanvicttv'],
+    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#streamer', '#twitch', '#khanvicttv'],
+    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#funnymoments', '#codmoments', '#khanvicttv'],
+    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#rebirthisland', '#khanvicttv'],
+    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#warzonetips', '#bo6', '#khanvicttv']
+  },
+  yt: {
+    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#warzoneclips', '#khanvicttv'],
+    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#streamer', '#khanvicttv'],
+    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#funnymoments', '#khanvicttv'],
+    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#shorts', '#khanvicttv'],
+    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#warzonetips', '#shorts', '#khanvicttv']
   }
 };
 
 const PLATFORM_TIPS = {
-  tt: 'Post at your peak time slot. Reply to comments in the first 30 min — TikTok rewards engagement velocity.'
+  tt: 'Post at your peak time slot. Reply to comments in the first 30 min — TikTok rewards engagement velocity.',
+  ig: 'Share to both Feed AND Reels. Stories shoutout after posting drives the first wave of views.',
+  yt: 'Upload via YouTube Studio desktop and set a scheduled publish time — don\'t upload all clips at once.'
 };
 
 // ── CLOCK ────────────────────────────────────────────────────────────────
@@ -1399,14 +1485,18 @@ function openClipModal() {
   document.getElementById('nc-desc').value = '';
   document.getElementById('nc-game').value = '';
   document.getElementById('nc-dur').value = '';
-  // TikTok-only — no platform selection needed
+  document.getElementById('nc-tt').checked = true;
+  document.getElementById('nc-ig').checked = true;
+  document.getElementById('nc-yt').checked = false;
   document.getElementById('modal-clip').classList.add('open');
 }
 
 function openPostModal(date, time) {
   refreshPostClipSelect();
   document.getElementById('mp-date').value = date || localDateStr();
-  // TikTok-only — no platform selection needed
+  document.getElementById('mp-tt').checked = true;
+  document.getElementById('mp-ig').checked = true;
+  document.getElementById('mp-yt').checked = false;
   refreshPostTimeSelect(time);
   document.getElementById('modal-post').classList.add('open');
 }
@@ -1432,7 +1522,10 @@ function addClip() {
     nameEl.focus();
     return;
   }
-  const platforms = ['tt'];
+  const platforms = [];
+  if (document.getElementById('nc-tt').checked) platforms.push('tt');
+  if (document.getElementById('nc-ig').checked) platforms.push('ig');
+  if (document.getElementById('nc-yt').checked) platforms.push('yt');
   if (!platforms.length) {
     showFieldError('nc-plat', 'nc-plat-error', 'Select at least one platform.');
     return;
@@ -1450,7 +1543,7 @@ function addClip() {
 
   state.clips.push(clip);
   state.checklist[clip.id] = {};
-  ['tt'].forEach(p => {
+  ['tt','ig','yt'].forEach(p => {
     state.checklist[clip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
   });
 
@@ -1498,17 +1591,22 @@ function isClipFullyPosted(clip) {
 }
 
 function autoArchiveClips() {
-  // Mutates state only — caller is responsible for save()
+  // Mutates state and returns count of newly archived clips
+  let count = 0;
   state.clips.forEach(clip => {
     if (!clip.archived && isClipFullyPosted(clip)) {
       clip.archived = true;
       clip.archivedAt = new Date().toISOString();
+      count++;
     }
   });
+  return count;
 }
 
 function renderClipList() {
-  autoArchiveClips();
+  const newlyArchived = autoArchiveClips();
+  // Persist archive flags so they survive page reloads
+  if (newlyArchived > 0) save();
 
   const empty   = document.getElementById('clips-empty');
   const badge   = document.getElementById('clip-badge');
@@ -1577,13 +1675,15 @@ function buildClipRow(clip, isArchived) {
 
   const addedDate = new Date(clip.addedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
 
-  const descWarning = !isArchived
-    ? (noDesc
-        ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><input type="text" placeholder="Add description for AI captions..." style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.35);border-radius:4px;color:var(--text);" data-id="${clip.id}" onchange="updateClipDesc(this.dataset.id, this.value, true)" value=""></div>`
-        : `<div class="clip-meta" style="margin-top:3px;overflow:hidden;text-overflow:ellipsis;max-width:380px;cursor:text;display:flex;align-items:center;gap:6px;" title="Click to edit" onclick="startEditDesc(this,'${clip.id}')"><span style="flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${sanitize((clip.desc||'').substring(0,80))}${(clip.desc||'').length>80?'…':''}</span><span style="color:var(--muted);font-size:9px;flex-shrink:0;">✎</span></div>`)
-    : (clip.desc
-        ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${sanitize((clip.desc||'').substring(0,80))}${(clip.desc||'').length>80?'…':''}</div>`
-        : '');
+  const descWarning = noDesc && clip.fromScan && !isArchived
+    ? `<div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+         <input type="text" placeholder="Add a description for captions..."
+           style="flex:1;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid rgba(245,158,11,0.3);"
+           data-id="${clip.id}" onchange="updateClipDesc(this.dataset.id, this.value)" value="${sanitize(clip.desc||'')}">
+       </div>`
+    : clip.desc
+      ? `<div class="clip-meta" style="margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:380px;">${sanitize(clip.desc.substring(0,80))}${clip.desc.length>80?'…':''}</div>`
+      : '';
 
   const archivedMeta = isArchived && clip.archivedAt
     ? ` · archived ${new Date(clip.archivedAt).toLocaleDateString()}`
@@ -1594,19 +1694,12 @@ function buildClipRow(clip, isArchived) {
         <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="restoreClip(this.dataset.id)" title="Restore to active">Restore</button>
         <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
        </div>`
-    : (() => {
-        const allSched = clip.platforms.every(p =>
-          state.posts.some(post => String(post.clipId) === String(clip.id) && post.platform === p)
-        );
-        return `<div class="flex">
-          ${allSched
-            ? `<span style="font-family:var(--mono);font-size:9px;color:var(--green);padding:4px 8px;letter-spacing:1px;align-self:center;">✓ SCHEDULED</span>`
-            : `<button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="scheduleFromClip(this.dataset.id)">Schedule</button>`}
-          <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="captionFromClip(this.dataset.id)">Captions</button>
-          <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="archiveClip(this.dataset.id)" title="Archive manually">Archive</button>
-          <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
-        </div>`;
-      })();
+    : `<div class="flex">
+        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="scheduleFromClip(this.dataset.id)">Schedule</button>
+        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="captionFromClip(this.dataset.id)">Captions</button>
+        <button class="btn btn-ghost btn-sm" data-id="${clip.id}" onclick="archiveClip(this.dataset.id)" title="Archive manually">Archive</button>
+        <button class="btn btn-danger btn-sm" data-id="${clip.id}" onclick="deleteClip(this.dataset.id)">✕</button>
+       </div>`;
 
   const rowStyle = isArchived ? 'opacity:0.6;' : '';
 
@@ -1614,12 +1707,14 @@ function buildClipRow(clip, isArchived) {
   <div class="clip-row" id="cliprow-${clip.id}" style="${rowStyle}">
     <div style="min-width:0;">
       <div class="clip-name">${sanitize(clip.name)}${isArchived ? ' <span style="font-size:10px;font-family:var(--mono);color:var(--green);background:rgba(34,197,94,0.1);padding:2px 6px;border-radius:4px;margin-left:6px;">DONE</span>' : ''}</div>
-      <div class="clip-meta">${game}${dur} · Added ${addedDate} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
+      <div class="clip-meta">${game}${dur} · Added ${addedDate} · ${postedCount}/${totalSched} posted${archivedMeta}${noDesc && !isArchived && clip.fromScan ? ' · <span style="color:var(--amber);">needs description</span>' : ''}</div>
       ${!isArchived ? `<div class="clip-meta" style="margin-top:2px;">${nextScheduled}</div>` : ''}
       ${descWarning}
     </div>
     <div class="pdots">
       <div class="pdot tt ${clip.platforms.includes('tt')?'on':''}"></div>
+      <div class="pdot ig ${clip.platforms.includes('ig')?'on':''}"></div>
+      <div class="pdot yt ${clip.platforms.includes('yt')?'on':''}"></div>
     </div>
     ${actionBtns}
   </div>`;
@@ -1635,39 +1730,12 @@ function restoreClip(id) {
   if (clip) { clip.archived = false; delete clip.archivedAt; save(); renderClipList(); updateSidebar(); renderDaysBanner(); }
 }
 
-function startEditDesc(el, clipId) {
-  const clip = state.clips.find(c => String(c.id) === String(clipId));
-  if (!clip) return;
-  const current = clip.desc || '';
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = current;
-  input.style.cssText = 'width:100%;font-size:11px;padding:5px 8px;background:var(--bg4);border:1px solid var(--accent);border-radius:4px;color:var(--text);font-family:inherit;outline:none;';
-  const parent = el.parentElement;
-  parent.replaceChild(input, el);
-  input.focus();
-  input.setSelectionRange(input.value.length, input.value.length);
-
-  const save = () => {
-    const newDesc = input.value.trim();
-    updateClipDesc(clipId, newDesc, newDesc !== current && newDesc.length > 0);
-  };
-  input.addEventListener('blur', save);
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
-    if (e.key === 'Escape') { input.removeEventListener('blur', save); parent.replaceChild(el, input); }
-  });
-}
-
-function updateClipDesc(id, desc, forceRegen) {
+function updateClipDesc(id, desc) {
   const clip = state.clips.find(c => String(c.id) === String(id));
   if (!clip) return;
   clip.desc = desc.trim();
-  // Clear stale captions when description changes so they regenerate fresh
-  if (forceRegen && clip.captions) { delete clip.captions.tt; }
   save();
   renderClipList();
-  refreshAllSelects();
   // Auto-generate captions in background if API key exists and desc is substantial
   if (clip.desc.length > 10 && loadApiKey()) {
     autoGenerateCaptions(clip);
@@ -1708,14 +1776,14 @@ function importFromScan(e) {
           size_mb: clip.size_mb || '',
           desc: clip.desc || '',
           game: clip.game || '',
-          platforms: clip.platforms || ['tt'],
+          platforms: clip.platforms || ['tt', 'ig'],
           addedAt: clip.addedAt || new Date().toISOString(),
           fromScan: true
         };
 
         state.clips.push(newClip);
         state.checklist[newClip.id] = {};
-        ['tt'].forEach(p => {
+        ['tt','ig','yt'].forEach(p => {
           state.checklist[newClip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
         });
         added++;
@@ -1731,7 +1799,7 @@ function importFromScan(e) {
       if (loadApiKey()) {
         const clipsNeedingCaptions = state.clips.filter(c =>
           !c.archived && c.desc && c.desc.trim().length > 10 &&
-          (!c.captions || !c.captions.tt)
+          (!c.captions || Object.keys(c.captions).length < 3)
         );
         clipsNeedingCaptions.forEach(clip => autoGenerateCaptions(clip));
       }
@@ -1778,9 +1846,11 @@ async function inlineGenCaption(btn) {
   btn.disabled = true;
 
   const platRules = {
-    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.'
+    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.',
+    ig: 'Same voice, 1-2 sentences. Can mention live on Twitch/Kick/TikTok.',
+    yt: 'Title format 40-70 chars, searchable, game name + action. End with | Khanvict TV.'
   };
-  const platNames = { tt: 'TikTok' };
+  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
 
   const prompt = `You write captions for Khanvict TV — a Warzone/FPS streamer.
 Style: very short (5-16 words), no emojis, lowercase casual, matter-of-fact.
@@ -1867,7 +1937,9 @@ function schedulePost() {
   if (!date)      { showToast('Pick a date.', 'amber'); return; }
 
   const platforms = [];
-  platforms.push('tt');
+  if (document.getElementById('mp-tt').checked) platforms.push('tt');
+  if (document.getElementById('mp-ig').checked) platforms.push('ig');
+  if (document.getElementById('mp-yt').checked) platforms.push('yt');
   if (!platforms.length) { showToast('Select at least one platform.', 'amber'); return; }
 
   if (time === 'custom') {
@@ -1894,15 +1966,6 @@ function schedulePost() {
   const clip = state.clips.find(c => String(c.id) === clipIdStr);
   if (!clip) { showToast('Could not find that clip.', 'red'); return; }
 
-  // Block duplicate: same clip + platform + date already scheduled
-  const dupes = platforms.filter(plat =>
-    state.posts.some(p => String(p.clipId) === clipIdStr && p.platform === plat && p.date === date && !p.posted)
-  );
-  if (dupes.length) {
-    showToast(`${clip.name} is already scheduled for TikTok on ${date}.`, 'amber');
-    return;
-  }
-
   const newPosts = [];
   platforms.forEach(plat => {
     const post = { id: Date.now() + Math.random(), clipId: clip.id, clipName: clip.name, platform: plat, date, time, posted: false };
@@ -1922,7 +1985,7 @@ function schedulePost() {
   newPosts.forEach(p => scheduleNtfyNotification(p));
 
   // Auto-generate captions in background if clip has a description and no captions yet
-  if (clip && clip.desc && (!clip.captions || !clip.captions.tt)) {
+  if (clip && clip.desc && (!clip.captions || Object.keys(clip.captions).length === 0)) {
     autoGenerateCaptions(clip);
   }
 }
@@ -1935,7 +1998,7 @@ async function batchGenerateCaptions() {
     !c.archived &&
     c.desc &&
     c.desc.trim() &&
-    (!c.captions || !c.captions.tt)
+    (!c.captions || Object.keys(c.captions).length < 3)
   );
 
   if (!clipsNeedingCaptions.length) {
@@ -1977,12 +2040,14 @@ async function autoGenerateCaptions(clip) {
   const game = clip.game || 'Warzone';
 
   const platRules = {
-    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.'
+    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.',
+    ig: 'Same voice, 1-2 sentences. Can mention live on Twitch/Kick/TikTok.',
+    yt: 'Title format 40-70 chars, searchable, game name + action. End with | Khanvict TV.'
   };
-  const platNames = { tt: 'TikTok' };
+  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
 
   // Only generate platforms still missing captions
-  const platsToDo = ['tt'].filter(k => !(clip.captions && clip.captions[k]));
+  const platsToDo = ['tt', 'ig', 'yt'].filter(k => !(clip.captions && clip.captions[k]));
   if (!platsToDo.length) return;
 
   const buildPrompt = (platKey) => `You write captions for Khanvict TV — a Warzone/FPS streamer.
@@ -2143,13 +2208,11 @@ function renderToday() {
           <div style="margin-top:5px;">${p.posted ? '<span class="posted-badge">✓ POSTED</span>' : '<span class="pending-badge">PENDING</span>'}</div>
         </div>
         <div class="slot-actions">
-          ${p.posted
-            ? `<button class="btn btn-ghost btn-sm slot-copy-btn" onclick="quickLogEngagement('${String(p.id)}')" style="color:var(--green);border-color:rgba(34,197,94,0.3);">📊 Log engagement</button>`
-            : hasCaption
-              ? `<button class="btn btn-primary btn-sm slot-copy-btn" onclick="copyTodayCaption('${capKey}',this)">Copy ${PLAT_LABEL[p.platform]} caption</button>`
-              : clip && clip.desc
-                ? `<button class="btn btn-ghost btn-sm slot-copy-btn" data-clipid="${p.clipId}" data-postid="${p.id}" data-plat="${p.platform}" onclick="inlineGenCaption(this)">⚡ Get caption</button>`
-                : `<button class="btn btn-ghost btn-sm slot-copy-btn" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="opacity:0.6;">+ Add description</button>`
+          ${hasCaption
+            ? `<button class="btn btn-primary btn-sm slot-copy-btn" onclick="copyTodayCaption('${capKey}',this)">Copy ${PLAT_LABEL[p.platform]} caption</button>`
+            : clip && clip.desc
+              ? `<button class="btn btn-ghost btn-sm slot-copy-btn" data-clipid="${p.clipId}" data-postid="${p.id}" data-plat="${p.platform}" onclick="inlineGenCaption(this)">⚡ Get caption</button>`
+              : `<button class="btn btn-ghost btn-sm slot-copy-btn" data-id="${p.clipId}" onclick="captionFromClip(this.dataset.id)" style="opacity:0.6;">+ Add description</button>`
           }
           <button class="btn btn-ghost btn-sm slot-mark-btn" data-id="${p.id}" onclick="openConfirmPost(this.dataset.id)">${p.posted?'↩ Undo':'✓ Mark posted'}</button>
         </div>
@@ -2166,46 +2229,39 @@ function renderDaysBanner() {
   const activeClips = state.clips.filter(c => !c.archived);
   if (!activeClips.length) { banner.innerHTML = ''; return; }
 
-  const todayStr = localDateStr();
-  const futurePosts = state.posts.filter(p => !p.posted && p.date >= todayStr);
-  const scheduledClipIds = new Set(futurePosts.map(p => String(p.clipId)));
-  const unscheduledClips = activeClips.filter(c => !scheduledClipIds.has(String(c.id)));
-
-  let displayDays, subMsg, mode;
-  if (futurePosts.length > 0) {
-    const lastDate = futurePosts.reduce((max, p) => p.date > max ? p.date : max, todayStr);
-    const msLeft = new Date(lastDate + 'T12:00:00') - new Date(todayStr + 'T12:00:00');
-    displayDays = Math.max(0, Math.round(msLeft / 86400000));
-    mode = 'scheduled';
-    subMsg = unscheduledClips.length
-      ? unscheduledClips.length + ' clip' + (unscheduledClips.length > 1 ? 's' : '') + ' not yet scheduled'
-      : 'All clips scheduled';
-  } else {
-    displayDays = Math.floor(activeClips.length / 3);
-    mode = 'estimated';
-    subMsg = activeClips.length + ' clips ÷ 3 per day (estimated)';
-  }
+  // Simple calculation: total active clips ÷ 3 (posting 3x per day)
+  const totalClips  = activeClips.length;
+  const displayDays = Math.floor(totalClips / 3);
 
   const cls = displayDays >= 7 ? 'healthy' : displayDays >= 3 ? 'low' : 'critical';
   const msg = displayDays >= 7
     ? "You're well stocked. Keep streaming and editing."
     : displayDays >= 3
-    ? 'Running low — schedule more clips soon.'
-    : displayDays === 0
-    ? 'No posts scheduled! Add clips to the schedule.'
-    : 'Almost out — edit more clips after your next stream.';
+    ? 'Running a bit low. Time to edit more clips soon.'
+    : 'Almost out of content! Edit more clips after your next stream.';
 
-  banner.innerHTML = '<div class="days-banner ' + cls + '">'
-    + '<div>'
-    + '<div class="days-num">' + displayDays + '</div>'
-    + '<div class="days-label">days until last post</div>'
-    + '<div class="days-sub">' + msg + ' · ' + subMsg + '</div>'
-    + '</div>'
-    + '<div class="days-breakdown">'
-    + '<div class="days-plat"><div class="days-plat-num" style="color:var(--text);">' + activeClips.length + '</div><div class="days-plat-lbl">active clips</div></div>'
-    + '<div class="days-plat"><div class="days-plat-num" style="color:var(--accent2);">' + futurePosts.length + '</div><div class="days-plat-lbl">scheduled</div></div>'
-    + '<div class="days-plat"><div class="days-plat-num" style="color:' + (cls==='healthy'?'var(--green)':cls==='low'?'var(--amber)':'var(--red)') + ';">' + displayDays + '</div><div class="days-plat-lbl">days runway</div></div>'
-    + '</div></div>';
+  banner.innerHTML = `
+  <div class="days-banner ${cls}">
+    <div>
+      <div class="days-num">${displayDays}</div>
+      <div class="days-label">days of content remaining</div>
+      <div class="days-sub">${msg} (${totalClips} clips ÷ 3 per day)</div>
+    </div>
+    <div class="days-breakdown">
+      <div class="days-plat">
+        <div class="days-plat-num" style="color:var(--text);">${totalClips}</div>
+        <div class="days-plat-lbl">total clips</div>
+      </div>
+      <div class="days-plat">
+        <div class="days-plat-num" style="color:var(--accent2);">3</div>
+        <div class="days-plat-lbl">posts/day</div>
+      </div>
+      <div class="days-plat">
+        <div class="days-plat-num" style="color:${cls==='healthy'?'var(--green)':cls==='low'?'var(--amber)':'var(--red)'};">${displayDays}</div>
+        <div class="days-plat-lbl">days left</div>
+      </div>
+    </div>
+  </div>`;
 }
 
 // ── WEEK GRID ────────────────────────────────────────────────────────────
@@ -2398,45 +2454,6 @@ function onTouchEnd(e) {
 // ── CONFIRM POSTED MODAL ──────────────────────────────────────────────────
 let confirmPostId = null;
 
-function openMobilePostSheet(postId) {
-  const post = state.posts.find(p => String(p.id) === String(postId));
-  if (!post) return;
-  const clip = state.clips.find(c => String(c.id) === String(post.clipId));
-  const color = PLAT_COLOR[post.platform];
-  const hasCaption = clip && clip.captions && clip.captions[post.platform];
-  const capKey = 'msheet_' + String(post.id);
-  if (hasCaption) window._capCache[capKey] = clip.captions[post.platform].full;
-
-  // Build bottom sheet
-  let existing = document.getElementById('mobile-post-sheet');
-  if (existing) existing.remove();
-
-  const sheet = document.createElement('div');
-  sheet.id = 'mobile-post-sheet';
-  sheet.style.cssText = 'position:fixed;inset:0;z-index:700;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.6);';
-  sheet.innerHTML = `
-    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:16px 16px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom,0));width:100%;max-width:480px;">
-      <div style="width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px;"></div>
-      <div style="font-family:var(--mono);font-size:10px;color:${color};letter-spacing:1.5px;margin-bottom:4px;">${PLAT_LABEL[post.platform].toUpperCase()} · ${post.date} ${fmtTime(post.time)}</div>
-      <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px;">${sanitize(post.clipName)}</div>
-      ${clip && clip.filename ? `<div style="font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:16px;">${sanitize(clip.filename)}</div>` : '<div style="margin-bottom:16px;"></div>'}
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        ${post.posted
-          ? `<button onclick="quickLogEngagement('${String(post.id)}');document.getElementById('mobile-post-sheet').remove();" style="width:100%;padding:14px;border-radius:8px;border:1px solid rgba(34,197,94,0.3);background:rgba(34,197,94,0.08);color:var(--green);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">📊 Log engagement</button>`
-          : hasCaption
-            ? `<button onclick="copyTodayCaption('${capKey}',this)" style="width:100%;padding:14px;border-radius:8px;border:none;background:var(--accent);color:white;font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">Copy TikTok caption</button>`
-            : clip && clip.desc
-              ? `<button onclick="inlineGenCaption(this);document.getElementById('mobile-post-sheet').remove();" data-clipid="${post.clipId}" data-postid="${post.id}" data-plat="${post.platform}" style="width:100%;padding:14px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">⚡ Generate caption</button>`
-              : `<button onclick="captionFromClip('${String(post.clipId)}');document.getElementById('mobile-post-sheet').remove();" style="width:100%;padding:14px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">+ Add description first</button>`
-        }
-        <button onclick="document.getElementById('mobile-post-sheet').remove();openConfirmPost('${String(post.id)}');" style="width:100%;padding:14px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--mono);font-size:12px;letter-spacing:1px;cursor:pointer;">${post.posted ? '↩ Undo posted' : '✓ Mark as posted'}</button>
-        <button onclick="document.getElementById('mobile-post-sheet').remove();" style="width:100%;padding:12px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:var(--mono);font-size:12px;cursor:pointer;">Cancel</button>
-      </div>
-    </div>`;
-  sheet.addEventListener('click', e => { if (e.target === sheet) sheet.remove(); });
-  document.body.appendChild(sheet);
-}
-
 function openConfirmPost(postId) {
   const post = state.posts.find(p => String(p.id) === String(postId));
   if (!post) return;
@@ -2610,7 +2627,7 @@ function processDroppedClips(files) {
       size_mb:   file.size ? (file.size / 1024 / 1024).toFixed(1) : '',
       desc:      '',
       game:      guessedGame,
-      platforms: ['tt'],
+      platforms: ['tt', 'ig'],
       addedAt:   new Date().toISOString(),
       fromScan:  false,
       fromDrop:  true
@@ -2618,7 +2635,7 @@ function processDroppedClips(files) {
 
     state.clips.push(clip);
     state.checklist[clip.id] = {};
-    ['tt'].forEach(p => {
+    ['tt','ig','yt'].forEach(p => {
       state.checklist[clip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
     });
     added++;
@@ -2633,7 +2650,7 @@ function processDroppedClips(files) {
   // Auto-gen captions for any dropped clips that already have a description
   if (loadApiKey()) {
     state.clips.filter(c => c.fromDrop && c.desc && c.desc.trim().length > 10 &&
-      (!c.captions || !c.captions.tt)
+      (!c.captions || Object.keys(c.captions).length < 3)
     ).forEach(clip => autoGenerateCaptions(clip));
   }
 
@@ -2655,8 +2672,13 @@ function onCapClipChange() {
   // Pre-fill caption inputs if clip already has saved captions
   if (clip.captions) {
     if (clip.captions.tt) document.getElementById('cap-tt-input').value = clip.captions.tt.caption || '';
+    if (clip.captions.ig) document.getElementById('cap-ig-input').value = clip.captions.ig.caption || '';
+    if (clip.captions.yt) document.getElementById('cap-yt-input').value = clip.captions.yt.caption || '';
   } else {
+    // Clear inputs when switching to a clip with no captions
     document.getElementById('cap-tt-input').value = '';
+    document.getElementById('cap-ig-input').value = '';
+    document.getElementById('cap-yt-input').value = '';
   }
 }
 
@@ -2786,14 +2808,11 @@ async function analyseCaption() {
     return;
   }
   const ttCaption = document.getElementById('cap-tt-input').value.trim();
+  const igCaption = document.getElementById('cap-ig-input').value.trim();
+  const ytCaption = document.getElementById('cap-yt-input').value.trim();
   const game      = document.getElementById('cap-game').value.trim() || 'Warzone';
   const clipId    = document.getElementById('cap-clip').value; // keep as string to match float IDs
 
-  if (!clipId) {
-    showToast('Select a clip first — captions need to be saved to a clip.', 'amber');
-    document.getElementById('cap-clip').focus();
-    return;
-  }
   if (!ttCaption) {
     showToast('Write your TikTok caption first — even a rough draft is fine.', 'amber');
     document.getElementById('cap-tt-input').focus();
@@ -2811,10 +2830,14 @@ async function analyseCaption() {
 
   if (!apiKey) {
     inFlightAnalyse = false;
-    renderNoApiResult(ttCaption, game, clipId);
+    renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
     resultEl.innerHTML = '<div style="color:var(--amber);font-size:12px;padding:8px 0;">No API key — add one in Settings to get voice analysis and trending hashtags.</div>';
     return;
   }
+
+  // Build adapted captions for IG and YT
+  const igFinal = igCaption || `${ttCaption} — live on Twitch, Kick & TikTok`;
+  const ytFinal = ytCaption || `${game} - ${ttCaption.charAt(0).toUpperCase() + ttCaption.slice(1)} | Khanvict TV`;
 
   // Wait for trending (with timeout so it never blocks analysis)
   const trending = await Promise.race([
@@ -2863,14 +2886,18 @@ ${trendingContext}
 Your job:
 1. Voice check — does this sound like him? Score it 1-10 and explain briefly (1-2 sentences max)
 2. Build the BEST hashtag set for TikTok — 6-7 tags. Strategy: always include #warzone #cod #callofduty, prioritize his proven top performers above, add 1-2 trending tags, end with #khanvicttv
-3. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
+3. Build hashtag set for Instagram (same strategy, can swap 1 tag for platform relevance)
+4. Build hashtag set for YouTube (add #shorts, keep 5-6 tags)
+5. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
 
 Return ONLY raw JSON:
 {
   "voice_score": 8,
   "voice_note": "one sentence feedback",
   "alt_caption": "only if genuinely better, else empty string",
-  "tt_hashtags": ["#warzone","#cod","#callofduty","#proventag","#trendingtag","#khanvicttv"]
+  "tt_hashtags": ["#warzone","#cod","#callofduty","#proventag","#trendingtag","#khanvicttv"],
+  "ig_hashtags": ["#warzone","#cod","#callofduty","#proventag","#trendingtag","#khanvicttv"],
+  "yt_hashtags": ["#warzone","#cod","#callofduty","#shorts","#proventag","#khanvicttv"]
 }`;
 
   try {
@@ -2909,6 +2936,8 @@ Return ONLY raw JSON:
 
     // Render platform results
     renderCapResult('tt', ttCaption, r.tt_hashtags, 'Post within 1hr of your best slot for max early engagement.', clipId);
+    renderCapResult('ig', igFinal,   r.ig_hashtags, 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
+    renderCapResult('yt', ytFinal,   r.yt_hashtags, 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
 
   } catch(e) {
     console.error('Caption analysis error:', e);
@@ -2918,15 +2947,21 @@ Return ONLY raw JSON:
       ? 'Your Anthropic account is out of credits — add credits at <strong>console.anthropic.com → Billing</strong>.'
       : 'Check your API key in Settings and try again.';
     resultEl.innerHTML = `<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed: ${errMsg}<br><br>${hint}</div>`;
-    renderNoApiResult(ttCaption, game, clipId);
+    renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
   } finally {
     inFlightAnalyse = false;
   }
 }
 
-function renderNoApiResult(ttCaption, game, clipId) {
-  const defaultTags = ['#warzone','#cod','#callofduty','#bo6','#rebirthisland','#warzoneclips','#khanvicttv'];
-  renderCapResult('tt', ttCaption, defaultTags, '', clipId);
+function renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId) {
+  const defaultTags = { tt: ['#warzone','#cod','#callofduty','#bo6','#rebirthisland','#warzoneclips','#khanvicttv'],
+                        ig: ['#warzone','#cod','#callofduty','#bo6','#streamer','#twitch','#khanvicttv'],
+                        yt: ['#warzone','#cod','#callofduty','#shorts','#bo6','#khanvicttv'] };
+  const igF = igCaption || `${ttCaption} — live on Twitch, Kick & TikTok`;
+  const ytF = ytCaption || `${game} - ${ttCaption.charAt(0).toUpperCase() + ttCaption.slice(1)} | Khanvict TV`;
+  renderCapResult('tt', ttCaption, defaultTags.tt, '', clipId);
+  renderCapResult('ig', igF, defaultTags.ig, '', clipId);
+  renderCapResult('yt', ytF, defaultTags.yt, '', clipId);
 }
 
 
@@ -3103,7 +3138,7 @@ async function scheduleNtfyNotification(post) {
 }
 
 function getTagForPlatform(plat) {
-  const tags = { tt: 'musical_note' };
+  const tags = { tt: 'musical_note', ig: 'camera', yt: 'movie_camera' };
   return tags[plat] || 'bell';
 }
 
@@ -3284,10 +3319,8 @@ function refreshPostClipSelect() {
   const todayStr = localDateStr();
   const availableClips = state.clips.filter(c => {
     if (c.archived) return false;
-    // All posts for this clip (past + future) to determine what's already scheduled
-    const allClipPosts = state.posts.filter(p => String(p.clipId) === String(c.id));
-    const scheduledPlats = [...new Set(allClipPosts.map(p => p.platform))];
-    // Show clip only if it still has at least one platform without any scheduled post
+    const futurePosts = state.posts.filter(p => String(p.clipId) === String(c.id) && p.date >= todayStr);
+    const scheduledPlats = [...new Set(futurePosts.map(p => p.platform))];
     return c.platforms.some(p => !scheduledPlats.includes(p));
   });
 
@@ -3309,13 +3342,13 @@ function refreshPostClipSelect() {
 }
 
 // ── TOAST ────────────────────────────────────────────────────────────────
-function showToast(msg, type, duration) {
+function showToast(msg, type) {
   const color = type === 'green' ? 'var(--green)' : type === 'red' ? 'var(--red)' : type === 'amber' ? 'var(--amber)' : 'var(--accent2)';
   const t = document.createElement('div');
-  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:8px;padding:10px 18px;font-family:var(--mono);font-size:12px;color:${color};z-index:500;white-space:pre-wrap;max-width:340px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;transition:opacity 0.4s;`;
+  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:8px;padding:10px 18px;font-family:var(--mono);font-size:12px;color:${color};z-index:500;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,0.4);pointer-events:none;transition:opacity 0.4s;`;
   t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, duration || 2400);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2400);
 }
 
 // ── CUSTOM CONFIRM ────────────────────────────────────────────────────────
@@ -3426,13 +3459,10 @@ function renderMobileDayList() {
       ? posts.map(p => {
           const color = PLAT_COLOR[p.platform];
           const posted = p.posted;
-          const clip = state.clips.find(c => String(c.id) === String(p.clipId));
-          const fname = clip && clip.filename ? clip.filename : '';
-          return `<div class="mobile-post-card" data-id="${p.id}" onclick="openMobilePostSheet('${String(p.id)}')">
+          return `<div class="mobile-post-card" data-id="${p.id}" onclick="openConfirmPost(this.closest('[data-id]').dataset.id)">
             <div class="mobile-post-plat-bar" style="background:${color};"></div>
             <div class="mobile-post-info">
               <div class="mobile-post-name">${sanitize(p.clipName)}</div>
-              ${fname ? `<div style="font-size:9px;color:var(--muted);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;">${sanitize(fname)}</div>` : ''}
               <div class="mobile-post-meta">
                 <span style="color:${color};">${PLAT_LABEL[p.platform]}</span>
                 ${posted
@@ -3748,7 +3778,7 @@ function pruneIntelBriefs() {
 
 // ── FOLLOWER SNAPSHOT MIGRATION ───────────────────────────────────────────
 // Old shape: [{ date, count, platform, loggedAt }]  (one entry per platform per day)
-// New shape: [{ date, tt, loggedAt }]       (one entry per day)
+// New shape: [{ date, tt, ig, yt, loggedAt }]       (one entry per day, all platforms)
 function migrateFollowerSnapshots() {
   if (!state.followerSnapshots || !state.followerSnapshots.length) return;
   // Detect if any entry uses old shape (has 'count' + 'platform' keys)
@@ -3760,7 +3790,7 @@ function migrateFollowerSnapshots() {
   state.followerSnapshots.forEach(s => {
     if (s.count !== undefined && s.platform !== undefined) {
       // Old format
-      if (!byDate[s.date]) byDate[s.date] = { date: s.date, tt: null, loggedAt: s.loggedAt };
+      if (!byDate[s.date]) byDate[s.date] = { date: s.date, tt: null, ig: null, yt: null, loggedAt: s.loggedAt };
       byDate[s.date][s.platform] = s.count;
       // Keep earliest loggedAt
       if (s.loggedAt < byDate[s.date].loggedAt) byDate[s.date].loggedAt = s.loggedAt;
@@ -3799,8 +3829,8 @@ function migrate(saved) {
   // v2: ensure every clip has the captions field shape
   saved.clips.forEach(clip => {
     if (!clip.captions) clip.captions = {};
-    if (!clip.lastHashtags) clip.lastHashtags = { tt: [] };
-    if (!clip.platforms || !Array.isArray(clip.platforms)) clip.platforms = ['tt'];
+    if (!clip.lastHashtags) clip.lastHashtags = { tt: [], ig: [], yt: [] };
+    if (!clip.platforms || !Array.isArray(clip.platforms)) clip.platforms = ['tt', 'ig'];
     if (typeof clip.archived !== 'boolean') clip.archived = false;
     if (!clip.addedAt) clip.addedAt = new Date().toISOString();
   });
@@ -3885,31 +3915,6 @@ async function clearAll() {
 
 // ── ANALYTICS ────────────────────────────────────────────────────────────
 
-function checkPeakSlotNudge() {
-  // Only nudge once, only if morning slot is still 09:00, and only with 5+ logs
-  if (localStorage.getItem('kcc_peak_nudge_dismissed')) return;
-  if (state.slots[0]?.time !== '09:00') return;
-  if (state.engagements.length < 5) return;
-
-  // Check if any posts were logged at 08:xx that outperformed 09:xx
-  const byHour = {};
-  state.engagements.forEach(e => {
-    const post = state.posts.find(p => String(p.id) === String(e.postId));
-    if (!post) return;
-    const hr = parseInt((post.actualTime || post.time).split(':')[0]);
-    if (!byHour[hr]) byHour[hr] = { views: 0, count: 0 };
-    byHour[hr].views += e.views || 0;
-    byHour[hr].count++;
-  });
-  const avg8  = byHour[8]  ? byHour[8].views  / byHour[8].count  : 0;
-  const avg9  = byHour[9]  ? byHour[9].views  / byHour[9].count  : 0;
-
-  if (avg8 > avg9 && byHour[8] && byHour[8].count >= 2) {
-    showToast('📊 Your 8 AM posts average ' + Math.round(avg8).toLocaleString() + ' views vs ' + Math.round(avg9).toLocaleString() + ' at 9 AM. Update your morning slot in Settings?', 'green', 8000);
-    localStorage.setItem('kcc_peak_nudge_dismissed', '1');
-  }
-}
-
 function renderAnalytics() {
   renderOverviewCards();
   renderFollowerGrowth();
@@ -3952,7 +3957,7 @@ function addFollowerSnapshot() {
     existing.updatedAt = new Date().toISOString();
     showToast('Entry updated for ' + date, 'green');
   } else {
-    state.followerSnapshots.push({ date, tt, loggedAt: new Date().toISOString() });
+    state.followerSnapshots.push({ date, tt, ig: null, yt: null, loggedAt: new Date().toISOString() });
   }
 
   state.followerSnapshots.sort((a, b) => a.date.localeCompare(b.date));
@@ -3985,7 +3990,9 @@ function renderFollowerGrowth() {
   if (!chartEl) return;
 
   const PLAT_CFG = {
-    tt: { label: 'TikTok', color: 'var(--tiktok)', hex: '#ff2d55' }
+    tt: { label: 'TikTok', color: 'var(--tiktok)', hex: '#ff2d55' },
+    ig: { label: 'Instagram', color: 'var(--ig)', hex: '#e1306c' },
+    yt: { label: 'YouTube',   color: 'var(--yt)', hex: '#ff6060' }
   };
 
   if (!snaps.length) {
@@ -3999,7 +4006,7 @@ function renderFollowerGrowth() {
 }
 
 function renderFgOverallChart(snaps, chartEl, PLAT_CFG) {
-  const plats = ['tt'];
+  const plats = ['tt','ig','yt'];
 
   // Summary row — latest value per platform
   const latest = snaps[snaps.length - 1];
@@ -4178,7 +4185,7 @@ function renderFgSingleChart(snaps, chartEl, plat, cfg) {
 }
 
 function renderFgLog(snaps, logEl, tab, PLAT_CFG) {
-  const plats = ['tt'];
+  const plats = tab === 'overall' ? ['tt','ig','yt'] : [tab];
   const recent = snaps.slice().reverse().slice(0, 30);
 
   if (!recent.length) { logEl.innerHTML = ''; return; }
@@ -4243,7 +4250,7 @@ function renderOverviewCards() {
     { label: 'Total views',    val: totalViews.toLocaleString(),  sub: `${recent.length} posts logged`,        color: 'var(--accent2)' },
     { label: 'Avg views/post', val: avgViews.toLocaleString(),    sub: `${recentAvg.toLocaleString()} last 30d`, color: 'var(--green)' },
     { label: 'Total likes',    val: totalLikes.toLocaleString(),  sub: `${totalComments} comments`,            color: 'var(--tiktok)' },
-    { label: 'Bookmarks',      val: totalBookmarks.toLocaleString(), sub: 'total saves logged',               color: 'var(--accent2)' },
+    { label: 'Bookmarks',      val: totalBookmarks.toLocaleString(), sub: 'total saves logged',               color: 'var(--ig)' },
     { label: 'Engagement rate',val: engRate + '%',                sub: '(likes+comments)÷views',               color: 'var(--amber)' },
   ];
 
@@ -4270,7 +4277,7 @@ function renderViewsChart() {
   // Sum all views per platform per day — each engagement log is one clip, add them all
   const byDate = {};
   eng.forEach(e => {
-    if (!byDate[e.date]) byDate[e.date] = { tt:0 };
+    if (!byDate[e.date]) byDate[e.date] = { tt:0, ig:0, yt:0 };
     byDate[e.date][e.platform] += (e.views || 0);
   });
 
@@ -4285,7 +4292,7 @@ function renderViewsChart() {
 
   function getVal(d, tab) {
     const row = byDate[d];
-    return row.tt || 0;
+    return tab === 'all' ? row.tt + row.ig + row.yt : (row[tab] || 0);
   }
 
   function buildBars(tab) {
@@ -4299,7 +4306,7 @@ function renderViewsChart() {
       const lbl = dt.toLocaleDateString('en-US', { month:'short', day:'numeric' });
       const row = byDate[d];
       const tip = tab === 'all'
-        ? lbl + ': ' + val.toLocaleString() + ' views'
+        ? lbl + ': ' + val.toLocaleString() + ' views (TT:' + row.tt.toLocaleString() + ' IG:' + row.ig.toLocaleString() + ' YT:' + row.yt.toLocaleString() + ')'
         : lbl + ': ' + val.toLocaleString() + ' views';
       return '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;width:' + barW + 'px;" title="' + tip + '">' +
         '<div style="font-size:9px;color:var(--muted);font-family:var(--mono);">' + (val >= 1000 ? (val/1000).toFixed(1)+'k' : (val || '')) + '</div>' +
@@ -4391,7 +4398,6 @@ function renderDayOfWeekChart() {
   const container = document.getElementById('dow-chart');
   const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-  checkPeakSlotNudge();
   if (!state.engagements.length) {
     container.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0;">No data yet.</div>';
     return;
@@ -4443,8 +4449,8 @@ async function generateInsights() {
     '<div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;"><div style="width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Analysing your data...</div>';
 
   // Build data summary for the prompt
-  const PLATS = ['tt'];
-  const PL    = { tt:'TikTok' };
+  const PLATS = ['tt','ig','yt'];
+  const PL    = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
   const platStats = PLATS.map(p => {
     const e = eng.filter(x => x.platform === p);
     if (!e.length) return null;
@@ -4476,7 +4482,7 @@ async function generateInsights() {
   const topTags = Object.entries(tagData).sort((a,b)=>(b[1].v/b[1].c)-(a[1].v/a[1].c)).slice(0,8)
     .map(([t,d])=>`${t}: avg ${Math.round(d.v/d.c)} views`).join('\n');
 
-  const prompt = `You are a social media growth advisor for Khanvict TV — an FPS/shooter streamer (Warzone, Fortnite, Apex) who posts kill and clutch clips on TikTok. He streams live on Twitch, Kick, and TikTok Live simultaneously and aims to post 3x per day.
+  const prompt = `You are a social media growth advisor for Khanvict TV — an FPS/shooter streamer (Warzone, Fortnite, Apex) who posts kill and clutch clips on TikTok, Instagram Reels, and YouTube Shorts. He streams live on Twitch, Kick, and TikTok Live simultaneously and aims to post 3x per day.
 
 Here is his actual engagement data from the last ${eng.length} logged posts:
 
@@ -4697,8 +4703,8 @@ function renderEngageLog() {
   }
   if (countEl) countEl.textContent = `${state.engagements.length} entries`;
 
-  const PL = { tt:'TikTok' };
-  const PC = { tt:'var(--tiktok)' };
+  const PL = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
+  const PC = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
 
   const sorted = [...state.engagements].sort((a,b) => b.loggedAt.localeCompare(a.loggedAt));
 
@@ -4718,7 +4724,7 @@ function renderEngageLog() {
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.views||0).toLocaleString()} <span style="color:var(--muted);">views</span></span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.likes||0).toLocaleString()} <span style="color:var(--muted);">likes</span></span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.comments||0).toLocaleString()} <span style="color:var(--muted);">comments</span></span>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--accent2);">${(e.bookmarks||0)} <span style="color:var(--muted);">bookmarks</span></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--ig);">${(e.bookmarks||0)} <span style="color:var(--muted);">bookmarks</span></span>
       </div>
       ${e.hashtags && e.hashtags.length ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">${e.hashtags.map(h=>`<span style="background:rgba(124,92,252,0.1);color:var(--accent2);border:1px solid rgba(124,92,252,0.2);border-radius:4px;padding:2px 6px;font-family:var(--mono);font-size:10px;">${h}</span>`).join('')}</div>` : ''}
       ${e.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:5px;">${e.notes}</div>` : ''}
@@ -4808,56 +4814,6 @@ function populateEngageDropdown() {
   if (posted.length) sel.onchange.call(sel);
 }
 
-function quickLogEngagement(postId) {
-  // Pre-fill engagement modal from a specific posted post
-  const post = state.posts.find(p => String(p.id) === String(postId));
-  if (!post) { openEngageModal(); return; }
-
-  // Check if already logged
-  const existing = state.engagements.find(e => String(e.postId) === String(postId));
-  if (existing) {
-    // Open edit mode instead
-    editEngagement(existing.id);
-    return;
-  }
-
-  editingEngagementId = null;
-  document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
-  document.getElementById('eng-plat-filter').style.display = 'flex';
-
-  document.getElementById('eng-views').value    = '';
-  document.getElementById('eng-likes').value    = '';
-  document.getElementById('eng-comments').value = '';
-  document.getElementById('eng-bookmarks').value= '';
-  document.getElementById('eng-notes').value    = '';
-
-  setEngagePlatform(post.platform || 'tt');
-
-  // Pre-select this post in the dropdown
-  const nextBtn = document.getElementById('eng-save-next-btn');
-  nextBtn.textContent = 'Save & Close';
-  nextBtn.style.background = '';
-  nextBtn.style.display = '';
-  nextBtn.onclick = () => saveEngagement(false);
-  document.getElementById('eng-save-close-btn').style.display = 'none';
-
-  // Populate select and pre-fill this post after modal opens
-  document.getElementById('modal-engage').classList.add('open');
-  // After open, populate dropdown and select this post
-  setTimeout(() => {
-    const sel = document.getElementById('eng-post-sel');
-    populateEngageDropdown();
-    sel.value = String(postId);
-    // Trigger hashtag pre-fill
-    const clip = state.clips.find(c => String(c.id) === String(post.clipId));
-    if (clip && clip.lastHashtags && clip.lastHashtags[post.platform]) {
-      document.getElementById('eng-hashtags').value = clip.lastHashtags[post.platform].join(' ');
-    } else {
-      document.getElementById('eng-hashtags').value = '';
-    }
-  }, 50);
-}
-
 function openEngageModal() {
   editingEngagementId = null;
   document.querySelector('#modal-engage .modal-title').textContent = 'LOG ENGAGEMENT';
@@ -4879,7 +4835,7 @@ function openEngageModal() {
   nextBtn.style.background = '';
   nextBtn.style.display = '';
   nextBtn.onclick = () => saveEngagement(true);
-  document.getElementById('eng-save-close-btn').style.display = 'none';
+  document.getElementById('eng-save-close-btn').style.display = '';
 
   document.getElementById('modal-engage').classList.add('open');
 }
@@ -4960,17 +4916,6 @@ function saveEngagement(keepOpen) {
   // Auto-fill hashtags for the newly selected post
   const sel = document.getElementById('eng-post-sel');
   if (sel.onchange) sel.onchange.call(sel);
-
-  // If no more unlogged posts remain, show "Done" button
-  const hasMore = sel.value !== '' && !sel.options[0]?.text?.includes('already logged') && !sel.options[0]?.text?.includes('No TikTok');
-  document.getElementById('eng-save-next-btn').style.display = hasMore ? '' : 'none';
-  const closeBtn = document.getElementById('eng-save-close-btn');
-  if (!hasMore) {
-    closeBtn.style.display = '';
-    closeBtn.textContent = '✓ All done — Close';
-  } else {
-    closeBtn.style.display = 'none';
-  }
 }
 
 // ── TIMING ADHERENCE ─────────────────────────────────────────────────────
@@ -5074,8 +5019,8 @@ function checkUpcomingPosts() {
 
   if (!alerts.length) { container.innerHTML = ''; return; }
 
-  const PL = { tt: 'TikTok' };
-  const PC = { tt: 'var(--tiktok)' };
+  const PL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
+  const PC = { tt: 'var(--tiktok)', ig: 'var(--ig)', yt: 'var(--yt)' };
 
   container.innerHTML = alerts.map(({ post, diff, type }) => {
     const timeStr = diff <= 1 ? 'RIGHT NOW' : `in ${diff} min`;
@@ -5148,7 +5093,7 @@ function renderBriefBody(brief) {
     'highlight': 'var(--tiktok)',
     'tutorial': 'var(--amber)',
     'reaction': 'var(--amber)',
-    'challenge': 'var(--accent2)',
+    'challenge': 'var(--ig)',
     'news': '#2dd4bf',
     'settings': '#2dd4bf'
   };
@@ -5159,22 +5104,14 @@ function renderBriefBody(brief) {
     'Saturday': 'var(--green)'
   };
 
-  const todayDayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()];
-
   el.innerHTML = days.map((day, di) => {
     const dayColor = dayColors[day.day] || 'var(--accent)';
     const topics = (day.topics || []).sort((a, b) => (a.priority || 99) - (b.priority || 99));
-    const isToday = day.day === todayDayName;
-    const todayBadge = isToday ? `<span style="font-family:var(--mono);font-size:9px;letter-spacing:1px;background:${dayColor};color:white;padding:2px 8px;border-radius:3px;animation:pulse 2s infinite;">TODAY</span>` : '';
-    const wrapOpen  = isToday ? `<div style="border:2px solid ${dayColor};border-radius:10px;padding:14px;margin:-2px 0 0 0;">` : '';
-    const wrapClose = isToday ? '</div>' : '';
     return `
-    <div style="margin-bottom:${di < days.length - 1 ? '24px' : '0'};">
-      ${wrapOpen}
+    <div style="margin-bottom:${di < days.length - 1 ? '20px' : '0'};">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid ${dayColor}30;">
         <div style="background:${dayColor};color:white;font-family:var(--mono);font-size:10px;letter-spacing:1.5px;padding:4px 12px;border-radius:4px;font-weight:700;">${(day.day || '').toUpperCase()}</div>
         <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.5px;">STREAM ${di + 1} — ${topics.length} TOPICS</div>
-        ${todayBadge}
       </div>
       ${topics.map((t, ti) => {
         const typeColor = typeColors[t.type?.toLowerCase()] || 'var(--accent2)';
@@ -5199,7 +5136,6 @@ function renderBriefBody(brief) {
         </div>
       </div>`;
       }).join('')}
-      ${wrapClose}
     </div>`;
   }).join('');
 }
@@ -5440,7 +5376,7 @@ Return ONLY this JSON:
       ? `COMPETITOR INSIGHTS:\n${competitors.competitors.map(c => `- ${c.name}: ${c.insight}`).join('\n')}\nCommon themes: ${competitors.commonThemes || ''}`
       : 'No competitor data available.';
 
-    const synthesisPrompt = `You are the content strategist for Khanvict TV — a Warzone/FPS streamer who streams Tue/Thu/Sat and posts edited clips on TikTok.
+    const synthesisPrompt = `You are the content strategist for Khanvict TV — a Warzone/FPS streamer who streams Tue/Thu/Sat and posts edited clips on TikTok, Instagram Reels, and YouTube Shorts.
 
 Today is ${shortDate}. ONLY create topics about things that are relevant RIGHT NOW. Do NOT suggest weapons, loadouts, or features from previous seasons or years. If the trend data below mentions anything outdated, skip it.
 
@@ -5632,58 +5568,27 @@ checkIntelAutoRun();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/content-center/sw.js').then(reg => {
-    // Force-check for a new SW immediately on every page load
-    reg.update();
-    // Also poll every 60 seconds (catches updates on long sessions)
+    // Check for updates every 60 seconds
     setInterval(() => reg.update(), 60000);
-
-    // If a new SW is already waiting (installed but not yet active), prompt immediately
-    if (reg.waiting) {
-      document.getElementById('update-banner').classList.add('show');
-      window._pendingReg = reg;
-    }
-
-    // Fires when a new SW finishes installing and moves to waiting
-    reg.addEventListener('updatefound', () => {
-      const newWorker = reg.installing;
-      if (!newWorker) return;
-      newWorker.addEventListener('statechange', () => {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          // New SW is waiting — show banner and store ref so applyUpdate can skip waiting
-          document.getElementById('update-banner').classList.add('show');
-          window._pendingReg = reg;
-        }
-      });
-    });
   }).catch(() => {});
 
-  // Fires when the SW actually takes control (after skipWaiting)
-  // — auto-reload so the new files are used immediately
-  let swRefreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (swRefreshing) return;
-    swRefreshing = true;
-    window.location.reload();
-  });
-
-  // Legacy message channel (belt-and-suspenders for older iOS)
+  // Listen for UPDATE_AVAILABLE message from the new service worker
   navigator.serviceWorker.addEventListener('message', e => {
     if (e.data && e.data.type === 'UPDATE_AVAILABLE') {
       document.getElementById('update-banner').classList.add('show');
     }
   });
+
+  // Also detect when a new SW takes control (handles iOS quirks)
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    document.getElementById('update-banner').classList.add('show');
+  });
 }
 
 function applyUpdate() {
-  save(); // persist any unsaved state first
-  // Tell the waiting SW to skip waiting and take over — triggers controllerchange above
-  const reg = window._pendingReg;
-  if (reg && reg.waiting) {
-    reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-  } else {
-    // Fallback: hard reload
-    window.location.reload();
-  }
+  // Save any pending state then reload fresh
+  save();
+  window.location.reload(true);
 }
 </script>
 
