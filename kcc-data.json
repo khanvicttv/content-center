@@ -9932,14 +9932,55 @@
       "filename": "how many games.mp4",
       "duration": "0:27",
       "size_mb": 48,
-      "desc": "",
+      "desc": "How many games do you think he lasted with those on?",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-06-01T15:16:07",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "probably got deleted first game with those trash settings",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "probably got deleted first game with those trash settings\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "bro didnt last two minutes with those settings, absolute nightmare",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro didnt last two minutes with those settings, absolute nightmare\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "those loadout choices lasted exactly one game lmao | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#warzoneclips",
+            "#khanvicttv",
+            "#fps"
+          ],
+          "full": "those loadout choices lasted exactly one game lmao | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
+        }
+      }
     },
     {
       "id": 1780344646647,
