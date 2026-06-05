@@ -1,4 +1,4 @@
-const CACHE = 'kcc-v41';
+const CACHE = 'kcc-v42';
 const ASSETS = [
   '/content-center/',
   '/content-center/index.html',
@@ -51,4 +51,3 @@ self.addEventListener('fetch', e => {
     )
   );
 });
-

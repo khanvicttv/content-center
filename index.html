@@ -32,8 +32,6 @@
     --amber: #f59e0b;
     --red: #ef4444;
     --tiktok: #ff2d55;
-    --ig: #e1306c;
-    --yt: #ff6060;
     --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
     --sans: 'Inter', 'IBM Plex Sans', system-ui, sans-serif;
   }
@@ -169,12 +167,8 @@
   .post-slot.slot-posted { opacity: 0.5; }
   .drop-zone.drag-over { background: rgba(124,92,252,0.12); outline: 1px dashed var(--accent); }
   .post-slot.tt { background: rgba(255,45,85,0.12); border-left: 2px solid var(--tiktok); }
-  .post-slot.ig { background: rgba(225,48,108,0.12); border-left: 2px solid var(--ig); }
-  .post-slot.yt { background: rgba(255,96,96,0.12); border-left: 2px solid var(--yt); }
   .slot-plat { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
   .post-slot.tt .slot-plat { color: var(--tiktok); }
-  .post-slot.ig .slot-plat { color: var(--ig); }
-  .post-slot.yt .slot-plat { color: var(--yt); }
   .slot-clip-name { color: var(--text); font-size: 10px; font-weight: 500; }
 
   /* CLIP LIST */
@@ -186,16 +180,12 @@
   .pdot { width: 8px; height: 8px; border-radius: 50%; opacity: 0.2; }
   .pdot.on { opacity: 1; }
   .pdot.tt { background: var(--tiktok); }
-  .pdot.ig { background: var(--ig); }
-  .pdot.yt { background: var(--yt); }
 
   /* CAPTIONS */
   .cap-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
   .cap-tab { padding: 10px 16px; font-family: var(--mono); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; color: var(--muted); border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
   .cap-tab:hover { color: var(--text); }
   .cap-tab.tt.active { color: var(--tiktok); border-color: var(--tiktok); }
-  .cap-tab.ig.active { color: var(--ig); border-color: var(--ig); }
-  .cap-tab.yt.active { color: var(--yt); border-color: var(--yt); }
   .caption-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; min-height: 90px; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .tag { background: rgba(124,92,252,0.1); color: var(--accent2); border: 1px solid rgba(124,92,252,0.2); border-radius: 4px; padding: 3px 8px; font-family: var(--mono); font-size: 11px; cursor: pointer; transition: all 0.15s; }
@@ -594,8 +584,6 @@
   .time-label { font-family: var(--mono); font-size: 10px !important; color: var(--muted); background: var(--bg2) !important; padding: 10px 6px !important; }
   .post-slot { border-radius: 4px !important; min-height: 54px !important; }
   .post-slot.tt { background: linear-gradient(90deg, rgba(255,45,85,0.15), rgba(255,45,85,0.04)) !important; }
-  .post-slot.ig { background: linear-gradient(90deg, rgba(225,48,108,0.15), rgba(225,48,108,0.04)) !important; }
-  .post-slot.yt { background: linear-gradient(90deg, rgba(255,96,96,0.15), rgba(255,96,96,0.04)) !important; }
   .slot-plat { font-family: var(--mono); font-size: 8px !important; letter-spacing: 1.5px; }
   .slot-clip-name { color: var(--text); font-size: 11px; }
   .post-slot.slot-posted { opacity: 0.45; }
@@ -834,7 +822,7 @@
       </div>
 
       <div class="alert-info">
-        <strong>How this works:</strong> Write your caption the way you naturally would, select your clip and game, then hit Analyse. The AI checks your caption against your best performers, searches for currently trending Warzone hashtags, and builds you the best tag set. Your caption stays yours — the AI handles the research.
+        <strong>How this works:</strong> Write your caption the way you naturally would, select your clip and game, then hit Analyse. The AI checks your caption against your best performers, searches for currently trending Warzone hashtags, and builds you the best 5-tag set for TikTok. Your caption stays yours — the AI handles the research.
       </div>
 
       <div class="grid2" style="margin-bottom:14px;">
@@ -850,17 +838,9 @@
         </div>
       </div>
 
-      <div class="field" style="margin-bottom:8px;">
+      <div class="field" style="margin-bottom:16px;">
         <label>Your TikTok caption <span style="color:var(--accent2);font-size:9px;">write it yourself — short, lowercase, no emoji</span></label>
         <textarea id="cap-tt-input" rows="2" placeholder='e.g. "the dude was lost, broke every bone in his body"' style="font-size:14px;"></textarea>
-      </div>
-      <div class="field" style="margin-bottom:8px;">
-        <label>Instagram caption <span style="color:var(--muted);font-size:9px;">(optional — leave blank to auto-adapt from TikTok)</span></label>
-        <textarea id="cap-ig-input" rows="2" placeholder="Can be slightly longer — mention live on Twitch, Kick & TikTok"></textarea>
-      </div>
-      <div class="field" style="margin-bottom:16px;">
-        <label>YouTube title <span style="color:var(--muted);font-size:9px;">(optional — leave blank to auto-adapt)</span></label>
-        <input type="text" id="cap-yt-input" placeholder="Warzone Clip - your title here | Khanvict TV">
       </div>
 
       <button class="btn btn-primary" onclick="analyseCaption()" style="margin-bottom:20px;">✦ Analyse &amp; get hashtags</button>
@@ -875,11 +855,9 @@
       <!-- Analysis result -->
       <div id="cap-analysis-result"></div>
 
-      <!-- Per-platform results — stacked, always visible after analyse -->
+      <!-- Per-platform results — TikTok only -->
       <div id="cap-results-wrap" style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
         <div id="cap-tt" class="cap-pane"><div style="color:var(--muted);font-size:13px;padding:16px 0;">Write your caption above and hit Analyse to get your hashtags.</div></div>
-        <div id="cap-ig" class="cap-pane" style="display:none;"></div>
-        <div id="cap-yt" class="cap-pane" style="display:none;"></div>
       </div>
     </div>
 
@@ -894,7 +872,7 @@
       </div>
 
       <div class="alert-info" style="margin-bottom:18px;">
-        Your AI content strategist. Researches trending Warzone topics, meta shifts, and what's performing on TikTok, IG Reels &amp; YouTube Shorts — then builds a weekly content plan with 3 priority-ordered topics for each stream day (Tue / Thu / Sat). 9 topics total, ready before you go live. Auto-runs Sunday nights.
+        Your AI content strategist. Researches trending Warzone topics, meta shifts, and what's performing on TikTok — then builds a weekly content plan with 3 priority-ordered topics for each stream day (Tue / Thu / Sat). 9 topics total, ready before you go live. Auto-runs Sunday nights.
       </div>
 
       <!-- Stream schedule reminder -->
@@ -1262,18 +1240,9 @@
       <div class="field"><label>Duration</label><input type="text" id="nc-dur" placeholder="e.g. 0:45"></div>
     </div>
     <div class="field">
-      <label>Post to</label>
-      <div class="flex" style="gap:16px;flex-wrap:wrap;">
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--tiktok);">
-          <input type="checkbox" id="nc-tt" checked style="width:auto;"> TikTok
-        </label>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--ig);">
-          <input type="checkbox" id="nc-ig" checked style="width:auto;"> Instagram
-        </label>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--yt);">
-          <input type="checkbox" id="nc-yt" style="width:auto;"> YouTube
-        </label>
-      </div>
+      <label>Platform</label>
+      <div style="padding:6px 0;font-size:13px;color:var(--tiktok);font-family:var(--mono);letter-spacing:0.5px;">TikTok</div>
+      <input type="hidden" id="nc-tt" value="tt">
       <div class="field-error" id="nc-plat-error"></div>
     </div>
     <div class="flex flex-end" style="gap:10px;margin-top:6px;">
@@ -1292,18 +1261,9 @@
       <select id="mp-clip"><option value="">— select a clip —</option></select>
     </div>
     <div class="field">
-      <label>Platforms <span style="color:var(--accent2);font-size:9px;">(select all that apply)</span></label>
-      <div style="display:flex;gap:20px;flex-wrap:wrap;padding:8px 0;">
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--tiktok);">
-          <input type="checkbox" id="mp-tt" checked style="width:auto;accent-color:var(--tiktok);"> TikTok
-        </label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--ig);">
-          <input type="checkbox" id="mp-ig" checked style="width:auto;accent-color:var(--ig);"> Instagram
-        </label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;margin:0;text-transform:none;font-size:13px;color:var(--yt);">
-          <input type="checkbox" id="mp-yt" style="width:auto;accent-color:var(--yt);"> YouTube
-        </label>
-      </div>
+      <label>Platform</label>
+      <div style="padding:6px 0;font-size:13px;color:var(--tiktok);font-family:var(--mono);letter-spacing:0.5px;">TikTok</div>
+      <input type="hidden" id="mp-tt" value="tt">
     </div>
     <div class="grid2">
       <div class="field"><label>Date</label><input type="date" id="mp-date"></div>
@@ -1356,8 +1316,8 @@ let state = {
   followerSnapshots: []   // [{ date:'YYYY-MM-DD', tt:null, ig:null, yt:null, loggedAt:ISO }]
 };
 
-const PLAT_LABEL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
-const PLAT_COLOR = { tt: '#ff2d55', ig: '#e1306c', yt: '#ff6060' };
+const PLAT_LABEL = { tt: 'TikTok' };
+const PLAT_COLOR = { tt: '#ff2d55' };
 
 const CHECKLIST_ITEMS = {
   tt: [
@@ -1367,28 +1327,9 @@ const CHECKLIST_ITEMS = {
     'Captions / subtitles added in app',
     'Trending sound or original audio selected',
     'Caption copied in from Caption Generator',
-    'Hashtags added (5–8 tags)',
+    'Hashtags added (5 tags)',
     'Cover thumbnail frame selected',
     'Posted at scheduled time slot'
-  ],
-  ig: [
-    'Clip is 1080×1920 vertical',
-    'Duration under 90 seconds',
-    'Caption under 2,200 characters',
-    'Hashtags added (3–5 quality tags)',
-    'Share to Feed + Reels both enabled',
-    'Tagged any relevant accounts',
-    'Posted at scheduled time slot',
-    'Replied to early comments within 1hr'
-  ],
-  yt: [
-    'Title under 60 characters with keyword',
-    'Description written with timestamps',
-    'Custom thumbnail created',
-    'Added to gaming playlist',
-    'Scheduled publish time set in Studio',
-    'End screen elements added',
-    'Pinned a comment after going live'
   ]
 };
 
@@ -1401,54 +1342,23 @@ const CAPTION_TEMPLATES = {
     funny:       (d,g) => `${d.hook.toLowerCase()}, broke every expectation`,
     clutch:      (d,g) => `${d.hook.toLowerCase()}`,
     educational: (d,g) => `${d.shortDesc.toLowerCase()} in ${g}`
-  },
-  ig: {
-    hype:        (d,g) => `${d.hook.toLowerCase()} in ${g}. live on twitch, kick & tiktok`,
-    chill:       (d,g) => `${d.hook.toLowerCase()}. catch it live on twitch, kick & tiktok`,
-    funny:       (d,g) => `${d.hook.toLowerCase()}. this is ${g} for you`,
-    clutch:      (d,g) => `${d.hook.toLowerCase()} in ${g}. live on twitch, kick & tiktok`,
-    educational: (d,g) => `${d.shortDesc.toLowerCase()} — ${g} tip. live on twitch, kick & tiktok`
-  },
-  yt: {
-    hype:        (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
-    chill:       (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
-    funny:       (d,g) => `${g} - ${d.shortDesc} | Khanvict TV`,
-    clutch:      (d,g) => `${g} Clutch - ${d.shortDesc} | Khanvict TV`,
-    educational: (d,g) => `${g} Tips - ${d.shortDesc} | Khanvict TV`
   }
 };
 
-// Hashtags based on Khanvict TV's actual most-used tags from 443 real posts
-// Core: #warzone #cod #callofduty always present
-// Rotate content-specific tags based on tone/clip type
+// Hashtags based on Khanvict TV's actual most-used tags
+// Core: #warzone #cod #callofduty always present, always exactly 5 total
 const HASHTAGS = {
   tt: {
-    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#rebirthisland', '#warzoneclips', '#khanvicttv'],
-    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#streamer', '#twitchstreamer', '#khanvicttv'],
-    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#funnymoments', '#warzonefunny', '#khanvicttv'],
-    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#rebirthisland', '#khanvicttv'],
-    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#bo6', '#warzonetips', '#khanvicttv']
-  },
-  ig: {
-    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#rebirthisland', '#warzoneclips', '#khanvicttv'],
-    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#streamer', '#twitch', '#khanvicttv'],
-    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#funnymoments', '#codmoments', '#khanvicttv'],
-    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#rebirthisland', '#khanvicttv'],
-    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#warzonetips', '#bo6', '#khanvicttv']
-  },
-  yt: {
-    hype:        ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#warzoneclips', '#khanvicttv'],
-    chill:       ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#streamer', '#khanvicttv'],
-    funny:       ['#warzone', '#cod', '#callofduty', '#bo6', '#shorts', '#funnymoments', '#khanvicttv'],
-    clutch:      ['#warzone', '#cod', '#callofduty', '#bo6', '#clutch', '#shorts', '#khanvicttv'],
-    educational: ['#warzone', '#cod', '#callofduty', '#warzonemeta', '#warzonetips', '#shorts', '#khanvicttv']
+    hype:        ['#warzone', '#cod', '#callofduty', '#warzoneclips', '#khanvicttv'],
+    chill:       ['#warzone', '#cod', '#callofduty', '#streamer', '#khanvicttv'],
+    funny:       ['#warzone', '#cod', '#callofduty', '#funnymoments', '#khanvicttv'],
+    clutch:      ['#warzone', '#cod', '#callofduty', '#clutch', '#khanvicttv'],
+    educational: ['#warzone', '#cod', '#callofduty', '#warzonetips', '#khanvicttv']
   }
 };
 
 const PLATFORM_TIPS = {
-  tt: 'Post at your peak time slot. Reply to comments in the first 30 min — TikTok rewards engagement velocity.',
-  ig: 'Share to both Feed AND Reels. Stories shoutout after posting drives the first wave of views.',
-  yt: 'Upload via YouTube Studio desktop and set a scheduled publish time — don\'t upload all clips at once.'
+  tt: 'Post at your peak time slot. Reply to comments in the first 30 min — TikTok rewards engagement velocity.'
 };
 
 // ── CLOCK ────────────────────────────────────────────────────────────────
@@ -1485,18 +1395,12 @@ function openClipModal() {
   document.getElementById('nc-desc').value = '';
   document.getElementById('nc-game').value = '';
   document.getElementById('nc-dur').value = '';
-  document.getElementById('nc-tt').checked = true;
-  document.getElementById('nc-ig').checked = true;
-  document.getElementById('nc-yt').checked = false;
   document.getElementById('modal-clip').classList.add('open');
 }
 
 function openPostModal(date, time) {
   refreshPostClipSelect();
   document.getElementById('mp-date').value = date || localDateStr();
-  document.getElementById('mp-tt').checked = true;
-  document.getElementById('mp-ig').checked = true;
-  document.getElementById('mp-yt').checked = false;
   refreshPostTimeSelect(time);
   document.getElementById('modal-post').classList.add('open');
 }
@@ -1522,14 +1426,8 @@ function addClip() {
     nameEl.focus();
     return;
   }
-  const platforms = [];
-  if (document.getElementById('nc-tt').checked) platforms.push('tt');
-  if (document.getElementById('nc-ig').checked) platforms.push('ig');
-  if (document.getElementById('nc-yt').checked) platforms.push('yt');
-  if (!platforms.length) {
-    showFieldError('nc-plat', 'nc-plat-error', 'Select at least one platform.');
-    return;
-  }
+  const platforms = ['tt'];
+  // platforms is always TikTok-only
 
   const clip = {
     id: Date.now() + Math.random(),
@@ -1543,9 +1441,7 @@ function addClip() {
 
   state.clips.push(clip);
   state.checklist[clip.id] = {};
-  ['tt','ig','yt'].forEach(p => {
-    state.checklist[clip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
-  });
+  state.checklist[clip.id]['tt'] = CHECKLIST_ITEMS['tt'].map(() => false);
 
   closeModal('modal-clip');
   save();
@@ -1713,8 +1609,6 @@ function buildClipRow(clip, isArchived) {
     </div>
     <div class="pdots">
       <div class="pdot tt ${clip.platforms.includes('tt')?'on':''}"></div>
-      <div class="pdot ig ${clip.platforms.includes('ig')?'on':''}"></div>
-      <div class="pdot yt ${clip.platforms.includes('yt')?'on':''}"></div>
     </div>
     ${actionBtns}
   </div>`;
@@ -1776,16 +1670,14 @@ function importFromScan(e) {
           size_mb: clip.size_mb || '',
           desc: clip.desc || '',
           game: clip.game || '',
-          platforms: clip.platforms || ['tt', 'ig'],
+          platforms: clip.platforms || ['tt'],
           addedAt: clip.addedAt || new Date().toISOString(),
           fromScan: true
         };
 
         state.clips.push(newClip);
         state.checklist[newClip.id] = {};
-        ['tt','ig','yt'].forEach(p => {
-          state.checklist[newClip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
-        });
+        state.checklist[newClip.id]['tt'] = CHECKLIST_ITEMS['tt'].map(() => false);
         added++;
       });
 
@@ -1846,11 +1738,9 @@ async function inlineGenCaption(btn) {
   btn.disabled = true;
 
   const platRules = {
-    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.',
-    ig: 'Same voice, 1-2 sentences. Can mention live on Twitch/Kick/TikTok.',
-    yt: 'Title format 40-70 chars, searchable, game name + action. End with | Khanvict TV.'
+    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact. EXACTLY 5 hashtags.'
   };
-  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
+  const platNames = { tt: 'TikTok' };
 
   const prompt = `You write captions for Khanvict TV — a Warzone/FPS streamer.
 Style: very short (5-16 words), no emojis, lowercase casual, matter-of-fact.
@@ -1859,7 +1749,7 @@ CLIP: ${clip.desc}
 GAME: ${clip.game || 'Warzone'}
 PLATFORM: ${platNames[plat]}
 RULES: ${platRules[plat]}
-Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#rebirthisland","#warzoneclips","#khanvicttv"]}`;
+Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#warzoneclips","#khanvicttv"]}`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -1936,11 +1826,7 @@ function schedulePost() {
   if (!clipIdStr) { showToast('Select a clip first.', 'amber'); return; }
   if (!date)      { showToast('Pick a date.', 'amber'); return; }
 
-  const platforms = [];
-  if (document.getElementById('mp-tt').checked) platforms.push('tt');
-  if (document.getElementById('mp-ig').checked) platforms.push('ig');
-  if (document.getElementById('mp-yt').checked) platforms.push('yt');
-  if (!platforms.length) { showToast('Select at least one platform.', 'amber'); return; }
+  const platforms = ['tt'];
 
   if (time === 'custom') {
     // Show the inline custom time input instead of prompt()
@@ -1998,7 +1884,7 @@ async function batchGenerateCaptions() {
     !c.archived &&
     c.desc &&
     c.desc.trim() &&
-    (!c.captions || Object.keys(c.captions).length < 3)
+    (!c.captions || !c.captions.tt)
   );
 
   if (!clipsNeedingCaptions.length) {
@@ -2039,15 +1925,8 @@ async function autoGenerateCaptions(clip) {
   if (!desc || !desc.trim()) return;
   const game = clip.game || 'Warzone';
 
-  const platRules = {
-    tt: '5-16 words, no emoji, no hype, lowercase casual, matter-of-fact.',
-    ig: 'Same voice, 1-2 sentences. Can mention live on Twitch/Kick/TikTok.',
-    yt: 'Title format 40-70 chars, searchable, game name + action. End with | Khanvict TV.'
-  };
-  const platNames = { tt: 'TikTok', ig: 'Instagram Reels', yt: 'YouTube Shorts' };
-
-  // Only generate platforms still missing captions
-  const platsToDo = ['tt', 'ig', 'yt'].filter(k => !(clip.captions && clip.captions[k]));
+  // Only generate TikTok caption if missing
+  const platsToDo = ['tt'].filter(k => !(clip.captions && clip.captions[k]));
   if (!platsToDo.length) return;
 
   const buildPrompt = (platKey) => `You write captions for Khanvict TV — a Warzone/FPS streamer.
@@ -2055,9 +1934,9 @@ Style: very short (5-16 words), no emojis, lowercase casual, matter-of-fact.
 Examples: "The dude was lost, broke every bone in his body" / "AK74 is meta right now for close range" / "legit OP, if you dont have it, you are doing yourself injustice"
 CLIP: ${desc}
 GAME: ${game}
-PLATFORM: ${platNames[platKey]}
-RULES: ${platRules[platKey]}
-Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#bo6","#rebirthisland","#warzoneclips","#khanvicttv"]}`;
+PLATFORM: TikTok
+RULES: 5-16 words, no emoji, no hype, lowercase casual, matter-of-fact. Return EXACTLY 5 hashtags.
+Return ONLY raw JSON: {"caption":"...","hashtags":["#warzone","#cod","#callofduty","#warzoneclips","#khanvicttv"]}`;
 
   const fetchCap = async (platKey) => {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -2627,7 +2506,7 @@ function processDroppedClips(files) {
       size_mb:   file.size ? (file.size / 1024 / 1024).toFixed(1) : '',
       desc:      '',
       game:      guessedGame,
-      platforms: ['tt', 'ig'],
+      platforms: ['tt'],
       addedAt:   new Date().toISOString(),
       fromScan:  false,
       fromDrop:  true
@@ -2635,9 +2514,7 @@ function processDroppedClips(files) {
 
     state.clips.push(clip);
     state.checklist[clip.id] = {};
-    ['tt','ig','yt'].forEach(p => {
-      state.checklist[clip.id][p] = CHECKLIST_ITEMS[p].map(() => false);
-    });
+    state.checklist[clip.id]['tt'] = CHECKLIST_ITEMS['tt'].map(() => false);
     added++;
   });
 
@@ -2669,16 +2546,11 @@ function onCapClipChange() {
   const clip = state.clips.find(c => String(c.id) === clipIdStr);
   if (!clip) return;
   document.getElementById('cap-game').value = clip.game || 'Warzone';
-  // Pre-fill caption inputs if clip already has saved captions
-  if (clip.captions) {
-    if (clip.captions.tt) document.getElementById('cap-tt-input').value = clip.captions.tt.caption || '';
-    if (clip.captions.ig) document.getElementById('cap-ig-input').value = clip.captions.ig.caption || '';
-    if (clip.captions.yt) document.getElementById('cap-yt-input').value = clip.captions.yt.caption || '';
+  // Pre-fill caption input if clip already has saved TT caption
+  if (clip.captions && clip.captions.tt) {
+    document.getElementById('cap-tt-input').value = clip.captions.tt.caption || '';
   } else {
-    // Clear inputs when switching to a clip with no captions
     document.getElementById('cap-tt-input').value = '';
-    document.getElementById('cap-ig-input').value = '';
-    document.getElementById('cap-yt-input').value = '';
   }
 }
 
@@ -2808,8 +2680,6 @@ async function analyseCaption() {
     return;
   }
   const ttCaption = document.getElementById('cap-tt-input').value.trim();
-  const igCaption = document.getElementById('cap-ig-input').value.trim();
-  const ytCaption = document.getElementById('cap-yt-input').value.trim();
   const game      = document.getElementById('cap-game').value.trim() || 'Warzone';
   const clipId    = document.getElementById('cap-clip').value; // keep as string to match float IDs
 
@@ -2830,14 +2700,10 @@ async function analyseCaption() {
 
   if (!apiKey) {
     inFlightAnalyse = false;
-    renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
+    renderNoApiResult(ttCaption, game, clipId);
     resultEl.innerHTML = '<div style="color:var(--amber);font-size:12px;padding:8px 0;">No API key — add one in Settings to get voice analysis and trending hashtags.</div>';
     return;
   }
-
-  // Build adapted captions for IG and YT
-  const igFinal = igCaption || `${ttCaption} — live on Twitch, Kick & TikTok`;
-  const ytFinal = ytCaption || `${game} - ${ttCaption.charAt(0).toUpperCase() + ttCaption.slice(1)} | Khanvict TV`;
 
   // Wait for trending (with timeout so it never blocks analysis)
   const trending = await Promise.race([
@@ -2855,7 +2721,7 @@ async function analyseCaption() {
     });
   });
   const ownTopTags = Object.entries(ownTagData)
-    .filter(([, d]) => d.count >= 3)  // min 3 posts — single-post data is unreliable
+    .filter(([, d]) => d.count >= 3)
     .sort((a, b) => (b[1].views / b[1].count) - (a[1].views / a[1].count))
     .slice(0, 5)
     .map(([tag, d]) => `${tag} (avg ${Math.round(d.views / d.count).toLocaleString()} views, ${d.count} posts)`);
@@ -2865,7 +2731,7 @@ async function analyseCaption() {
 
   const trendingContext = trending
     ? `CURRENTLY TRENDING on TikTok for ${game}: ${[...(trending.always_include||[]), ...(trending.trending||[])].join(', ')}\nRising tags: ${(trending.rising||[]).join(', ')}`
-    : `CORE TAGS (always include): #warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv`;
+    : `CORE TAGS (always include): #warzone #cod #callofduty #warzoneclips #khanvicttv`;
 
   const prompt = `You are the caption coach for Khanvict TV — a Warzone/FPS streamer. His best captions are short, lowercase, matter-of-fact with occasional dry humor. No emojis, no hype words.
 
@@ -2885,19 +2751,15 @@ ${trendingContext}
 
 Your job:
 1. Voice check — does this sound like him? Score it 1-10 and explain briefly (1-2 sentences max)
-2. Build the BEST hashtag set for TikTok — 6-7 tags. Strategy: always include #warzone #cod #callofduty, prioritize his proven top performers above, add 1-2 trending tags, end with #khanvicttv
-3. Build hashtag set for Instagram (same strategy, can swap 1 tag for platform relevance)
-4. Build hashtag set for YouTube (add #shorts, keep 5-6 tags)
-5. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
+2. Build the BEST hashtag set for TikTok — EXACTLY 5 tags. Always include #warzone #cod #callofduty, prioritize his proven top performers above, end with #khanvicttv. Never more than 5 tags.
+3. Optional alt caption — only if his caption could be noticeably stronger. If it's already good, leave this blank.
 
 Return ONLY raw JSON:
 {
   "voice_score": 8,
   "voice_note": "one sentence feedback",
   "alt_caption": "only if genuinely better, else empty string",
-  "tt_hashtags": ["#warzone","#cod","#callofduty","#proventag","#trendingtag","#khanvicttv"],
-  "ig_hashtags": ["#warzone","#cod","#callofduty","#proventag","#trendingtag","#khanvicttv"],
-  "yt_hashtags": ["#warzone","#cod","#callofduty","#shorts","#proventag","#khanvicttv"]
+  "tt_hashtags": ["#warzone","#cod","#callofduty","#proventag","#khanvicttv"]
 }`;
 
   try {
@@ -2934,10 +2796,8 @@ Return ONLY raw JSON:
         </div>` : ''}
       </div>`;
 
-    // Render platform results
-    renderCapResult('tt', ttCaption, r.tt_hashtags, 'Post within 1hr of your best slot for max early engagement.', clipId);
-    renderCapResult('ig', igFinal,   r.ig_hashtags, 'Post Reels within 30min of your TikTok for cross-platform momentum.', clipId);
-    renderCapResult('yt', ytFinal,   r.yt_hashtags, 'YouTube Shorts get indexed — keyword-rich titles help long-term search.', clipId);
+    // Render TikTok result only
+    renderCapResult('tt', ttCaption, (r.tt_hashtags || []).slice(0, 5), 'Post within 1hr of your best slot for max early engagement.', clipId);
 
   } catch(e) {
     console.error('Caption analysis error:', e);
@@ -2947,21 +2807,15 @@ Return ONLY raw JSON:
       ? 'Your Anthropic account is out of credits — add credits at <strong>console.anthropic.com → Billing</strong>.'
       : 'Check your API key in Settings and try again.';
     resultEl.innerHTML = `<div style="color:var(--red);font-size:12px;padding:8px 0;">Analysis failed: ${errMsg}<br><br>${hint}</div>`;
-    renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId);
+    renderNoApiResult(ttCaption, game, clipId);
   } finally {
     inFlightAnalyse = false;
   }
 }
 
-function renderNoApiResult(ttCaption, igCaption, ytCaption, game, clipId) {
-  const defaultTags = { tt: ['#warzone','#cod','#callofduty','#bo6','#rebirthisland','#warzoneclips','#khanvicttv'],
-                        ig: ['#warzone','#cod','#callofduty','#bo6','#streamer','#twitch','#khanvicttv'],
-                        yt: ['#warzone','#cod','#callofduty','#shorts','#bo6','#khanvicttv'] };
-  const igF = igCaption || `${ttCaption} — live on Twitch, Kick & TikTok`;
-  const ytF = ytCaption || `${game} - ${ttCaption.charAt(0).toUpperCase() + ttCaption.slice(1)} | Khanvict TV`;
-  renderCapResult('tt', ttCaption, defaultTags.tt, '', clipId);
-  renderCapResult('ig', igF, defaultTags.ig, '', clipId);
-  renderCapResult('yt', ytF, defaultTags.yt, '', clipId);
+function renderNoApiResult(ttCaption, game, clipId) {
+  const defaultTags = ['#warzone','#cod','#callofduty','#warzoneclips','#khanvicttv'];
+  renderCapResult('tt', ttCaption, defaultTags, '', clipId);
 }
 
 
@@ -2973,12 +2827,12 @@ function renderCapFromTemplate(plat, desc, game, tone, clipId) {
     result: words.slice(hookEnd).join(' ') || desc,
     shortDesc: words.slice(0,6).join(' ')
   };
-  const fn = CAPTION_TEMPLATES[plat][tone];
+  const fn = CAPTION_TEMPLATES['tt'][tone] || CAPTION_TEMPLATES['tt']['chill'];
   const caption = fn(d, game);
   const gameTag = '#' + game.toLowerCase().replace(/\s+/g,'');
-  const baseTags = HASHTAGS[plat][tone].filter(t => t !== gameTag);
-  const allTags = [gameTag, ...baseTags];
-  renderCapResult(plat, caption, allTags, PLATFORM_TIPS[plat], clipId);
+  const baseTags = HASHTAGS['tt'][tone].filter(t => t !== gameTag);
+  const allTags = [gameTag, ...baseTags].slice(0, 5);
+  renderCapResult('tt', caption, allTags, PLATFORM_TIPS['tt'], clipId);
   return allTags;
 }
 
@@ -3138,8 +2992,7 @@ async function scheduleNtfyNotification(post) {
 }
 
 function getTagForPlatform(plat) {
-  const tags = { tt: 'musical_note', ig: 'camera', yt: 'movie_camera' };
-  return tags[plat] || 'bell';
+  return 'musical_note';
 }
 
 // Re-schedule all future notifications (call after import/sync)
@@ -3790,7 +3643,7 @@ function migrateFollowerSnapshots() {
   state.followerSnapshots.forEach(s => {
     if (s.count !== undefined && s.platform !== undefined) {
       // Old format
-      if (!byDate[s.date]) byDate[s.date] = { date: s.date, tt: null, ig: null, yt: null, loggedAt: s.loggedAt };
+      if (!byDate[s.date]) byDate[s.date] = { date: s.date, tt: null, loggedAt: s.loggedAt };
       byDate[s.date][s.platform] = s.count;
       // Keep earliest loggedAt
       if (s.loggedAt < byDate[s.date].loggedAt) byDate[s.date].loggedAt = s.loggedAt;
@@ -3826,11 +3679,17 @@ function migrate(saved) {
     if (!('lastRun' in saved.contentIntel))        saved.contentIntel.lastRun = null;
   }
 
-  // v2: ensure every clip has the captions field shape
+  // v2: ensure every clip has the correct shape
   saved.clips.forEach(clip => {
     if (!clip.captions) clip.captions = {};
-    if (!clip.lastHashtags) clip.lastHashtags = { tt: [], ig: [], yt: [] };
-    if (!clip.platforms || !Array.isArray(clip.platforms)) clip.platforms = ['tt', 'ig'];
+    if (!clip.lastHashtags) clip.lastHashtags = { tt: [] };
+    // Strip ig/yt from platforms — app is now TikTok-only
+    if (!clip.platforms || !Array.isArray(clip.platforms)) {
+      clip.platforms = ['tt'];
+    } else {
+      clip.platforms = clip.platforms.filter(p => p === 'tt');
+      if (!clip.platforms.length) clip.platforms = ['tt'];
+    }
     if (typeof clip.archived !== 'boolean') clip.archived = false;
     if (!clip.addedAt) clip.addedAt = new Date().toISOString();
   });
@@ -3957,7 +3816,7 @@ function addFollowerSnapshot() {
     existing.updatedAt = new Date().toISOString();
     showToast('Entry updated for ' + date, 'green');
   } else {
-    state.followerSnapshots.push({ date, tt, ig: null, yt: null, loggedAt: new Date().toISOString() });
+    state.followerSnapshots.push({ date, tt, loggedAt: new Date().toISOString() });
   }
 
   state.followerSnapshots.sort((a, b) => a.date.localeCompare(b.date));
@@ -3990,9 +3849,7 @@ function renderFollowerGrowth() {
   if (!chartEl) return;
 
   const PLAT_CFG = {
-    tt: { label: 'TikTok', color: 'var(--tiktok)', hex: '#ff2d55' },
-    ig: { label: 'Instagram', color: 'var(--ig)', hex: '#e1306c' },
-    yt: { label: 'YouTube',   color: 'var(--yt)', hex: '#ff6060' }
+    tt: { label: 'TikTok', color: 'var(--tiktok)', hex: '#ff2d55' }
   };
 
   if (!snaps.length) {
@@ -4006,7 +3863,7 @@ function renderFollowerGrowth() {
 }
 
 function renderFgOverallChart(snaps, chartEl, PLAT_CFG) {
-  const plats = ['tt','ig','yt'];
+  const plats = ['tt'];
 
   // Summary row — latest value per platform
   const latest = snaps[snaps.length - 1];
@@ -4185,7 +4042,7 @@ function renderFgSingleChart(snaps, chartEl, plat, cfg) {
 }
 
 function renderFgLog(snaps, logEl, tab, PLAT_CFG) {
-  const plats = tab === 'overall' ? ['tt','ig','yt'] : [tab];
+  const plats = ['tt'];
   const recent = snaps.slice().reverse().slice(0, 30);
 
   if (!recent.length) { logEl.innerHTML = ''; return; }
@@ -4250,7 +4107,7 @@ function renderOverviewCards() {
     { label: 'Total views',    val: totalViews.toLocaleString(),  sub: `${recent.length} posts logged`,        color: 'var(--accent2)' },
     { label: 'Avg views/post', val: avgViews.toLocaleString(),    sub: `${recentAvg.toLocaleString()} last 30d`, color: 'var(--green)' },
     { label: 'Total likes',    val: totalLikes.toLocaleString(),  sub: `${totalComments} comments`,            color: 'var(--tiktok)' },
-    { label: 'Bookmarks',      val: totalBookmarks.toLocaleString(), sub: 'total saves logged',               color: 'var(--ig)' },
+    { label: 'Bookmarks',      val: totalBookmarks.toLocaleString(), sub: 'total saves logged',               color: 'var(--accent2)' },
     { label: 'Engagement rate',val: engRate + '%',                sub: '(likes+comments)÷views',               color: 'var(--amber)' },
   ];
 
@@ -4263,7 +4120,7 @@ function renderOverviewCards() {
 }
 
 // ── VIEWS CHART ───────────────────────────────────────────────────────────
-let viewsChartTab = 'all';
+let viewsChartTab = 'tt';
 
 function renderViewsChart() {
   const container = document.getElementById('views-chart');
@@ -4277,8 +4134,8 @@ function renderViewsChart() {
   // Sum all views per platform per day — each engagement log is one clip, add them all
   const byDate = {};
   eng.forEach(e => {
-    if (!byDate[e.date]) byDate[e.date] = { tt:0, ig:0, yt:0 };
-    byDate[e.date][e.platform] += (e.views || 0);
+    if (!byDate[e.date]) byDate[e.date] = { tt:0 };
+    byDate[e.date][e.platform] = (byDate[e.date][e.platform] || 0) + (e.views || 0);
   });
 
   const dates  = Object.keys(byDate).sort();
@@ -4286,13 +4143,11 @@ function renderViewsChart() {
   const barW   = Math.max(24, Math.min(40, Math.floor(560 / dates.length)));
 
   const TABS = [
-    { key: 'all', label: 'All',    color: 'var(--accent2)', barColor: 'var(--accent2)' },
-    { key: 'tt',  label: 'TikTok', color: 'var(--tiktok)',  barColor: 'var(--tiktok)' }
+    { key: 'tt', label: 'TikTok', color: 'var(--tiktok)', barColor: 'var(--tiktok)' }
   ];
 
   function getVal(d, tab) {
-    const row = byDate[d];
-    return tab === 'all' ? row.tt + row.ig + row.yt : (row[tab] || 0);
+    return byDate[d].tt || 0;
   }
 
   function buildBars(tab) {
@@ -4305,9 +4160,7 @@ function renderViewsChart() {
       const dt  = new Date(d + 'T12:00:00');
       const lbl = dt.toLocaleDateString('en-US', { month:'short', day:'numeric' });
       const row = byDate[d];
-      const tip = tab === 'all'
-        ? lbl + ': ' + val.toLocaleString() + ' views (TT:' + row.tt.toLocaleString() + ' IG:' + row.ig.toLocaleString() + ' YT:' + row.yt.toLocaleString() + ')'
-        : lbl + ': ' + val.toLocaleString() + ' views';
+      const tip = lbl + ': ' + val.toLocaleString() + ' views';
       return '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;width:' + barW + 'px;" title="' + tip + '">' +
         '<div style="font-size:9px;color:var(--muted);font-family:var(--mono);">' + (val >= 1000 ? (val/1000).toFixed(1)+'k' : (val || '')) + '</div>' +
         '<div style="width:' + (barW-6) + 'px;height:' + (val > 0 ? Math.max(h, 3) : 0) + 'px;background:' + cfg.barColor + ';border-radius:3px 3px 0 0;"></div>' +
@@ -4449,8 +4302,8 @@ async function generateInsights() {
     '<div style="display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px;"><div style="width:12px;height:12px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;flex-shrink:0;"></div>Analysing your data...</div>';
 
   // Build data summary for the prompt
-  const PLATS = ['tt','ig','yt'];
-  const PL    = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
+  const PLATS = ['tt'];
+  const PL    = { tt:'TikTok' };
   const platStats = PLATS.map(p => {
     const e = eng.filter(x => x.platform === p);
     if (!e.length) return null;
@@ -4482,9 +4335,9 @@ async function generateInsights() {
   const topTags = Object.entries(tagData).sort((a,b)=>(b[1].v/b[1].c)-(a[1].v/a[1].c)).slice(0,8)
     .map(([t,d])=>`${t}: avg ${Math.round(d.v/d.c)} views`).join('\n');
 
-  const prompt = `You are a social media growth advisor for Khanvict TV — an FPS/shooter streamer (Warzone, Fortnite, Apex) who posts kill and clutch clips on TikTok, Instagram Reels, and YouTube Shorts. He streams live on Twitch, Kick, and TikTok Live simultaneously and aims to post 3x per day.
+  const prompt = `You are a social media growth advisor for Khanvict TV — an FPS/shooter streamer (Warzone, Fortnite, Apex) who posts kill and clutch clips on TikTok. He streams live on Twitch, Kick, and TikTok Live simultaneously and aims to post 3x per day on TikTok.
 
-Here is his actual engagement data from the last ${eng.length} logged posts:
+Here is his actual TikTok engagement data from the last ${eng.length} logged posts:
 
 PLATFORM PERFORMANCE:
 ${platStats}
@@ -4703,8 +4556,8 @@ function renderEngageLog() {
   }
   if (countEl) countEl.textContent = `${state.engagements.length} entries`;
 
-  const PL = { tt:'TikTok', ig:'Instagram', yt:'YouTube' };
-  const PC = { tt:'var(--tiktok)', ig:'var(--ig)', yt:'var(--yt)' };
+  const PL = { tt:'TikTok' };
+  const PC = { tt:'var(--tiktok)' };
 
   const sorted = [...state.engagements].sort((a,b) => b.loggedAt.localeCompare(a.loggedAt));
 
@@ -4724,7 +4577,7 @@ function renderEngageLog() {
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.views||0).toLocaleString()} <span style="color:var(--muted);">views</span></span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.likes||0).toLocaleString()} <span style="color:var(--muted);">likes</span></span>
         <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.comments||0).toLocaleString()} <span style="color:var(--muted);">comments</span></span>
-        <span style="font-family:var(--mono);font-size:11px;color:var(--ig);">${(e.bookmarks||0)} <span style="color:var(--muted);">bookmarks</span></span>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--text);">${(e.bookmarks||0)} <span style="color:var(--muted);">bookmarks</span></span>
       </div>
       ${e.hashtags && e.hashtags.length ? `<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;">${e.hashtags.map(h=>`<span style="background:rgba(124,92,252,0.1);color:var(--accent2);border:1px solid rgba(124,92,252,0.2);border-radius:4px;padding:2px 6px;font-family:var(--mono);font-size:10px;">${h}</span>`).join('')}</div>` : ''}
       ${e.notes ? `<div style="font-size:11px;color:var(--muted);margin-top:5px;">${e.notes}</div>` : ''}
@@ -5019,8 +4872,8 @@ function checkUpcomingPosts() {
 
   if (!alerts.length) { container.innerHTML = ''; return; }
 
-  const PL = { tt: 'TikTok', ig: 'Instagram', yt: 'YouTube' };
-  const PC = { tt: 'var(--tiktok)', ig: 'var(--ig)', yt: 'var(--yt)' };
+  const PL = { tt: 'TikTok' };
+  const PC = { tt: 'var(--tiktok)' };
 
   container.innerHTML = alerts.map(({ post, diff, type }) => {
     const timeStr = diff <= 1 ? 'RIGHT NOW' : `in ${diff} min`;
@@ -5093,7 +4946,7 @@ function renderBriefBody(brief) {
     'highlight': 'var(--tiktok)',
     'tutorial': 'var(--amber)',
     'reaction': 'var(--amber)',
-    'challenge': 'var(--ig)',
+    'challenge': 'var(--amber)',
     'news': '#2dd4bf',
     'settings': '#2dd4bf'
   };
@@ -5376,11 +5229,11 @@ Return ONLY this JSON:
       ? `COMPETITOR INSIGHTS:\n${competitors.competitors.map(c => `- ${c.name}: ${c.insight}`).join('\n')}\nCommon themes: ${competitors.commonThemes || ''}`
       : 'No competitor data available.';
 
-    const synthesisPrompt = `You are the content strategist for Khanvict TV — a Warzone/FPS streamer who streams Tue/Thu/Sat and posts edited clips on TikTok, Instagram Reels, and YouTube Shorts.
+    const synthesisPrompt = `You are the content strategist for Khanvict TV — a Warzone/FPS streamer who streams Tue/Thu/Sat and posts edited clips on TikTok.
 
 Today is ${shortDate}. ONLY create topics about things that are relevant RIGHT NOW. Do NOT suggest weapons, loadouts, or features from previous seasons or years. If the trend data below mentions anything outdated, skip it.
 
-His strengths: 5 years streaming, strong FPS gameplay, editing in DaVinci Resolve, uses text overlays on clips. Currently building audience on all 3 platforms.
+His strengths: 5 years streaming, strong FPS gameplay, editing in DaVinci Resolve, uses text overlays on clips. Currently building audience on TikTok.
 
 His data shows: tips/strategy/loadout videos outperform pure kill clips. His best-performing captions are short, lowercase, matter-of-fact. Best example: "legit OP, if you dont have it, you are doing yourself injustice" (831 likes).
 
