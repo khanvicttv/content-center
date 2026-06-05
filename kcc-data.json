@@ -9764,14 +9764,55 @@
       "filename": "i agree.mp4",
       "duration": "0:15",
       "size_mb": 84.8,
-      "desc": "",
+      "desc": "Why I can down you with 2 slices as you shoot me, I dont know",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-06-05T16:13:12",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "two plates of armor and somehow still out-trading you, make it make sense",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "two plates of armor and somehow still out-trading you, make it make sense\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "ig": {
+          "caption": "somehow downing you with two slices while you're spraying me, makes zero sense but it happened",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "somehow downing you with two slices while you're spraying me, makes zero sense but it happened\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        },
+        "yt": {
+          "caption": "how i down you with 2 slices while you shoot | Khanvict TV",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#bo6",
+            "#rebirthisland",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "how i down you with 2 slices while you shoot | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1780693835050,
