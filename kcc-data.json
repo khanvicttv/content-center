@@ -12938,6 +12938,15 @@
       "date": "2026-06-06",
       "time": "13:00",
       "posted": false
+    },
+    {
+      "id": 1780695227367.8145,
+      "clipId": 1780344967445,
+      "clipName": "How many games",
+      "platform": "tt",
+      "date": "2026-06-06",
+      "time": "19:00",
+      "posted": false
     }
   ],
   "checklist": {
@@ -18664,7 +18673,7 @@
       "reach": "PEAK"
     }
   ],
-  "weekOffset": 0,
+  "weekOffset": 1,
   "engagements": [
     {
       "id": 1774928290584,
