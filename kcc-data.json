@@ -9756,7 +9756,13 @@
           ],
           "full": "repositioning to take the duel, no choice here | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1780693992335,
@@ -9812,7 +9818,13 @@
           ],
           "full": "how i down you with 2 slices while you shoot | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1780693835050,
@@ -9868,7 +9880,13 @@
           ],
           "full": "warzone: this map always gets me heated | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1780693266397,
@@ -9924,7 +9942,13 @@
           ],
           "full": "running into one of the greatest warzone streamers | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1780344967445,
@@ -9980,7 +10004,13 @@
           ],
           "full": "those loadout choices lasted exactly one game lmao | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #warzoneclips #khanvicttv #fps"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1780344646647,
@@ -10036,7 +10066,13 @@
           ],
           "full": "warzone: wish i had semtex for this one | Khanvict TV\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1780344447064,
@@ -10092,7 +10128,13 @@
           ],
           "full": "warzone: backseat gaming while eating hits different | khanvict tv\n\n#warzone #cod #callofduty #bo6 #rebirthisland #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     },
     {
       "id": 1780344075488,
@@ -10148,7 +10190,13 @@
           ],
           "full": "rocket league | this mans hair is absolutely unhinged | Khanvict TV\n\n#rocketleague #gaming #clips #funny #khanvicttv #shorts #esports"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": [],
+        "ig": [],
+        "yt": []
+      },
+      "archived": false
     }
   ],
   "posts": [
@@ -12863,6 +12911,15 @@
       "actualTime": "13:00",
       "postedAt": "2026-06-05T01:18:53.909Z",
       "timingVariance": 0
+    },
+    {
+      "id": 1780695197940.4763,
+      "clipId": 1780693992335,
+      "clipName": "I agree",
+      "platform": "tt",
+      "date": "2026-06-05",
+      "time": "19:00",
+      "posted": false
     }
   ],
   "checklist": {
