@@ -9289,7 +9289,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:08.100Z"
     },
     {
       "id": 1780251378418,
@@ -9348,7 +9349,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:06.661Z"
     },
     {
       "id": 1780250765777,
@@ -9382,7 +9384,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:08.412Z"
     },
     {
       "id": 1780250604224,
@@ -9416,7 +9419,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:07.116Z"
     },
     {
       "id": 1780249941361,
@@ -9450,7 +9454,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:08.668Z"
     },
     {
       "id": 1780095726694,
@@ -9484,7 +9489,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:09.164Z"
     },
     {
       "id": 1780095298015,
@@ -9518,7 +9524,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:09.548Z"
     },
     {
       "id": 1780095014380,
@@ -9552,7 +9559,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:09.948Z"
     },
     {
       "id": 1780094615086,
@@ -9586,7 +9594,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:10.356Z"
     },
     {
       "id": 1780094313236,
@@ -9620,7 +9629,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:10.748Z"
     },
     {
       "id": 1780093071737,
@@ -9654,7 +9664,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:11.412Z"
     },
     {
       "id": 1780092850636,
@@ -9688,7 +9699,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-05T21:25:11.860Z"
     }
   ],
   "posts": [
