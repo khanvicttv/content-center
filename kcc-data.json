@@ -12399,7 +12399,10 @@
       "platform": "tt",
       "date": "2026-06-04",
       "time": "13:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "13:00",
+      "postedAt": "2026-06-05T01:18:53.909Z",
+      "timingVariance": 0
     }
   ],
   "checklist": {
