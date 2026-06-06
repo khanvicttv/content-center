@@ -9645,7 +9645,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-06T01:03:48.761Z"
     },
     {
       "id": 1780693835050,
@@ -12734,7 +12735,10 @@
       "platform": "tt",
       "date": "2026-06-05",
       "time": "19:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "19:00",
+      "postedAt": "2026-06-06T01:03:48.761Z",
+      "timingVariance": 0
     },
     {
       "id": 1780695214950.7732,
