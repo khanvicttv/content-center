@@ -9770,7 +9770,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-07T17:27:02.519Z"
     },
     {
       "id": 1780344967445,
@@ -12786,7 +12787,10 @@
       "platform": "tt",
       "date": "2026-06-07",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-06-07T17:27:02.518Z",
+      "timingVariance": 0
     },
     {
       "id": 1780695240560.076,
