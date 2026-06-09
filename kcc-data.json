@@ -10083,14 +10083,27 @@
       "filename": "forgot the rest.mp4",
       "duration": "0:23",
       "size_mb": 106.1,
-      "desc": "",
+      "desc": "Do you remember the rest of the lyrics?",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-06-09T15:33:21",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "bro forgot the lyrics mid game, completely threw his focus",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "bro forgot the lyrics mid game, completely threw his focus\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1781037034543,
