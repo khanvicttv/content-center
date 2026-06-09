@@ -10027,14 +10027,27 @@
       "filename": "trust your teammate.mp4",
       "duration": "0:28",
       "size_mb": 101.5,
-      "desc": "",
+      "desc": "He knew what I was doing",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-06-09T15:43:37",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "he read my play before i even made it, straight up knew the move",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "he read my play before i even made it, straight up knew the move\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1781037514069,
