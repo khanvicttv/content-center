@@ -10111,14 +10111,27 @@
       "filename": "How did you not get me.mp4",
       "duration": "0:15",
       "size_mb": 71.9,
-      "desc": "",
+      "desc": "I shouldnt have gotten both of you, that's not okay",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-06-09T15:30:34",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "shouldnt have got both of them that clean, not fair",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "shouldnt have got both of them that clean, not fair\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1781036913217,
