@@ -10139,14 +10139,27 @@
       "filename": "looking dumb.mp4",
       "duration": "0:19",
       "size_mb": 63.5,
-      "desc": "",
+      "desc": "This guy was making me look dumb lol",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-06-09T15:28:33",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "this guy had me looking absolutely lost out here",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "this guy had me looking absolutely lost out here\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
+        }
+      }
     },
     {
       "id": 1781036797055,
