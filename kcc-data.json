@@ -10167,14 +10167,27 @@
       "filename": "loadout glitch.mp4",
       "duration": "0:26",
       "size_mb": 76.7,
-      "desc": "",
+      "desc": "UAV doesn't work and this loadout doesn't pop, great game",
       "game": "",
       "platforms": [
         "tt",
         "ig"
       ],
       "addedAt": "2026-06-09T15:26:37",
-      "fromScan": true
+      "fromScan": true,
+      "captions": {
+        "tt": {
+          "caption": "uav broken and loadout whiffing, this game is actually terrible right now",
+          "hashtags": [
+            "#warzone",
+            "#cod",
+            "#callofduty",
+            "#warzoneclips",
+            "#khanvicttv"
+          ],
+          "full": "uav broken and loadout whiffing, this game is actually terrible right now\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
+        }
+      }
     }
   ],
   "posts": [
