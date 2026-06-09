@@ -9894,7 +9894,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-09T23:24:48.178Z"
     },
     {
       "id": 1780344447064,
@@ -9955,7 +9956,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-09T23:24:49.042Z"
     },
     {
       "id": 1780344075488,
@@ -10016,7 +10018,8 @@
         "ig": [],
         "yt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-09T23:24:48.634Z"
     }
   ],
   "posts": [
