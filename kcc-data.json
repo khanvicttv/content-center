@@ -10030,8 +10030,7 @@
       "desc": "He knew what I was doing",
       "game": "",
       "platforms": [
-        "tt",
-        "ig"
+        "tt"
       ],
       "addedAt": "2026-06-09T15:43:37",
       "fromScan": true,
@@ -10047,7 +10046,11 @@
           ],
           "full": "he read my play before i even made it, straight up knew the move\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": []
+      },
+      "archived": false
     },
     {
       "id": 1781037514069,
@@ -10058,8 +10061,7 @@
       "desc": "Time to time we hop in with followers",
       "game": "",
       "platforms": [
-        "tt",
-        "ig"
+        "tt"
       ],
       "addedAt": "2026-06-09T15:38:34",
       "fromScan": true,
@@ -10075,7 +10077,11 @@
           ],
           "full": "hopping in with the homies, time to see who actually has it\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": []
+      },
+      "archived": false
     },
     {
       "id": 1781037201137,
@@ -10086,8 +10092,7 @@
       "desc": "Do you remember the rest of the lyrics?",
       "game": "",
       "platforms": [
-        "tt",
-        "ig"
+        "tt"
       ],
       "addedAt": "2026-06-09T15:33:21",
       "fromScan": true,
@@ -10103,7 +10108,11 @@
           ],
           "full": "bro forgot the lyrics mid game, completely threw his focus\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": []
+      },
+      "archived": false
     },
     {
       "id": 1781037034543,
@@ -10114,8 +10123,7 @@
       "desc": "I shouldnt have gotten both of you, that's not okay",
       "game": "",
       "platforms": [
-        "tt",
-        "ig"
+        "tt"
       ],
       "addedAt": "2026-06-09T15:30:34",
       "fromScan": true,
@@ -10131,7 +10139,11 @@
           ],
           "full": "shouldnt have got both of them that clean, not fair\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": []
+      },
+      "archived": false
     },
     {
       "id": 1781036913217,
@@ -10142,8 +10154,7 @@
       "desc": "This guy was making me look dumb lol",
       "game": "",
       "platforms": [
-        "tt",
-        "ig"
+        "tt"
       ],
       "addedAt": "2026-06-09T15:28:33",
       "fromScan": true,
@@ -10159,7 +10170,11 @@
           ],
           "full": "this guy had me looking absolutely lost out here\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": []
+      },
+      "archived": false
     },
     {
       "id": 1781036797055,
@@ -10170,8 +10185,7 @@
       "desc": "UAV doesn't work and this loadout doesn't pop, great game",
       "game": "",
       "platforms": [
-        "tt",
-        "ig"
+        "tt"
       ],
       "addedAt": "2026-06-09T15:26:37",
       "fromScan": true,
@@ -10187,7 +10201,11 @@
           ],
           "full": "uav broken and loadout whiffing, this game is actually terrible right now\n\n#warzone #cod #callofduty #warzoneclips #khanvicttv"
         }
-      }
+      },
+      "lastHashtags": {
+        "tt": []
+      },
+      "archived": false
     }
   ],
   "posts": [
@@ -23845,6 +23863,11 @@
       "date": "2026-05-31",
       "tt": 3480,
       "loggedAt": "2026-05-31T18:34:32.813Z"
+    },
+    {
+      "date": "2026-06-09",
+      "tt": 3509,
+      "loggedAt": "2026-06-10T04:53:21.262Z"
     }
   ],
   "_version": 2
