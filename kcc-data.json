@@ -10146,7 +10146,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-12T00:06:58.248Z"
     },
     {
       "id": 1781036913217,
@@ -13067,7 +13068,10 @@
       "platform": "tt",
       "date": "2026-06-11",
       "time": "09:00",
-      "posted": false
+      "posted": true,
+      "actualTime": "09:00",
+      "postedAt": "2026-06-12T00:06:58.248Z",
+      "timingVariance": 0
     },
     {
       "id": 1781047616296.9243,
