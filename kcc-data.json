@@ -10210,7 +10210,8 @@
       "lastHashtags": {
         "tt": []
       },
-      "archived": false
+      "archived": true,
+      "archivedAt": "2026-06-28T19:54:42.788Z"
     }
   ],
   "posts": [
